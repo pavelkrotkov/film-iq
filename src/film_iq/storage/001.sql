@@ -52,11 +52,12 @@ CREATE TABLE film_index (
     id INTEGER PRIMARY KEY, tmdb_id INTEGER UNIQUE, imdb_id TEXT UNIQUE, movary_id TEXT UNIQUE
 );
 CREATE TABLE match_decision (
-    id TEXT NOT NULL PRIMARY KEY, entry_id TEXT NOT NULL REFERENCES list_entry(id),
+    id TEXT NOT NULL PRIMARY KEY, entry_id TEXT NOT NULL, revision_id TEXT NOT NULL,
     film_id INTEGER REFERENCES film_index(id), candidates TEXT NOT NULL,
     method TEXT NOT NULL, version TEXT NOT NULL, confidence REAL,
     reviewer TEXT, decision TEXT NOT NULL, decided_at TEXT NOT NULL,
-    supersedes TEXT REFERENCES match_decision(id)
+    supersedes TEXT REFERENCES match_decision(id),
+    FOREIGN KEY(entry_id, revision_id) REFERENCES entry_observation(entry_id, revision_id)
 );
 CREATE TABLE review (
     id TEXT NOT NULL PRIMARY KEY, entry_id TEXT REFERENCES list_entry(id),

@@ -142,6 +142,14 @@ def test_migration_and_evidence_roundtrip(tmp_path):
             "accepted",
         ),
     )
+    db.execute("INSERT INTO list_entry VALUES (?,?,?,?)", ("other", "s", "list", "item-2"))
+    decision = "INSERT INTO match_decision (id, entry_id, revision_id, candidates, method, version, decision, decided_at) VALUES (?,?,?,?,?,?,?,?)"
+    db.execute(decision, ("match", "entry", "rev", "[]", "manual", "v1", "accepted", "now"))
+    for entry_id, revision_id in [("entry", None), ("entry", "missing"), ("other", "rev")]:
+        with pytest.raises(sqlite3.IntegrityError):
+            db.execute(
+                decision, ("bad", entry_id, revision_id, "[]", "manual", "v1", "accepted", "now")
+            )
     db.commit()
     db.close()
     db = connect(tmp_path / "evidence.db")
