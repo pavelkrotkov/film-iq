@@ -1,6 +1,7 @@
 """Opt-in stdlib HTTP transport for the existing Movary write backend."""
 
 import json
+from http.client import HTTPException
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
@@ -24,7 +25,7 @@ class MovaryHTTPTransport:
         except HTTPError as error:
             error.close()
             raise ValueError(f"Movary HTTP status {error.code}") from None
-        except (URLError, OSError):
+        except (URLError, OSError, HTTPException):
             raise ValueError("Movary HTTP transport failed") from None
 
 
