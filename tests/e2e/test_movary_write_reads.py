@@ -45,7 +45,9 @@ def test_later_watchlist_page_and_read_failure() -> None:
                 "maxPage": 1,
             }
         return 200, {
-            "watchlist": [{"movie": {"ids": {"movary": 456 if page == 2 else 999}}}],
+            "watchlist": [{"movie": {"ids": {"movary": 999}}}] * 100
+            if page == 1
+            else [{"movie": {"ids": {"movary": 456}}}],
             "currentPage": page,
             "maxPage": 2,
         }

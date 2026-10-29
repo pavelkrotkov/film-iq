@@ -1,10 +1,9 @@
 """Synthetic source-to-watchlist integration seam."""
 
-from unittest.mock import Mock, call
-
 import pytest
+from stub_backend import StubBackend
 
-from film_iq.approval import Preview, approved_movie
+from film_iq.approval import Preview, sync_one
 
 
 def test_mock_source_to_approved_watchlist() -> None:
@@ -14,29 +13,20 @@ def test_mock_source_to_approved_watchlist() -> None:
     offer = {"tmdb_id": identity["tmdb_id"], "region": "US", "kind": "free"}
     plan = {"title": source["raw_title"], "tmdb_id": offer["tmdb_id"], "score": score}
     preview = Preview(title=plan["title"], tmdb_id=plan["tmdb_id"])
-    writer = Mock()
+    writer = StubBackend()
 
     with pytest.raises(PermissionError):
-        approved_movie(preview)
+        sync_one(preview, writer, execute=True)
     with pytest.raises(PermissionError):
-        approved_movie(preview, approved=False)
-    writer.assert_not_called()
+        sync_one(preview, writer, execute=True, approved=False)
+    assert writer.writes == []
     assert plan["score"]["entry_id"] == source["entry_id"]
     assert (offer["region"], offer["kind"]) == ("US", "free")
 
-    # This fake represents future API behavior, not an actual Movary client.
-    movies: dict[int, int] = {}
-    watchlist = {99}
-    movie_id = approved_movie(preview, approved=True)
-    for _ in range(2):
-        if movie_id not in movies:
-            writer.add_movie(movie_id)
-            movies[movie_id] = 456
-        if movies[movie_id] not in watchlist:
-            writer.add_watchlist(movies[movie_id])
-            watchlist.add(movies[movie_id])
-    assert writer.mock_calls == [call.add_movie(123), call.add_watchlist(456)]
-    assert watchlist == {99, 456}
+    assert sync_one(preview, writer, execute=True, approved=True) == "added to watchlist"
+    assert sync_one(preview, writer, execute=True, approved=True) == "already on watchlist"
+    assert writer.writes == [("movie", 123), ("watchlist", 456)]
+    assert writer.watchlist == {99, 456}
 
 
 @pytest.mark.parametrize("title,tmdb_id", [("", 1), ("Example", 0), ("Example", True)])

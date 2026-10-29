@@ -19,7 +19,7 @@ def test_partial_watchlist_does_not_write() -> None:
             }
         if "page=1" in path:
             return 200, {
-                "watchlist": [{"movie": {"ids": {"movary": 99}}}],
+                "watchlist": [{"movie": {"ids": {"movary": 99}}}] * 100,
                 "currentPage": 1,
                 "maxPage": 2,
             }

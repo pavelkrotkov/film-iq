@@ -33,7 +33,7 @@ def test_invalid_later_page_never_posts(second_page: dict, error: str) -> None:
             }
         if "page=1" in path:
             return 200, {
-                "watchlist": [{"movie": {"ids": {"movary": 99}}}],
+                "watchlist": [{"movie": {"ids": {"movary": 99}}}] * 100,
                 "currentPage": 1,
                 "maxPage": 2,
             }

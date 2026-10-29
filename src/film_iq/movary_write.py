@@ -46,7 +46,13 @@ class MovaryWriteBackend:
         return response
 
     def _pages(self, path: str, key: str, params: dict[str, str | int]) -> list:
-        return pages(lambda url: self._request("GET", url, None, 200), path, key, params)
+        return pages(
+            lambda url: self._request("GET", url, None, 200),
+            path,
+            key,
+            params,
+            search=path == "/api/v1/movies/search",
+        )
 
     def find_movie(self, tmdb_id: int) -> int | None:
         self._movie_id = None
