@@ -39,6 +39,37 @@ UV_CACHE_DIR="$PWD/.cache/uv" TMPDIR="$PWD/.cache/tmp" UV_PYTHON_DOWNLOADS=never
 
 A failed request or changed document hash exits as **unknown**, requiring a new audit rather than a negative result. The Library's [robots.txt](https://www.loc.gov/robots.txt) asks general crawlers to leave at least five seconds between requests.
 
+## Optional A3 supplemental sections
+
+On 2026-10-29, the existing [A3 section-adapter tests](https://github.com/pavelkrotkov/film-iq/blob/d08b04a6a1cdf93cc67a4f7f1f50de8f41d9a466/tests/test_page_adapters.py) were independently rerun against four captured Wikipedia sections and A3's separate automated-agent oracle. All eight tests passed. A separate check verified each source-response hash and compared every title, display position, rank and tie with that oracle:
+
+| Captured section | Exact records / expected |
+|---|---:|
+| NBR 2022 Top 10 Films | 11 / 11 |
+| NBR 2023 Top 10 Films | 10 / 10 |
+| Sight and Sound 2012 directors' poll | 10 / 10 |
+| Sight and Sound 2022 directors' poll | 11 / 11 |
+
+The NBR 2022 section contains 11 selections despite its heading; the Sight and Sound sections are partial excerpts of their underlying top-100 polls. All four are derivative Wikipedia sections, not independent NBR or BFI ballots. A3's oracle was transcribed by a separate automated agent from alternate renderings of the same sections; it is not a human audit. This rerun exercises existing adapters against the same oracle, not held-out layouts, source coverage, acquisition reliability, or a browser/LLM comparison. It does not add A3 as a dependency of this benchmark.
+
+The captures and oracle have [CC BY-SA 4.0 attribution and share-alike requirements](https://github.com/pavelkrotkov/film-iq/blob/d08b04a6a1cdf93cc67a4f7f1f50de8f41d9a466/tests/fixtures/ingest/pages/NOTICE.md); those terms do not grant rights to original BFI/NBR publications or images. No copies of these captures or their oracle are added to this PR. A3's [evidence report](https://github.com/pavelkrotkov/film-iq/blob/d08b04a6a1cdf93cc67a4f7f1f50de8f41d9a466/docs/a6/README.md) records the original-source corroboration and its limitations.
+
+The eight tests can be repeated with the pinned commit available locally, from the B3 worktree root:
+
+```sh
+mkdir -p .cache/a3-supplement-d08b04a .cache/tmp .cache/uv
+git archive d08b04a6a1cdf93cc67a4f7f1f50de8f41d9a466 LICENSE \
+  src/film_iq/__init__.py src/film_iq/ingest/adapters/nbr_2023.py \
+  src/film_iq/ingest/adapters/page_capture.py src/film_iq/ingest/adapters/nbr_pages.py \
+  src/film_iq/ingest/adapters/sight_sound_pages.py docs/a6/independent-fixture-audit.json \
+  tests/fixtures/ingest/pages tests/test_page_adapters.py | tar -x -C .cache/a3-supplement-d08b04a
+UV_CACHE_DIR="$PWD/.cache/uv" TMPDIR="$PWD/.cache/tmp" XDG_CACHE_HOME="$PWD/.cache/xdg" \
+  UV_OFFLINE=1 UV_PYTHON_DOWNLOADS=never PYTHONDONTWRITEBYTECODE=1 \
+  PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 PYTHONPATH="$PWD/.cache/a3-supplement-d08b04a/src" \
+  uv run --no-sync pytest -q -p no:cacheprovider --basetemp="$PWD/.cache/pytest-a3-supplement" \
+  .cache/a3-supplement-d08b04a/tests/test_page_adapters.py
+```
+
 ## Synthetic SQLite and dlt comparison
 
 An opt-in comparison runs the same two fictional records through transactional SQLite and dlt's SQLAlchemy SQLite destination. Each path loads an initial batch, repeats it unchanged, encounters an injected source failure after one corrected row, verifies the destination still contains the original two records, and retries the correction. The SQLite path checks zero writes on the unchanged rerun; the dlt path checks unchanged semantic rows but does not measure physical writes.
