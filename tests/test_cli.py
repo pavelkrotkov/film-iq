@@ -10,4 +10,3 @@ def test_status_is_explicit_about_bootstrap(capsys) -> None:
     assert main(["status"]) == 0
     captured = capsys.readouterr().out
     assert "POC features are not implemented" in captured
-
