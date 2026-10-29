@@ -223,6 +223,8 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 
 **Gate A:** a reproducible source→film→score→US offer→recommendation→approved Movary write trace; complete rated-only films; no silent truncation, duplicate observations, unapproved writes or false removal claims. Document actual time/cost/error metrics. POC is not the finished discovery backfill or calibrated recommender.
 
+**A2 preliminary finding:** Synthetic fixtures exercise paginated reads and replacement of a ratings CSV, including rated-only films and removed ratings. The installed Movary version, live export, and completeness of an upstream successful export have not been verified.
+
 **A1 preliminary finding:** The SQLite schema records source rights, list-linked extraction revisions, review decisions and source-supplied external IDs; migration and restore fixtures pass on patched SQLite. Independence and lineage verification default to unknown, and current accepted matches are explicit. Real-source rights and downstream integration remain unverified. IDs supplied by a source remain distinct from resolved film identifiers.
 
 **A3 preliminary finding:** One NBR 2023 section has been checked against the original announcement: its winner is ranked, while the other nine titles are alphabetical and unranked. Three Library of Congress selection transcriptions exercise a contrasting unranked format, but are not raw pages or independently audited. The NBR fixture's claimed Wikipedia revision remains unverified. Audited pages, tied and partial examples, rights verification and persisted idempotence remain open.
@@ -230,6 +232,12 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 **A3 source leads:** [BFI's 2022 poll announcement](https://www.bfi.org.uk/news/revealed-results-2022-sight-sound-greatest-films-all-time-poll) describes tied ranks, and [Film Comment's 2024 ballots](https://www.filmcomment.com/best-films-of-2024-individual-ballots/) publishes a selection of ballots. Their [BFI](https://www.bfi.org.uk/terms-use) and [Film Comment](https://www.filmcomment.com/terms-of-service/) terms do not establish permission to commit raw captures. Partial publication of ballots does not establish that a particular displayed ballot is incomplete.
 
 **A3 persistence:** Provisional fixture output can be stored with rights metadata and parser provenance. Repeat ingestion is idempotent; conflicting output fails rather than silently replacing accepted evidence. An explicit independent audit attestation can promote a complete revision; its correctness and independence are auditor claims. Historical human-only wording was an implementation assumption, not issue #6’s requirement. Automated versus human kind must be labelled in the auditor/evidence record. No real fixture has been promoted to accepted.
+
+**A5 preliminary finding:** A deterministic baseline counts independent groups and sums reciprocal published ranks; its A1 adapter includes only current matches from explicitly verified original, independent sources. Input snapshots can be replayed with the same scorer version. Real-source verification, richer uncertainty and ranking evaluation remain open.
+
+**A6 preliminary finding:** Synthetic TMDB responses and a small monthly planner exercise offer uncertainty, freshness and no-purchase/rental alternatives. Live provider behavior, terms, entitlement, integration and planner usefulness remain unverified; the planner is limited to small POC shortlists.
+
+**A6 provisional bridge:** The planner resolves internal scoring IDs through the stored film_index TMDB crosswalk and uses `independent-count-additive-v1`: one utility point per independent endorsement. This utility is uncalibrated and ignores rank and personal preference; plan-specific entitlement remains unvalidated. Full cross-issue integration remains in the local integration probe.
 
 ### Epic B — Explore source universe and provider quality
 
