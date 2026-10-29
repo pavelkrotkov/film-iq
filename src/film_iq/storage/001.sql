@@ -26,27 +26,37 @@ CREATE TABLE published_list (
     lineage TEXT NOT NULL, UNIQUE(source_id, edition), UNIQUE(id, source_id)
 );
 CREATE TABLE extraction_revision (
-    id TEXT NOT NULL PRIMARY KEY, source_id TEXT NOT NULL, document_id TEXT NOT NULL,
+    id TEXT NOT NULL PRIMARY KEY, source_id TEXT NOT NULL, list_id TEXT NOT NULL, document_id TEXT NOT NULL,
     run_id TEXT NOT NULL, extractor_version TEXT NOT NULL,
     validation_state TEXT NOT NULL, acceptance_state TEXT NOT NULL,
     FOREIGN KEY(document_id, source_id) REFERENCES source_document(id, source_id),
+    FOREIGN KEY(list_id, source_id) REFERENCES published_list(id, source_id),
     FOREIGN KEY(run_id, source_id) REFERENCES source_run(id, source_id),
-    UNIQUE(document_id, extractor_version), UNIQUE(id, source_id)
+    UNIQUE(list_id, document_id, extractor_version), UNIQUE(id, list_id, source_id),
+    UNIQUE(id, list_id, acceptance_state)
+);
+-- A list has at most one current accepted revision; older revisions remain intact.
+CREATE TABLE current_extraction (
+    list_id TEXT NOT NULL PRIMARY KEY REFERENCES published_list(id),
+    revision_id TEXT NOT NULL, acceptance_state TEXT NOT NULL DEFAULT 'accepted'
+        CHECK(acceptance_state = 'accepted'),
+    FOREIGN KEY(revision_id, list_id, acceptance_state)
+        REFERENCES extraction_revision(id, list_id, acceptance_state)
 );
 CREATE TABLE list_entry (
     id TEXT NOT NULL PRIMARY KEY, source_id TEXT NOT NULL, list_id TEXT NOT NULL,
-    entry_key TEXT NOT NULL, UNIQUE(list_id, entry_key), UNIQUE(id, source_id),
+    entry_key TEXT NOT NULL, UNIQUE(list_id, entry_key), UNIQUE(id, list_id, source_id),
     FOREIGN KEY(list_id, source_id) REFERENCES published_list(id, source_id)
 );
 CREATE TABLE entry_observation (
-    entry_id TEXT NOT NULL, source_id TEXT NOT NULL, revision_id TEXT NOT NULL,
+    entry_id TEXT NOT NULL, source_id TEXT NOT NULL, list_id TEXT NOT NULL, revision_id TEXT NOT NULL,
     raw_title TEXT NOT NULL CHECK(length(trim(raw_title)) > 0), raw_context TEXT NOT NULL,
     original_title TEXT, listed_year INTEGER, director TEXT, position INTEGER,
     rank INTEGER CHECK(rank IS NULL OR rank > 0), tie TEXT, locator TEXT NOT NULL,
     extraction_decision TEXT NOT NULL,
     PRIMARY KEY(entry_id, revision_id),
-    FOREIGN KEY(entry_id, source_id) REFERENCES list_entry(id, source_id),
-    FOREIGN KEY(revision_id, source_id) REFERENCES extraction_revision(id, source_id)
+    FOREIGN KEY(entry_id, list_id, source_id) REFERENCES list_entry(id, list_id, source_id),
+    FOREIGN KEY(revision_id, list_id, source_id) REFERENCES extraction_revision(id, list_id, source_id)
 );
 CREATE TABLE film_index (
     id INTEGER PRIMARY KEY, tmdb_id INTEGER UNIQUE, imdb_id TEXT UNIQUE, movary_id TEXT UNIQUE
