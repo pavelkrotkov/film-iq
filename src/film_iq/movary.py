@@ -35,10 +35,10 @@ class MovaryClient:
                 data = json.load(response)
             entries, last = _page(data, collection, page, maximum)
             results.extend(entries)
+            if not entries and (page > 1 or page < last):
+                raise ValueError("Empty advertised Movary page")
             if page >= last:
                 return results
-            if not entries:
-                raise ValueError("Empty intermediate Movary page")
             maximum = last
             page += 1
 
