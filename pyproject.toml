@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "film-iq"
+version = "0.1.0"
+description = "Evidence-driven film discovery and viewing-plan companion for Movary"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+authors = [{ name = "pavelkrotkov" }]
+dependencies = []
+
+[project.scripts]
+film-iq = "film_iq.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/film_iq"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+ignore = ["E501", "RUF001", "RUF002", "RUF003"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--strict-markers", "--strict-config"]
+
+[tool.coverage.run]
+branch = true
+source = ["film_iq"]
+
+[tool.coverage.report]
+show_missing = true
+
+[dependency-groups]
+dev = [
+    "pip-audit>=2.10.1",
+    "pre-commit>=4.6.2",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.15.14",
+    "ty>=0.0.87",
+]
+
