@@ -27,6 +27,9 @@ def save(db: sqlite3.Connection, evidence: list[Evidence], created_at: str) -> s
     for item in set(evidence):
         record = asdict(item)
         record["published"] = item.published.isoformat() if item.published else None
+        for field in ("source_id", "document_id", "locator"):
+            if record[field] is None:
+                del record[field]
         records.append(json.dumps(record, sort_keys=True, separators=(",", ":")))
     payload = "[" + ",".join(sorted(records)) + "]"
     snapshot_id = hashlib.sha256((VERSION + "\n" + payload).encode()).hexdigest()

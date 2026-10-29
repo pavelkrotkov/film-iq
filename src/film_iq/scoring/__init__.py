@@ -26,6 +26,9 @@ class Evidence:
     entry_id: str | None = None
     revision_id: str | None = None
     match_decision_id: str | None = None
+    source_id: str | None = None
+    document_id: str | None = None
+    locator: str | None = None
 
     def __post_init__(self) -> None:
         if self.rank is not None and self.rank < 1:
@@ -89,10 +92,17 @@ def _evidence_key(item: Evidence) -> tuple:
         item.eligibility,
         item.rank or 0,
         item.derivative_of,
-        (item.entry_id is not None, item.entry_id or ""),
-        (item.revision_id is not None, item.revision_id or ""),
-        (item.match_decision_id is not None, item.match_decision_id or ""),
+        _optional_key(item.entry_id),
+        _optional_key(item.revision_id),
+        _optional_key(item.match_decision_id),
+        _optional_key(item.source_id),
+        _optional_key(item.document_id),
+        _optional_key(item.locator),
     )
+
+
+def _optional_key(value: str | None) -> tuple[bool, str]:
+    return value is not None, value or ""
 
 
 def _rank_score(items: tuple[Evidence, ...]) -> Fraction | None:
