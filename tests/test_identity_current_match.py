@@ -19,15 +19,26 @@ def test_current_match_corrections_and_atomicity(evidence_db):
     corrected = review((accepted,), 2, "critic", "Checked")[1]
     second = save(db, "entry", "rev", corrected, first)
     assert current() == (second, 43)
+    _check_replay(db, accepted, first, current, (second, 43))
     unresolved = review((corrected,), None, "critic", "Uncertain")[1]
     third = save(db, "entry", "rev", unresolved, second)
     assert current() is None
+    _check_replay(db, accepted, first, current, None)
     assert load(db, third) == (unresolved, second)
     assert load(db, first) == (accepted, None)
     assert db.execute(
         "SELECT raw_title, raw_context, locator, raw_tmdb_id, raw_imdb_id FROM entry_observation"
     ).fetchone() == ("Unchanged title", "context", "#1", "001", "tt0000001")
     _check_atomicity(db, corrected, third, current)
+
+
+def _check_replay(db, accepted, first, current, expected):
+    from film_iq.identity import save
+
+    # A replay must preserve both the review outcome and the decision history.
+    assert save(db, "entry", "rev", accepted) == first
+    assert current() == expected
+    assert db.execute("SELECT count(*) FROM match_decision").fetchone() == (2 if expected else 3,)
 
 
 def _check_atomicity(db, corrected, third, current):

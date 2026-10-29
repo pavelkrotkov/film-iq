@@ -58,6 +58,9 @@ def save(
             "candidate_evidence": [asdict(candidate) for candidate in decision.candidate_evidence],
         }
     )
+    existing = _automatic_replay(db, entry_id, revision_id, film_id, decision, evidence, supersedes)
+    if existing is not None:
+        return existing
     if not db.in_transaction:
         db.execute("BEGIN")
     db.execute("SAVEPOINT identity_save")
@@ -72,6 +75,18 @@ def save(
     finally:
         db.execute("RELEASE identity_save")
     return decision_id
+
+
+def _automatic_replay(db, entry_id, revision_id, film_id, decision, evidence, supersedes):
+    if decision.reviewer is not None or supersedes is not None:
+        return None
+    row = db.execute(
+        "SELECT id FROM match_decision WHERE entry_id = ? AND revision_id = ? "
+        "AND film_id IS ? AND candidates = ? AND method = ? AND version = ? "
+        "AND reviewer IS NULL AND supersedes IS NULL ORDER BY rowid LIMIT 1",
+        (entry_id, revision_id, film_id, evidence, decision.method, decision.version),
+    ).fetchone()
+    return row[0] if row else None
 
 
 def _film_id(db: sqlite3.Connection, match: int | None) -> int | None:
