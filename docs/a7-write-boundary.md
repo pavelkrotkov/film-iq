@@ -3,19 +3,22 @@
 `sync_one` previews one identified recommendation by default. Execution requires
 both `execute=True` and explicit approval; it reads the movie and watchlist via
 an injected backend, adds the movie if absent, then adds the watchlist entry if
-absent. Failed reads propagate. The tests use only an in-memory stub; no network
-client or live write is provided. The backend must distinguish confirmed absence
-from failed or incomplete reads, map TMDB and Movary IDs correctly, and support
-authoritative reads after uncertain writes. Sequential retries are exercised;
-concurrent writers and eventual consistency are not established by these tests.
+absent. Failed reads propagate. The 0.82.1 backend accepts an injected HTTP
+transport, with authentication and response decoding supplied by its caller;
+tests use only stubs and no live write was performed. Invoke it through
+`sync_one`; direct backend writes also require explicit `approved=True`, and
+watchlist additions must match the ID confirmed by its selected movie lookup or
+addition. A failed lookup clears the previously confirmed ID.
 
-The installed instance's version and OpenAPI contract were not available for
-inspection. Before implementing an HTTP adapter, verify its movie lookup and
-TMDB addition and watchlist lookup and addition methods, paths, authentication,
-request and response schemas, pagination/completeness, duplicate behavior, and
-read-after-write behavior, including a lost response. The published
-[API site](https://api.movary.org/) did not expose a readable contract to this
-inspection. Do not infer a write endpoint from the separate A2 read client.
+The [pinned 0.82.1 OpenAPI contract](https://github.com/leepeuker/movary/blob/0.82.1/docs/openapi.json)
+documents the search, addition and paginated watchlist routes used here. Search
+is remote and title based: only an exact TMDB result with an explicit null
+Movary ID establishes absence; a missing result stops the sync. Pagination must
+be complete and consistent. Retrying after a lost response re-reads state; the
+stub tests this, but actual read-after-write consistency, duplicate behavior,
+concurrent changes and the installed instance's version are not verified.
+Confirm those properties on the target instance before use. No credentials or
+HTTP transport implementation are configured by this module.
 
 Gate A remains open: A1–A6 are not integrated, the source-to-offer path is
 synthetic, and the approved Movary round trip and its measurements are absent.

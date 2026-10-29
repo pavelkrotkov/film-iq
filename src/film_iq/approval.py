@@ -26,8 +26,8 @@ class WriteBackend(Protocol):
 
     def find_movie(self, tmdb_id: int) -> int | None: ...
     def on_watchlist(self, movie_id: int) -> bool: ...
-    def add_movie(self, tmdb_id: int) -> int: ...
-    def add_watchlist(self, movie_id: int) -> None: ...
+    def add_movie(self, tmdb_id: int, *, approved: bool = False) -> int: ...
+    def add_watchlist(self, movie_id: int, *, approved: bool = False) -> None: ...
 
 
 def sync_one(
@@ -43,8 +43,8 @@ def sync_one(
     tmdb_id = approved_movie(preview, approved=approved)
     movie_id = backend.find_movie(tmdb_id)
     if movie_id is None:
-        movie_id = backend.add_movie(tmdb_id)
+        movie_id = backend.add_movie(tmdb_id, approved=True)
     if backend.on_watchlist(movie_id):
         return "already on watchlist"
-    backend.add_watchlist(movie_id)
+    backend.add_watchlist(movie_id, approved=True)
     return "added to watchlist"
