@@ -19,6 +19,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     report.add_argument(
         "--inputs", type=Path, required=True, help="Catalog and provider snapshot JSON"
     )
+    report.add_argument("--format", choices=("markdown", "json"), default="markdown")
     args = parser.parse_args(argv)
     if args.command == "status":
         print("film-iq bootstrap: CI and plan present; POC features are not implemented")
@@ -30,11 +31,19 @@ def main(argv: Sequence[str] | None = None) -> int:
             inputs = json.loads(args.inputs.read_text())
             with sqlite3.connect(args.database.resolve().as_uri() + "?mode=ro", uri=True) as db:
                 output = build_report(db, inputs)
-            print(json.dumps(output, default=str, ensure_ascii=False, indent=2))
+            print(_render(output, args.format))
         except (OSError, ValueError, KeyError, TypeError, sqlite3.Error) as error:
             parser.error(str(error))
         return 0
     return 2
+
+
+def _render(output: dict, output_format: str) -> str:
+    if output_format == "json":
+        return json.dumps(output, default=str, ensure_ascii=False, indent=2)
+    from film_iq.report_render import markdown
+
+    return markdown(output)
 
 
 if __name__ == "__main__":

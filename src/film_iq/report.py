@@ -15,6 +15,8 @@ from film_iq.scoring.a1 import load_evidence
 
 def _film(db: sqlite3.Connection, result: Score, catalog: dict[str, Any]) -> Film:
     item = catalog[result.film_id]
+    if not isinstance(item, dict):
+        raise ValueError(f"catalog entry {result.film_id} must be an object")
     if not isinstance(item["title"], str) or not item["title"].strip():
         raise ValueError("catalog titles must be nonblank")
     if type(item["minutes"]) is not int or type(item["watched"]) is not bool:
@@ -46,11 +48,31 @@ def _price(offer: Offer, inputs: dict[str, Any]) -> int | None:
 
 
 def _validate_inputs(inputs: dict[str, Any]) -> None:
+    _validate_containers(inputs)
     values = [inputs[key] for key in ("max_minutes", "max_films", "budget_cents")]
     values.extend(inputs["current_services"])
     values.extend(inputs["service_prices_cents"].values())
     if any(type(value) is not int or value < 0 for value in values):
         raise ValueError("limits, provider IDs and service prices must be nonnegative integers")
+
+
+def _validate_containers(inputs: dict[str, Any]) -> None:
+    if not isinstance(inputs, dict):
+        raise ValueError("report inputs must be an object")
+    for key in ("catalog", "offers", "service_prices_cents", "rental_prices_cents"):
+        if not isinstance(inputs.get(key), dict):
+            raise ValueError(f"{key} must be an object")
+    for key in ("dates", "current_services"):
+        if not isinstance(inputs.get(key), list):
+            raise ValueError(f"{key} must be an array")
+
+
+def _catalog(db: sqlite3.Connection, results: tuple[Score, ...], inputs: dict) -> dict:
+    return {r.film_id: _film(db, r, inputs["catalog"]) for r in results if r.independent_count}
+
+
+def _crosswalk(catalog: dict[str, Film]) -> dict[str, int]:
+    return {key: film.id for key, film in catalog.items()}
 
 
 def _previews(plans: tuple[Plan, ...]) -> dict[str, list[str]]:
@@ -71,7 +93,8 @@ def build_report(db: sqlite3.Connection, inputs: dict[str, Any]) -> dict:
     """
     _validate_inputs(inputs)
     results = score(load_evidence(db))
-    films = [_film(db, result, inputs["catalog"]) for result in results if result.independent_count]
+    catalog = _catalog(db, results, inputs)
+    films = list(catalog.values())
     observations, access = _offers(films, inputs)
     plans = compare(
         films,
@@ -85,6 +108,7 @@ def build_report(db: sqlite3.Connection, inputs: dict[str, Any]) -> dict:
     )
     return {
         "mode": "dry-run",
+        "crosswalk": _crosswalk(catalog),
         "evidence": [asdict(result) for result in results],
         "offers": observations,
         "plans": [asdict(plan) for plan in plans],

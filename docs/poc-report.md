@@ -1,11 +1,13 @@
 # Dry-run POC report
 
 Run `uv run film-iq report --database path/to/evidence.db --inputs path/to/report-inputs.json`.
-The database is opened read-only. The command does not migrate, accept evidence,
+Markdown is the default; add `--format json` for machine-readable output. The
+database is opened read-only. The command does not migrate, accept evidence,
 change identities, fetch provider data or write to Movary. It emits JSON with
 source citations, rank and completeness context, excluded derivative evidence,
 US offer status and observation time, feasible plans, costs, assumptions and
-watchlist previews for each plan's selected films.
+watchlist previews for each plan's selected films. The explicit internal-film to
+TMDB crosswalk connects recommendations to their evidence without relying on array order.
 
 Inputs are authorized local snapshots, not proof of real-world availability or
 entitlement. Catalog keys are internal film IDs; provider payload keys are TMDB

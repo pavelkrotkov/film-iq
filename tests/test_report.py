@@ -40,7 +40,20 @@ def test_cli_report_is_read_only_with_citations(evidence_db, tmp_path, capsys):
     before = tuple(evidence_db.iterdump())
     path = tmp_path / "inputs.json"
     path.write_text(json.dumps(inputs()))
-    assert main(["report", "--database", str(tmp_path / "evidence.db"), "--inputs", str(path)]) == 0
+    assert (
+        main(
+            [
+                "report",
+                "--database",
+                str(tmp_path / "evidence.db"),
+                "--inputs",
+                str(path),
+                "--format",
+                "json",
+            ]
+        )
+        == 0
+    )
     result = json.loads(capsys.readouterr().out)
     assert (
         result["mode"] == "dry-run"
