@@ -109,7 +109,7 @@ Compare the smallest sufficient tool, including pure Python/SQLite loading again
 
 ### Measured extraction pilot
 
-Choose **30–40 diverse documents** across ranked tables, ties, partial/unranked ballots, translated titles, festival programs, spreadsheets, dynamic pages and unusual formats. Freeze manually audited expected observations and hold out pages/layouts not used to develop an adapter. Record precision/recall of source entries, correctness of rank/tie/category, completeness, hands-on correction minutes, runtime/API costs and recovery. A valid 47-object extraction of a 50-film source is a failed completeness result, not a pass.
+**Epic B owns** the independent **30–40-document extraction benchmark**, covering ranked tables, ties, partial/unranked ballots, translated titles, festival programs, spreadsheets, dynamic pages and unusual formats. Epic A's smaller POC fixtures may be shared into it when available but are not a prerequisite. Freeze manually audited expected observations and hold out pages/layouts not used to develop an adapter. Record precision/recall of source entries, correctness of rank/tie/category, completeness, hands-on correction minutes, runtime/API costs and recovery. A valid 47-object extraction of a 50-film source is a failed completeness result, not a pass.
 
 ## 5. Persistence and reproducibility
 
@@ -202,13 +202,21 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 
 ## 10. Delivery phases, outputs and decision gates
 
+### Two independent controllers and work handoffs
+
+- **Controller A** owns [Epic A / #1](https://github.com/pavelkrotkov/film-iq/issues/1), application schema and interfaces, source-adapter POC, Movary integration and Gate A. A1–A6 can start concurrently on isolated modules with stubs/fixtures; A7 can begin mocked integration immediately but **closes only after A1–A6 integrate**. A does not wait for B1/B3/B4/B7 results.
+- **Controller B** owns [Epic B / #2](https://github.com/pavelkrotkov/film-iq/issues/2), research/source benchmarks, data-rights evidence, and Gate B. B1–B7 can start concurrently from self-selected data and isolated research artifacts; B8 can start a living decision matrix but **closes only after B1–B7**. B does not wait for A1/A3/A4/A5 or A7.
+- **No cross-epic hard-blocking edges.** Preliminary source leads, fixtures, provider quality findings and score studies are shared asynchronously through issue comments or versioned research files. Each controller independently owns its GitHub branches/worktrees and avoids simultaneous edits to the other's shared code or documentation. Controller A owns production interfaces; Controller B supplies evidence, proposals and separately scoped benchmark outputs.
+- Within an issue, distinguish **starting independent work** from **finishing integration/empirical validation**. Real-data assertions and final closure can have legitimate dependencies even when scaffolding/prototypes do not. Do not allow zero worker utilization because a future integration dependency is open.
+- The [GitHub epic and child-issue descriptions](https://github.com/pavelkrotkov/film-iq/issues) are the detailed execution DAG; this plan remains the product/architecture reference.
+
 ### Epic A — POC: working vertical slice
 
 **Purpose:** prove the ownership boundary, extraction and identity contract, and one actionable recommendation with a minimal real dataset.
 
 1. Bootstrap repo, CI, tests, source registry schema and redistributable fixtures.
 2. Connect unmodified Movary, read watched and watchlist data, generate and import full ratings CSV, test deleted ratings and ID crosswalk, implement approved watchlist dry-run/round-trip.
-3. Audit 30–40 source pages; implement two to four contrasting adapters with complete rank/eligibility validation, accepted extraction revisions and review queue; benchmark minimal HTTP vs browser/grounded extraction and simple SQLite vs dlt where relevant.
+3. Independently select and audit 4–8 representative POC source pages; implement two to four contrasting deterministic adapters with complete rank/eligibility validation, accepted extraction revisions and review queue. Do not wait for Epic B's broader 30–40-page extraction-method benchmark or final source registry.
 4. Resolve sample entries to TMDB; show human-review flow for ambiguous matching.
 5. Produce a sourced critical shortlist, baseline TMDB US offers and a **small** “watch this month” report with an explicit plan/no-purchase option (not claimed optimal).
 6. Record measurements, unresolved gaps and an architecture gate review; no required upstream Movary changes.
@@ -217,11 +225,11 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 
 ### Epic B — Explore source universe and provider quality
 
-May begin in parallel with POC; findings inform implementation choices.
+Runs in parallel with POC under its own controller; B1–B7 may all begin independently using their own representative sources, synthetic inputs or benchmark fixtures. B8 can maintain a living draft immediately but finalizes Gate B only after the relevant B1–B7 evidence. No issue in Epic B has a hard start or completion dependency on Epic A.
 
 1. Make a source registry and source-family/eligibility map, including independent critics, polls, TSPDT lineage, international and specialty formats.
 2. Build audited historical backfill samples for 2010–2019 and 2020–2026; measure metadata coverage and manual-review burden, including shorts and translation aliases.
-3. Benchmark extraction options on held-out pages; compare selective OSS module reuse (Kometa/letterboxdpy, GoodWatch and other relevant analogs), rights and maintenance cost.
+3. Own and benchmark the 30–40-page extraction cohort with held-out pages, independently of A3; compare selective OSS module reuse (Kometa/letterboxdpy, GoodWatch and other relevant analogs), rights and maintenance cost.
 4. Benchmark 60 films × three dates × six strata against TMDB/JustWatch, Movie of the Night, relevant MDBList feeds and first-party verification; test ad-tier entitlement, long-tail sources, quotas and history rights.
 5. Compare public score baselines and derivative-source sensitivity, not just subjective agreement with a source used in training.
 6. Publish evidence and decision records: adopted dependencies and APIs, source priorities, permissions and unresolved issues.
@@ -229,6 +237,8 @@ May begin in parallel with POC; findings inform implementation choices.
 **Gate B:** explicit evidence supporting initial source adapters, providers, extraction techniques and scoring approach; publish open questions when evidence is insufficient. This epic is *research work*, not a mandate to integrate every candidate service.
 
 ### Epic C — Final implementation, conditional on gates
+
+Epic C components may start as their **specific** POC or research prerequisites become available; do not force every component to wait for both whole epics to close. Final release still requires accepted relevant Gate A/Gate B evidence and production acceptance criteria.
 
 1. Extend normalized schema, migrations, durable acquisition jobs and event ledger after A/B validate required facts and retention.
 2. Scale historical evidence ingestion (2010–2026 and prior retrospective appearances), health monitoring and review workflow.
