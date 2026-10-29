@@ -120,6 +120,30 @@ describes its index as an amalgamation of lists and ballots; its separate 2025
 year-end table names several contributing publications. Agreement with such an
 aggregate is not independent validation of inputs drawn from those sources.
 
+## Unmeasured holdout lead
+
+One proposed, narrow candidate universe is the five European Film nominees in
+the [2023 European Film Academy announcement](https://www.europeanfilmacademy.org/press/main-categories-nominees-for-the-european-film-awards-2023/).
+A possible source-family split would train on named individual critics from
+other publications and hold out [Cineuropa's 2023 individual ballots](https://cineuropa.org/en/newsdetail/453794/),
+excluding any person present on both sides. Eligibility and release windows
+must be reconciled first; five award nominees cannot establish broad discovery
+or geographic stability. This is a retrospective proposal, not a frozen
+historical experiment or a measured holdout.
+
+Cineuropa's [terms](https://cineuropa.org/en/aboutterms/) reserve rights and
+prohibit unauthorized copying or reproduction; permission for the intended
+retention and publication of ballot-derived records is unresolved. The
+examined Wikipedia pages for [Anatomy of a Fall](https://en.wikipedia.org/wiki/Anatomy_of_a_Fall)
+and [Green Border](https://en.wikipedia.org/wiki/Green_Border) do not supply
+the individual Cineuropa poll selections needed for this split. Wikipedia's
+license does not grant rights to the original publisher's pages. A separate
+[BFI poll repository](https://github.com/ianrmcdonald/bfi_poll) describes
+scraped ballots but presents no visible data license; neither its presence nor
+republication establishes permission or makes BFI-derived votes independent.
+No ballots were retained or scored. Lack of a recorded selection is unknown,
+not a negative observation.
+
 ## Protocol for real evaluation
 
 1. Obtain permission for original-source observations and retention; select a
