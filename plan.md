@@ -223,6 +223,10 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 
 **Gate A:** a reproducible source→film→score→US offer→recommendation→approved Movary write trace; complete rated-only films; no silent truncation, duplicate observations, unapproved writes or false removal claims. Document actual time/cost/error metrics. POC is not the finished discovery backfill or calibrated recommender.
 
+**A7 preliminary finding:** A dry-run and explicit-approval boundary exercises sequential retries against a stub using the published Movary 0.82.1 route contract. The target instance's version and live write semantics remain unverified; no live round trip is claimed. Gate A requires integrated A1–A6 results and explicit authorization for any live write.
+
+**A7 CLI implementation:** The report command opens accepted evidence read-only and renders Markdown or JSON with an explicit identity crosswalk, original/excluded evidence, provider links, freshness, tentative entitlement, plan assumptions and selected-film previews. The sync command defaults to an offline preview; live execution requires both execution/approval flags and local environment configuration. HTTP and CLI paths are mock-tested; no live write has been attempted.
+
 **A2 preliminary finding:** Synthetic fixtures exercise paginated reads and replacement of a ratings CSV, including rated-only films and removed ratings. The installed Movary version, live export, and completeness of an upstream successful export have not been verified.
 
 **A1 preliminary finding:** The SQLite schema records source rights, list-linked extraction revisions, review decisions and source-supplied external IDs; migration and restore fixtures pass on patched SQLite. Independence and lineage verification default to unknown, and current accepted matches are explicit. Real-source rights and downstream integration remain unverified. IDs supplied by a source remain distinct from resolved film identifiers.
@@ -328,4 +332,62 @@ year labels remain unresolved. Independent automated audit is valid within its
 stated scope; no human-only gate applies. Explicit acceptance has not been recorded.
 No Gate A completion claimed.
 
-**Issue #8 uncertainty followup finding (ADR 0006):** Baseline scores explicitly expose extraction, identity and evidence/disagreement uncertainty as `not_evaluated`, and personal-prediction uncertainty as `not_applicable` without a personal model. Accepted extraction/match status does not imply calibrated reliability, and endorsement/rank totals do not establish disagreement. These fixed defaults serialize with the score and replay from both existing and new v1 input snapshots; input hashes and numeric ranking remain unchanged. Markdown/JSON report presentation awaits integration with PR #32. No live accuracy, calibration or personal-prediction validation is claimed.
+**Issue #8 uncertainty followup finding (ADR 0006):** Baseline scores explicitly expose extraction, identity and evidence/disagreement uncertainty as `not_evaluated`, and personal-prediction uncertainty as `not_applicable` without a personal model. Accepted extraction/match status does not imply calibrated reliability, and endorsement/rank totals do not establish disagreement. These fixed defaults serialize with the score and replay from both existing and new v1 input snapshots; input hashes and numeric ranking remain unchanged. The merged PR #32 report now exposes these states in Markdown and JSON. No live accuracy, calibration or personal-prediction validation is claimed.
+
+
+### Epic A integration and merge findings (2026-10-29)
+
+Implementation PRs #29 (schema), #30 (Movary reads/ratings), #28 (scoring),
+#31 (offers/planning), #34 (identity) and #33 (captured-page extraction) have merged
+with green CI and resolved review threads. A7 (#32) integrates these modules into
+read-only Markdown/JSON reports and a one-selection, explicit-approval sync CLI.
+The source and identity issues remain open for their empirical acceptance gaps.
+
+The combined A7 tree passes 291 tests with one opt-in live test skipped; Ruff,
+formatting and ty pass. Radon 6.0.1 over all 107 source/test
+Python files reports maximum CC 8 and minimum MI 50.025. A duplicated identity-test
+setup and callback were simplified to meet the all-files maintainability target;
+no production identity behavior was changed. The complete synthetic public-API test now connects persisted extraction, explicit audit, reviewed identity, score, offer, feasible plan, default preview and approved stub write; an unchanged rerun preserves evidence and watchlist state. No new runtime dependency was added.
+
+GPT-6.1 Sol High reviewers posted findings and follow-up reviews on the PRs.
+Agreed defects received regression checks, replies and resolved threads. Native
+nested parallel agents were unavailable in those review sessions, so their
+standards/spec axes were reviewed separately; this is a workflow limitation,
+not a claim that the requested nested parallel review ran. No external CI bot
+review arrived; all available review conversations were examined.
+
+Gate A is **not accepted**. Remaining evidence includes a redistributable genuine
+partial individual-assessment fixture (#6), independently audited TMDB truth and
+nonzero scored held-out cases (#7), and target Movary version/export/live semantics
+and a real source-to-offer trace (#5/#9/#10). The current five-case identity run
+has zero scored cases; unknown truth is not an accuracy result. The actual Movary
+instance and authorized local configuration have been requested. No live account
+call or watchlist write has occurred. Any selected live write still requires its
+preview and explicit approval; merging code does not authorize it. Epic B research
+and provisional ADR decisions remain independent.
+
+
+A separate acceptance audit confirms #4 is complete and it is now closed. The
+same audit found that #8 still needs explicit, separate extraction, identity,
+evidence/disagreement and prediction uncertainty states under ADR 0006. A small
+follow-up is being implemented; no calibration or prediction confidence is claimed.
+
+
+### Epic A final implementation reconciliation (2026-10-29)
+
+All seven original implementation PRs (#28–#34) are merged. #4 (schema), #5
+(Movary reads/export) and #9 (offers/planning with integrated A7 evidence) satisfy
+their implementation acceptance criteria and are closed. Their live behavior is
+still unverified; closing code issues does not accept Gate A. #8 has a small
+follow-up PR #43 for the explicit uncertainty states above. #6, #7 and #10 retain
+the documented fixture-rights, identity-measurement and real demonstration gates.
+
+The final PR #32 head received separate **parallel** GPT-6.1 Sol High Standards
+and Spec reviews, both clean; prior reviews' nested-agent limitation does not
+apply to this final pair. All review threads were resolved and CI was green.
+The user's root skill/configuration changes and Epic B worktrees/PRs were preserved.
+
+The #43 integrated tree passes 292 tests with one opt-in live skip (2.04 seconds
+locally), Ruff/format/ty and diff checks. All 107 source/test Python files retain
+maximum CC 8 and minimum MI 50.025. Legacy v1 snapshot input IDs and numeric
+results replay unchanged; new uncertainty fields remain explicitly unmeasured.
