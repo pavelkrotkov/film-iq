@@ -15,7 +15,7 @@ from film_iq.ingest.persist_checks import (
     _ensure_source,
     _key,
 )
-from film_iq.ingest.persist_entries import _store_entries
+from film_iq.ingest.persist_entries import _observations, _store_entries
 
 
 @contextmanager
@@ -49,6 +49,7 @@ def persist(
     doc_id = _key(policy.id, extraction.source_url, extraction.content_sha256)
     revision_id = _key(list_id, doc_id, extraction.parser_revision)
     run_id = _key(revision_id, "run")
+    observations = _observations(extraction, policy, list_id, revision_id, run_id)
     original = getattr(extraction, "original_url", extraction.source_url)
     reason = getattr(extraction, "review_reason", "Manual transcription requires independent audit")
     rank_semantics = (
@@ -130,5 +131,5 @@ def persist(
                 reason,
             ),
         )
-        _store_entries(db, extraction, policy, list_id, revision_id)
+        _store_entries(db, observations)
     return revision_id
