@@ -40,7 +40,11 @@ def extract(section: bytes) -> Extraction:
     lines = section.decode("utf-8").splitlines()[3:]
     entries = tuple(
         Entry(
-            match.group(1).split("|")[-1], line, index, 1 if index == 1 else None, f"line {index + 3}"
+            match.group(1).split("|")[-1],
+            line,
+            index,
+            1 if index == 1 else None,
+            f"line {index + 3}",
         )
         for index, line in enumerate(lines, 1)
         if (match := re.search(r"\[\[([^\]]+)\]\]", line))
