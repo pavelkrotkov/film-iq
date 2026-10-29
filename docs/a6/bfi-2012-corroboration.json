@@ -1,0 +1,91 @@
+{
+  "checked_at": "2026-10-29T22:17:47.443719+00:00",
+  "reviewer_kind": "automated",
+  "reviewer_role": "implementing agent, not the separate derivative-page auditor",
+  "url": "https://www.bfi.org.uk/sight-and-sound/polls/greatest-films-all-time/directors-100-best",
+  "http_status": 200,
+  "response_bytes": 654194,
+  "response_sha256": "add59ba5a2ce848e31e25ac0592081c8e0e16358f7c3c92cb7d0693eb2efb28e",
+  "raw_retained": false,
+  "method": "Fetched into memory; removed script/style blocks and HTML tags for inspection. Compared visible Directors’ top 100 titles, explicit rank labels and vote totals against all ten independently enumerated Wikipedia records. No restricted raw HTML or criticism retained.",
+  "facts": [
+    {
+      "position": 1,
+      "title": "Tokyo Story",
+      "rank": 1,
+      "tie": null,
+      "votes": 48
+    },
+    {
+      "position": 2,
+      "title": "2001: A Space Odyssey",
+      "rank": 2,
+      "tie": "rank-2",
+      "votes": 42
+    },
+    {
+      "position": 3,
+      "title": "Citizen Kane",
+      "rank": 2,
+      "tie": "rank-2",
+      "votes": 42
+    },
+    {
+      "position": 4,
+      "title": "8½",
+      "rank": 4,
+      "tie": null,
+      "votes": 40
+    },
+    {
+      "position": 5,
+      "title": "Taxi Driver",
+      "rank": 5,
+      "tie": null,
+      "votes": 34
+    },
+    {
+      "position": 6,
+      "title": "Apocalypse Now",
+      "rank": 6,
+      "tie": null,
+      "votes": 33
+    },
+    {
+      "position": 7,
+      "title": "The Godfather",
+      "rank": 7,
+      "tie": "rank-7",
+      "votes": 31
+    },
+    {
+      "position": 8,
+      "title": "Vertigo",
+      "rank": 7,
+      "tie": "rank-7",
+      "votes": 31
+    },
+    {
+      "position": 9,
+      "title": "Mirror",
+      "rank": 9,
+      "tie": null,
+      "votes": 30
+    },
+    {
+      "position": 10,
+      "title": "Bicycle Thieves",
+      "rank": 10,
+      "tie": null,
+      "votes": 29
+    }
+  ],
+  "result": "All ten title/position/rank/tie records corroborated against upstream BFI HTML. Vote totals also agree with the captured 2012 wikitext.",
+  "metadata_limits": [
+    "BFI director/year line for Mirror says 1974 while its image caption says 1975.",
+    "BFI director/year line for Bicycle Thieves says 1949 while its image caption says 1948.",
+    "Years were not silently normalized; no film-identity or full-ballot validation claimed."
+  ],
+  "rights_limits": "HTTP access and factual corroboration do not license copying BFI page bodies, criticism or images. Only factual audit records and acquisition metadata are retained.",
+  "independence_limits": "This is upstream corroboration by the implementing agent. The separate rendered-page oracle remains the independent automated audit of derivative captures; do not describe this follow-up as its work."
+}

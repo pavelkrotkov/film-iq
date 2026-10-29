@@ -1,0 +1,150 @@
+[
+  {
+    "key": "nbr-2022",
+    "title": "National Board of Review Awards 2022",
+    "revision": 1269459635,
+    "section": "1",
+    "capture": {
+      "file": "nbr-2022.json",
+      "requested_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1269459635&prop=wikitext&section=1&format=json",
+      "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1269459635&prop=wikitext&section=1&format=json",
+      "http_status": 200,
+      "accessed_at": "2026-10-29T22:07:22.813821+00:00",
+      "bytes": 572,
+      "sha256": "a8113a002fc2a3298ca208a0faf5e407c80c0732eb3ada5ce9ae6dd783ad53de"
+    },
+    "revision_evidence": {
+      "file": "nbr-2022.revision.json",
+      "requested_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&revids=1269459635&format=json",
+      "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&revids=1269459635&format=json",
+      "http_status": 200,
+      "accessed_at": "2026-10-29T22:07:23.073137+00:00",
+      "bytes": 217,
+      "sha256": "b152f70545d12261d9509238938e296090aa0c8002a0fdf72ac44bad81929fba"
+    },
+    "rendered_evidence": {
+      "file": "nbr-2022.rendered.json",
+      "requested_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1269459635&prop=text&section=1&format=json",
+      "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1269459635&prop=text&section=1&format=json",
+      "http_status": 200,
+      "accessed_at": "2026-10-29T22:07:23.350402+00:00",
+      "bytes": 2610,
+      "sha256": "28e499d3cd71dfdcac929f06b9707c4d7ea4e77b1bc7be8e366b51d608046db9"
+    },
+    "license": {
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
+      "text": "Creative Commons Attribution-Share Alike 4.0"
+    }
+  },
+  {
+    "key": "nbr-2023",
+    "title": "National Board of Review Awards 2023",
+    "revision": 1370562803,
+    "section": "1",
+    "capture": {
+      "file": "nbr-2023.json",
+      "requested_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1370562803&prop=wikitext&section=1&format=json",
+      "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1370562803&prop=wikitext&section=1&format=json",
+      "http_status": 200,
+      "accessed_at": "2026-10-29T22:07:23.649206+00:00",
+      "bytes": 596,
+      "sha256": "a1229f15e48d10bd44ec31efeeaea76ac27bbaf755087f015db474cd9850d7f2"
+    },
+    "revision_evidence": {
+      "file": "nbr-2023.revision.json",
+      "requested_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&revids=1370562803&format=json",
+      "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&revids=1370562803&format=json",
+      "http_status": 200,
+      "accessed_at": "2026-10-29T22:07:23.997526+00:00",
+      "bytes": 217,
+      "sha256": "0f5655a2a33a025bec9c9fc931aa11d67211f066cae4634fffc79f903df6dc11"
+    },
+    "rendered_evidence": {
+      "file": "nbr-2023.rendered.json",
+      "requested_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1370562803&prop=text&section=1&format=json",
+      "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1370562803&prop=text&section=1&format=json",
+      "http_status": 200,
+      "accessed_at": "2026-10-29T22:07:24.232291+00:00",
+      "bytes": 2462,
+      "sha256": "71ede750ea5c915d17e62a9b1d1e65073e51b8a57c4449d1656c1dff1e9c78da"
+    },
+    "license": {
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
+      "text": "Creative Commons Attribution-Share Alike 4.0"
+    }
+  },
+  {
+    "key": "sight-sound-2012",
+    "title": "The Sight & Sound Greatest Films of All Time 2012",
+    "revision": 1196879962,
+    "section": "3",
+    "capture": {
+      "file": "sight-sound-2012.json",
+      "requested_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1196879962&prop=wikitext&section=3&format=json",
+      "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1196879962&prop=wikitext&section=3&format=json",
+      "http_status": 200,
+      "accessed_at": "2026-10-29T22:07:24.711675+00:00",
+      "bytes": 1782,
+      "sha256": "c8f9e3e60b622d7805a62324d206f47d916b1996ef950bd2dfdaab4c0d41e8ee"
+    },
+    "revision_evidence": {
+      "file": "sight-sound-2012.revision.json",
+      "requested_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&revids=1196879962&format=json",
+      "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&revids=1196879962&format=json",
+      "http_status": 200,
+      "accessed_at": "2026-10-29T22:07:24.924351+00:00",
+      "bytes": 230,
+      "sha256": "b795e2cf7da11778261a6674e9a4495afab993cde30ed6d77cabda9ba7f3d749"
+    },
+    "rendered_evidence": {
+      "file": "sight-sound-2012.rendered.json",
+      "requested_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1196879962&prop=text&section=3&format=json",
+      "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1196879962&prop=text&section=3&format=json",
+      "http_status": 200,
+      "accessed_at": "2026-10-29T22:07:25.302580+00:00",
+      "bytes": 9799,
+      "sha256": "f67d3ec6ff6d37b81380401ea4ac7887a7819a873b9790124a9455c7a0ff9b2b"
+    },
+    "license": {
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
+      "text": "Creative Commons Attribution-Share Alike 4.0"
+    }
+  },
+  {
+    "key": "sight-sound-2022",
+    "title": "The Sight and Sound Greatest Films of All Time 2022",
+    "revision": 1332699136,
+    "section": "2",
+    "capture": {
+      "file": "sight-sound-2022.json",
+      "requested_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1332699136&prop=wikitext&section=2&format=json",
+      "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1332699136&prop=wikitext&section=2&format=json",
+      "http_status": 200,
+      "accessed_at": "2026-10-29T22:07:25.706516+00:00",
+      "bytes": 1680,
+      "sha256": "664b739c737878b6fc5221faa25c93626765a8ddb6a9ff62433b956d478f936b"
+    },
+    "revision_evidence": {
+      "file": "sight-sound-2022.revision.json",
+      "requested_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&revids=1332699136&format=json",
+      "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&revids=1332699136&format=json",
+      "http_status": 200,
+      "accessed_at": "2026-10-29T22:07:25.922668+00:00",
+      "bytes": 232,
+      "sha256": "27197629e96004c29f2a94ab6441102fe901400acb069e0c5e0b18578f83072b"
+    },
+    "rendered_evidence": {
+      "file": "sight-sound-2022.rendered.json",
+      "requested_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1332699136&prop=text&section=2&format=json",
+      "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1332699136&prop=text&section=2&format=json",
+      "http_status": 200,
+      "accessed_at": "2026-10-29T22:07:26.399375+00:00",
+      "bytes": 9282,
+      "sha256": "dc18ed18ce426b3e9dba541cc74b7acb182c2a3f31deee1d4ca29622b5c1f44f"
+    },
+    "license": {
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
+      "text": "Creative Commons Attribution-Share Alike 4.0"
+    }
+  }
+]

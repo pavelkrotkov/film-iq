@@ -37,6 +37,9 @@ def test_version_four_rejects_invalid_supersession_atomically(evidence_db):
     )
     db.execute("DROP TRIGGER match_supersedes_insert")
     db.execute("DROP TRIGGER match_supersedes_update")
+    db.execute("DROP TABLE extraction_audit")
+    db.execute("DROP TABLE extraction_fingerprint")
+    db.execute("DROP TABLE extraction_detail")
     db.execute("PRAGMA user_version = 4")
     db.execute(
         "INSERT INTO match_decision (id, entry_id, revision_id, candidates, method, version, decision, decided_at) VALUES ('old', 'entry', 'rev', '[]', 'manual', 'v1', 'accepted', 'now')"
