@@ -227,6 +227,8 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 
 **A4 preliminary finding:** Synthetic identity decisions and manual corrections persist against the A1 schema with links to extraction revisions. Held-out specialty-film precision, coverage and review rate remain unmeasured; the matching fixtures do not establish real-world accuracy.
 
+**A4 evaluation blocker:** No authorized TMDB candidate set and independently audited truth were available. Two short-film leads and the held-out protocol are recorded in `docs/identity-held-out-plan.md`; a source year disagreement remains unresolved, and no precision claim is made.
+
 ### Epic B — Explore source universe and provider quality
 
 Runs in parallel with POC under its own controller; B1–B7 may all begin independently using their own representative sources, synthetic inputs or benchmark fixtures. B8 can maintain a living draft immediately but finalizes Gate B only after the relevant B1–B7 evidence. No issue in Epic B has a hard start or completion dependency on Epic A.
