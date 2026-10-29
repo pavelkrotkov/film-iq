@@ -2,7 +2,7 @@
 
 **Version:** 0.1, preliminary. **Date:** 2026-10-29 UTC. **Issue:** [#13](https://github.com/pavelkrotkov/film-iq/issues/13). **Context:** [plan §4](../../../plan.md), [ADR 0005](../../adr/0005-extraction-choice.md), [ADR 0012](../../adr/0012-empirical-gates.md).
 
-No real document has been audited for the benchmark, and no browser, LLM, HTTP extractor or real-source dlt comparison has been run. The candidates below are leads only; they are not a frozen gold set or authorization to acquire, store or redistribute source material. No source bodies are included here.
+One public-domain Library of Congress page has been checked against an agent-transcribed list; it has not received an independent human audit. No 30–40-document audited corpus, browser, LLM or real-source dlt comparison has been completed. The other candidates below are leads only; they are not a frozen gold set or authorization to acquire, store or redistribute source material. No source bodies are included here.
 
 BFI and Cannes URLs are recorded as identifiers rather than active links while their stated linking conditions are reviewed; this is not a legal opinion.
 
@@ -21,6 +21,23 @@ The four standard-library checks use entirely fictional observations. One remove
 The SQLite check loads two fictional rows, repeats an unchanged upsert with zero additional `total_changes`, injects a constraint failure after a changed row and verifies rollback, then retries the correction. This is an in-memory transactional error check, not a process-crash, persisted restart or source recovery benchmark.
 
 The four checks passed locally on 2026-10-29. This smoke test is not representative extraction performance or a comparison of tools. No model/API calls or manual corrections were made by the test.
+
+## One real-source HTTP check
+
+The [Library of Congress public-domain film selection](https://www.loc.gov/free-to-use/public-domain-films-from-the-national-film-registry/) displays 18 items. This is an unranked curated subset, not a complete annual 25-film registry list or an independent critic poll. Its 18 displayed titles were transcribed by the agent from the published page before implementing the parser; they still need an independent human audit. The fixture stores only titles, source URL and revision hash, not the page body or images. The Library's [rights guidance](https://www.loc.gov/legal/security-copyright-and-privacy/understanding-copyright/) distinguishes government works from third-party collection material; do not infer rights for other sources or images from this example.
+
+At `2026-10-29T22:29:41Z`, one HTTP request returned status 200 with a cache-age header of 38,912 seconds. Its SHA-256 was `bd31639eda15cbf1e212bd96d542acd54e880d24b56eedc19b807986c7ae8f7a`. The source-specific standard-library parser returned **18 of 18** transcribed titles: entry precision and recall were both 100%, completeness passed, and display order matched. The list is unranked, so rank/tie accuracy is not applicable. One request and parsing took 0.173 seconds; manual transcription and review time were not measured. These results describe only this revision and page, not held-out performance or general extraction quality.
+
+The offline tests check the selector, entity decoding, incomplete extraction and revision mismatch. To repeat the live check from the worktree root:
+
+```sh
+mkdir -p .cache/tmp .cache/uv
+UV_CACHE_DIR="$PWD/.cache/uv" TMPDIR="$PWD/.cache/tmp" UV_PYTHON_DOWNLOADS=never \
+  uv run --no-project --no-config --offline --python python3.12 \
+    python -m docs.research.extraction.loc_baseline
+```
+
+A failed request or changed document hash exits as **unknown**, requiring a new audit rather than a negative result. The Library's [robots.txt](https://www.loc.gov/robots.txt) asks general crawlers to leave at least five seconds between requests.
 
 ## Synthetic SQLite and dlt comparison
 

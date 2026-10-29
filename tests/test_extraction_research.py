@@ -7,7 +7,13 @@ from pathlib import Path
 
 def test_research_checks() -> None:
     subprocess.run(
-        [sys.executable, "-m", "unittest", "docs.research.extraction.test_benchmark"],
+        [
+            sys.executable,
+            "-m",
+            "unittest",
+            "docs.research.extraction.test_benchmark",
+            "docs.research.extraction.test_loc_baseline",
+        ],
         cwd=Path(__file__).resolve().parent.parent,
         check=True,
     )
