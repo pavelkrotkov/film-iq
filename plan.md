@@ -223,7 +223,7 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 
 **Gate A:** a reproducible source→film→score→US offer→recommendation→approved Movary write trace; complete rated-only films; no silent truncation, duplicate observations, unapproved writes or false removal claims. Document actual time/cost/error metrics. POC is not the finished discovery backfill or calibrated recommender.
 
-**A7 preliminary finding:** A synthetic dry-run and approval scaffold exercises a simulated retry. It is not a live Movary integration or evidence that Gate A has passed; that gate requires integrated A1–A6 results and explicit authorization for any live write.
+**A7 preliminary finding:** A dry-run and explicit-approval boundary exercises sequential retries against a stub. The installed Movary write routes and semantics are unverified, so no HTTP write adapter or live round trip is claimed. Gate A requires integrated A1–A6 results and explicit authorization for any live write.
 
 ### Epic B — Explore source universe and provider quality
 
