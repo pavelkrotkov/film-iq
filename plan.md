@@ -229,6 +229,10 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 
 **A5 preliminary finding:** A deterministic baseline counts independent groups and sums reciprocal published ranks; its A1 adapter includes only current matches from explicitly verified original, independent sources. Input snapshots can be replayed with the same scorer version. Real-source verification, richer uncertainty and ranking evaluation remain open.
 
+**A6 preliminary finding:** Synthetic TMDB responses and a small monthly planner exercise offer uncertainty, freshness and no-purchase/rental alternatives. Live provider behavior, terms, entitlement, integration and planner usefulness remain unverified; the planner is limited to small POC shortlists.
+
+**A6 provisional bridge:** The planner resolves internal scoring IDs through the stored film_index TMDB crosswalk and uses `independent-count-additive-v1`: one utility point per independent endorsement. This utility is uncalibrated and ignores rank and personal preference; plan-specific entitlement remains unvalidated. Full cross-issue integration remains in the local integration probe.
+
 ### Epic B — Explore source universe and provider quality
 
 Runs in parallel with POC under its own controller; B1–B7 may all begin independently using their own representative sources, synthetic inputs or benchmark fixtures. B8 can maintain a living draft immediately but finalizes Gate B only after the relevant B1–B7 evidence. No issue in Epic B has a hard start or completion dependency on Epic A.
