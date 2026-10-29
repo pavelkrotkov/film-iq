@@ -36,6 +36,21 @@ uv run film-iq --version
 
 CI validates lint, formatting, types, tests, GitHub workflows and dependencies. External API keys are not required for the seeded smoke tests. Future integration tests must use opt-in credentials and redistributable fixtures.
 
+### Opt-in Movary integration
+
+For an authorized test account, set `MOVARY_INTEGRATION=1`, `MOVARY_URL`,
+`MOVARY_USERNAME`, and `MOVARY_TOKEN`. Set `MOVARY_VERSION_COMMAND` to a JSON
+array of arguments for a command that prints the installed version, and
+`MOVARY_EXPECTED_VERSION` to its exact expected stdout. Set `MOVARY_EXPORT_COMMAND`
+to a JSON argument array ending with `user:export:ratings` and the user ID;
+the test appends the export filename. Set `MOVARY_RATED_ONLY_TMDB_ID` to a
+known rated film with no played entry in that account. Set `MOVARY_SNAPSHOT_DIR`
+to a private existing directory visible at the same path to the export command.
+Then run `uv run pytest -s tests/test_movary_integration.py::test_live_movary`. The test
+creates and removes a temporary snapshot there. Commands run without a shell;
+wrappers must expose the installed version and make the export path visible.
+This check requires real credentials and has not yet been verified live.
+
 ## SQLite migration and recovery
 
 Before migrating an existing database, stop writers and use SQLite's online backup API
