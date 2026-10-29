@@ -25,6 +25,12 @@ def test_registry_selection(year: int, first: str, last: str) -> None:
     assert [entry.position for entry in result.entries] == list(range(1, 26))
     assert all(entry.rank is None for entry in result.entries)
     assert result.entries[0].locator == "transcription line 1"
+
+
+@pytest.mark.parametrize("year", [2020, 2022, 2025])
+def test_registry_provenance_and_invalid_transcriptions(year: int) -> None:
+    data = (FIXTURES / f"{year}.txt").read_bytes()
+    result = extract(year, data)
     assert "unknown" in result.ballot_completeness
     assert "primary" in result.lineage
     with pytest.raises(ValueError, match="review required"):
