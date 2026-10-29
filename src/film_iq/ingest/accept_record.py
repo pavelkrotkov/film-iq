@@ -36,6 +36,10 @@ def record_acceptance(
         (revision_id,),
     )
     db.execute(
+        "UPDATE entry_observation SET extraction_decision='accepted' WHERE revision_id=?",
+        (revision_id,),
+    )
+    db.execute(
         "INSERT INTO current_extraction (list_id, revision_id) VALUES (?,?) "
         "ON CONFLICT(list_id) DO UPDATE SET revision_id=excluded.revision_id",
         (list_id, revision_id),

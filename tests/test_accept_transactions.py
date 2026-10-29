@@ -19,5 +19,8 @@ def test_promotion_failure_rolls_back_and_preserves_caller_transaction(evidence_
     ).fetchone() == ("pending",)
     assert db.execute("SELECT count(*) FROM extraction_audit").fetchone() == (0,)
     assert db.execute("SELECT revision_id FROM current_extraction").fetchone() == ("rev",)
+    assert db.execute(
+        "SELECT extraction_decision FROM entry_observation WHERE revision_id='new'"
+    ).fetchall() == [("pending",)]
     db.rollback()
     assert db.execute("SELECT count(*) FROM extraction_revision WHERE id='new'").fetchone() == (0,)

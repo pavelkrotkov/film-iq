@@ -239,6 +239,8 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 
 **A6 provisional bridge:** The planner resolves internal scoring IDs through the stored film_index TMDB crosswalk and uses `independent-count-additive-v1`: one utility point per independent endorsement. This utility is uncalibrated and ignores rank and personal preference; plan-specific entitlement remains unvalidated. Full cross-issue integration remains in the local integration probe.
 
+**A3 partial-ballot follow-up:** A real incomplete individual assessment was located in Film Comment's 2022 Gina Telaroli ballot, but permission to redistribute a captured fixture remains unverified. No copy was retained. `docs/a6/partial-ballot-lead.md` distinguishes incomplete viewing from editorial truncation and records the remaining narrow fixture gap.
+
 ### Epic B — Explore source universe and provider quality
 
 Runs in parallel with POC under its own controller; B1–B7 may all begin independently using their own representative sources, synthetic inputs or benchmark fixtures. B8 can maintain a living draft immediately but finalizes Gate B only after the relevant B1–B7 evidence. No issue in Epic B has a hard start or completion dependency on Epic A.
