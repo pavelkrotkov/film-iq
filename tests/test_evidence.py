@@ -199,6 +199,15 @@ def test_migration_and_evidence_roundtrip(tmp_path):
             db.execute(
                 decision, ("bad", entry_id, revision_id, "[]", "manual", "v1", "accepted", "now")
             )
+    review = "INSERT INTO review (id, entry_id, revision_id, reason, status, created_at) VALUES (?,?,?,?,?,?)"
+    for review_id, entry_id, revision_id in [
+        ("paired", "entry", "rev"),
+        ("revision-only", None, "rev"),
+        ("entry-only", "other", None),
+    ]:
+        db.execute(review, (review_id, entry_id, revision_id, "reason", "open", "now"))
+    with pytest.raises(sqlite3.IntegrityError):
+        db.execute(review, ("wrong-pair", "other", "rev", "reason", "open", "now"))
     db.commit()
     db.close()
     db = connect(tmp_path / "evidence.db")

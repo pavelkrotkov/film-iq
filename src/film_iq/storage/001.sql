@@ -72,5 +72,6 @@ CREATE TABLE match_decision (
 CREATE TABLE review (
     id TEXT NOT NULL PRIMARY KEY, entry_id TEXT REFERENCES list_entry(id),
     revision_id TEXT REFERENCES extraction_revision(id), reason TEXT NOT NULL,
-    status TEXT NOT NULL, created_at TEXT NOT NULL, resolution TEXT
+    status TEXT NOT NULL, created_at TEXT NOT NULL, resolution TEXT,
+    FOREIGN KEY(entry_id, revision_id) REFERENCES entry_observation(entry_id, revision_id)
 );
