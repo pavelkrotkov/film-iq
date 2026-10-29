@@ -1,9 +1,10 @@
 """A small transactional SQLite baseline for the extraction experiment."""
 
 import sqlite3
+from collections.abc import Iterable
 
 
-def load_batch(db: sqlite3.Connection, rows: list[tuple[str, str | None]]) -> None:
+def load_batch(db: sqlite3.Connection, rows: Iterable[tuple[str, str | None]]) -> None:
     """Commit the entire batch, or roll it back if any row fails."""
     with db:
         db.executemany(

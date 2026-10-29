@@ -2,7 +2,7 @@
 
 **Version:** 0.1, preliminary. **Date:** 2026-10-29 UTC. **Issue:** [#13](https://github.com/pavelkrotkov/film-iq/issues/13). **Context:** [plan §4](../../../plan.md), [ADR 0005](../../adr/0005-extraction-choice.md), [ADR 0012](../../adr/0012-empirical-gates.md).
 
-No real document has been audited for the benchmark, and no browser, LLM, HTTP extractor or dlt comparison has been run. The candidates below are leads only; they are not a frozen gold set or authorization to acquire, store or redistribute source material. No source bodies are included here.
+No real document has been audited for the benchmark, and no browser, LLM, HTTP extractor or real-source dlt comparison has been run. The candidates below are leads only; they are not a frozen gold set or authorization to acquire, store or redistribute source material. No source bodies are included here.
 
 BFI and Cannes URLs are recorded as identifiers rather than active links while their stated linking conditions are reviewed; this is not a legal opinion.
 
@@ -21,6 +21,24 @@ The four standard-library checks use entirely fictional observations. One remove
 The SQLite check loads two fictional rows, repeats an unchanged upsert with zero additional `total_changes`, injects a constraint failure after a changed row and verifies rollback, then retries the correction. This is an in-memory transactional error check, not a process-crash, persisted restart or source recovery benchmark.
 
 The four checks passed locally on 2026-10-29. This smoke test is not representative extraction performance or a comparison of tools. No model/API calls or manual corrections were made by the test.
+
+## Synthetic SQLite and dlt comparison
+
+An opt-in comparison runs the same two fictional records through transactional SQLite and dlt's SQLAlchemy SQLite destination. Each path loads an initial batch, repeats it unchanged, encounters an injected source failure after one corrected row, verifies the destination still contains the original two records, and retries the correction. The SQLite path checks zero writes on the unchanged rerun; the dlt path checks unchanged semantic rows but does not measure physical writes.
+
+On 2026-10-29, one local run with Python 3.12.15, SQLite 3.54.1, dlt 1.31.0 and SQLAlchemy 2.1.6 reported **0.004 seconds** for SQLite and **2.065 seconds** for dlt. Each measurement includes database/pipeline setup, both initial loads, injected failure and retry; dlt's package import and installation are excluded. The dlt run emitted a SQLAlchemy scalar-subquery warning. This tiny single run is a smoke test, not a representative throughput or maintenance-cost comparison. It did not test a process crash, persisted restart, a real incremental source or actual human correction time.
+
+To repeat it from the worktree root, install the optional comparison dependencies in the worktree-local uv cache and run:
+
+```sh
+mkdir -p .cache/tmp .cache/uv
+UV_CACHE_DIR="$PWD/.cache/uv" TMPDIR="$PWD/.cache/tmp" UV_PYTHON_DOWNLOADS=never \
+  uv run --no-project --no-config --python python3.12 \
+    --with 'dlt[sqlalchemy]==1.31.0' --with 'sqlalchemy==2.1.6' \
+    python -m docs.research.extraction.dlt_comparison
+```
+
+The script disables dlt telemetry, explicitly locates pipeline state and temporary files under the worktree, and overrides dlt 1.31's default global-directory probe for this experiment. Each run leaves its synthetic data in a new directory under `.cache/dlt-comparison/`. This is an experiment-specific adaptation of a pinned version, not a proposed production integration.
 
 ## Candidate manifest, not an audited corpus
 
@@ -45,6 +63,6 @@ Before running, freeze manually audited entries, ranks/ties, membership, source 
 
 For each permitted source and method, record entry precision/recall, per-field correctness, complete-document pass rate, correction minutes, runtime, request/model cost, errors and recovery. Run plain HTTP/selectors first, a browser only where raw HTTP misses required content, and grounded LLM extraction only on cases needing it; check source spans **and** semantic membership. Do not treat inaccessible pages as empty lists.
 
-Compare transactional SQLite and dlt on the same incremental dataset and injected failures, including restart/retry; neither a dlt run nor a comparison has occurred. dlt 1.31.0 was downloaded and imported in a worktree-local cache solely to check availability. Its [pipeline documentation](https://dlthub.com/docs/general-usage/pipeline) places state in `~/.dlt/pipelines` by default, so configure the pipeline/state, database, temp and cache paths under the selected worktree before any test, and disable unsolicited telemetry. Its [SQLAlchemy destination](https://dlthub.com/docs/dlt-ecosystem/destinations/sqlalchemy) documents delete-insert and SCD2 merge strategies; measure actual duplicate and correction behavior rather than assuming an upsert. dlt's [Apache-2.0 license](https://github.com/dlt-hub/dlt/blob/devel/LICENSE) does not grant rights to source data.
+Extend the two-row comparison to a permitted real incremental source and test persisted restart and retry. dlt's [pipeline documentation](https://dlthub.com/docs/general-usage/pipeline) places state in `~/.dlt/pipelines` by default, so configure the pipeline/state, database, temp and cache paths under the selected worktree before any test, and disable unsolicited telemetry. Its [SQLAlchemy destination](https://dlthub.com/docs/dlt-ecosystem/destinations/sqlalchemy) documents delete-insert and SCD2 merge strategies; measure actual duplicate and correction behavior rather than assuming an upsert. dlt's [Apache-2.0 license](https://github.com/dlt-hub/dlt/blob/devel/LICENSE) does not grant rights to source data.
 
 No dependency, source adapter, or scoring decision is adopted from these synthetic checks. Gate B remains open until the audited corpus and fair comparative measurements exist, or an explicitly inconclusive outcome is documented.
