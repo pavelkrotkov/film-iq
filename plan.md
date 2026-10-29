@@ -223,6 +223,8 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 
 **Gate A:** a reproducible source→film→score→US offer→recommendation→approved Movary write trace; complete rated-only films; no silent truncation, duplicate observations, unapproved writes or false removal claims. Document actual time/cost/error metrics. POC is not the finished discovery backfill or calibrated recommender.
 
+**A2 preliminary finding:** Synthetic fixtures exercise paginated reads and replacement of a ratings CSV, including rated-only films and removed ratings. The installed Movary version, live export, and completeness of an upstream successful export have not been verified.
+
 ### Epic B — Explore source universe and provider quality
 
 Runs in parallel with POC under its own controller; B1–B7 may all begin independently using their own representative sources, synthetic inputs or benchmark fixtures. B8 can maintain a living draft immediately but finalizes Gate B only after the relevant B1–B7 evidence. No issue in Epic B has a hard start or completion dependency on Epic A.
