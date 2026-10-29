@@ -57,3 +57,17 @@ def test_bundle_compares_access_cost_overlap_and_expiry():
     ]
     assert "tentative" in service.assumptions
     assert compare(films, offers, {1}, [date(2026, 11, 8)], 150, 2, 500, {2: 700})[0].utility == 10
+
+
+def test_add_on_requires_confirmed_existing_access():
+    films = [Film(i, str(i), 60, 1) for i in range(1, 5)]
+    offers = [
+        Access(1, 1, "add-on", "confirmed"),
+        Access(2, 1, "add-on", "unconfirmed"),
+        Access(3, 1, "add-on", "unavailable_on_plan"),
+        Access(4, 2, "add-on", "confirmed"),
+    ]
+    plans = compare(
+        films, offers, {1}, [date(2026, 11, day) for day in range(1, 5)], 240, 4, 1000, {2: 500}
+    )
+    assert [[choice.film.id for choice in plan.choices] for plan in plans] == [[1], [1], [1]]

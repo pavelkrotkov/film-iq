@@ -13,9 +13,9 @@ def _eligible(offer: Access, current: set[int], service: int | None, rentals: bo
         return True
     if offer.kind == "rent":
         return rentals and offer.price_cents is not None
-    return offer.kind == "subscription" and offer.provider_id in current | (
-        {service} if service is not None else set()
-    )
+    if offer.kind == "add-on":
+        return offer.entitlement == "confirmed" and offer.provider_id in current
+    return offer.kind == "subscription" and offer.provider_id in current | {service}
 
 
 def _validate(films: list[Film], offers: list[Access], values: list[int]) -> None:
