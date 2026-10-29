@@ -225,6 +225,8 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 
 **A7 preliminary finding:** A dry-run and explicit-approval boundary exercises sequential retries against a stub using the published Movary 0.82.1 route contract. The target instance's version and live write semantics remain unverified; no live round trip is claimed. Gate A requires integrated A1–A6 results and explicit authorization for any live write.
 
+**A7 CLI implementation:** The report command opens accepted evidence read-only and renders Markdown or JSON with an explicit identity crosswalk, original/excluded evidence, provider links, freshness, tentative entitlement, plan assumptions and selected-film previews. The sync command defaults to an offline preview; live execution requires both execution/approval flags and local environment configuration. HTTP and CLI paths are mock-tested; no live write has been attempted.
+
 **A2 preliminary finding:** Synthetic fixtures exercise paginated reads and replacement of a ratings CSV, including rated-only films and removed ratings. The installed Movary version, live export, and completeness of an upstream successful export have not been verified.
 
 **A1 preliminary finding:** The SQLite schema records source rights, list-linked extraction revisions, review decisions and source-supplied external IDs; migration and restore fixtures pass on patched SQLite. Independence and lineage verification default to unknown, and current accepted matches are explicit. Real-source rights and downstream integration remain unverified. IDs supplied by a source remain distinct from resolved film identifiers.

@@ -1,5 +1,12 @@
 # A7 write boundary evidence
 
+`uv run film-iq sync --title "Selected film" --tmdb-id 123` previews without
+credentials or network access. After reviewing that exact selection, an operator
+can explicitly pass both `--execute --approve`; execution reads `MOVARY_URL`,
+`MOVARY_USERNAME` and `MOVARY_TOKEN` from local environment configuration. Do not
+put credentials into command arguments, report inputs or Git. This implementation
+has only been tested against mocks; no live action is authorized by these docs.
+
 `sync_one` previews one identified recommendation by default. Execution requires
 both `execute=True` and explicit approval; it reads the movie via an injected
 backend, adds the movie if absent, then reads the watchlist and adds the entry

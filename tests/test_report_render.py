@@ -42,3 +42,25 @@ def test_watched_films_have_no_watchlist_preview(evidence_db):
     data["catalog"]["42"]["watched"] = True
     report = build_report(evidence_db, data)
     assert all(not previews for previews in report["previews"].values())
+
+
+def test_markdown_rental_joins_normalized_offer(evidence_db):
+    accepted(evidence_db)
+    evidence_db.execute("UPDATE film_index SET tmdb_id=1")
+    data = inputs()
+    del data["offers"]["1"]["results"]["US"]["free"]
+    report = build_report(evidence_db, data)
+    rental = report["offers"][0]["offers"][0]
+    # Decoys ensure the join uses film, provider and kind, not list position.
+    report["offers"][0]["offers"] = [
+        {**rental, "film_id": 99, "provider": "Wrong film"},
+        {**rental, "provider_id": 99, "provider": "Wrong provider"},
+        {**rental, "kind": "buy", "provider": "Wrong kind"},
+        rental,
+    ]
+    rendered = markdown(report)
+    assert "rentals — USD 4.00" in rendered
+    assert "rent, [Rental](https://example.test/watch) (provider 8)" in rendered
+    assert "checked 2026-10-29 12:00:00+00:00 (TMDB / JustWatch)" in rendered
+    assert "entitlement unconfirmed, 2026-11-01" in rendered
+    assert "Wrong" not in rendered
