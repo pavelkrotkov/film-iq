@@ -15,7 +15,7 @@ The [pinned 0.82.1 OpenAPI contract](https://github.com/leepeuker/movary/blob/0.
 documents the search, addition and paginated watchlist routes used here. Search
 is remote and title based: only an exact TMDB result with an explicit null
 Movary ID establishes absence; a missing result stops the sync. Pagination must
-be complete and consistent. Search permits an empty advertised last page only
+be complete and consistent. Search permits empty advertised trailing pages only
 when preceding 20-result TMDB pages, a short final result page, and the pinned
 Movary pagination calculation explain it. All requests must succeed and an
 exact identity remains required.

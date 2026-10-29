@@ -2,8 +2,8 @@
 
 The reported current page must match each requested page. The reported maximum
 must remain stable through the read. Inconsistent or partial responses raise
-instead of implying absence. Movary 0.82.1 search alone permits a trailing
-empty page when its pagination calculation advertises one extra page.
+instead of implying absence. Movary 0.82.1 search alone permits trailing
+empty pages when its pagination calculation explains them.
 The empty first page is accepted when the server reports zero or one pages.
 These checks do not provide a snapshot when the remote collection changes.
 """
@@ -21,8 +21,11 @@ def object_data(value: object) -> dict:
 def _bounds(rows: list, page: int, last: int, maximum: int | None, *, trailing: bool) -> None:
     if last < 0 or (maximum is not None and last != maximum):
         raise ValueError("Inconsistent Movary pagination")
-    if not (trailing and not rows and page == last and maximum == last):
-        _page_bounds(rows, page, last)
+    if trailing:
+        if rows or page > last:
+            raise ValueError("Inconsistent Movary pagination")
+        return
+    _page_bounds(rows, page, last)
 
 
 def _page_bounds(rows: list, page: int, last: int) -> None:
@@ -55,12 +58,15 @@ def _page(
 
 def _search_extra_page(sizes: list[int], maximum: int | None) -> bool:
     """Validate TMDB page sizes and the pinned Movary max-page calculation."""
-    if len(sizes) < 2 or not 0 < sizes[-1] < 20:
+    populated = [size for size in sizes if size]
+    if len(populated) < 2 or not 0 < populated[-1] < 20:
         return False
-    if any(size != 20 for size in sizes[:-1]) or maximum != len(sizes) + 1:
+    if sizes != populated + [0] * (len(sizes) - len(populated)):
         return False
-    total = sum(sizes)
-    limit = total // len(sizes)
+    if any(size != 20 for size in populated[:-1]):
+        return False
+    total = sum(populated)
+    limit = total // len(populated)
     return (total + limit - 1) // limit == maximum
 
 
