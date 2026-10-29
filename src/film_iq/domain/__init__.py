@@ -22,6 +22,8 @@ class Observation:
     director: str | None = None
     position: int | None = None
     extraction_decision: str = "pending"
+    raw_imdb_id: str | None = None
+    raw_tmdb_id: str | None = None
 
     # A position is display order; only a published rank is a rank.
     # The same entry may have observations from different revisions.
