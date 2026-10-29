@@ -6,7 +6,7 @@ from film_iq.ingest.adapters.nbr_2023 import extract
 FIXTURE = Path(__file__).parent / "fixtures/ingest/nbr-2023.wiki"
 
 
-def test_audited_nbr_section() -> None:
+def test_provisional_nbr_section() -> None:
     data = FIXTURE.read_bytes()
     result = extract(data)
     assert result == extract(data)
@@ -24,6 +24,8 @@ def test_audited_nbr_section() -> None:
     ]
     assert [entry.rank for entry in result.entries] == [1] + [None] * 9
     assert result.document_revision == "1370562803"
+    assert result.review_status == "provisional; review required"
+    assert "association" in result.review_reason
     assert result.ballot_completeness == "unknown"
     assert "other page sections excluded" in result.extraction_scope
     assert "derivative" in result.lineage

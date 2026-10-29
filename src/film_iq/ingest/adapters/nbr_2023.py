@@ -26,6 +26,8 @@ class Extraction:
     document_revision: str
     parser_revision: str
     content_sha256: str
+    review_status: str
+    review_reason: str
     eligibility: str
     ballot_completeness: str
     extraction_scope: str
@@ -36,7 +38,7 @@ class Extraction:
 def extract(section: bytes) -> Extraction:
     digest = sha256(section).hexdigest()
     if digest != SECTION_SHA256:
-        raise ValueError("Source section differs from the audited revision; review required")
+        raise ValueError("Source section differs from the frozen excerpt; review required")
     lines = section.decode("utf-8").splitlines()[3:]
     entries = tuple(
         Entry(
@@ -50,13 +52,15 @@ def extract(section: bytes) -> Extraction:
         if (match := re.search(r"\[\[([^\]]+)\]\]", line))
     )
     if len(entries) != 10:
-        raise ValueError("Incomplete audited section; review required")
+        raise ValueError("Incomplete frozen section; review required")
     return Extraction(
         source_url=f"https://en.wikipedia.org/w/index.php?oldid={REVISION}",
         original_url="https://nationalboardofreview.org/2023/12/national-board-of-review-names-2023-honorees/",
         document_revision=REVISION,
         parser_revision=PARSER_VERSION,
         content_sha256=digest,
+        review_status="provisional; review required",
+        review_reason="Exact excerpt association with the claimed Wikipedia revision is unverified",
         eligibility="NBR 2023 Best Film and Top Films selections; detailed eligibility unknown",
         ballot_completeness="unknown",
         extraction_scope="complete Top 10 Films section only; other page sections excluded",

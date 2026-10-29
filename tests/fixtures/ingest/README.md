@@ -19,7 +19,7 @@ Wikipedia page and the original announcement. The linked historical revision
 could not be retrieved during this audit, so the exact excerpt and revision
 association remain unverified and require review before accepting this fixture.
 
-The adapter accepts only this audited excerpt and fails on any byte change;
+The adapter accepts only this frozen, provisional excerpt and fails on any byte change;
 a new document or parser revision requires a fresh audit. It does not fetch,
 persist, infer identity, or establish rights to retain the original NBR page.
 Deterministic repeated extraction is not a persistence or repeat-fetch test.
