@@ -262,7 +262,9 @@ Runs in parallel with POC under its own controller; B1–B7 may all begin indepe
 
 **Gate B:** explicit evidence supporting initial source adapters, providers, extraction techniques and scoring approach; publish open questions when evidence is insufficient. This epic is *research work*, not a mandate to integrate every candidate service.
 
-**B preliminary findings (2026-10-29):** Source terms can restrict automated collection or reuse; preserve independent critic identity and derivative lineage. An exploratory ten-film identity sample used cached catalog pages and cannot establish current coverage or precision. Proposed extraction pages are leads, not an audited corpus, and provider observations on three dates have not yet been completed. The [Gate B working matrix](docs/research/gate-b.md) records evidence and open decisions as the research progresses.
+**B preliminary findings (2026-10-29):** Original-source terms can restrict automated collection or reuse. The same critic can appear in multiple publications, so preserve each source and rank while counting independent people once. A fourteen-film historical identity sample uses cached or inaccessible catalog results and cannot establish current coverage or precision.
+
+The extraction smoke test rejects a 47-of-50 result, but its proposed pages are leads rather than an audited corpus. The availability cohort contains 60 candidates in six strata; identities and three dated provider observations remain pending. Six long-tail leads do not establish US playback or personal entitlement. OSS reuse findings are qualitative, and the scoring study's lineage checks are synthetic. The [Gate B working matrix](docs/research/gate-b.md) records evidence and open decisions as the research progresses.
 
 ### Epic C — Final implementation, conditional on gates
 
