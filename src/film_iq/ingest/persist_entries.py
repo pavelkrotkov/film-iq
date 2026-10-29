@@ -1,0 +1,47 @@
+"""Persist validated entry observations for a new revision."""
+
+import sqlite3
+
+from film_iq.ingest.adapters import film_registry, nbr_2023
+from film_iq.ingest.persist_checks import SourcePolicy, _key
+
+
+def _store_entries(
+    db: sqlite3.Connection,
+    extraction: nbr_2023.Extraction | film_registry.Extraction,
+    policy: SourcePolicy,
+    list_id: str,
+    revision_id: str,
+) -> None:
+    for entry in extraction.entries:
+        entry_id = _key(list_id, str(entry.position))
+        db.execute(
+            "INSERT INTO list_entry VALUES (?,?,?,?) ON CONFLICT(id) DO NOTHING",
+            (entry_id, policy.id, list_id, str(entry.position)),
+        )
+        stored = db.execute(
+            "SELECT source_id,list_id,entry_key FROM list_entry WHERE id=?", (entry_id,)
+        ).fetchone()
+        if stored != (policy.id, list_id, str(entry.position)):
+            raise ValueError("list entry conflicts with existing evidence")
+        context = (
+            getattr(entry, "raw_context", f"{entry.title} ({entry.release_date})")
+            if isinstance(entry, film_registry.Entry)
+            else entry.raw_context
+        )
+        db.execute(
+            "INSERT INTO entry_observation (entry_id,source_id,list_id,revision_id,raw_title,raw_context,position,rank,tie,locator,extraction_decision) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+            (
+                entry_id,
+                policy.id,
+                list_id,
+                revision_id,
+                entry.title,
+                context,
+                entry.position,
+                entry.rank,
+                None,
+                entry.locator,
+                "pending",
+            ),
+        )

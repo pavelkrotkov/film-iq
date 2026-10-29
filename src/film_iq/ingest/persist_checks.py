@@ -10,6 +10,7 @@ from hashlib import sha256
 class SourcePolicy:
     id: str
     name: str
+    url: str
     family: str
     independence_group: str
     access: str
@@ -41,15 +42,15 @@ def _check_output(db: sqlite3.Connection, revision_id: str, output_hash: str, ex
         raise ValueError("extraction output differs or cannot be verified for existing revision")
 
 
-def _ensure_source(db: sqlite3.Connection, policy: SourcePolicy, original: str) -> None:
+def _ensure_source(db: sqlite3.Connection, policy: SourcePolicy) -> None:
     db.execute(
-        "INSERT OR IGNORE INTO source (id,name,family,independence_group,url,access_policy,retention_policy,redistribution_policy,attribution) VALUES (?,?,?,?,?,?,?,?,?)",
+        "INSERT INTO source (id,name,family,independence_group,url,access_policy,retention_policy,redistribution_policy,attribution) VALUES (?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO NOTHING",
         (
             policy.id,
             policy.name,
             policy.family,
             policy.independence_group,
-            original,
+            policy.url,
             policy.access,
             policy.retention,
             policy.redistribution,
@@ -64,7 +65,7 @@ def _ensure_source(db: sqlite3.Connection, policy: SourcePolicy, original: str) 
         policy.name,
         policy.family,
         policy.independence_group,
-        original,
+        policy.url,
         policy.access,
         policy.retention,
         policy.redistribution,

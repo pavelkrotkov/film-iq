@@ -7,7 +7,17 @@ from film_iq.ingest.adapters import nbr_2023
 from film_iq.ingest.persist import SourcePolicy, persist
 
 FIXTURES = Path(__file__).parent / "fixtures/ingest"
-POLICY = SourcePolicy("nbr", "NBR", "awards", "nbr", "public", "metadata", "none", "cite")
+POLICY = SourcePolicy(
+    "nbr",
+    "NBR",
+    "https://nationalboardofreview.org/",
+    "awards",
+    "nbr",
+    "public",
+    "metadata",
+    "none",
+    "cite",
+)
 
 
 @pytest.mark.parametrize("change", ["title", "missing", "scope", "review"])

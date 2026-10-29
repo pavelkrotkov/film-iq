@@ -7,7 +7,17 @@ from film_iq.ingest.adapters import film_registry, nbr_2023
 from film_iq.ingest.persist import SourcePolicy, persist
 
 FIXTURES = Path(__file__).parent / "fixtures/ingest"
-POLICY = SourcePolicy("nbr", "NBR", "awards", "nbr", "public", "metadata", "none", "cite")
+POLICY = SourcePolicy(
+    "nbr",
+    "NBR",
+    "https://nationalboardofreview.org/",
+    "awards",
+    "nbr",
+    "public",
+    "metadata",
+    "none",
+    "cite",
+)
 
 
 def test_provisional_ingestion_is_idempotent(evidence_db):
@@ -40,7 +50,12 @@ def test_provisional_ingestion_is_idempotent(evidence_db):
 def test_transcription_stays_pending_and_new_revision_does_not_replace_current(evidence_db):
     db = evidence_db
     result = film_registry.extract(2020, (FIXTURES / "registry/2020.txt").read_bytes())
-    policy = replace(POLICY, id="loc", name="LOC")
+    policy = replace(
+        POLICY,
+        id="loc",
+        name="LOC",
+        url="https://www.loc.gov/programs/national-film-preservation-board/",
+    )
     rev = persist(db, result, policy, "2020", "now")
     list_id = db.execute("SELECT list_id FROM extraction_revision WHERE id=?", (rev,)).fetchone()[0]
     # Simulate an independently accepted older revision, not acceptance of the transcription.
@@ -59,3 +74,27 @@ def test_transcription_stays_pending_and_new_revision_does_not_replace_current(e
     ).fetchone() == ("pending",)
     with pytest.raises(ValueError):
         film_registry.extract(2020, b"incomplete")
+
+
+def test_all_registry_editions_share_one_source(evidence_db):
+    db = evidence_db
+    policy = replace(
+        POLICY,
+        id="loc",
+        name="LOC",
+        url="https://www.loc.gov/programs/national-film-preservation-board/",
+    )
+    for year in (2020, 2022, 2025):
+        result = film_registry.extract(year, (FIXTURES / f"registry/{year}.txt").read_bytes())
+        revision = persist(db, result, policy, str(year), "now")
+        assert persist(db, result, policy, str(year), "later") == revision
+    assert db.execute("SELECT count(*) FROM source WHERE id='loc'").fetchone() == (1,)
+    assert db.execute("SELECT count(*) FROM published_list WHERE source_id='loc'").fetchone() == (
+        3,
+    )
+    assert db.execute(
+        "SELECT count(*) FROM entry_observation WHERE source_id='loc'"
+    ).fetchone() == (75,)
+    assert db.execute("SELECT count(DISTINCT original_url) FROM extraction_detail").fetchone() == (
+        3,
+    )
