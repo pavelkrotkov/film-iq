@@ -227,7 +227,7 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 
 **A4 preliminary finding:** Synthetic identity decisions and manual corrections persist against the A1 schema with links to extraction revisions. Held-out specialty-film precision, coverage and review rate remain unmeasured; the matching fixtures do not establish real-world accuracy.
 
-**A4 evaluation blocker:** No authorized TMDB candidate set and independently audited truth were available. Two short-film leads and the held-out protocol are recorded in `docs/identity-held-out-plan.md`; a source year disagreement remains unresolved, and no precision claim is made.
+**A4 evaluation status:** Five frozen specialty observations and eight CC0 Wikidata candidate leads now have a runnable offline evaluation; four lead retrievals completed and one failed with HTTP 429. Independently audited TMDB truth remains unavailable for all five, so the scored denominator is zero and precision, coverage, review rate and candidate recall remain undefined. `docs/identity-held-out-plan.md` records source locators, preserved discrepancies, rights, retrieval policy and remaining audit gate; `docs/identity-held-out-results.json` records the execution. This does not close #7 or verify the 99% target.
 
 ### Epic B — Explore source universe and provider quality
 
