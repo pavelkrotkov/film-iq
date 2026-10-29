@@ -2,6 +2,10 @@
 
 The caller owns the transaction. Initialize the table separately from A1's
 schema migration until the evidence and snapshot contracts are integrated.
+
+Baseline uncertainty states are fixed Score defaults, reconstructed on replay.
+They do not change input serialization or ranking, so existing v1 snapshot IDs
+and numeric results remain reproducible without a version change.
 """
 
 import hashlib

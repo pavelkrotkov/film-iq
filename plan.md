@@ -327,3 +327,5 @@ is now corroborated against upstream BFI HTML without retaining it; conflicting
 year labels remain unresolved. Independent automated audit is valid within its
 stated scope; no human-only gate applies. Explicit acceptance has not been recorded.
 No Gate A completion claimed.
+
+**Issue #8 uncertainty followup finding (ADR 0006):** Baseline scores explicitly expose extraction, identity and evidence/disagreement uncertainty as `not_evaluated`, and personal-prediction uncertainty as `not_applicable` without a personal model. Accepted extraction/match status does not imply calibrated reliability, and endorsement/rank totals do not establish disagreement. These fixed defaults serialize with the score and replay from both existing and new v1 input snapshots; input hashes and numeric ranking remain unchanged. Markdown/JSON report presentation awaits integration with PR #32. No live accuracy, calibration or personal-prediction validation is claimed.
