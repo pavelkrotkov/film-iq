@@ -31,11 +31,11 @@ def migrate(db: sqlite3.Connection) -> None:
     if db.in_transaction:
         raise ValueError("finish the current transaction before migrating")
     version = db.execute("PRAGMA user_version").fetchone()[0]
-    if version > 7:
+    if version > 8:
         raise ValueError(f"unsupported schema version: {version}")
     if version and version < 5:
         _check_schema_shape(db)
-    for target in range(version + 1, 8):
+    for target in range(version + 1, 9):
         try:
             sql = Path(__file__).with_name(f"{target:03}.sql").read_text()
             # Commit the schema and its version together, or roll back both.

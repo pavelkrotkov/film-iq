@@ -37,6 +37,7 @@ def test_version_four_rejects_invalid_supersession_atomically(evidence_db):
     )
     db.execute("DROP TRIGGER match_supersedes_insert")
     db.execute("DROP TRIGGER match_supersedes_update")
+    db.execute("DROP TABLE extraction_audit")
     db.execute("DROP TABLE extraction_fingerprint")
     db.execute("DROP TABLE extraction_detail")
     db.execute("PRAGMA user_version = 4")
