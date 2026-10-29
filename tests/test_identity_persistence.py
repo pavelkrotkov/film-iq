@@ -5,7 +5,6 @@ from film_iq.identity import Candidate, Observation, resolve, review
 
 def test_persist_unresolved_and_reverse_against_migrated_schema() -> None:
     import sqlite3
-    from dataclasses import replace
 
     from film_iq.identity import load, save
     from film_iq.storage import migrate
@@ -39,14 +38,16 @@ def test_persist_unresolved_and_reverse_against_migrated_schema() -> None:
     assert load(db, first) == (original, None)
     db.execute("UPDATE current_extraction SET revision_id = 'rev2' WHERE list_id = 'list'")
     corrected = review((original,), 2, "reviewer", "Checked source")[1]
-    second = save(db, "entry", "rev2", corrected, first)
+    with pytest.raises(ValueError, match="stored entry revision"):
+        save(db, "entry", "rev2", corrected, first)
+    second = save(db, "entry", "rev", corrected, first)
     assert load(db, second) == (corrected, first)
     assert db.execute("SELECT film_id FROM match_decision WHERE id = ?", (second,)).fetchone() == (
         43,
     )
     assert db.execute("SELECT revision_id FROM match_decision ORDER BY rowid").fetchall() == [
         ("rev",),
-        ("rev2",),
+        ("rev",),
     ]
     assert db.execute(
         "SELECT raw_title FROM entry_observation ORDER BY revision_id"
@@ -55,10 +56,30 @@ def test_persist_unresolved_and_reverse_against_migrated_schema() -> None:
         "SELECT o.raw_title FROM current_extraction c JOIN entry_observation o "
         "ON o.list_id = c.list_id AND o.revision_id = c.revision_id"
     ).fetchone() == ("Corrected",)
+    _check_rejected_decisions(db, original, corrected, first)
+
+
+def _check_rejected_decisions(db, original, corrected, first):
+    from dataclasses import replace
+
+    from film_iq.identity import save
+
     with pytest.raises(ValueError, match="same entry"):
         save(db, "other", "rev", corrected, first)
     with pytest.raises(ValueError, match="film_index"):
         save(db, "entry", "rev", replace(corrected, match=999))
-    for entry_id, revision_id in [("entry", "missing"), ("other", "rev")]:
-        with pytest.raises(sqlite3.IntegrityError):
-            save(db, entry_id, revision_id, original)
+    with pytest.raises(ValueError, match="stored entry revision"):
+        save(db, "other", "rev", original)
+    with pytest.raises(ValueError, match="stored entry revision"):
+        save(db, "entry", "missing", original)
+    with pytest.raises(ValueError, match="stored entry revision"):
+        save(db, "entry", "rev", replace(original, observation=Observation("A", "Other", 2020)))
+    with pytest.raises(ValueError, match="stored entry revision"):
+        save(db, "entry", "rev", replace(original, observation=Observation("A", "Director", 2021)))
+    with pytest.raises(ValueError, match="stored entry revision"):
+        save(
+            db,
+            "entry",
+            "rev",
+            replace(original, observation=Observation("A", "Director", 2020, tmdb_id=1)),
+        )

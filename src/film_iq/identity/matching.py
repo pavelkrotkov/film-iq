@@ -58,4 +58,5 @@ def resolve(observation: Observation, candidates: tuple[Candidate, ...]) -> Deci
         matches[0].tmdb_id if accepted else None,
         method,
         evidence,
+        candidate_evidence=candidates,
     )

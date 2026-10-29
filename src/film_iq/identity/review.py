@@ -14,5 +14,13 @@ def review(
         raise ValueError("Reviewed match must be a recorded candidate")
     return (
         *history,
-        Decision(previous.observation, previous.candidates, match, "manual", evidence, reviewer),
+        Decision(
+            previous.observation,
+            previous.candidates,
+            match,
+            "manual",
+            evidence,
+            reviewer,
+            candidate_evidence=previous.candidate_evidence,
+        ),
     )

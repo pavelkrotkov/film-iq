@@ -6,7 +6,21 @@ from dataclasses import asdict
 from datetime import UTC, datetime
 from uuid import uuid4
 
-from .models import Decision, Observation
+from .models import Candidate, Decision, Observation
+
+
+def _validate_observation(
+    db: sqlite3.Connection, entry_id: str, revision_id: str, observation: Observation
+) -> None:
+    # The extraction schema contains no external IDs, so an observation carrying
+    # one cannot be verified against this revision and must not be persisted.
+    row = db.execute(
+        "SELECT raw_title, director, listed_year FROM entry_observation "
+        "WHERE entry_id = ? AND revision_id = ?",
+        (entry_id, revision_id),
+    ).fetchone()
+    if row is None or observation != Observation(row[0], row[1], row[2]):
+        raise ValueError("Decision observation must match the stored entry revision")
 
 
 def save(
@@ -23,6 +37,7 @@ def save(
         ).fetchone()
         if row is None or row[0] != entry_id:
             raise ValueError("Superseded decision must belong to the same entry")
+    _validate_observation(db, entry_id, revision_id, decision.observation)
     film_id = None
     if decision.match is not None:
         row = db.execute(
@@ -33,7 +48,11 @@ def save(
         film_id = row[0]
     decision_id = str(uuid4())
     evidence = json.dumps(
-        {"observation": asdict(decision.observation), "evidence": decision.evidence}
+        {
+            "observation": asdict(decision.observation),
+            "evidence": decision.evidence,
+            "candidate_evidence": [asdict(candidate) for candidate in decision.candidate_evidence],
+        }
     )
     db.execute(
         "INSERT INTO match_decision "
@@ -69,6 +88,8 @@ def load(db: sqlite3.Connection, decision_id: str) -> tuple[Decision, str | None
         raise ValueError("Unknown decision")
     candidates, match, method, version, reviewer, payload, supersedes = row
     data = json.loads(payload)
+    # Earlier decisions did not retain candidate snapshots. Keep them readable
+    # without inventing evidence that was not recorded at decision time.
     return Decision(
         Observation(**data["observation"]),
         tuple(json.loads(candidates)),
@@ -77,4 +98,14 @@ def load(db: sqlite3.Connection, decision_id: str) -> tuple[Decision, str | None
         data["evidence"],
         reviewer,
         version,
+        tuple(
+            Candidate(
+                item["tmdb_id"],
+                tuple(item["titles"]),
+                item["director"],
+                item["year"],
+                item["imdb_id"],
+            )
+            for item in data.get("candidate_evidence", [])
+        ),
     ), supersedes
