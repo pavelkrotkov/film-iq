@@ -185,9 +185,8 @@ def acquire(case: dict) -> dict:
         record["candidates"] = collect(case["observation"]["title"], retrieval)
         retrieval["complete"] = retrieval["search_complete"]
     except (
-        urllib.error.URLError,
+        OSError,
         http.client.HTTPException,
-        TimeoutError,
         ValueError,
         KeyError,
     ) as error:

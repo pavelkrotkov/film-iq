@@ -158,6 +158,8 @@ def assert_recorded_failure(record, error) -> None:
     [
         http.client.IncompleteRead(b'{"search":', 10),
         http.client.RemoteDisconnected("body disconnected"),
+        ConnectionResetError("body connection reset"),
+        TimeoutError("body read timed out"),
     ],
 )
 def test_response_body_failure_keeps_attempted_cohort(monkeypatch, tmp_path, error) -> None:
@@ -184,3 +186,15 @@ def test_response_body_failure_keeps_attempted_cohort(monkeypatch, tmp_path, err
     for record in records:
         assert_recorded_failure(record, error)
     assert body.read.call_count == 2
+
+
+@pytest.mark.parametrize(
+    "error", [TypeError("bad type"), RuntimeError("bug"), AssertionError("bug")]
+)
+def test_acquire_propagates_programmer_errors(monkeypatch, error) -> None:
+    """Expected acquisition failures must not hide unrelated programming bugs."""
+    monkeypatch.setattr(acquisition, "collect", Mock(side_effect=error))
+    with pytest.raises(type(error), match=str(error)):
+        acquisition.acquire(
+            {"id": "test", "observation": {"title": "Synthetic"}, "source": {"url": "test-only"}}
+        )
