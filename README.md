@@ -61,6 +61,14 @@ records before resuming. Migrations have no automatic downgrade; restoring a bac
 discards changes made after it was taken. Test this procedure with an actual backup
 before relying on it. Keep the live WAL database on local storage, not a network share.
 
+Earlier draft version-1 databases used a different schema under the same version
+number. Migration rejects that obsolete shape before changing it. Preserve the database
+and use its original application version to export or inspect its data; create a fresh
+database with the current version and re-import only after reviewing the provenance.
+There is no automatic conversion. Version-4 databases with supersession links between
+different entries are also rejected; inspect and correct those links with the previous
+application version after backing up, then retry migration.
+
 Each extraction revision belongs to one list and document. Select a list's current
 accepted revision through `current_extraction`; update that pointer in the same
 transaction as acceptance, and query observations through it to avoid counting old
