@@ -44,3 +44,27 @@ def _check_atomicity(db, corrected, third, current):
     assert db.execute("SELECT count(*) FROM match_decision").fetchone() == (3,)
     db.rollback()
     assert db.execute("SELECT count(*) FROM match_decision").fetchone() == (0,)
+
+
+@pytest.mark.parametrize("raw_id", ["not-an-id", "1.5", "1x"])
+def test_malformed_source_id_allows_only_unresolved_review(evidence_db, raw_id):
+    from film_iq.identity import load, save
+
+    db = evidence_db
+    db.execute("UPDATE entry_observation SET raw_tmdb_id = ?", (raw_id,))
+    db.execute("INSERT INTO film_index (id, tmdb_id) VALUES (42, 1)")
+    source = Observation("Unchanged title", imdb_id="tt0000001")
+    candidate = Candidate(1, ("Unchanged title",), imdb_id="tt0000001")
+    accepted = resolve(source, (candidate,))
+    assert accepted.match == 1
+    with pytest.raises(ValueError, match="requires an unresolved decision"):
+        save(db, "entry", "rev", accepted)
+    unresolved = review((accepted,), None, "reviewer", "Malformed source ID")[-1]
+    decision_id = save(db, "entry", "rev", unresolved)
+    assert load(db, decision_id) == (unresolved, None)
+    assert db.execute("SELECT raw_tmdb_id FROM entry_observation").fetchone() == (raw_id,)
+    assert db.execute("SELECT decision, film_id FROM match_decision").fetchone() == (
+        "unresolved",
+        None,
+    )
+    assert db.execute("SELECT count(*) FROM current_match").fetchone() == (0,)

@@ -1,4 +1,8 @@
-"""Store identity decisions using the issue #4 SQLite match contract."""
+"""Store identity decisions using the issue #4 SQLite match contract.
+
+Source IDs are raw evidence: malformed text remains in the observation table
+and permits an unresolved review, but cannot support an accepted match.
+"""
 
 import json
 import sqlite3
@@ -10,17 +14,22 @@ from .models import Candidate, Decision, Observation
 
 
 def _validate_observation(
-    db: sqlite3.Connection, entry_id: str, revision_id: str, observation: Observation
+    db: sqlite3.Connection, entry_id: str, revision_id: str, decision: Decision
 ) -> None:
     row = db.execute(
         "SELECT raw_title, director, listed_year, raw_tmdb_id, raw_imdb_id FROM entry_observation "
         "WHERE entry_id = ? AND revision_id = ?",
         (entry_id, revision_id),
     ).fetchone()
-    # TMDB IDs are stored as raw text, including possible leading zeroes.
-    if row is None or observation != Observation(
-        row[0], row[1], row[2], int(row[3]) if row[3] and row[3].strip() else None, row[4]
-    ):
+    if row is None:
+        raise ValueError("Decision observation must match the stored entry revision")
+    try:
+        tmdb_id = int(row[3]) if row[3] and row[3].strip() else None
+    except ValueError:
+        if decision.match is not None:
+            raise ValueError("Malformed source TMDB ID requires an unresolved decision") from None
+        tmdb_id = None
+    if decision.observation != Observation(row[0], row[1], row[2], tmdb_id, row[4]):
         raise ValueError("Decision observation must match the stored entry revision")
 
 
@@ -38,7 +47,7 @@ def save(
         ).fetchone()
         if row is None or row[0] != entry_id:
             raise ValueError("Superseded decision must belong to the same entry")
-    _validate_observation(db, entry_id, revision_id, decision.observation)
+    _validate_observation(db, entry_id, revision_id, decision)
     film_id = _film_id(db, decision.match)
     decision_id = str(uuid4())
     evidence = json.dumps(
