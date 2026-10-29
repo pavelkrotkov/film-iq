@@ -229,7 +229,7 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 
 **A6 preliminary finding:** Synthetic TMDB responses and a small monthly planner exercise offer uncertainty, freshness and no-purchase/rental alternatives. Live provider behavior, terms, entitlement, integration and planner usefulness remain unverified; the planner is limited to small POC shortlists.
 
-**A6 integration gap:** The identity adapter exposes TMDB IDs while the scorer uses internal film IDs; integration needs the verified crosswalk. The planner also needs an explicitly versioned provisional mapping from scoring components to additive utility. Neither a mapping nor plan-specific entitlement has been validated.
+**A6 provisional bridge:** The planner resolves internal scoring IDs through the stored film_index TMDB crosswalk and uses `independent-count-additive-v1`: one utility point per independent endorsement. This utility is uncalibrated and ignores rank and personal preference; plan-specific entitlement remains unvalidated. Full cross-issue integration remains in the local integration probe.
 
 ### Epic B — Explore source universe and provider quality
 
