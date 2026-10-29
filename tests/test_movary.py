@@ -17,11 +17,11 @@ def test_api_pagination_and_failure():
     client = MovaryClient("https://example.test", "a user", "secret")
     movie = {"movie": {"ids": {"movary": 7, "tmdb": 42}}, "watchDates": [{"date": None}]}
     pages = [
-        response({"played": [movie], "currentPage": 1, "maxPage": 2}),
+        response({"played": [movie] * 100, "currentPage": 1, "maxPage": 2}),
         response({"played": [movie], "currentPage": 2, "maxPage": 2}),
     ]
     with patch("film_iq.movary.urlopen", side_effect=pages) as request:
-        assert client.read("played") == [movie, movie]
+        assert client.read("played") == [movie] * 101
         assert "/a%20user/played/movies?page=2&limit=100" in request.call_args.args[0].full_url
         assert request.call_args.args[0].get_header("Authorization") == "Bearer secret"
     for collection in ("history", "watchlist"):
@@ -34,7 +34,7 @@ def test_api_pagination_and_failure():
         patch(
             "film_iq.movary.urlopen",
             side_effect=[
-                response({"played": [movie], "currentPage": 1, "maxPage": 2}),
+                response({"played": [movie] * 100, "currentPage": 1, "maxPage": 2}),
                 HTTPError("x", 500, "error", Message(), None),
             ],
         ),
@@ -46,7 +46,7 @@ def test_api_pagination_and_failure():
 @pytest.mark.parametrize("collection", ["played", "history", "watchlist"])
 def test_empty_advertised_final_page(collection):
     pages = [
-        response({collection: [{"movie": {}}], "currentPage": 1, "maxPage": 2}),
+        response({collection: [{"movie": {}}] * 100, "currentPage": 1, "maxPage": 2}),
         response({collection: [], "currentPage": 2, "maxPage": 2}),
     ]
     with patch("film_iq.movary.urlopen", side_effect=pages), pytest.raises(ValueError):
@@ -68,3 +68,25 @@ def test_empty_single_page():
         pytest.raises(ValueError),
     ):
         client.read("played")
+
+
+@pytest.mark.parametrize("collection", ["played", "history", "watchlist"])
+@pytest.mark.parametrize("size,last", [(1, 2), (101, 2), (101, 1)])
+def test_invalid_page_size(collection, size, last):
+    data = {collection: [{"movie": {}}] * size, "currentPage": 1, "maxPage": last}
+    pages = [response(data), response({collection: [{}], "currentPage": 2, "maxPage": 2})]
+    with patch("film_iq.movary.urlopen", side_effect=pages), pytest.raises(ValueError):
+        MovaryClient("https://example.test", "user", "token").read(collection)
+
+
+@pytest.mark.parametrize("collection", ["played", "history", "watchlist"])
+def test_full_page_and_short_final_page(collection):
+    movie = {"movie": {}}
+    pages = [
+        response({collection: [movie] * 100, "currentPage": 1, "maxPage": 2}),
+        response({collection: [movie], "currentPage": 2, "maxPage": 2}),
+    ]
+    with patch("film_iq.movary.urlopen", side_effect=pages):
+        assert (
+            MovaryClient("https://example.test", "user", "token").read(collection) == [movie] * 101
+        )

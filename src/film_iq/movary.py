@@ -13,6 +13,8 @@ from pathlib import Path
 from urllib.parse import quote
 from urllib.request import Request, urlopen
 
+_PAGE_LIMIT = 100
+
 
 class MovaryClient:
     def __init__(self, base_url: str, username: str, token: str):
@@ -28,7 +30,7 @@ class MovaryClient:
         maximum = None
         while True:
             request = Request(
-                f"{self.url}/{collection}/movies?page={page}&limit=100",
+                f"{self.url}/{collection}/movies?page={page}&limit={_PAGE_LIMIT}",
                 headers={"Authorization": f"Bearer {self.token}", "Accept": "application/json"},
             )
             with urlopen(request, timeout=30) as response:
@@ -55,7 +57,13 @@ def _page(data: dict, collection: str, page: int, maximum: int | None) -> tuple[
     ):
         raise ValueError("Invalid Movary page")
     _check_page_bounds(entries, page, last, maximum)
+    _check_page_size(entries, page, last)
     return entries, last
+
+
+def _check_page_size(entries: list, page: int, last: int) -> None:
+    if len(entries) > _PAGE_LIMIT or (page < last and len(entries) != _PAGE_LIMIT):
+        raise ValueError("Invalid Movary page size")
 
 
 def _check_page_bounds(entries: list, page: int, last: int, maximum: int | None) -> None:
