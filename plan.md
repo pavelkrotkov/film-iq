@@ -225,7 +225,7 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 
 **A1 preliminary finding:** The SQLite schema records source rights, list-linked extraction revisions, review decisions and source-supplied external IDs; migration and restore fixtures pass on patched SQLite. Independence and lineage verification default to unknown, and current accepted matches are explicit. Real-source rights and downstream integration remain unverified. IDs supplied by a source remain distinct from resolved film identifiers.
 
-**A5 preliminary finding:** A synthetic, deterministic baseline counts independent groups and sums reciprocal published ranks, excluding derivative evidence. Independence and lineage are inputs rather than verified facts. This is an illustrative baseline, not an evaluated ranking; persisted snapshots and integration with A1 remain open.
+**A5 preliminary finding:** A synthetic, deterministic baseline counts independent groups and sums reciprocal published ranks, excluding derivative evidence. Input snapshots can be replayed with the same scorer version. Independence and lineage are inputs rather than verified facts; A1 integration, richer uncertainty and real-source evaluation remain open.
 
 ### Epic B — Explore source universe and provider quality
 
