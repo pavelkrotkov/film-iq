@@ -38,6 +38,11 @@ def test_current_verified_evidence_and_snapshot(evidence_db):
         source_id="s",
         document_id="doc",
         locator="#1",
+        lineage_kind="original",
+        lineage="original",
+        author="Critic",
+        completeness="partial",
+        rank_semantics="ranked",
     )
     assert load_evidence(db) == [expected]
     initialize(db)
@@ -60,7 +65,6 @@ def test_excludes_unverified_nonoriginal_and_noncurrent(evidence_db):
         "UPDATE published_list SET lineage_verification = 'unknown'",
         "UPDATE published_list SET lineage_verification = 'disputed'",
         "UPDATE published_list SET lineage_kind = 'unknown'",
-        "UPDATE published_list SET lineage_kind = 'derivative'",
         "UPDATE entry_observation SET extraction_decision = 'rejected'",
         "DELETE FROM current_match",
         "DELETE FROM current_extraction",

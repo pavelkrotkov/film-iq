@@ -7,11 +7,12 @@ from film_iq.scoring import Evidence
 
 
 def load_evidence(db: sqlite3.Connection) -> list[Evidence]:
-    """Read only explicitly accepted matches and verified original evidence."""
+    """Read accepted matches with verified independence and lineage classification."""
     rows = db.execute("""
         SELECT m.film_id, l.id, d.url, d.published_at, s.independence_group,
                l.eligibility, o.rank, o.entry_id, o.revision_id, m.decision_id,
-               s.id, d.id, o.locator
+               s.id, d.id, o.locator, l.lineage_kind, l.lineage, l.author,
+               l.completeness, l.rank_semantics
         FROM current_extraction AS c
         JOIN extraction_revision AS r ON r.id = c.revision_id AND r.list_id = c.list_id
         JOIN published_list AS l ON l.id = c.list_id
@@ -22,7 +23,8 @@ def load_evidence(db: sqlite3.Connection) -> list[Evidence]:
         WHERE r.acceptance_state = 'accepted' AND o.extraction_decision = 'accepted'
           AND m.decision = 'accepted' AND s.independence_verification = 'verified'
           AND length(trim(s.independence_group)) > 0
-          AND l.lineage_verification = 'verified' AND l.lineage_kind = 'original'
+          AND l.lineage_verification = 'verified'
+          AND l.lineage_kind IN ('original', 'derivative')
         ORDER BY o.entry_id, o.revision_id
     """).fetchall()
     return [
@@ -40,6 +42,11 @@ def load_evidence(db: sqlite3.Connection) -> list[Evidence]:
             source_id=source,
             document_id=document,
             locator=locator,
+            lineage_kind=lineage_kind,
+            lineage=lineage,
+            author=author,
+            completeness=completeness,
+            rank_semantics=rank_semantics,
         )
         for (
             film,
@@ -55,5 +62,10 @@ def load_evidence(db: sqlite3.Connection) -> list[Evidence]:
             source,
             document,
             locator,
+            lineage_kind,
+            lineage,
+            author,
+            completeness,
+            rank_semantics,
         ) in rows
     ]

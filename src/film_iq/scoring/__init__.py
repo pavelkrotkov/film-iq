@@ -29,6 +29,11 @@ class Evidence:
     source_id: str | None = None
     document_id: str | None = None
     locator: str | None = None
+    lineage_kind: str | None = None
+    lineage: str | None = None
+    author: str | None = None
+    completeness: str | None = None
+    rank_semantics: str | None = None
 
     def __post_init__(self) -> None:
         if self.rank is not None and self.rank < 1:
@@ -44,6 +49,7 @@ class Score:
     contributing: tuple[Evidence, ...]
     excluded: tuple[Evidence, ...]
     unranked_count: int
+    partial_count: int
 
 
 def score(evidence: list[Evidence]) -> tuple[Score, ...]:
@@ -67,7 +73,9 @@ def score(evidence: list[Evidence]) -> tuple[Score, ...]:
 
 def _score_film(film_id: str, items: set[Evidence]) -> Score:
     chosen: dict[str, Evidence] = {}
-    originals = (item for item in items if not item.derivative_of)
+    originals = (
+        item for item in items if not item.derivative_of and item.lineage_kind != "derivative"
+    )
     for item in sorted(originals, key=lambda e: (e.rank or float("inf"), _evidence_key(e))):
         chosen.setdefault(item.independence_group, item)
     contributing = tuple(sorted(chosen.values(), key=_evidence_key))
@@ -79,6 +87,7 @@ def _score_film(film_id: str, items: set[Evidence]) -> Score:
         contributing=contributing,
         excluded=tuple(sorted(items - set(contributing), key=_evidence_key)),
         unranked_count=sum(item.rank is None for item in contributing),
+        partial_count=sum(item.completeness == "partial" for item in contributing),
     )
 
 
@@ -98,6 +107,11 @@ def _evidence_key(item: Evidence) -> tuple:
         _optional_key(item.source_id),
         _optional_key(item.document_id),
         _optional_key(item.locator),
+        _optional_key(item.lineage_kind),
+        _optional_key(item.lineage),
+        _optional_key(item.author),
+        _optional_key(item.completeness),
+        _optional_key(item.rank_semantics),
     )
 
 
