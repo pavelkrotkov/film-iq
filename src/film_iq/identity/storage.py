@@ -41,12 +41,7 @@ def save(
     supersedes: str | None = None,
 ) -> str:
     """Append a decision; the caller owns the transaction and film crosswalk."""
-    if supersedes is not None:
-        row = db.execute(
-            "SELECT entry_id FROM match_decision WHERE id = ?", (supersedes,)
-        ).fetchone()
-        if row is None or row[0] != entry_id:
-            raise ValueError("Superseded decision must belong to the same entry")
+    _validate_supersedes(db, entry_id, supersedes)
     _validate_observation(db, entry_id, revision_id, decision)
     film_id = _film_id(db, decision.match)
     decision_id = str(uuid4())
@@ -65,16 +60,43 @@ def save(
         db.execute("BEGIN")
     db.execute("SAVEPOINT identity_save")
     try:
+        preserve_review = _preserve_review(db, entry_id, revision_id, decision, supersedes)
         _insert_decision(
             db, decision_id, entry_id, revision_id, film_id, decision, evidence, supersedes
         )
-        _update_current(db, entry_id, revision_id, decision_id, film_id)
+        if not preserve_review:
+            _update_current(db, entry_id, revision_id, decision_id, film_id)
     except Exception:
         db.execute("ROLLBACK TO identity_save")
         raise
     finally:
         db.execute("RELEASE identity_save")
     return decision_id
+
+
+def _validate_supersedes(db, entry_id, supersedes):
+    if supersedes is not None:
+        row = db.execute(
+            "SELECT entry_id FROM match_decision WHERE id = ?", (supersedes,)
+        ).fetchone()
+        if row is None or row[0] != entry_id:
+            raise ValueError("Superseded decision must belong to the same entry")
+
+
+def _preserve_review(db, entry_id, revision_id, decision, supersedes):
+    # Unresolved reviews have no current_match row, so inspect the decision history.
+    # A superseding decision ends protection for its predecessor. Automatic
+    # evidence can still be recorded without replacing an active review.
+    if decision.reviewer is not None or supersedes is not None:
+        return False
+    row = db.execute(
+        "SELECT reviewer FROM match_decision WHERE entry_id = ? AND revision_id = ? "
+        "AND NOT EXISTS (SELECT 1 FROM match_decision child "
+        "WHERE child.supersedes = match_decision.id) "
+        "AND reviewer IS NOT NULL ORDER BY rowid DESC LIMIT 1",
+        (entry_id, revision_id),
+    ).fetchone()
+    return row is not None
 
 
 def _automatic_replay(db, entry_id, revision_id, film_id, decision, evidence, supersedes):
