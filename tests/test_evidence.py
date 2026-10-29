@@ -6,6 +6,12 @@ from film_iq.domain import Observation
 from film_iq.storage import connect, migrate
 
 
+def test_rejects_unpatched_sqlite(monkeypatch, tmp_path):
+    monkeypatch.setattr(sqlite3, "sqlite_version_info", (3, 45, 1))
+    with pytest.raises(RuntimeError, match="WAL fix"):
+        connect(tmp_path / "evidence.db")
+
+
 def test_migration_and_evidence_roundtrip(tmp_path):
     db = connect(tmp_path / "evidence.db")
     migrate(db)
