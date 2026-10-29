@@ -29,7 +29,7 @@ class Observation:
     # The same entry may have observations from different revisions.
     def __post_init__(self) -> None:
         if not all(
-            value.strip()
+            isinstance(value, str) and value.strip()
             for value in (
                 self.source_id,
                 self.edition_id,

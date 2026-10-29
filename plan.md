@@ -231,6 +231,12 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 
 **A1 preliminary finding:** The SQLite schema records source rights, list-linked extraction revisions, review decisions and source-supplied external IDs; migration and restore fixtures pass on patched SQLite. Independence and lineage verification default to unknown, and current accepted matches are explicit. Real-source rights and downstream integration remain unverified. IDs supplied by a source remain distinct from resolved film identifiers.
 
+**A3 preliminary finding:** One NBR 2023 section has been checked against the original announcement: its winner is ranked, while the other nine titles are alphabetical and unranked. Three Library of Congress selection transcriptions exercise a contrasting unranked format, but are not raw pages or independently audited. The NBR fixture's claimed Wikipedia revision remains unverified. Audited pages, tied and partial examples, rights verification and persisted idempotence remain open.
+
+**A3 source leads:** [BFI's 2022 poll announcement](https://www.bfi.org.uk/news/revealed-results-2022-sight-sound-greatest-films-all-time-poll) describes tied ranks, and [Film Comment's 2024 ballots](https://www.filmcomment.com/best-films-of-2024-individual-ballots/) publishes a selection of ballots. Their [BFI](https://www.bfi.org.uk/terms-use) and [Film Comment](https://www.filmcomment.com/terms-of-service/) terms do not establish permission to commit raw captures. Partial publication of ballots does not establish that a particular displayed ballot is incomplete.
+
+**A3 persistence:** Provisional fixture output can be stored with rights metadata and parser provenance. Repeat ingestion is idempotent; conflicting output fails rather than silently replacing accepted evidence. An explicit independent audit attestation can promote a complete revision; its correctness and independence are auditor claims. Historical human-only wording was an implementation assumption, not issue #6’s requirement. Automated versus human kind must be labelled in the auditor/evidence record. No real fixture has been promoted to accepted.
+
 **A4 preliminary finding:** Synthetic identity decisions and manual corrections persist against the A1 schema with links to extraction revisions. Held-out specialty-film precision, coverage and review rate remain unmeasured; the matching fixtures do not establish real-world accuracy.
 
 **A4 evaluation status:** Five frozen specialty observations and eight CC0 Wikidata candidate leads now have a runnable offline evaluation; four lead retrievals completed and one failed with HTTP 429. Independently audited TMDB truth remains unavailable for all five, so the scored denominator is zero and precision, coverage, review rate and candidate recall remain undefined. `docs/identity-held-out-plan.md` records source locators, preserved discrepancies, rights, retrieval policy and remaining audit gate; `docs/identity-held-out-results.json` records the execution. This does not close #7 or verify the 99% target.
@@ -240,6 +246,8 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 **A6 preliminary finding:** Synthetic TMDB responses and a small monthly planner exercise offer uncertainty, freshness and no-purchase/rental alternatives. Live provider behavior, terms, entitlement, integration and planner usefulness remain unverified; the planner is limited to small POC shortlists.
 
 **A6 provisional bridge:** The planner resolves internal scoring IDs through the stored film_index TMDB crosswalk and uses `independent-count-additive-v1`: one utility point per independent endorsement. This utility is uncalibrated and ignores rank and personal preference; plan-specific entitlement remains unvalidated. Full cross-issue integration remains in the local integration probe.
+
+**A3 partial-ballot follow-up:** A real incomplete individual assessment was located in Film Comment's 2022 Gina Telaroli ballot, but permission to redistribute a captured fixture remains unverified. No copy was retained. `docs/a6/partial-ballot-lead.md` distinguishes incomplete viewing from editorial truncation and records the remaining narrow fixture gap.
 
 ### Epic B — Explore source universe and provider quality
 
@@ -309,3 +317,17 @@ Primary references (revalidate versions/terms during implementation):
 
 Issue is linked to an epic and relevant ADR; acceptance tests demonstrate requested behavior; new data fields have origins/rights and migration/rollback; error and review states are explicit; no unapproved writes; docs/config and CI updated; actual measurement or a precise “not yet verified” note attached; PR review and CI requirements in AGENTS.md satisfied.
 
+
+### A3 captured-page continuation (2026-10-29)
+
+Four exact, pinned Wikipedia section responses from distinct source pages now cover
+42 published records with ranked, tied, alphabetical/unranked and partial-aggregate
+semantics. Two frozen deterministic page adapters match a separate read-only agent's
+rendered-HTML oracle. Rights notices, hashes, endpoints and limits are in
+[the A6 evidence report](docs/a6/README.md). These are actual API captures, not
+transcriptions or whole-page snapshots. All records remain provisional/pending;
+a genuine partial individual-ballot fixture remains open. The 2012 title/rank subset
+is now corroborated against upstream BFI HTML without retaining it; conflicting
+year labels remain unresolved. Independent automated audit is valid within its
+stated scope; no human-only gate applies. Explicit acceptance has not been recorded.
+No Gate A completion claimed.

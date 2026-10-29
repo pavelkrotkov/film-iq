@@ -1,0 +1,1063 @@
+{
+  "checked_at": "2026-10-29T22:18:12.997602+00:00",
+  "scope": "all src and tests Python files in A6",
+  "radon_executable": "../a5/.venv/bin/radon",
+  "commands": [
+    [
+      "../a5/.venv/bin/radon",
+      "cc",
+      "src",
+      "tests",
+      "-s",
+      "-j"
+    ],
+    [
+      "../a5/.venv/bin/radon",
+      "mi",
+      "src",
+      "tests",
+      "-j"
+    ]
+  ],
+  "python_files": 37,
+  "maximum_cc": 8,
+  "minimum_mi": 50.025032185536084,
+  "violations": {
+    "cc": [],
+    "mi": []
+  },
+  "cc": {
+    "src/film_iq/cli.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 18,
+        "lineno": 9,
+        "col_offset": 0,
+        "name": "main",
+        "complexity": 2,
+        "closures": []
+      }
+    ],
+    "src/film_iq/ingest/audit.py": [
+      {
+        "type": "function",
+        "rank": "B",
+        "endline": 23,
+        "lineno": 18,
+        "col_offset": 0,
+        "name": "validate_audit",
+        "complexity": 6,
+        "closures": []
+      },
+      {
+        "type": "class",
+        "rank": "A",
+        "endline": 15,
+        "lineno": 7,
+        "col_offset": 0,
+        "name": "AuditAttestation",
+        "complexity": 1,
+        "methods": []
+      }
+    ],
+    "src/film_iq/ingest/persist.py": [
+      {
+        "type": "function",
+        "rank": "B",
+        "endline": 139,
+        "lineno": 33,
+        "col_offset": 0,
+        "name": "persist",
+        "complexity": 8,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 30,
+        "lineno": 22,
+        "col_offset": 0,
+        "name": "_savepoint",
+        "complexity": 2,
+        "closures": []
+      }
+    ],
+    "src/film_iq/ingest/persist_entries.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 39,
+        "lineno": 10,
+        "col_offset": 0,
+        "name": "_observations",
+        "complexity": 3,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 66,
+        "lineno": 42,
+        "col_offset": 0,
+        "name": "_store_entries",
+        "complexity": 3,
+        "closures": []
+      }
+    ],
+    "src/film_iq/ingest/accept.py": [
+      {
+        "type": "function",
+        "rank": "B",
+        "endline": 49,
+        "lineno": 25,
+        "col_offset": 0,
+        "name": "_accept",
+        "complexity": 6,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 22,
+        "lineno": 10,
+        "col_offset": 0,
+        "name": "accept",
+        "complexity": 2,
+        "closures": []
+      }
+    ],
+    "src/film_iq/ingest/accept_record.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 41,
+        "lineno": 12,
+        "col_offset": 0,
+        "name": "record_acceptance",
+        "complexity": 1,
+        "closures": []
+      }
+    ],
+    "src/film_iq/ingest/persist_checks.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 42,
+        "lineno": 35,
+        "col_offset": 0,
+        "name": "_check_output",
+        "complexity": 4,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 32,
+        "lineno": 26,
+        "col_offset": 0,
+        "name": "_check_list",
+        "complexity": 2,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 74,
+        "lineno": 45,
+        "col_offset": 0,
+        "name": "_ensure_source",
+        "complexity": 2,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 23,
+        "lineno": 22,
+        "col_offset": 0,
+        "name": "_key",
+        "complexity": 1,
+        "closures": []
+      },
+      {
+        "type": "class",
+        "rank": "A",
+        "endline": 19,
+        "lineno": 10,
+        "col_offset": 0,
+        "name": "SourcePolicy",
+        "complexity": 1,
+        "methods": []
+      }
+    ],
+    "src/film_iq/ingest/adapters/sight_sound_pages.py": [
+      {
+        "type": "function",
+        "rank": "B",
+        "endline": 54,
+        "lineno": 19,
+        "col_offset": 0,
+        "name": "extract",
+        "complexity": 8,
+        "closures": []
+      }
+    ],
+    "src/film_iq/ingest/adapters/film_registry.py": [
+      {
+        "type": "function",
+        "rank": "B",
+        "endline": 69,
+        "lineno": 45,
+        "col_offset": 0,
+        "name": "extract",
+        "complexity": 6,
+        "closures": []
+      },
+      {
+        "type": "class",
+        "rank": "A",
+        "endline": 29,
+        "lineno": 24,
+        "col_offset": 0,
+        "name": "Entry",
+        "complexity": 1,
+        "methods": []
+      },
+      {
+        "type": "class",
+        "rank": "A",
+        "endline": 42,
+        "lineno": 33,
+        "col_offset": 0,
+        "name": "Extraction",
+        "complexity": 1,
+        "methods": []
+      }
+    ],
+    "src/film_iq/ingest/adapters/nbr_pages.py": [
+      {
+        "type": "function",
+        "rank": "B",
+        "endline": 51,
+        "lineno": 17,
+        "col_offset": 0,
+        "name": "extract",
+        "complexity": 7,
+        "closures": []
+      }
+    ],
+    "src/film_iq/ingest/adapters/nbr_2023.py": [
+      {
+        "type": "function",
+        "rank": "B",
+        "endline": 68,
+        "lineno": 38,
+        "col_offset": 0,
+        "name": "extract",
+        "complexity": 6,
+        "closures": []
+      },
+      {
+        "type": "class",
+        "rank": "A",
+        "endline": 19,
+        "lineno": 14,
+        "col_offset": 0,
+        "name": "Entry",
+        "complexity": 1,
+        "methods": []
+      },
+      {
+        "type": "class",
+        "rank": "A",
+        "endline": 35,
+        "lineno": 23,
+        "col_offset": 0,
+        "name": "Extraction",
+        "complexity": 1,
+        "methods": []
+      }
+    ],
+    "src/film_iq/ingest/adapters/page_capture.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 45,
+        "lineno": 38,
+        "col_offset": 0,
+        "name": "frozen_text",
+        "complexity": 3,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 53,
+        "lineno": 48,
+        "col_offset": 0,
+        "name": "linked_title",
+        "complexity": 2,
+        "closures": []
+      },
+      {
+        "type": "class",
+        "rank": "A",
+        "endline": 15,
+        "lineno": 12,
+        "col_offset": 0,
+        "name": "Entry",
+        "complexity": 1,
+        "methods": []
+      },
+      {
+        "type": "class",
+        "rank": "A",
+        "endline": 34,
+        "lineno": 19,
+        "col_offset": 0,
+        "name": "Extraction",
+        "complexity": 1,
+        "methods": []
+      }
+    ],
+    "src/film_iq/storage/__init__.py": [
+      {
+        "type": "function",
+        "rank": "B",
+        "endline": 45,
+        "lineno": 29,
+        "col_offset": 0,
+        "name": "migrate",
+        "complexity": 7,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 26,
+        "lineno": 20,
+        "col_offset": 0,
+        "name": "_check_schema_shape",
+        "complexity": 5,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 17,
+        "lineno": 7,
+        "col_offset": 0,
+        "name": "connect",
+        "complexity": 4,
+        "closures": []
+      }
+    ],
+    "src/film_iq/domain/__init__.py": [
+      {
+        "type": "class",
+        "rank": "B",
+        "endline": 45,
+        "lineno": 7,
+        "col_offset": 0,
+        "name": "Observation",
+        "complexity": 7,
+        "methods": [
+          {
+            "type": "method",
+            "rank": "B",
+            "endline": 45,
+            "lineno": 30,
+            "col_offset": 4,
+            "name": "__post_init__",
+            "complexity": 6,
+            "classname": "Observation",
+            "closures": []
+          }
+        ]
+      },
+      {
+        "type": "method",
+        "rank": "B",
+        "endline": 45,
+        "lineno": 30,
+        "col_offset": 4,
+        "name": "__post_init__",
+        "complexity": 6,
+        "classname": "Observation",
+        "closures": []
+      }
+    ],
+    "tests/test_accept.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 24,
+        "lineno": 24,
+        "col_offset": 0,
+        "name": "test_explicit_promotion_preserves_history",
+        "complexity": 5,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 47,
+        "lineno": 47,
+        "col_offset": 0,
+        "name": "test_invalid_audit_remains_pending",
+        "complexity": 4,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 59,
+        "lineno": 59,
+        "col_offset": 0,
+        "name": "test_stale_replacement_and_failed_fetch_remain_pending",
+        "complexity": 2,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 20,
+        "lineno": 10,
+        "col_offset": 0,
+        "name": "pending",
+        "complexity": 1,
+        "closures": []
+      }
+    ],
+    "tests/test_persist_transactions.py": [
+      {
+        "type": "function",
+        "rank": "B",
+        "endline": 24,
+        "lineno": 24,
+        "col_offset": 0,
+        "name": "test_transaction_boundaries",
+        "complexity": 8,
+        "closures": []
+      }
+    ],
+    "tests/conftest.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 125,
+        "lineno": 10,
+        "col_offset": 0,
+        "name": "evidence_db",
+        "complexity": 4,
+        "closures": []
+      }
+    ],
+    "tests/test_film_registry.py": [
+      {
+        "type": "function",
+        "rank": "B",
+        "endline": 18,
+        "lineno": 18,
+        "col_offset": 0,
+        "name": "test_registry_selection",
+        "complexity": 8,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 39,
+        "lineno": 31,
+        "col_offset": 0,
+        "name": "test_registry_provenance_and_invalid_transcriptions",
+        "complexity": 3,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 44,
+        "lineno": 42,
+        "col_offset": 0,
+        "name": "test_unknown_edition_requires_review",
+        "complexity": 1,
+        "closures": []
+      }
+    ],
+    "tests/test_page_capture.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 19,
+        "lineno": 16,
+        "col_offset": 0,
+        "name": "test_exact_response_receipts",
+        "complexity": 5,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 26,
+        "lineno": 26,
+        "col_offset": 0,
+        "name": "test_exact_revision_evidence_and_license",
+        "complexity": 4,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 43,
+        "lineno": 38,
+        "col_offset": 0,
+        "name": "test_contract_rejects_revision_mismatch_and_missing_film_link",
+        "complexity": 1,
+        "closures": []
+      }
+    ],
+    "tests/test_page_review.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 24,
+        "lineno": 24,
+        "col_offset": 0,
+        "name": "test_partial_aggregate_is_not_a_partial_individual_ballot",
+        "complexity": 4,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 15,
+        "lineno": 10,
+        "col_offset": 0,
+        "name": "test_changed_failed_and_partial_responses_require_review",
+        "complexity": 2,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 21,
+        "lineno": 19,
+        "col_offset": 0,
+        "name": "test_unreviewed_editions_fail_closed",
+        "complexity": 1,
+        "closures": []
+      }
+    ],
+    "tests/test_scoring_contract.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 66,
+        "lineno": 9,
+        "col_offset": 0,
+        "name": "test_upgrade_preserves_unverified_metadata",
+        "complexity": 5,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 81,
+        "lineno": 69,
+        "col_offset": 0,
+        "name": "test_lineage_kind_is_independent_of_text_and_verification",
+        "complexity": 4,
+        "closures": []
+      }
+    ],
+    "tests/test_persist_conflicts.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 50,
+        "lineno": 50,
+        "col_offset": 0,
+        "name": "test_changed_list_metadata_rolls_back_new_revision",
+        "complexity": 3,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 24,
+        "lineno": 24,
+        "col_offset": 0,
+        "name": "test_same_revision_rejects_changed_output",
+        "complexity": 2,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 74,
+        "lineno": 67,
+        "col_offset": 0,
+        "name": "test_revision_without_fingerprint_fails_closed",
+        "complexity": 1,
+        "closures": []
+      }
+    ],
+    "tests/test_historical_migration.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 9,
+        "lineno": 9,
+        "col_offset": 0,
+        "name": "test_historical_v1_is_rejected_without_changes",
+        "complexity": 3,
+        "closures": []
+      }
+    ],
+    "tests/test_persist.py": [
+      {
+        "type": "function",
+        "rank": "B",
+        "endline": 47,
+        "lineno": 23,
+        "col_offset": 0,
+        "name": "test_provisional_ingestion_is_idempotent",
+        "complexity": 7,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "B",
+        "endline": 79,
+        "lineno": 79,
+        "col_offset": 0,
+        "name": "test_all_registry_editions_share_one_source",
+        "complexity": 7,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 76,
+        "lineno": 50,
+        "col_offset": 0,
+        "name": "test_transcription_stays_pending_and_new_revision_does_not_replace_current",
+        "complexity": 3,
+        "closures": []
+      }
+    ],
+    "tests/test_page_adapters.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 26,
+        "lineno": 26,
+        "col_offset": 0,
+        "name": "test_complete_records_match_independent_rendered_oracle",
+        "complexity": 5,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 38,
+        "lineno": 38,
+        "col_offset": 0,
+        "name": "test_raw_context_has_exact_source_locator",
+        "complexity": 5,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 22,
+        "lineno": 20,
+        "col_offset": 0,
+        "name": "captured",
+        "complexity": 1,
+        "closures": []
+      }
+    ],
+    "tests/test_evidence_roundtrip.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 108,
+        "lineno": 8,
+        "col_offset": 0,
+        "name": "test_migration_and_evidence_roundtrip",
+        "complexity": 4,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 127,
+        "lineno": 111,
+        "col_offset": 0,
+        "name": "_check_match_decisions_and_reviews",
+        "complexity": 3,
+        "closures": []
+      }
+    ],
+    "tests/test_nbr_2023.py": [
+      {
+        "type": "function",
+        "rank": "B",
+        "endline": 29,
+        "lineno": 29,
+        "col_offset": 0,
+        "name": "test_provisional_nbr_provenance",
+        "complexity": 8,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 9,
+        "lineno": 9,
+        "col_offset": 0,
+        "name": "test_provisional_nbr_section",
+        "complexity": 5,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 46,
+        "lineno": 41,
+        "col_offset": 0,
+        "name": "test_provisional_nbr_invalid_sections",
+        "complexity": 1,
+        "closures": []
+      }
+    ],
+    "tests/test_evidence_backup.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 41,
+        "lineno": 6,
+        "col_offset": 0,
+        "name": "test_wal_backup_and_restore",
+        "complexity": 4,
+        "closures": []
+      }
+    ],
+    "tests/test_evidence.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 23,
+        "lineno": 10,
+        "col_offset": 0,
+        "name": "test_upgrade_preserves_existing_observation",
+        "complexity": 2,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 29,
+        "lineno": 26,
+        "col_offset": 0,
+        "name": "test_rejects_unpatched_sqlite",
+        "complexity": 1,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 61,
+        "lineno": 32,
+        "col_offset": 0,
+        "name": "test_observation_validation_and_rights",
+        "complexity": 1,
+        "closures": []
+      }
+    ],
+    "tests/test_persist_atomic.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 48,
+        "lineno": 48,
+        "col_offset": 0,
+        "name": "test_blank_observation_rejected_without_changes",
+        "complexity": 4,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 24,
+        "lineno": 24,
+        "col_offset": 0,
+        "name": "test_invalid_entries_roll_back_entire_extraction",
+        "complexity": 2,
+        "closures": []
+      }
+    ],
+    "tests/test_accept_transactions.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 9,
+        "lineno": 9,
+        "col_offset": 0,
+        "name": "test_promotion_failure_rolls_back_and_preserves_caller_transaction",
+        "complexity": 5,
+        "closures": []
+      }
+    ],
+    "tests/test_supersession.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 32,
+        "lineno": 32,
+        "col_offset": 0,
+        "name": "test_version_four_rejects_invalid_supersession_atomically",
+        "complexity": 5,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 29,
+        "lineno": 8,
+        "col_offset": 0,
+        "name": "test_supersession_stays_with_stable_entry_across_revisions",
+        "complexity": 1,
+        "closures": []
+      }
+    ],
+    "tests/test_current_match.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 6,
+        "lineno": 6,
+        "col_offset": 0,
+        "name": "test_current_match_requires_accepted_decision_for_observation_and_film",
+        "complexity": 4,
+        "closures": []
+      }
+    ],
+    "tests/test_cli.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 9,
+        "lineno": 9,
+        "col_offset": 0,
+        "name": "test_status_is_explicit_about_bootstrap",
+        "complexity": 3,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 5,
+        "lineno": 5,
+        "col_offset": 0,
+        "name": "test_version_is_defined",
+        "complexity": 2,
+        "closures": []
+      }
+    ],
+    "tests/test_lineage_upgrade.py": [
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 24,
+        "lineno": 7,
+        "col_offset": 0,
+        "name": "test_version_three_upgrade_keeps_lineage_unknown",
+        "complexity": 3,
+        "closures": []
+      }
+    ],
+    "tests/test_page_persist.py": [
+      {
+        "type": "function",
+        "rank": "B",
+        "endline": 24,
+        "lineno": 24,
+        "col_offset": 0,
+        "name": "test_real_capture_persistence_is_pending_and_idempotent",
+        "complexity": 6,
+        "closures": []
+      },
+      {
+        "type": "function",
+        "rank": "A",
+        "endline": 39,
+        "lineno": 39,
+        "col_offset": 0,
+        "name": "test_real_capture_does_not_become_accepted_by_test_oracle",
+        "complexity": 4,
+        "closures": []
+      }
+    ]
+  },
+  "mi": {
+    "src/film_iq/__init__.py": {
+      "mi": 100.0,
+      "rank": "A"
+    },
+    "src/film_iq/cli.py": {
+      "mi": 65.3195580684234,
+      "rank": "A"
+    },
+    "src/film_iq/ingest/audit.py": {
+      "mi": 57.370785370580094,
+      "rank": "A"
+    },
+    "src/film_iq/ingest/persist.py": {
+      "mi": 50.665817127101406,
+      "rank": "A"
+    },
+    "src/film_iq/ingest/persist_entries.py": {
+      "mi": 67.20367118735466,
+      "rank": "A"
+    },
+    "src/film_iq/ingest/accept.py": {
+      "mi": 56.59416776753423,
+      "rank": "A"
+    },
+    "src/film_iq/ingest/accept_record.py": {
+      "mi": 100.0,
+      "rank": "A"
+    },
+    "src/film_iq/ingest/persist_checks.py": {
+      "mi": 51.02385109026036,
+      "rank": "A"
+    },
+    "src/film_iq/ingest/adapters/sight_sound_pages.py": {
+      "mi": 60.353384875282934,
+      "rank": "A"
+    },
+    "src/film_iq/ingest/adapters/film_registry.py": {
+      "mi": 50.45998077473286,
+      "rank": "A"
+    },
+    "src/film_iq/ingest/adapters/nbr_pages.py": {
+      "mi": 62.02754081555423,
+      "rank": "A"
+    },
+    "src/film_iq/ingest/adapters/nbr_2023.py": {
+      "mi": 56.34006955629861,
+      "rank": "A"
+    },
+    "src/film_iq/ingest/adapters/page_capture.py": {
+      "mi": 50.025032185536084,
+      "rank": "A"
+    },
+    "src/film_iq/storage/__init__.py": {
+      "mi": 65.78035497264392,
+      "rank": "A"
+    },
+    "src/film_iq/domain/__init__.py": {
+      "mi": 61.65049435402761,
+      "rank": "A"
+    },
+    "tests/test_accept.py": {
+      "mi": 50.894681966870294,
+      "rank": "A"
+    },
+    "tests/test_persist_transactions.py": {
+      "mi": 54.500756341774675,
+      "rank": "A"
+    },
+    "tests/conftest.py": {
+      "mi": 57.38858807183648,
+      "rank": "A"
+    },
+    "tests/test_film_registry.py": {
+      "mi": 50.89978657522922,
+      "rank": "A"
+    },
+    "tests/test_page_capture.py": {
+      "mi": 50.32270106715404,
+      "rank": "A"
+    },
+    "tests/test_page_review.py": {
+      "mi": 58.18723412219948,
+      "rank": "A"
+    },
+    "tests/test_scoring_contract.py": {
+      "mi": 51.5023801452349,
+      "rank": "A"
+    },
+    "tests/test_persist_conflicts.py": {
+      "mi": 51.92783117828035,
+      "rank": "A"
+    },
+    "tests/test_historical_migration.py": {
+      "mi": 63.08304722554197,
+      "rank": "A"
+    },
+    "tests/test_persist.py": {
+      "mi": 51.04946175199618,
+      "rank": "A"
+    },
+    "tests/test_page_adapters.py": {
+      "mi": 51.335846691677496,
+      "rank": "A"
+    },
+    "tests/test_evidence_roundtrip.py": {
+      "mi": 53.2783338312796,
+      "rank": "A"
+    },
+    "tests/test_nbr_2023.py": {
+      "mi": 50.8751564261862,
+      "rank": "A"
+    },
+    "tests/test_evidence_backup.py": {
+      "mi": 58.02053739600586,
+      "rank": "A"
+    },
+    "tests/test_evidence.py": {
+      "mi": 53.96426187322367,
+      "rank": "A"
+    },
+    "tests/test_persist_atomic.py": {
+      "mi": 51.463935734443766,
+      "rank": "A"
+    },
+    "tests/test_accept_transactions.py": {
+      "mi": 62.60748007818911,
+      "rank": "A"
+    },
+    "tests/test_supersession.py": {
+      "mi": 52.85319086278867,
+      "rank": "A"
+    },
+    "tests/test_current_match.py": {
+      "mi": 63.557000078825816,
+      "rank": "A"
+    },
+    "tests/test_cli.py": {
+      "mi": 69.73958790734747,
+      "rank": "A"
+    },
+    "tests/test_lineage_upgrade.py": {
+      "mi": 62.12263872427131,
+      "rank": "A"
+    },
+    "tests/test_page_persist.py": {
+      "mi": 55.6109627765863,
+      "rank": "A"
+    }
+  },
+  "quality_checks": {
+    "ruff_check": "passed",
+    "ruff_format_check": "passed",
+    "ty_check": "passed with --python ../a5/.venv/bin/python and PYTHONPATH=A6/src",
+    "pytest": "93 passed; 29 new parametrized cases; temporary DBs in A6/.cache/pytest-final",
+    "git_diff_check": "passed"
+  }
+}

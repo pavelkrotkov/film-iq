@@ -1,0 +1,148 @@
+{
+  "auditor_kind": "independent_automated_agent",
+  "human_audit": false,
+  "method": {
+    "purpose": "Independent candidate oracle for issue #6, prepared before adapters; records remain pending human audit.",
+    "scope": "Read only AGENTS.md and captures.json, rightsinfo.json, *.revision.json and *.rendered.json in tests/fixtures/ingest/pages. No wikitext captures, adapter code, tests or other worktrees were read. No network access or file writes occurred.",
+    "extraction": "Enumerated selections from rendered HTML target sections in display order. Positions are one-based selection positions. Preserved displayed spelling and case. Used NBR Best Film rank 1 and null ranks for alphabetical non-winners; used explicit Sight and Sound li value ranks. Repeated ranks share stable rank-N tie identifiers.",
+    "exclusions": "Ignored image captions, narrative film mentions, references, navigation, embedded categories and empty list elements.",
+    "verification": "For all four pages, rendered response revision, title and page ID match revision evidence and manifest. Revision and rendered file byte counts and SHA-256 hashes match captures.json. All manifest license declarations match rightsinfo.json. Unread wikitext captures were not verified.",
+    "rights_limits": {
+      "declared_license": "Creative Commons Attribution-Share Alike 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
+      "limits": "Verified consistency of local declarations only. Reuse must preserve applicable attribution, license and share-alike obligations. This declaration does not establish rights to original NBR/BFI publications, referenced material or embedded images; those rights were not verified."
+    },
+    "validation_limits": "Local Wikipedia rendered evidence only; no original-source factual validation, independent upstream corroboration, film identity resolution or human audit."
+  },
+  "per_page": [
+    {
+      "key": "nbr-2022",
+      "revision": 1269459635,
+      "expected_entries": [
+        {"title": "Top Gun: Maverick", "position": 1, "rank": 1, "tie": null},
+        {"title": "Aftersun", "position": 2, "rank": null, "tie": null},
+        {"title": "Avatar: The Way of Water", "position": 3, "rank": null, "tie": null},
+        {"title": "The Banshees of Inisherin", "position": 4, "rank": null, "tie": null},
+        {"title": "Everything Everywhere All at Once", "position": 5, "rank": null, "tie": null},
+        {"title": "The Fabelmans", "position": 6, "rank": null, "tie": null},
+        {"title": "Glass Onion: A Knives Out Mystery", "position": 7, "rank": null, "tie": null},
+        {"title": "RRR", "position": 8, "rank": null, "tie": null},
+        {"title": "Till", "position": 9, "rank": null, "tie": null},
+        {"title": "The Woman King", "position": 10, "rank": null, "tie": null},
+        {"title": "Women Talking", "position": 11, "rank": null, "tie": null}
+      ],
+      "completeness": {
+        "classification": "complete_published_section",
+        "section": "Top 10 Films",
+        "selection_count": 11,
+        "complete_ballot": false,
+        "partial_individual_ballot": false,
+        "basis": "Entire captured section contains the bold Best Film plus ten additional alphabetical films; heading does not justify truncation."
+      },
+      "eligibility_limits": "Institutional published selection, not an individual ballot. Alphabetical non-winners have no demonstrated ranks or ties. No other award sections audited.",
+      "provenance_limits": "Derivative Wikipedia evidence only. Rendered revision 1269459635 matches revision evidence dated 2025-01-14T20:07:26Z; title, page ID, hashes, byte counts and rights declaration match. Original NBR facts and rights were not independently verified.",
+      "issues": [
+        "Heading says Top 10 Films but the rendered section supplies eleven selections; preserve all eleven."
+      ]
+    },
+    {
+      "key": "nbr-2023",
+      "revision": 1370562803,
+      "expected_entries": [
+        {"title": "Killers of the Flower Moon", "position": 1, "rank": 1, "tie": null},
+        {"title": "Barbie", "position": 2, "rank": null, "tie": null},
+        {"title": "The Boy and the Heron", "position": 3, "rank": null, "tie": null},
+        {"title": "Ferrari", "position": 4, "rank": null, "tie": null},
+        {"title": "The Holdovers", "position": 5, "rank": null, "tie": null},
+        {"title": "The Iron Claw", "position": 6, "rank": null, "tie": null},
+        {"title": "Maestro", "position": 7, "rank": null, "tie": null},
+        {"title": "Oppenheimer", "position": 8, "rank": null, "tie": null},
+        {"title": "Past Lives", "position": 9, "rank": null, "tie": null},
+        {"title": "Poor Things", "position": 10, "rank": null, "tie": null}
+      ],
+      "completeness": {
+        "classification": "complete_published_section",
+        "section": "Top 10 Films",
+        "selection_count": 10,
+        "complete_ballot": false,
+        "partial_individual_ballot": false,
+        "basis": "Entire captured section contains the bold Best Film plus nine additional alphabetical films."
+      },
+      "eligibility_limits": "Institutional published selection, not an individual ballot. Alphabetical non-winners have no demonstrated ranks or ties. No other award sections audited.",
+      "provenance_limits": "Derivative Wikipedia evidence only. Rendered revision 1370562803 matches revision evidence dated 2026-08-21T21:18:01Z; title, page ID, hashes, byte counts and rights declaration match. Original NBR facts and rights were not independently verified.",
+      "issues": []
+    },
+    {
+      "key": "sight-sound-2012",
+      "revision": 1196879962,
+      "expected_entries": [
+        {"title": "Tokyo Story", "position": 1, "rank": 1, "tie": null},
+        {"title": "2001: A Space Odyssey", "position": 2, "rank": 2, "tie": "rank-2"},
+        {"title": "Citizen Kane", "position": 3, "rank": 2, "tie": "rank-2"},
+        {"title": "8½", "position": 4, "rank": 4, "tie": null},
+        {"title": "Taxi Driver", "position": 5, "rank": 5, "tie": null},
+        {"title": "Apocalypse Now", "position": 6, "rank": 6, "tie": null},
+        {"title": "The Godfather", "position": 7, "rank": 7, "tie": "rank-7"},
+        {"title": "Vertigo", "position": 8, "rank": 7, "tie": "rank-7"},
+        {"title": "Mirror", "position": 9, "rank": 9, "tie": null},
+        {"title": "Bicycle Thieves", "position": 10, "rank": 10, "tie": null}
+      ],
+      "completeness": {
+        "classification": "partial_aggregate_list",
+        "section": "Directors' poll",
+        "captured_section_complete": true,
+        "selection_count": 10,
+        "complete_ballot": false,
+        "partial_individual_ballot": false,
+        "basis": "Captured section supplies aggregate ranks through 10 and references a Directors' Top 100; it does not supply the full aggregate or any individual ballot."
+      },
+      "eligibility_limits": "Aggregate directors' poll excerpt only. Cannot infer individual selections, ballot completeness or ranks beyond the excerpt. NO partial individual ballot is shown.",
+      "provenance_limits": "Derivative Wikipedia evidence only. Rendered revision 1196879962 matches revision evidence dated 2024-01-18T19:39:12Z; title, page ID, hashes, byte counts and rights declaration match. Original BFI results and rights were not independently verified.",
+      "issues": [
+        "Rendered section contains an undefined named-reference error for director2012; selection enumeration remains readable.",
+        "Rendered edit link uses section=1 while manifest requests section=3; heading matches Directors' poll, but edit-link numbering is not revision or request-section validation."
+      ]
+    },
+    {
+      "key": "sight-sound-2022",
+      "revision": 1332699136,
+      "expected_entries": [
+        {"title": "2001: A Space Odyssey", "position": 1, "rank": 1, "tie": null},
+        {"title": "Citizen Kane", "position": 2, "rank": 2, "tie": null},
+        {"title": "The Godfather", "position": 3, "rank": 3, "tie": null},
+        {"title": "Jeanne Dielman, 23 quai du Commerce, 1080 Bruxelles", "position": 4, "rank": 4, "tie": "rank-4"},
+        {"title": "Tokyo Story", "position": 5, "rank": 4, "tie": "rank-4"},
+        {"title": "Vertigo", "position": 6, "rank": 6, "tie": "rank-6"},
+        {"title": "8½", "position": 7, "rank": 6, "tie": "rank-6"},
+        {"title": "Mirror", "position": 8, "rank": 8, "tie": null},
+        {"title": "Close-up", "position": 9, "rank": 9, "tie": "rank-9"},
+        {"title": "In the Mood for Love", "position": 10, "rank": 9, "tie": "rank-9"},
+        {"title": "Persona", "position": 11, "rank": 9, "tie": "rank-9"}
+      ],
+      "completeness": {
+        "classification": "partial_aggregate_list",
+        "section": "Directors' poll",
+        "captured_section_complete": true,
+        "selection_count": 11,
+        "complete_ballot": false,
+        "partial_individual_ballot": false,
+        "basis": "Section explicitly presents the top 10 from the aggregate directors' list; all three rank-9 selections are included, yielding eleven films. Full aggregate and individual ballots are absent."
+      },
+      "eligibility_limits": "Aggregate directors' poll excerpt only. Cannot infer individual selections, ballot completeness or ranks beyond the excerpt. NO partial individual ballot is shown.",
+      "provenance_limits": "Derivative Wikipedia evidence only. Rendered revision 1332699136 matches revision evidence dated 2026-01-13T08:47:24Z; title, page ID, hashes, byte counts and rights declaration match. Original BFI results and rights were not independently verified.",
+      "issues": [
+        "Empty mw-empty-elt list items are not selections and must not affect positions or ranks.",
+        "Displayed Close-up differs in case from its link target; preserved displayed text.",
+        "Rendered edit link uses section=1 while manifest requests section=2; heading matches Directors' poll, but edit-link numbering is not revision or request-section validation."
+      ]
+    }
+  ],
+  "final_gate_status": {
+    "status": "candidate_oracle_pending_human_audit",
+    "local_evidence_consistency": "passed",
+    "original_source_factual_validation": "not_performed",
+    "human_audit": false,
+    "partial_individual_ballot_present": false,
+    "records": "All records remain pending human audit; automated consistency checks do not satisfy a human-audit gate."
+  }
+}

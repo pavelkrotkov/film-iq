@@ -55,7 +55,7 @@ def test_observation_validation_and_rights(tmp_path):
             ),
         )
     db.rollback()
-    db.execute("PRAGMA user_version = 6")
+    db.execute("PRAGMA user_version = 9")
     with pytest.raises(ValueError, match="unsupported"):
         migrate(db)
     db.close()
