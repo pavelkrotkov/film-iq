@@ -105,6 +105,8 @@ Holdout leads (12):
 - Two programme PDFs, [Rotterdam](https://iffr.com/en/wp-content/uploads/sites/2/2025/01/IFFR-2025-Programme-Guide-DEF.pdf) and [Sydney](https://cms.sff.org.au/wp-content/uploads/2026/05/SFF_2026_ProgramGuide_FA_Digital-1.pdf), and the BFI distribution spreadsheet referenced from its site: three unbounded format leads, with storage and redistribution rights unresolved.
 - Cannes 2024 `https://www.festival-cannes.com/en/press/press-releases/the-films-of-the-official-selection-2024/` and 2026 `https://www.festival-cannes.com/en/press/press-releases/the-films-of-the-official-selection-2026/`: two page holdouts, **not** unseen-layout holdouts.
 
+An additional uncounted development lead is NEH's [Created Equal page](https://www.neh.gov/initiatives/created-equal). Indexed text contains both four- and five-film descriptions and six related project cards, including an overview, so film membership needs separate verification. NEH's [robots policy](https://www.neh.gov/robots.txt) requests a 300-second crawl delay; no direct page request or benchmark was made here. Its [terms](https://www.neh.gov/privacy-terms-of-use) distinguish generally public-domain federal materials from protected third-party material; fixture rights remain to be checked for the specific content.
+
 Before running, freeze manually audited entries, ranks/ties, membership, source family/lineage and locators, with publisher, document revision, audit date and rights. Keep holdout layouts out of development. Distinguish a publisher's partial selection of ballots, an author's intentionally unranked or partial ballot, and an incomplete extraction. A cited span alone does not validate list membership, rank, identity or category.
 
 ## Remaining measurements and decision
