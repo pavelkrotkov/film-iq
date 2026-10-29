@@ -225,6 +225,8 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 
 **A1 preliminary finding:** The SQLite schema records source rights, list-linked extraction revisions, review decisions and source-supplied external IDs; migration and restore fixtures pass on patched SQLite. Independence and lineage verification default to unknown, and current accepted matches are explicit. Real-source rights and downstream integration remain unverified. IDs supplied by a source remain distinct from resolved film identifiers.
 
+**A4 preliminary finding:** Synthetic identity decisions and manual corrections persist against the A1 schema with links to extraction revisions. Held-out specialty-film precision, coverage and review rate remain unmeasured; the matching fixtures do not establish real-world accuracy.
+
 ### Epic B — Explore source universe and provider quality
 
 Runs in parallel with POC under its own controller; B1–B7 may all begin independently using their own representative sources, synthetic inputs or benchmark fixtures. B8 can maintain a living draft immediately but finalizes Gate B only after the relevant B1–B7 evidence. No issue in Epic B has a hard start or completion dependency on Epic A.

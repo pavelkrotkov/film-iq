@@ -45,10 +45,6 @@ def test_persist_unresolved_and_reverse_against_draft_contract() -> None:
     db.execute("PRAGMA foreign_keys = ON")
     root = Path(__file__).resolve().parents[1]
     migration = root / "src/film_iq/storage/001.sql"
-    if not migration.exists():
-        migration = root.parent / "a4/src/film_iq/storage/001.sql"
-    if not migration.exists():
-        pytest.skip("Issue #4 migration is not available in this worktree or sibling a4")
     db.executescript(migration.read_text())
     db.executescript("""
         INSERT INTO source VALUES ('s','Source','poll','original','url',NULL,NULL,
