@@ -29,9 +29,7 @@ exact identity remains required.
 Retrying after a lost response re-reads state; the
 stub tests this, but actual read-after-write consistency, duplicate behavior,
 concurrent changes and the installed instance's version are not verified.
-Confirm those properties on the target instance before use. No credentials or
-HTTP transport implementation are configured by this module.
+Confirm those properties on the target instance before use. The CLI supplies a stdlib HTTP transport; credentials are read only for explicitly approved execution.
 
-Gate A remains open: A1–A6 are not integrated, the source-to-offer path is
-synthetic, and the approved Movary round trip and its measurements are absent.
+Gate A remains open: the A1–A6 code is integrated, but the tested source-to-offer path is synthetic. The target instance version, complete real ratings export, approved Movary round trip and live measurements remain unverified.
 Any live watchlist change requires a separate explicit user authorization.

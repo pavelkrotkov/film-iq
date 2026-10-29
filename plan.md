@@ -331,3 +331,41 @@ is now corroborated against upstream BFI HTML without retaining it; conflicting
 year labels remain unresolved. Independent automated audit is valid within its
 stated scope; no human-only gate applies. Explicit acceptance has not been recorded.
 No Gate A completion claimed.
+
+
+### Epic A integration and merge findings (2026-10-29)
+
+Implementation PRs #29 (schema), #30 (Movary reads/ratings), #28 (scoring),
+#31 (offers/planning), #34 (identity) and #33 (captured-page extraction) have merged
+with green CI and resolved review threads. A7 (#32) integrates these modules into
+read-only Markdown/JSON reports and a one-selection, explicit-approval sync CLI.
+The source and identity issues remain open for their empirical acceptance gaps.
+
+The combined A7 tree passes 291 tests with one opt-in live test skipped; Ruff,
+formatting and ty pass. Radon 6.0.1 over all 107 source/test
+Python files reports maximum CC 8 and minimum MI 50.025. A duplicated identity-test
+setup and callback were simplified to meet the all-files maintainability target;
+no production identity behavior was changed. The complete synthetic public-API test now connects persisted extraction, explicit audit, reviewed identity, score, offer, feasible plan, default preview and approved stub write; an unchanged rerun preserves evidence and watchlist state. No new runtime dependency was added.
+
+GPT-6.1 Sol High reviewers posted findings and follow-up reviews on the PRs.
+Agreed defects received regression checks, replies and resolved threads. Native
+nested parallel agents were unavailable in those review sessions, so their
+standards/spec axes were reviewed separately; this is a workflow limitation,
+not a claim that the requested nested parallel review ran. No external CI bot
+review arrived; all available review conversations were examined.
+
+Gate A is **not accepted**. Remaining evidence includes a redistributable genuine
+partial individual-assessment fixture (#6), independently audited TMDB truth and
+nonzero scored held-out cases (#7), and target Movary version/export/live semantics
+and a real source-to-offer trace (#5/#9/#10). The current five-case identity run
+has zero scored cases; unknown truth is not an accuracy result. The actual Movary
+instance and authorized local configuration have been requested. No live account
+call or watchlist write has occurred. Any selected live write still requires its
+preview and explicit approval; merging code does not authorize it. Epic B research
+and provisional ADR decisions remain independent.
+
+
+A separate acceptance audit confirms #4 is complete and it is now closed. The
+same audit found that #8 still needs explicit, separate extraction, identity,
+evidence/disagreement and prediction uncertainty states under ADR 0006. A small
+follow-up is being implemented; no calibration or prediction confidence is claimed.

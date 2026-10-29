@@ -3,7 +3,7 @@
 Run `uv run film-iq report --database path/to/evidence.db --inputs path/to/report-inputs.json`.
 Markdown is the default; add `--format json` for machine-readable output. The
 database is opened read-only. The command does not migrate, accept evidence,
-change identities, fetch provider data or write to Movary. It emits JSON with
+change identities, fetch provider data or write to Movary. Both formats include
 source citations, rank and completeness context, excluded derivative evidence,
 US offer status and observation time, feasible plans, costs, assumptions and
 watchlist previews for each plan's selected films. The explicit internal-film to
