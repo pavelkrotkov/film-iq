@@ -1,0 +1,9 @@
+{
+  "file": "rightsinfo.json",
+  "requested_url": "https://en.wikipedia.org/w/api.php?action=query&meta=siteinfo&siprop=rightsinfo&format=json",
+  "response_url": "https://en.wikipedia.org/w/api.php?action=query&meta=siteinfo&siprop=rightsinfo&format=json",
+  "http_status": 200,
+  "accessed_at": "2026-10-29T22:07:22.459652+00:00",
+  "bytes": 162,
+  "sha256": "8a7345e12679082632295a2c2889b16f3c288f0fbc71082bc0fdf5929a518bb7"
+}

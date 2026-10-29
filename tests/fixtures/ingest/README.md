@@ -1,3 +1,12 @@
+# Captured-page continuation — 2026-10-29
+
+Four new, exact MediaWiki section-response captures from four distinct pages are in
+[`pages/`](pages/NOTICE.md), with independent automated rendered-HTML expected records.
+They replace neither the legacy files nor their acceptance status. See the
+[A6 evidence report](../../../docs/a6/README.md) for measured results and remaining
+partial-individual-ballot and human-attestation gaps. The notes below describe
+the earlier provisional fixtures at their original audit time.
+
 # 2023 NBR section fixture
 
 `nbr-2023.wiki` is a purported unmodified excerpt of the “Top 10 Films” section of

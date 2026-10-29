@@ -1,4 +1,4 @@
-"""Audit assertions supplied by a human reviewer."""
+"""Audit assertions supplied by an explicitly identified independent reviewer."""
 
 from dataclasses import dataclass
 

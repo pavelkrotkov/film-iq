@@ -1,4 +1,4 @@
-"""Explicitly accept an extraction using a human audit attestation."""
+"""Explicitly accept an extraction using an independent audit attestation."""
 
 import sqlite3
 

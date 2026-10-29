@@ -7,7 +7,7 @@ from contextlib import contextmanager
 from dataclasses import asdict
 from hashlib import sha256
 
-from film_iq.ingest.adapters import film_registry, nbr_2023
+from film_iq.ingest.adapters import film_registry, nbr_2023, page_capture
 from film_iq.ingest.persist_checks import (
     SourcePolicy,
     _check_list,
@@ -32,7 +32,7 @@ def _savepoint(db: sqlite3.Connection) -> Generator[None]:
 
 def persist(
     db: sqlite3.Connection,
-    extraction: nbr_2023.Extraction | film_registry.Extraction,
+    extraction: nbr_2023.Extraction | film_registry.Extraction | page_capture.Extraction,
     policy: SourcePolicy,
     edition: str,
     accessed_at: str,
@@ -52,10 +52,14 @@ def persist(
     observations = _observations(extraction, policy, list_id, revision_id, run_id)
     original = getattr(extraction, "original_url", extraction.source_url)
     reason = getattr(extraction, "review_reason", "Manual transcription requires independent audit")
-    rank_semantics = (
-        "winner ranked; remaining entries unranked"
-        if isinstance(extraction, nbr_2023.Extraction)
-        else "unranked; display order is not rank"
+    rank_semantics = getattr(
+        extraction,
+        "rank_semantics",
+        (
+            "winner ranked; remaining entries unranked"
+            if isinstance(extraction, nbr_2023.Extraction)
+            else "unranked; display order is not rank"
+        ),
     )
     output_hash = sha256(
         json.dumps(asdict(extraction), sort_keys=True, ensure_ascii=False).encode()

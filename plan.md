@@ -229,7 +229,7 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 
 **A3 source leads:** [BFI's 2022 poll announcement](https://www.bfi.org.uk/news/revealed-results-2022-sight-sound-greatest-films-all-time-poll) describes tied ranks, and [Film Comment's 2024 ballots](https://www.filmcomment.com/best-films-of-2024-individual-ballots/) publishes a selection of ballots. Their [BFI](https://www.bfi.org.uk/terms-use) and [Film Comment](https://www.filmcomment.com/terms-of-service/) terms do not establish permission to commit raw captures. Partial publication of ballots does not establish that a particular displayed ballot is incomplete.
 
-**A3 persistence:** Provisional fixture output can be stored with rights metadata and parser provenance. Repeat ingestion is idempotent; conflicting output fails rather than silently replacing accepted evidence. An explicit human audit attestation can promote a complete revision; its correctness and independence remain human claims. No real fixture has been promoted to accepted.
+**A3 persistence:** Provisional fixture output can be stored with rights metadata and parser provenance. Repeat ingestion is idempotent; conflicting output fails rather than silently replacing accepted evidence. An explicit independent audit attestation can promote a complete revision; its correctness and independence are auditor claims. Historical human-only wording was an implementation assumption, not issue #6’s requirement. Automated versus human kind must be labelled in the auditor/evidence record. No real fixture has been promoted to accepted.
 
 ### Epic B — Explore source universe and provider quality
 
@@ -299,3 +299,17 @@ Primary references (revalidate versions/terms during implementation):
 
 Issue is linked to an epic and relevant ADR; acceptance tests demonstrate requested behavior; new data fields have origins/rights and migration/rollback; error and review states are explicit; no unapproved writes; docs/config and CI updated; actual measurement or a precise “not yet verified” note attached; PR review and CI requirements in AGENTS.md satisfied.
 
+
+### A3 captured-page continuation (2026-10-29)
+
+Four exact, pinned Wikipedia section responses from distinct source pages now cover
+42 published records with ranked, tied, alphabetical/unranked and partial-aggregate
+semantics. Two frozen deterministic page adapters match a separate read-only agent's
+rendered-HTML oracle. Rights notices, hashes, endpoints and limits are in
+[the A6 evidence report](docs/a6/README.md). These are actual API captures, not
+transcriptions or whole-page snapshots. All records remain provisional/pending;
+a genuine partial individual-ballot fixture remains open. The 2012 title/rank subset
+is now corroborated against upstream BFI HTML without retaining it; conflicting
+year labels remain unresolved. Independent automated audit is valid within its
+stated scope; no human-only gate applies. Explicit acceptance has not been recorded.
+No Gate A completion claimed.

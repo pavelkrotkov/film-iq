@@ -3,12 +3,12 @@
 import sqlite3
 
 from film_iq.domain import Observation
-from film_iq.ingest.adapters import film_registry, nbr_2023
+from film_iq.ingest.adapters import film_registry, nbr_2023, page_capture
 from film_iq.ingest.persist_checks import SourcePolicy, _key
 
 
 def _observations(
-    extraction: nbr_2023.Extraction | film_registry.Extraction,
+    extraction: nbr_2023.Extraction | film_registry.Extraction | page_capture.Extraction,
     policy: SourcePolicy,
     list_id: str,
     revision_id: str,
@@ -32,6 +32,7 @@ def _observations(
                 context,
                 entry.locator,
                 entry.rank,
+                tie=getattr(entry, "tie", None),
                 position=entry.position,
             )
         )
