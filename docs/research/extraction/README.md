@@ -1,0 +1,50 @@
+# B3: Extraction benchmark protocol and synthetic checks
+
+**Version:** 0.1, preliminary. **Date:** 2026-10-29 UTC. **Issue:** [#13](https://github.com/pavelkrotkov/film-iq/issues/13). **Context:** [plan §4](../../../plan.md), [ADR 0005](../../adr/0005-extraction-choice.md), [ADR 0012](../../adr/0012-empirical-gates.md).
+
+No real document has been audited for the benchmark, and no browser, LLM, HTTP extractor or dlt comparison has been run. The candidates below are leads only; they are not a frozen gold set or authorization to acquire, store or redistribute source material. No source bodies are included here.
+
+BFI and Cannes URLs are recorded as identifiers rather than active links while their stated linking conditions are reviewed; this is not a legal opinion.
+
+## Runnable synthetic checks
+
+From the worktree root:
+
+```sh
+mkdir -p .cache/tmp
+UV_CACHE_DIR="$PWD/.cache/uv" TMPDIR="$PWD/.cache/tmp" PYTHONDONTWRITEBYTECODE=1 \
+  uv run --no-project --no-config --offline --python python3 -m unittest docs.research.extraction.test_benchmark
+```
+
+The four standard-library checks use entirely fictional observations. One removes three of 50 entries: measured entry-key precision is 100%, recall is 94%, and complete-document status is **false**. Others verify that changed title, rank, tie, category or lineage fails despite unchanged keys, that an unranked entry remains unranked, that duplicates fail completeness, and that an empty gold set cannot pass. Entry-key matching assumes independently assigned stable keys; it is not yet a verified real-source identity-matching method. Per-field accuracy covers matched keys only; complete-document status additionally requires exact observations and counts.
+
+The SQLite check loads two fictional rows, repeats an unchanged upsert with zero additional `total_changes`, injects a constraint failure after a changed row and verifies rollback, then retries the correction. This is an in-memory transactional error check, not a process-crash, persisted restart or source recovery benchmark.
+
+The four checks passed locally on 2026-10-29. This smoke test is not representative extraction performance or a comparison of tools. No model/API calls or manual corrections were made by the test.
+
+## Candidate manifest, not an audited corpus
+
+The suggested split contains **22 development and 12 holdout leads**. Assign a document section and exact expected observations only after confirming access and retention rights. Entire festival PDF programmes and spreadsheets need bounded page or row selections; a confirmed browser-dependent page is still missing.
+
+Development leads (22):
+
+- BFI/Sight and Sound annual top-50 lists for 2022–2025: `https://www.bfi.org.uk/sight-and-sound/polls/50-best-films-2022`, `https://www.bfi.org.uk/sight-and-sound/polls/50-best-films-2023`, `https://www.bfi.org.uk/sight-and-sound/polls/50-best-films-2024`, `https://www.bfi.org.uk/sight-and-sound/polls/50-best-films-2025`. Individual ballots for 2022–2025: `https://www.bfi.org.uk/sight-and-sound/polls/best-films-2022-all-votes`, `https://www.bfi.org.uk/sight-and-sound/polls/best-films-2023-all-votes`, `https://www.bfi.org.uk/sight-and-sound/polls/best-films-2024-all-votes`, `https://www.bfi.org.uk/sight-and-sound/polls/best-films-2025-all-votes`. These are eight page leads. Its terms `https://www.bfi.org.uk/terms-use` restrict copying and deep links; permission and permitted retention remain unresolved.
+- Film Comment best films for [2025](https://www.filmcomment.com/best-films-of-2025/), [2024](https://www.filmcomment.com/best-films-of-2024/) and [2023](https://www.filmcomment.com/best-films-of-2023/); undistributed lists for [2025](https://www.filmcomment.com/best-undistributed-films-of-2025/) and [2024](https://www.filmcomment.com/best-undistributed-films-of-2024/); individual ballots for [2025](https://www.filmcomment.com/best-films-of-2025-individual-ballots/), [2024](https://www.filmcomment.com/best-films-of-2024-individual-ballots/), [2023](https://www.filmcomment.com/best-films-of-2023-individual-ballots/), [2022](https://www.filmcomment.com/best-films-of-2022-individual-ballots/) and [2021](https://www.filmcomment.com/best-films-of-2021-individual-ballots/): ten pages. Its [terms](https://www.filmcomment.com/terms-of-service/) prohibit automated cataloging and storage; do not scrape without authorization.
+- Cannes official selections for 2025 `https://www.festival-cannes.com/en/press/press-releases/the-films-of-the-official-selection-2025/` and 2023 `https://www.festival-cannes.com/en/press/press-releases/the-films-of-the-official-selection-2023/`, and New York Film Festival main slates for [2025](https://www.filmlinc.org/nyff2025/daily/63rd-new-york-film-festival-main-slate-announced/) and [2024](https://www.filmlinc.org/press/flc-announces-nyff62-main-slate-selections/): four pages. Check terms before any automated acquisition or retained fixture.
+
+Holdout leads (12):
+
+- Three unseen Slant layouts: [2024](https://www.slantmagazine.com/features/the-25-best-films-of-2024/), [2023](https://www.slantmagazine.com/features/the-25-best-films-of-2023/) and [2022](https://www.slantmagazine.com/features/the-25-best-films-of-2022/).
+- Four other festival publishers: [Tirana](https://tiranafilmfest.org/official-selection-2025/), [Ulaanbaatar](https://www.ubiff.mn/pinned-news/the-films-for-the-17th-ulaanbaatar-international-film-festival-have-been-announced/), [Brussels shorts](https://bsff.be/en/programme/2025-edition/international-competition/) and [Pollino](https://www.pollinofilmfestival.it/editions/2025-official-selection/).
+- Two programme PDFs, [Rotterdam](https://iffr.com/en/wp-content/uploads/sites/2/2025/01/IFFR-2025-Programme-Guide-DEF.pdf) and [Sydney](https://cms.sff.org.au/wp-content/uploads/2026/05/SFF_2026_ProgramGuide_FA_Digital-1.pdf), and the BFI distribution spreadsheet referenced from its site: three unbounded format leads, with storage and redistribution rights unresolved.
+- Cannes 2024 `https://www.festival-cannes.com/en/press/press-releases/the-films-of-the-official-selection-2024/` and 2026 `https://www.festival-cannes.com/en/press/press-releases/the-films-of-the-official-selection-2026/`: two page holdouts, **not** unseen-layout holdouts.
+
+Before running, freeze manually audited entries, ranks/ties, membership, source family/lineage and locators, with publisher, document revision, audit date and rights. Keep holdout layouts out of development. Distinguish a publisher's partial selection of ballots, an author's intentionally unranked or partial ballot, and an incomplete extraction. A cited span alone does not validate list membership, rank, identity or category.
+
+## Remaining measurements and decision
+
+For each permitted source and method, record entry precision/recall, per-field correctness, complete-document pass rate, correction minutes, runtime, request/model cost, errors and recovery. Run plain HTTP/selectors first, a browser only where raw HTTP misses required content, and grounded LLM extraction only on cases needing it; check source spans **and** semantic membership. Do not treat inaccessible pages as empty lists.
+
+Compare transactional SQLite and dlt on the same incremental dataset and injected failures, including restart/retry; neither a dlt run nor a comparison has occurred. dlt 1.31.0 was downloaded and imported in a worktree-local cache solely to check availability. Its [pipeline documentation](https://dlthub.com/docs/general-usage/pipeline) places state in `~/.dlt/pipelines` by default, so configure the pipeline/state, database, temp and cache paths under the selected worktree before any test, and disable unsolicited telemetry. Its [SQLAlchemy destination](https://dlthub.com/docs/dlt-ecosystem/destinations/sqlalchemy) documents delete-insert and SCD2 merge strategies; measure actual duplicate and correction behavior rather than assuming an upsert. dlt's [Apache-2.0 license](https://github.com/dlt-hub/dlt/blob/devel/LICENSE) does not grant rights to source data.
+
+No dependency, source adapter, or scoring decision is adopted from these synthetic checks. Gate B remains open until the audited corpus and fair comparative measurements exist, or an explicitly inconclusive outcome is documented.
