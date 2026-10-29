@@ -26,7 +26,7 @@ def save(db: sqlite3.Connection, evidence: list[Evidence], created_at: str) -> s
     records = []
     for item in set(evidence):
         record = asdict(item)
-        record["published"] = item.published.isoformat()
+        record["published"] = item.published.isoformat() if item.published else None
         records.append(json.dumps(record, sort_keys=True, separators=(",", ":")))
     payload = "[" + ",".join(sorted(records)) + "]"
     snapshot_id = hashlib.sha256((VERSION + "\n" + payload).encode()).hexdigest()
@@ -49,6 +49,7 @@ def replay(db: sqlite3.Connection, snapshot_id: str) -> tuple[Score, ...]:
         raise ValueError(f"unsupported scoring version: {version}")
     records = json.loads(payload)
     for record in records:
-        record["published"] = date.fromisoformat(record["published"])
+        if record["published"] is not None:
+            record["published"] = date.fromisoformat(record["published"])
         record["derivative_of"] = tuple(record["derivative_of"])
     return score([Evidence(**record) for record in records])

@@ -13,16 +13,19 @@ from fractions import Fraction
 VERSION = "independent-reciprocal-rank-v1"
 
 
-@dataclass(frozen=True, order=True)
+@dataclass(frozen=True)
 class Evidence:
     film_id: str
     list_id: str
     url: str
-    published: date
+    published: date | None
     independence_group: str
     eligibility: str
     rank: int | None = None
     derivative_of: tuple[str, ...] = ()
+    entry_id: str | None = None
+    revision_id: str | None = None
+    match_decision_id: str | None = None
 
     def __post_init__(self) -> None:
         if self.rank is not None and self.rank < 1:
@@ -62,17 +65,33 @@ def score(evidence: list[Evidence]) -> tuple[Score, ...]:
 def _score_film(film_id: str, items: set[Evidence]) -> Score:
     chosen: dict[str, Evidence] = {}
     originals = (item for item in items if not item.derivative_of)
-    for item in sorted(originals, key=lambda e: (e.rank or float("inf"), e)):
+    for item in sorted(originals, key=lambda e: (e.rank or float("inf"), _evidence_key(e))):
         chosen.setdefault(item.independence_group, item)
-    contributing = tuple(sorted(chosen.values()))
+    contributing = tuple(sorted(chosen.values(), key=_evidence_key))
     return Score(
         film_id=film_id,
         version=VERSION,
         independent_count=len(contributing),
         rank_score=_rank_score(contributing),
         contributing=contributing,
-        excluded=tuple(sorted(items - set(contributing))),
+        excluded=tuple(sorted(items - set(contributing), key=_evidence_key)),
         unranked_count=sum(item.rank is None for item in contributing),
+    )
+
+
+def _evidence_key(item: Evidence) -> tuple:
+    return (
+        item.film_id,
+        item.list_id,
+        item.url,
+        item.published.isoformat() if item.published else "",
+        item.independence_group,
+        item.eligibility,
+        item.rank or 0,
+        item.derivative_of,
+        (item.entry_id is not None, item.entry_id or ""),
+        (item.revision_id is not None, item.revision_id or ""),
+        (item.match_decision_id is not None, item.match_decision_id or ""),
     )
 
 

@@ -43,3 +43,36 @@ def test_snapshot_roundtrip_and_version_guard(tmp_path) -> None:
             replay(db, snapshot_id)
         with pytest.raises(KeyError):
             replay(db, "missing")
+
+
+def test_snapshot_preserves_unknown_date_and_observation_provenance() -> None:
+    unknown = Evidence(
+        "a",
+        "list",
+        "https://example.org/list",
+        None,
+        "critic",
+        "eligible",
+        1,
+        entry_id="entry",
+        revision_id="revision",
+        match_decision_id="match",
+    )
+    dated = Evidence(
+        "a",
+        "list",
+        "https://example.org/list",
+        date(2024, 1, 1),
+        "critic",
+        "eligible",
+        1,
+        entry_id="entry2",
+        revision_id="revision",
+        match_decision_id="match2",
+    )
+    with sqlite3.connect(":memory:") as db:
+        initialize(db)
+        snapshot_id = save(db, [unknown, dated], "now")
+        assert replay(db, snapshot_id) == score([dated, unknown])
+        assert replay(db, snapshot_id)[0].contributing == (unknown,)
+        assert replay(db, snapshot_id)[0].excluded == (dated,)
