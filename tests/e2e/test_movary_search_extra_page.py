@@ -12,6 +12,8 @@ from film_iq.movary_write import MovaryWriteBackend
     ("sizes", "failed_page", "selected", "succeeds"),
     [
         ([20, 20, 1, 0], 0, 123, True),
+        ([20, 19], 0, 123, True),
+        ([19], 0, 123, True),
         ([20, 20, 1, 0], 0, 9999, False),
         ([20, 20, 1, 0], 3, 123, False),
         ([20, 20, 1, 0], 4, 123, False),

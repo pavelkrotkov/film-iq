@@ -70,6 +70,11 @@ def _search_extra_page(sizes: list[int], maximum: int | None) -> bool:
     return (total + limit - 1) // limit == maximum
 
 
+def _search_shape(rows: list, sizes: list[int]) -> None:
+    if len(rows) > 20 or (rows and sizes and sizes[-1] < 20):
+        raise ValueError("Incomplete Movary search page")
+
+
 def pages(
     request: Callable[[str], object], path: str, key: str, params: dict, *, search: bool = False
 ) -> list:
@@ -80,6 +85,8 @@ def pages(
         query = urlencode({**params, "page": page})
         trailing = search and _search_extra_page(sizes, maximum)
         rows, last = _page(request(f"{path}?{query}"), key, page, maximum, trailing=trailing)
+        if search:
+            _search_shape(rows, sizes)
         if key == "watchlist" and page < last and len(rows) < params["limit"]:
             raise ValueError("Incomplete Movary page")
         sizes.append(len(rows))
