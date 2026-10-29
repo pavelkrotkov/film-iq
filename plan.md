@@ -225,7 +225,7 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 
 **A1 preliminary finding:** The SQLite schema records source rights, list-linked extraction revisions, review decisions and source-supplied external IDs; migration and restore fixtures pass on patched SQLite. Independence and lineage verification default to unknown, and current accepted matches are explicit. Real-source rights and downstream integration remain unverified. IDs supplied by a source remain distinct from resolved film identifiers.
 
-**A3 preliminary finding:** One NBR 2023 section has been checked against the original announcement: its winner is ranked, while the other nine titles are alphabetical and unranked. The fixture's claimed Wikipedia revision remains unverified. Additional audited pages, contrasting adapters, rights verification and persisted idempotence remain open.
+**A3 preliminary finding:** One NBR 2023 section has been checked against the original announcement: its winner is ranked, while the other nine titles are alphabetical and unranked. Three Library of Congress selection transcriptions exercise a contrasting unranked format, but are not raw pages or independently audited. The NBR fixture's claimed Wikipedia revision remains unverified. Audited pages, tied and partial examples, rights verification and persisted idempotence remain open.
 
 ### Epic B — Explore source universe and provider quality
 
