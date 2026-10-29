@@ -33,6 +33,8 @@ def test_report_links_plan_to_evidence(evidence_db):
     assert "Film 42 → TMDB 1" in rendered and "https://example.test/list" in rendered
     assert "Fixture film (TMDB 1)" in rendered and "no purchase" in rendered
     assert "unconfirmed" in rendered and "uncalibrated" in rendered
+    assert "extraction: not evaluated; identity: not evaluated" in rendered
+    assert "evidence disagreement: not evaluated; prediction: not applicable" in rendered
 
 
 def test_watched_films_have_no_watchlist_preview(evidence_db):

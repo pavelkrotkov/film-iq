@@ -22,6 +22,18 @@ def _evidence(report: dict) -> list[str]:
         lines.append(
             f"- Film {result['film_id']} → TMDB {tmdb}: {result['independent_count']} independent endorsements; {result['partial_count']} partial lists; {result['unranked_count']} unknown ranks."
         )
+        lines.append(
+            "  - Uncertainty: "
+            + "; ".join(
+                f"{name.removesuffix('_uncertainty').replace('_', ' ')}: {result[name].replace('_', ' ')}"
+                for name in (
+                    "extraction_uncertainty",
+                    "identity_uncertainty",
+                    "evidence_disagreement_uncertainty",
+                    "prediction_uncertainty",
+                )
+            )
+        )
         lines.extend(_citation(item, "Contributing") for item in result["contributing"])
         lines.extend(
             _citation(item, "Excluded from independent count") for item in result["excluded"]

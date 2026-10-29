@@ -332,6 +332,8 @@ year labels remain unresolved. Independent automated audit is valid within its
 stated scope; no human-only gate applies. Explicit acceptance has not been recorded.
 No Gate A completion claimed.
 
+**Issue #8 uncertainty followup finding (ADR 0006):** Baseline scores explicitly expose extraction, identity and evidence/disagreement uncertainty as `not_evaluated`, and personal-prediction uncertainty as `not_applicable` without a personal model. Accepted extraction/match status does not imply calibrated reliability, and endorsement/rank totals do not establish disagreement. These fixed defaults serialize with the score and replay from both existing and new v1 input snapshots; input hashes and numeric ranking remain unchanged. The merged PR #32 report now exposes these states in Markdown and JSON. No live accuracy, calibration or personal-prediction validation is claimed.
+
 
 ### Epic A integration and merge findings (2026-10-29)
 
@@ -369,3 +371,23 @@ A separate acceptance audit confirms #4 is complete and it is now closed. The
 same audit found that #8 still needs explicit, separate extraction, identity,
 evidence/disagreement and prediction uncertainty states under ADR 0006. A small
 follow-up is being implemented; no calibration or prediction confidence is claimed.
+
+
+### Epic A final implementation reconciliation (2026-10-29)
+
+All seven original implementation PRs (#28–#34) are merged. #4 (schema), #5
+(Movary reads/export) and #9 (offers/planning with integrated A7 evidence) satisfy
+their implementation acceptance criteria and are closed. Their live behavior is
+still unverified; closing code issues does not accept Gate A. #8 has a small
+follow-up PR #43 for the explicit uncertainty states above. #6, #7 and #10 retain
+the documented fixture-rights, identity-measurement and real demonstration gates.
+
+The final PR #32 head received separate **parallel** GPT-6.1 Sol High Standards
+and Spec reviews, both clean; prior reviews' nested-agent limitation does not
+apply to this final pair. All review threads were resolved and CI was green.
+The user's root skill/configuration changes and Epic B worktrees/PRs were preserved.
+
+The #43 integrated tree passes 292 tests with one opt-in live skip (2.04 seconds
+locally), Ruff/format/ty and diff checks. All 107 source/test Python files retain
+maximum CC 8 and minimum MI 50.025. Legacy v1 snapshot input IDs and numeric
+results replay unchanged; new uncertainty fields remain explicitly unmeasured.

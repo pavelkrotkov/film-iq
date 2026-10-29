@@ -12,6 +12,8 @@ Caller-supplied snapshots; TMDB / JustWatch attribution; prices and entitlement 
 
 - Film 42 → TMDB 1: 1 independent endorsements; 1 partial lists; 0 unknown ranks.
 
+  - Uncertainty: extraction: not evaluated; identity: not evaluated; evidence disagreement: not evaluated; prediction: not applicable
+
   - Contributing: [Critic](https://example.test/list): list list, rank 1, partial; published unknown; eligibility released in 2025; independence group original; lineage original: original; derivative of not specified.
 
 ## Viewing options
