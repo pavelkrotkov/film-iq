@@ -12,6 +12,7 @@ class Film:
     minutes: int
     score: float
     watched: bool = False
+    utility_assumption: str = ""
 
 
 @dataclass(frozen=True)

@@ -21,4 +21,12 @@ def planner_film(
     row = db.execute("SELECT tmdb_id FROM film_index WHERE id = ?", (score.film_id,)).fetchone()
     if row is None or type(row[0]) is not int or row[0] <= 0:
         raise ValueError("A valid TMDB crosswalk is required")
-    return Film(row[0], title, minutes, float(score.independent_count), watched)
+    return Film(
+        row[0],
+        title,
+        minutes,
+        float(score.independent_count),
+        watched,
+        f"{UTILITY_VERSION}: provisional, uncalibrated utility; one point per independent "
+        "endorsement; rank and personal preference are ignored",
+    )

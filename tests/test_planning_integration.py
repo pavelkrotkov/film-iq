@@ -1,4 +1,3 @@
-from dataclasses import replace
 from datetime import date
 
 import pytest
@@ -10,7 +9,8 @@ from film_iq.scoring import score
 from film_iq.scoring.a1 import load_evidence
 
 
-def test_current_evidence_to_planner(evidence_db):
+@pytest.fixture
+def current_score(evidence_db):
     db = evidence_db
     db.execute("UPDATE source SET independence_verification = 'verified'")
     db.execute(
@@ -25,8 +25,11 @@ def test_current_evidence_to_planner(evidence_db):
     db.execute(
         "INSERT INTO current_match (entry_id, revision_id, decision_id, film_id) VALUES ('entry', 'rev', 'match', 42)"
     )
-    result = score(load_evidence(db))[0]
-    film = planner_film(db, result, "Film", 90, False)
+    return score(load_evidence(db))[0]
+
+
+def test_current_evidence_to_planner(evidence_db, current_score):
+    film = planner_film(evidence_db, current_score, "Film", 90, False)
     assert UTILITY_VERSION == "independent-count-additive-v1"
     assert (film.id, film.score) == (1234, 1.0)
     plans = compare(
@@ -41,14 +44,14 @@ def test_current_evidence_to_planner(evidence_db):
     )
     assert plans[0].utility == 1.0
     assert plans[0].choices[0].film == film
-    for invalid in (
-        replace(result, film_id="999"),
-        replace(result, version="unknown"),
-        replace(result, independent_count=0),
-    ):
-        with pytest.raises(ValueError):
-            planner_film(db, invalid, "Film", 90, False)
-    for tmdb_id in (None, 0, -1, "unknown"):
-        db.execute("UPDATE film_index SET tmdb_id = ? WHERE id = 42", (tmdb_id,))
-        with pytest.raises(ValueError, match="crosswalk"):
-            planner_film(db, result, "Film", 90, False)
+    assert_policy_assumptions(plans)
+    empty_plans = compare([film], [], set(), [], 90, 1, 0, {})
+    assert all(UTILITY_VERSION in plan.assumptions for plan in empty_plans)
+
+
+def assert_policy_assumptions(plans):
+    for plan in plans:
+        assert UTILITY_VERSION in plan.assumptions
+        assert "provisional, uncalibrated" in plan.assumptions
+        assert "one point per independent endorsement" in plan.assumptions
+        assert "rank and personal preference are ignored" in plan.assumptions

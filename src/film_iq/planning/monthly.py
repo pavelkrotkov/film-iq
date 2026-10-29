@@ -1,5 +1,6 @@
 """Compare small feasible bundles using supplied scores, dates and prices."""
 
+from dataclasses import replace
 from datetime import date
 
 from .models import Access, Film, Plan
@@ -68,7 +69,8 @@ def compare(
         for s, price in sorted(services.items())
         if s not in current
     ]
-    return tuple(
+    assumptions = sorted({film.utility_assumption for film in films if film.utility_assumption})
+    plans = tuple(
         _best(
             label,
             fee,
@@ -80,4 +82,7 @@ def compare(
         )
         for label, service, rentals, fee in options
         if fee <= budget_cents
+    )
+    return tuple(
+        replace(plan, assumptions="; ".join([plan.assumptions, *assumptions])) for plan in plans
     )
