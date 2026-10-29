@@ -33,7 +33,8 @@ or independent verification of a TMDB mapping is claimed.
 
 [Wikidata structured data is CC0](https://www.wikidata.org/wiki/Wikidata:Licensing).
 The small snapshot retains actual public API search responses, filtered candidate
-metadata, relevant claims, entity revisions and director records. It contains no
+metadata, relevant claims, entity revisions, director records and minimal
+revision/P4947 evidence for every excluded entity. It contains no
 TMDB responses, copyrighted page copies, images or catalog dump. Primary records
 are represented by minimal factual observations and reproducible locators;
 public access does not grant permission to reproduce their prose or images.
@@ -55,7 +56,23 @@ After a pause, the retained acquisition used one second between requests and no
 retries. Four searches completed with 30, 3, 12 and 8 entities respectively.
 At Land's search returned two entities but its detail request received HTTP 429;
 its retrieval is incomplete. Do not reinterpret its empty candidate tuple as a
-successful negative search. No further live requests were made after this run.
+successful negative search.
+
+Review [4418467919](https://github.com/pavelkrotkov/film-iq/pull/34#discussion_r4418467919)
+identified missing exclusion provenance. A later, separately dated CC0 lookup
+reconciled all 45 excluded entities: their latest revision modification times
+precede the original acquisition, and each retains no P4947 statements. The
+snapshot now stores only their revision, modification time and P4947 claims,
+plus the reconciliation query URL and actual lookup time. Original search pages,
+observations, candidate leads, acquisition dates and unknown truth are unchanged.
+Offline tests replay the full returned-ID partition from retained search pages
+and both retained/excluded claim evidence, not just the eight candidate projections.
+
+Review [4418467929](https://github.com/pavelkrotkov/film-iq/pull/34#discussion_r4418467929)
+is addressed by recording HTTP transport exceptions, including truncated and
+disconnected bodies, as failed retrievals with typed errors. Offline regressions
+exercise the real JSON-reading path through the acquisition CLI and verify that
+every attempted case is saved and the cohort continues without retries.
 
 TMDB pages were robots-blocked in the prior investigation and no API key was
 available. This continuation did not retry blocked pages or use a proxy/mirror.
@@ -76,10 +93,10 @@ UV_CACHE_DIR=.cache/uv uv run --no-sync python -m film_iq.identity.evaluation \
   tests/fixtures/identity/specialty-candidates.json
 ```
 
-The checked-in-location artifact `docs/identity-held-out-results.json` records the
+The saved artifact `docs/identity-held-out-results.json` records the
 actual execution, per-case decisions, dataset version, input hashes, Git revision
-and hashes of the evaluator/resolver/model code. The changes are uncommitted;
-the Git revision alone does not identify the new evaluator.
+and hashes of the evaluator/resolver/model code. File hashes identify the local
+evaluated state, including any uncommitted edits.
 
 Live acquisition is opt-in and must write to a new local destination inside this
 project so it does not overwrite the frozen sample or a subsequent truth audit:
@@ -148,3 +165,16 @@ cases, still conditional on the declared retrieval policy. Authorized TMDB searc
 is needed to measure TMDB retrieval itself. A much larger independently audited,
 representative sample is required for the 99% gate; see the sample-size discussion
 in `plan.md`. No ADR or acceptance criterion is promoted to verified here.
+
+## Local verification
+
+Keep all temporary data inside the worktree, including pytest temporary files:
+
+```sh
+mkdir -p .cache/tmp
+TMPDIR="$PWD/.cache/tmp" UV_CACHE_DIR="$PWD/.cache/uv" \
+  uv run --offline --no-sync pytest --basetemp=.cache/pytest-a7
+```
+
+These review fixes preserve CC0-only retention and do not create audited truth
+or change the zero scored denominator. No commit or push is part of this update.

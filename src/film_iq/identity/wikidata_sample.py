@@ -4,6 +4,7 @@ Usage: uv run python -m film_iq.identity.wikidata_sample OBSERVATIONS OUTPUT
 No retries: any HTTP/API failure is recorded as incomplete, including 429.
 """
 
+import http.client
 import json
 import sys
 import time
@@ -143,6 +144,13 @@ def collect(title: str, retrieval: dict) -> list[dict]:
     found = entities(ids)
     movies = {key: entity for key, entity in found.items() if values(entity, "P4947")}
     retrieval["excluded_without_P4947"] = [key for key in ids if key not in movies]
+    retrieval["excluded_evidence"] = {
+        key: {
+            "revision": found[key]["lastrevid"],
+            "claims": {"P4947": found[key].get("claims", {}).get("P4947", [])},
+        }
+        for key in retrieval["excluded_without_P4947"]
+    }
     people = entities(director_ids(movies))
     retrieval["candidate_evidence"] = {key: project(entity) for key, entity in movies.items()}
     retrieval["director_evidence"] = {key: project(entity) for key, entity in people.items()}
@@ -150,6 +158,10 @@ def collect(title: str, retrieval: dict) -> list[dict]:
 
 
 def acquire(case: dict) -> dict:
+    """Keep attempted cases even when transport fails before JSON is available.
+
+    Partial data never establishes absence; a failed retrieval keeps truth unknown.
+    """
     retrieval = {
         "provider": "Wikidata CC0 leads, not TMDB search",
         "complete": False,
@@ -172,8 +184,14 @@ def acquire(case: dict) -> dict:
     try:
         record["candidates"] = collect(case["observation"]["title"], retrieval)
         retrieval["complete"] = retrieval["search_complete"]
-    except (urllib.error.URLError, TimeoutError, ValueError, KeyError) as error:
-        retrieval["error"] = str(error)
+    except (
+        urllib.error.URLError,
+        http.client.HTTPException,
+        TimeoutError,
+        ValueError,
+        KeyError,
+    ) as error:
+        retrieval["error"] = f"{type(error).__name__}: {error}"
     return record
 
 

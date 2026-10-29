@@ -190,9 +190,9 @@
   ],
   "input_sha256": {
     "tests/fixtures/identity/specialty-observations.json": "c7596a0c9706e3da7d5b1b5fe610b9aafd3da2b1e5cd1efeffa5492793f8cac2",
-    "tests/fixtures/identity/specialty-candidates.json": "17d7fb55b9cd90c0d50b492f056062597c92e4a4630f2b0c4387de149bd542ae"
+    "tests/fixtures/identity/specialty-candidates.json": "fc09ab35017ecc745cb77428f7e336a86b15190c2f836fef6551ebb2f340652b"
   },
-  "code_revision": "ef99b8f834c5e5c76ab31d83b06bb5af1c5de1ac",
+  "code_revision": "e8697c2a43632bac67d6461c6b84a9e300379728",
   "code_sha256": {
     "evaluation.py": "9ad8cb6a45e3388817e4c197a38ae59605612e1757e82f027d6b87e9d0c0d380",
     "matching.py": "3ae39b59ee1c5b3926613d10f123309865c80e3b5a1348fd20a717b930bb4362",
