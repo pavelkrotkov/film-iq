@@ -1,0 +1,17 @@
+# ADR 0012 — POC and exploration precede final dependency choices
+
+**Date:** 2026-10-29  
+**Status:** Accepted
+
+## Context
+The project is small, and key risks are data quality and decision usefulness, not theoretical concurrency.
+
+## Decision
+Create three epics: POC vertical slice, source/provider exploration, and conditional final implementation. Track objective metrics and explicit exit criteria. Add complexity only with concrete failure/likelihood/cost evidence and user approval.
+
+## Consequences
+Final implementation can begin at known interfaces while integration of provisional dependencies waits for benchmarks.
+
+## Validation / reconsideration
+Gate: publish findings, update the relevant ADR and acceptance criteria before committing an uncertain dependency or architecture.
+
