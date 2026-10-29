@@ -1,0 +1,201 @@
+{
+  "dataset_version": "specialty-2026-10-29-v1",
+  "scope": "Resolver conditional on supplied retrieval policy; not population precision",
+  "counts_and_ratios": {
+    "attempted": 5,
+    "scored": 0,
+    "unknown_truth": 5,
+    "incomplete_retrieval": 1,
+    "auto_accepted": 0,
+    "correct_auto_accepted": 0,
+    "unresolved": 0,
+    "truth_in_candidates": 0,
+    "precision": null,
+    "coverage": null,
+    "review_rate": null,
+    "candidate_recall": null
+  },
+  "by_method": {
+    "title_director_year": {
+      "attempted": 5,
+      "scored": 0,
+      "unknown_truth": 5,
+      "incomplete_retrieval": 1,
+      "auto_accepted": 0,
+      "correct_auto_accepted": 0,
+      "unresolved": 0,
+      "truth_in_candidates": 0,
+      "precision": null,
+      "coverage": null,
+      "review_rate": null,
+      "candidate_recall": null
+    }
+  },
+  "by_stratum": {
+    "short-documentary-similar-titles": {
+      "attempted": 1,
+      "scored": 0,
+      "unknown_truth": 1,
+      "incomplete_retrieval": 0,
+      "auto_accepted": 0,
+      "correct_auto_accepted": 0,
+      "unresolved": 0,
+      "truth_in_candidates": 0,
+      "precision": null,
+      "coverage": null,
+      "review_rate": null,
+      "candidate_recall": null
+    },
+    "short-incomplete-credit": {
+      "attempted": 1,
+      "scored": 0,
+      "unknown_truth": 1,
+      "incomplete_retrieval": 1,
+      "auto_accepted": 0,
+      "correct_auto_accepted": 0,
+      "unresolved": 0,
+      "truth_in_candidates": 0,
+      "precision": null,
+      "coverage": null,
+      "review_rate": null,
+      "candidate_recall": null
+    },
+    "short-multiple-directors": {
+      "attempted": 1,
+      "scored": 0,
+      "unknown_truth": 1,
+      "incomplete_retrieval": 0,
+      "auto_accepted": 0,
+      "correct_auto_accepted": 0,
+      "unresolved": 0,
+      "truth_in_candidates": 0,
+      "precision": null,
+      "coverage": null,
+      "review_rate": null,
+      "candidate_recall": null
+    },
+    "short-original-language-title": {
+      "attempted": 1,
+      "scored": 0,
+      "unknown_truth": 1,
+      "incomplete_retrieval": 0,
+      "auto_accepted": 0,
+      "correct_auto_accepted": 0,
+      "unresolved": 0,
+      "truth_in_candidates": 0,
+      "precision": null,
+      "coverage": null,
+      "review_rate": null,
+      "candidate_recall": null
+    },
+    "short-year-disagreement": {
+      "attempted": 1,
+      "scored": 0,
+      "unknown_truth": 1,
+      "incomplete_retrieval": 0,
+      "auto_accepted": 0,
+      "correct_auto_accepted": 0,
+      "unresolved": 0,
+      "truth_in_candidates": 0,
+      "precision": null,
+      "coverage": null,
+      "review_rate": null,
+      "candidate_recall": null
+    }
+  },
+  "cases": [
+    {
+      "id": "la-jetee",
+      "stratum": "short-year-disagreement",
+      "method": "title_director_year",
+      "candidate_ids": [
+        662
+      ],
+      "match": null,
+      "truth_id": null,
+      "truth_status": "unknown",
+      "retrieval_complete": true,
+      "scored": false,
+      "exclusions": [
+        "unknown_truth"
+      ]
+    },
+    {
+      "id": "meshes",
+      "stratum": "short-multiple-directors",
+      "method": "title_director_year",
+      "candidate_ids": [
+        27040
+      ],
+      "match": null,
+      "truth_id": null,
+      "truth_status": "unknown",
+      "retrieval_complete": true,
+      "scored": false,
+      "exclusions": [
+        "unknown_truth"
+      ]
+    },
+    {
+      "id": "night-and-fog",
+      "stratum": "short-documentary-similar-titles",
+      "method": "title_director_year",
+      "candidate_ids": [
+        803,
+        50650,
+        362639,
+        109276
+      ],
+      "match": null,
+      "truth_id": null,
+      "truth_status": "unknown",
+      "retrieval_complete": true,
+      "scored": false,
+      "exclusions": [
+        "unknown_truth"
+      ]
+    },
+    {
+      "id": "moon",
+      "stratum": "short-original-language-title",
+      "method": "title_director_year",
+      "candidate_ids": [
+        775,
+        444101
+      ],
+      "match": null,
+      "truth_id": null,
+      "truth_status": "unknown",
+      "retrieval_complete": true,
+      "scored": false,
+      "exclusions": [
+        "unknown_truth"
+      ]
+    },
+    {
+      "id": "at-land",
+      "stratum": "short-incomplete-credit",
+      "method": "title_director_year",
+      "candidate_ids": [],
+      "match": null,
+      "truth_id": null,
+      "truth_status": "unknown",
+      "retrieval_complete": false,
+      "scored": false,
+      "exclusions": [
+        "unknown_truth",
+        "incomplete_retrieval"
+      ]
+    }
+  ],
+  "input_sha256": {
+    "tests/fixtures/identity/specialty-observations.json": "c7596a0c9706e3da7d5b1b5fe610b9aafd3da2b1e5cd1efeffa5492793f8cac2",
+    "tests/fixtures/identity/specialty-candidates.json": "fc09ab35017ecc745cb77428f7e336a86b15190c2f836fef6551ebb2f340652b"
+  },
+  "code_revision": "e8697c2a43632bac67d6461c6b84a9e300379728",
+  "code_sha256": {
+    "evaluation.py": "9ad8cb6a45e3388817e4c197a38ae59605612e1757e82f027d6b87e9d0c0d380",
+    "matching.py": "3ae39b59ee1c5b3926613d10f123309865c80e3b5a1348fd20a717b930bb4362",
+    "models.py": "40c09c674dcf6582cc02554b773762fd3e6ca2538276ea634d6802d3ab7edf0a"
+  }
+}
