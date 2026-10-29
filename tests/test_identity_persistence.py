@@ -13,11 +13,11 @@ def test_persist_unresolved_and_reverse_against_migrated_schema() -> None:
     db.execute("PRAGMA foreign_keys = ON")
     migrate(db)
     db.executescript("""
-        INSERT INTO source VALUES ('s','Source','poll','original','url',NULL,NULL,
+        INSERT INTO source (id,name,family,independence_group,url,country,cadence,access_policy,retention_policy,redistribution_policy,attribution,health) VALUES ('s','Source','poll','original','url',NULL,NULL,
             'public','metadata','none','source',NULL);
         INSERT INTO source_run VALUES ('run','s','now',NULL,'success','v1',NULL,NULL);
         INSERT INTO source_document VALUES ('doc','s','url','hash','now',NULL,'success','metadata');
-        INSERT INTO published_list VALUES ('list','s','edition',NULL,'all',NULL,'ranked','complete','original');
+        INSERT INTO published_list (id,source_id,edition,author,eligibility,period,rank_semantics,completeness,lineage) VALUES ('list','s','edition',NULL,'all',NULL,'ranked','complete','original');
         INSERT INTO extraction_revision VALUES ('rev','s','list','doc','run','v1','valid','accepted');
         INSERT INTO extraction_revision VALUES ('rev2','s','list','doc','run','v2','valid','accepted');
         INSERT INTO current_extraction (list_id, revision_id) VALUES ('list','rev');

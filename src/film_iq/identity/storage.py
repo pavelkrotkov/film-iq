@@ -39,22 +39,44 @@ def save(
         if row is None or row[0] != entry_id:
             raise ValueError("Superseded decision must belong to the same entry")
     _validate_observation(db, entry_id, revision_id, decision.observation)
-    film_id = None
-    if decision.match is not None:
-        row = db.execute(
-            "SELECT id FROM film_index WHERE tmdb_id = ?", (decision.match,)
-        ).fetchone()
-        if row is None:
-            raise ValueError("Matched TMDB ID must exist in film_index")
-        film_id = row[0]
+    film_id = _film_id(db, decision.match)
     decision_id = str(uuid4())
     evidence = json.dumps(
         {
+            "candidates": decision.candidates,
             "observation": asdict(decision.observation),
             "evidence": decision.evidence,
             "candidate_evidence": [asdict(candidate) for candidate in decision.candidate_evidence],
         }
     )
+    if not db.in_transaction:
+        db.execute("BEGIN")
+    db.execute("SAVEPOINT identity_save")
+    try:
+        _insert_decision(
+            db, decision_id, entry_id, revision_id, film_id, decision, evidence, supersedes
+        )
+        _update_current(db, entry_id, revision_id, decision_id, film_id)
+    except Exception:
+        db.execute("ROLLBACK TO identity_save")
+        raise
+    finally:
+        db.execute("RELEASE identity_save")
+    return decision_id
+
+
+def _film_id(db: sqlite3.Connection, match: int | None) -> int | None:
+    if match is None:
+        return None
+    row = db.execute("SELECT id FROM film_index WHERE tmdb_id = ?", (match,)).fetchone()
+    if row is None:
+        raise ValueError("Matched TMDB ID must exist in film_index")
+    return row[0]
+
+
+def _insert_decision(
+    db, decision_id, entry_id, revision_id, film_id, decision, evidence, supersedes
+):
     db.execute(
         "INSERT INTO match_decision "
         "(id, entry_id, revision_id, film_id, candidates, method, version, confidence, reviewer, "
@@ -64,17 +86,30 @@ def save(
             entry_id,
             revision_id,
             film_id,
-            json.dumps(decision.candidates),
+            evidence,
             decision.method,
             decision.version,
             None,
             decision.reviewer,
-            evidence,
+            "accepted" if film_id is not None else "unresolved",
             datetime.now(UTC).isoformat(),
             supersedes,
         ),
     )
-    return decision_id
+
+
+def _update_current(db, entry_id, revision_id, decision_id, film_id):
+    if film_id is None:
+        db.execute(
+            "DELETE FROM current_match WHERE entry_id = ? AND revision_id = ?",
+            (entry_id, revision_id),
+        )
+    else:
+        db.execute(
+            "INSERT INTO current_match (entry_id, revision_id, decision_id, film_id) VALUES (?, ?, ?, ?) "
+            "ON CONFLICT(entry_id, revision_id) DO UPDATE SET decision_id = excluded.decision_id, film_id = excluded.film_id",
+            (entry_id, revision_id, decision_id, film_id),
+        )
 
 
 def load(db: sqlite3.Connection, decision_id: str) -> tuple[Decision, str | None]:
@@ -88,12 +123,14 @@ def load(db: sqlite3.Connection, decision_id: str) -> tuple[Decision, str | None
     if row is None:
         raise ValueError("Unknown decision")
     candidates, match, method, version, reviewer, payload, supersedes = row
-    data = json.loads(payload)
+    stored = json.loads(candidates)
+    data = json.loads(payload) if isinstance(stored, list) else stored
+    candidate_ids = stored if isinstance(stored, list) else stored["candidates"]
     # Earlier decisions did not retain candidate snapshots. Keep them readable
     # without inventing evidence that was not recorded at decision time.
     return Decision(
         Observation(**data["observation"]),
-        tuple(json.loads(candidates)),
+        tuple(candidate_ids),
         match,
         method,
         data["evidence"],
