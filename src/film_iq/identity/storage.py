@@ -12,14 +12,15 @@ from .models import Candidate, Decision, Observation
 def _validate_observation(
     db: sqlite3.Connection, entry_id: str, revision_id: str, observation: Observation
 ) -> None:
-    # The extraction schema contains no external IDs, so an observation carrying
-    # one cannot be verified against this revision and must not be persisted.
     row = db.execute(
-        "SELECT raw_title, director, listed_year FROM entry_observation "
+        "SELECT raw_title, director, listed_year, raw_tmdb_id, raw_imdb_id FROM entry_observation "
         "WHERE entry_id = ? AND revision_id = ?",
         (entry_id, revision_id),
     ).fetchone()
-    if row is None or observation != Observation(row[0], row[1], row[2]):
+    # TMDB IDs are stored as raw text, including possible leading zeroes.
+    if row is None or observation != Observation(
+        row[0], row[1], row[2], int(row[3]) if row[3] and row[3].strip() else None, row[4]
+    ):
         raise ValueError("Decision observation must match the stored entry revision")
 
 

@@ -23,8 +23,8 @@ def test_persist_unresolved_and_reverse_against_migrated_schema() -> None:
         INSERT INTO current_extraction (list_id, revision_id) VALUES ('list','rev');
         INSERT INTO list_entry VALUES ('entry','s','list','one');
         INSERT INTO list_entry VALUES ('other','s','list','two');
-        INSERT INTO entry_observation VALUES ('entry','s','list','rev','A','context',NULL,2020,'Director',1,1,NULL,'#1','accepted');
-        INSERT INTO entry_observation VALUES ('entry','s','list','rev2','Corrected','context',NULL,2020,'Director',1,1,NULL,'#1','accepted');
+        INSERT INTO entry_observation VALUES ('entry','s','list','rev','A','context',NULL,2020,'Director',1,1,NULL,'#1','accepted',NULL,NULL);
+        INSERT INTO entry_observation VALUES ('entry','s','list','rev2','Corrected','context',NULL,2020,'Director',1,1,NULL,'#1','accepted',NULL,NULL);
         INSERT INTO film_index (id, tmdb_id) VALUES (42, 1), (43, 2);
     """)
     original = resolve(
@@ -57,6 +57,7 @@ def test_persist_unresolved_and_reverse_against_migrated_schema() -> None:
         "ON o.list_id = c.list_id AND o.revision_id = c.revision_id"
     ).fetchone() == ("Corrected",)
     _check_rejected_decisions(db, original, corrected, first)
+    _check_external_ids(db)
 
 
 def _check_rejected_decisions(db, original, corrected, first):
@@ -83,3 +84,39 @@ def _check_rejected_decisions(db, original, corrected, first):
             "rev",
             replace(original, observation=Observation("A", "Director", 2020, tmdb_id=1)),
         )
+
+
+def _check_external_ids(db):
+    from film_iq.identity import load, save
+
+    # Both source IDs must belong to the selected revision, including when a
+    # numeric TMDB ID has leading zeroes in the raw extraction evidence.
+    db.execute(
+        "UPDATE entry_observation SET raw_tmdb_id = '001', raw_imdb_id = 'tt001' WHERE revision_id = 'rev'"
+    )
+    candidate = Candidate(1, ("A",), "Director", 2020, "tt001")
+    observation = Observation("A", "Director", 2020, 1, "tt001")
+    decision = resolve(observation, (candidate,))
+    assert decision.match == 1
+    assert load(db, save(db, "entry", "rev", decision)) == (decision, None)
+    # A decision cannot omit or replace either ID that was present in the source.
+    for other in (
+        Observation("A", "Director", 2020, 2, "tt001"),
+        Observation("A", "Director", 2020, 1, "tt002"),
+        Observation("A", "Director", 2020),
+        Observation("A", "Director", 2020, 1),
+    ):
+        with pytest.raises(ValueError, match="stored entry revision"):
+            save(db, "entry", "rev", resolve(other, (candidate,)))
+    # Single IDs and whitespace-only fields are valid when they match the source.
+    for tmdb, imdb, source in [
+        ("001", None, Observation("A", "Director", 2020, 1)),
+        (None, "tt001", Observation("A", "Director", 2020, imdb_id="tt001")),
+        (" ", " ", Observation("A", "Director", 2020)),
+    ]:
+        db.execute(
+            "UPDATE entry_observation SET raw_tmdb_id = ?, raw_imdb_id = ? WHERE revision_id = 'rev'",
+            (tmdb, imdb),
+        )
+        decision = resolve(source, (candidate,))
+        assert load(db, save(db, "entry", "rev", decision)) == (decision, None)
