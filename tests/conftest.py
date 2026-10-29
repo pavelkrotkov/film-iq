@@ -11,11 +11,11 @@ def evidence_db(tmp_path):
     db = connect(tmp_path / "evidence.db")
     migrate(db)
     migrate(db)
-    assert db.execute("PRAGMA user_version").fetchone() == (2,)
+    assert db.execute("PRAGMA user_version").fetchone() == (4,)
     assert db.execute("PRAGMA foreign_keys").fetchone() == (1,)
     assert db.execute("PRAGMA journal_mode").fetchone() == ("wal",)
     db.execute(
-        "INSERT INTO source VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+        "INSERT INTO source (id, name, family, independence_group, url, country, cadence, access_policy, retention_policy, redistribution_policy, attribution, health) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
         (
             "s",
             "Source",
@@ -58,7 +58,7 @@ def evidence_db(tmp_path):
         ),
     )
     db.execute(
-        "INSERT INTO published_list VALUES (?,?,?,?,?,?,?,?,?)",
+        "INSERT INTO published_list (id, source_id, edition, author, eligibility, period, rank_semantics, completeness, lineage) VALUES (?,?,?,?,?,?,?,?,?)",
         (
             "list",
             "s",

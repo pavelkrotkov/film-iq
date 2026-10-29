@@ -38,7 +38,7 @@ def test_observation_validation_and_rights(tmp_path):
     migrate(db)
     with pytest.raises(sqlite3.IntegrityError):
         db.execute(
-            "INSERT INTO source VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+            "INSERT INTO source (id, name, family, independence_group, url, country, cadence, access_policy, retention_policy, redistribution_policy, attribution, health) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
             (
                 "s",
                 "Source",
@@ -55,7 +55,7 @@ def test_observation_validation_and_rights(tmp_path):
             ),
         )
     db.rollback()
-    db.execute("PRAGMA user_version = 3")
+    db.execute("PRAGMA user_version = 5")
     with pytest.raises(ValueError, match="unsupported"):
         migrate(db)
     db.close()

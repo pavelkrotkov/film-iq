@@ -22,25 +22,12 @@ def migrate(db: sqlite3.Connection) -> None:
     if db.in_transaction:
         raise ValueError("finish the current transaction before migrating")
     version = db.execute("PRAGMA user_version").fetchone()[0]
-    if version > 2:
+    if version > 4:
         raise ValueError(f"unsupported schema version: {version}")
-    if version == 0:
+    for target in range(version + 1, 5):
         try:
-            db.executescript(
-                "BEGIN;\n"
-                + (Path(__file__).with_name("001.sql")).read_text()
-                + "\nPRAGMA user_version = 1;\nCOMMIT;"
-            )
-        except sqlite3.Error:
-            db.rollback()
-            raise
-    if version < 2:
-        try:
-            db.executescript(
-                "BEGIN;\n"
-                + (Path(__file__).with_name("002.sql")).read_text()
-                + "\nPRAGMA user_version = 2;\nCOMMIT;"
-            )
+            sql = Path(__file__).with_name(f"{target:03}.sql").read_text()
+            db.executescript(f"BEGIN;\n{sql}\nPRAGMA user_version = {target};\nCOMMIT;")
         except sqlite3.Error:
             db.rollback()
             raise

@@ -50,7 +50,7 @@ def test_migration_and_evidence_roundtrip(evidence_db, tmp_path):
         "ON o.list_id = c.list_id AND o.revision_id = c.revision_id"
     ).fetchall() == [("Corrected",)]
     db.execute(
-        "INSERT INTO published_list VALUES (?,?,?,?,?,?,?,?,?)",
+        "INSERT INTO published_list (id, source_id, edition, author, eligibility, period, rank_semantics, completeness, lineage) VALUES (?,?,?,?,?,?,?,?,?)",
         ("list2", "s", "2024", None, "eligible", None, "ranked", "complete", "original"),
     )
     db.execute("INSERT INTO list_entry VALUES (?,?,?,?)", ("other", "s", "list2", "item-2"))

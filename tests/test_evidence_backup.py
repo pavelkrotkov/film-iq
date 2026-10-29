@@ -7,7 +7,7 @@ def test_wal_backup_and_restore(tmp_path):
     db = connect(tmp_path / "live.db")
     migrate(db)
     db.execute(
-        "INSERT INTO source VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+        "INSERT INTO source (id, name, family, independence_group, url, country, cadence, access_policy, retention_policy, redistribution_policy, attribution, health) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
         (
             "s",
             "Source",
@@ -36,6 +36,6 @@ def test_wal_backup_and_restore(tmp_path):
         backup.backup(restored)
     restored = connect(tmp_path / "restored.db")
     assert restored.execute("PRAGMA integrity_check").fetchone() == ("ok",)
-    assert restored.execute("PRAGMA user_version").fetchone() == (2,)
+    assert restored.execute("PRAGMA user_version").fetchone() == (4,)
     assert restored.execute("SELECT id FROM source").fetchall() == [("s",)]
     restored.close()
