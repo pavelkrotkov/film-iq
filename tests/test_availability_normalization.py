@@ -4,6 +4,8 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 RESEARCH = Path(__file__).parents[1] / "docs/research/availability"
 sys.path.insert(0, str(Path(__file__).parents[1]))
 from docs.research.availability.observe import observe  # noqa: E402
@@ -38,17 +40,21 @@ def test_tmdb_types_and_explicit_empty_region(monkeypatch):
     assert empty["state"] == "complete_response" and empty["offers"] == []
 
 
-def test_motn_addon_is_not_included_and_dates_remain_asserted(monkeypatch):
+@pytest.mark.parametrize("addon_id", ["extra", None, ""])
+def test_motn_addon_is_not_included_and_dates_remain_asserted(monkeypatch, addon_id):
     monkeypatch.setenv("MOVIE_OF_THE_NIGHT_API_KEY", "fictional-secret")
     row = {
         "type": "addon",
         "service": {"id": "fictional"},
-        "addon": {"id": "extra"},
+        "addon": {"id": addon_id},
         "link": "https://example.org/watch",
         "expiresSoon": True,
     }
     data = {"imdbId": "tt123", "showType": "movie", "streamingOptions": {"us": [row]}}
     result = observe(FILM, "motn", True, response(data))
+    if not addon_id:
+        assert result["state"] == "unknown" and "offers" not in result
+        return
     assert result["state"] == "complete_response"
     assert result["offers"][0] == {
         "type": "addon",

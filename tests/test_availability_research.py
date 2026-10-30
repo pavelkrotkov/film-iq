@@ -52,6 +52,18 @@ def test_credentials_and_live_flag_are_required(monkeypatch, provider, env_key):
             {
                 "id": 123,
                 "results": {
+                    "US": {
+                        "link": "https://example.org",
+                        "rent": [{"provider_id": 7}, {"provider_id": None}],
+                    }
+                },
+            },
+            200,
+        ),
+        (
+            {
+                "id": 123,
+                "results": {
                     "US": {"link": "https://example.org", "rent": [{"provider_id": 1}, {}]}
                 },
             },

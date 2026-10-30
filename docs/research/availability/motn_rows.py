@@ -10,6 +10,8 @@ def motn_offer(row: dict[str, Any]) -> dict[str, Any]:
     if kind not in {"subscription", "free", "rent", "buy", "addon"}:
         raise ValueError("unsupported offer type")
     addon = row["addon"]["id"] if kind == "addon" else None
+    if kind == "addon" and (not isinstance(addon, str) or not addon.strip()):
+        raise ValueError("add-on ID must be a nonempty string")
     return offer(
         kind,
         row["service"]["id"],
