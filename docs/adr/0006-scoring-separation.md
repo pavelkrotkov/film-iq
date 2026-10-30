@@ -36,7 +36,7 @@ provisional, with calibration questions handed to C3 #21.
 Display **four distinguishable concepts**, never one opaque `quality`:
 
 1. `personal_enjoyment`: user's own 1–10 judgment of how rewarding/watchable the film was; existing Movary native film rating.
-2. `personal_artistic_merit`: user's own 1–10 judgment of artistic achievement; initially explicit `Artistic merit: N/10` per-play comment, with nullable/review provenance via #58 or user-owned temporary input if the read path is unavailable.
+2. `personal_artistic_merit`: user's own 1–10 judgment of artistic achievement; initially explicit `Artistic merit: N/10` viewing-date comment via `user:export:history`, with nullable/review provenance via #58 or user-owned temporary input if the read path is unavailable.
 3. `external_critical_recognition`: observed independent original critic/poll/festival/award evidence, with source/edition eligibility, missingness, correct lineage and typed separate count/rank/award/reception components. It is **not** the user's merit score.
 4. `predicted_personal_enjoyment` (future): learned estimate, **not** a rating the user supplied; its confidence is not evidence-extraction or identity reliability.
 

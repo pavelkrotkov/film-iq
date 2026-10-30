@@ -21,6 +21,14 @@ Movary remains authoritative for watched films, dates, personal ratings and expl
 
 Initial implementation: Python 3.12+, SQLite on local storage, CLI and reports; optional HTTP service later. HTTP parsing first; Crawl4AI, LangExtract and dlt only after measurements. TMDB/JustWatch is the availability baseline; compare Movie of the Night on specialty-film coverage and plan entitlement before adoption. Avoid graph databases, vector indexes, microservices and a second tracking UI without evidence.
 
+## Start recording films now; MVP integration under development
+
+You can already enter genuine watched films, viewing dates and native **1–10 personal ratings** in Movary. The accepted two-score convention is to treat that rating as **personal enjoyment** and optionally add **`Artistic merit: N/10`** to the movie's viewing-date comment for your separate artistic judgment. Independent, source-backed critical recognition is a third dimension, not your own merit score.
+
+The exact Movary 0.82.1 source confirms both [`user:export:ratings`](https://github.com/leepeuker/movary/blob/0.82.1/src/Command/UserRatingExport.php) and [`user:export:history`](https://github.com/leepeuker/movary/blob/0.82.1/src/Command/UserHistoryExport.php) CLI exports. **The normal paginated History API does not expose comments.** Film-IQ's *nonempty* two-score sync is **not implemented or validated yet**; see [#58 personal snapshot](https://github.com/pavelkrotkov/film-iq/issues/58), [#59 small curated source import](https://github.com/pavelkrotkov/film-iq/issues/59) and [#25 first multi-film report](https://github.com/pavelkrotkov/film-iq/issues/25). A broad critic-site scraper is not a prerequisite.
+
+Do not commit personal comments, ratings, exports or credentials. Curated publisher data still requires source-specific access/retention/citation review. See [ADR 0013](docs/adr/0013-two-personal-scores.md).
+
 ## Development
 
 Once dependencies are installed:
