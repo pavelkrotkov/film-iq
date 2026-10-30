@@ -1270,3 +1270,28 @@ truncated records cannot persist. No source acquisition or live personal-data
 mutation accompanies these corrections. Ruff/format/ty pass; 367 tests pass
 with one opt-in skip. All thirteen new Python modules/tests have maximum CC 8
 and minimum MI 50.394527. Review conversations await independent follow-up.
+
+### C3 versioned repeat-ballot rank policy (2026-10-30)
+
+The [C3 scorer contract](docs/c3-scoring.md) replaces per-film best-rank choice
+with a predeclared source/window policy and version
+`independent-priority-rank-v2`. Original ranks, excluded observations, source
+family and separate uncertainty states remain available. Source and family
+exclusions support reproducible holdouts. Conflicting ranks at an identical
+ballot priority require review; neither rank quality nor missing exposure
+selects the preferred source.
+
+Only an explicitly reviewed `person_id` identifies a known contributor across
+publications. Author text and publisher names do not identify people. Existing
+`independent_count` counts reviewed evidence support groups; new known-person
+and unknown-contributor support counts prevent treating that as a critic
+headcount. No personal score, predicted enjoyment, weighted blend or inferred
+award/reception score is introduced. Snapshot IDs include the declared policy;
+v1 snapshots retain the historical best-rank numeric rule and old version.
+
+Initial isolated validation passes Ruff check/format, ty and 347 tests with one
+opt-in skip. All 166 tracked/new Python files meet maximum CC 8 and minimum MI
+50.025032. This fixture result does not certify calibrated significance, source
+permissions or live identity accuracy. C1 reviewed actor/ballot read integration,
+typed award/reception ingestion and C7 rendering remain issue #21 acceptance
+work rather than silently accepted production outcomes.

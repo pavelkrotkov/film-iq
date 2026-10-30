@@ -12,7 +12,7 @@ def load_evidence(db: sqlite3.Connection) -> list[Evidence]:
         SELECT m.film_id, l.id, d.url, d.published_at, s.independence_group,
                l.eligibility, o.rank, o.entry_id, o.revision_id, m.decision_id,
                s.id, d.id, o.locator, l.lineage_kind, l.lineage, l.author,
-               l.completeness, l.rank_semantics
+               l.completeness, l.rank_semantics, s.family
         FROM current_extraction AS c
         JOIN extraction_revision AS r ON r.id = c.revision_id AND r.list_id = c.list_id
         JOIN published_list AS l ON l.id = c.list_id
@@ -47,6 +47,7 @@ def load_evidence(db: sqlite3.Connection) -> list[Evidence]:
             author=author,
             completeness=completeness,
             rank_semantics=rank_semantics,
+            source_family=family,
         )
         for (
             film,
@@ -67,5 +68,6 @@ def load_evidence(db: sqlite3.Connection) -> list[Evidence]:
             author,
             completeness,
             rank_semantics,
+            family,
         ) in rows
     ]

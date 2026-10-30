@@ -6,76 +6,30 @@ are retained for explanation but never contribute. Rank is a true published rank
 not display order. A missing rank is unknown, not a zero score.
 """
 
-from dataclasses import dataclass
-from datetime import date
 from fractions import Fraction
-from typing import Literal
 
-VERSION = "independent-reciprocal-rank-v1"
+from .models import Evidence, Score
+from .policy import DEFAULT_POLICY, ScoringPolicy
 
-
-@dataclass(frozen=True)
-class Evidence:
-    film_id: str
-    list_id: str
-    url: str
-    published: date | None
-    independence_group: str
-    eligibility: str
-    rank: int | None = None
-    derivative_of: tuple[str, ...] = ()
-    entry_id: str | None = None
-    revision_id: str | None = None
-    match_decision_id: str | None = None
-    source_id: str | None = None
-    document_id: str | None = None
-    locator: str | None = None
-    lineage_kind: str | None = None
-    lineage: str | None = None
-    author: str | None = None
-    completeness: str | None = None
-    rank_semantics: str | None = None
-
-    def __post_init__(self) -> None:
-        if self.rank is not None and self.rank < 1:
-            raise ValueError("rank must be positive or unknown")
+VERSION = "independent-priority-rank-v2"
+LEGACY_VERSION = "independent-reciprocal-rank-v1"
 
 
-@dataclass(frozen=True)
-class Score:
-    """Baseline evidence totals, with separate, uncalibrated uncertainty states.
-
-    Accepted extraction/match decisions are eligibility gates, not measurements
-    of reliability. Neither endorsement counts nor ranks measure disagreement.
-    Prediction uncertainty does not apply without a personal preference model.
-    """
-
-    film_id: str
-    version: str
-    independent_count: int
-    rank_score: Fraction | None
-    contributing: tuple[Evidence, ...]
-    excluded: tuple[Evidence, ...]
-    unranked_count: int
-    partial_count: int
-    extraction_uncertainty: Literal["not_evaluated"] = "not_evaluated"
-    identity_uncertainty: Literal["not_evaluated"] = "not_evaluated"
-    evidence_disagreement_uncertainty: Literal["not_evaluated"] = "not_evaluated"
-    prediction_uncertainty: Literal["not_applicable"] = "not_applicable"
-
-
-def score(evidence: list[Evidence]) -> tuple[Score, ...]:
+def score(evidence: list[Evidence], *, policy: ScoringPolicy = DEFAULT_POLICY) -> tuple[Score, ...]:
     """Rank films by independent count, then reciprocal-rank sum, then ID.
 
-    Within a group the best known rank contributes; ties use list ID and the
-    remaining fields for a reproducible choice. Unranked endorsements count,
-    but add no known rank contribution; ``unranked_count`` exposes that limit.
-    Duplicate observations and derivatives never add endorsements.
+    Predeclared source/window priority selects repeated ballots without looking
+    at rank. Unknown contributor identities remain unknown; independent_count
+    is reviewed evidence-group support, not a count of independent people.
     """
+    return _score(evidence, policy, VERSION)
+
+
+def _score(evidence: list[Evidence], policy: ScoringPolicy, version: str) -> tuple[Score, ...]:
     films: dict[str, set[Evidence]] = {}
     for item in evidence:
         films.setdefault(item.film_id, set()).add(item)
-    results = [_score_film(film_id, items) for film_id, items in films.items()]
+    results = [_score_film(film_id, items, policy, version) for film_id, items in films.items()]
     return tuple(
         sorted(
             results, key=lambda s: (-s.independent_count, -(s.rank_score or Fraction()), s.film_id)
@@ -83,23 +37,20 @@ def score(evidence: list[Evidence]) -> tuple[Score, ...]:
     )
 
 
-def _score_film(film_id: str, items: set[Evidence]) -> Score:
-    chosen: dict[str, Evidence] = {}
-    originals = (
-        item for item in items if not item.derivative_of and item.lineage_kind != "derivative"
-    )
-    for item in sorted(originals, key=lambda e: (e.rank or float("inf"), _evidence_key(e))):
-        chosen.setdefault(item.independence_group, item)
+def _score_film(film_id: str, items: set[Evidence], policy: ScoringPolicy, version: str) -> Score:
+    chosen = policy.choose(items, legacy=version == LEGACY_VERSION)
     contributing = tuple(sorted(chosen.values(), key=_evidence_key))
     return Score(
         film_id=film_id,
-        version=VERSION,
+        version=version,
         independent_count=len(contributing),
         rank_score=_rank_score(contributing),
         contributing=contributing,
         excluded=tuple(sorted(items - set(contributing), key=_evidence_key)),
         unranked_count=sum(item.rank is None for item in contributing),
         partial_count=sum(item.completeness == "partial" for item in contributing),
+        known_person_count=len({item.person_id for item in contributing if item.person_id}),
+        unknown_contributor_count=sum(item.person_id is None for item in contributing),
     )
 
 
@@ -124,6 +75,8 @@ def _evidence_key(item: Evidence) -> tuple:
         _optional_key(item.author),
         _optional_key(item.completeness),
         _optional_key(item.rank_semantics),
+        _optional_key(item.person_id),
+        _optional_key(item.source_family),
     )
 
 
