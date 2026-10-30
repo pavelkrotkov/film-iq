@@ -1385,3 +1385,70 @@ Ruff/format/ty pass and 433 tests pass with one opt-in skip. All 226 tracked
 Python files satisfy maximum CC 8 and minimum MI 50.025032. The corrected
 advice timing remains an offline, caller-declared policy; no live offer state,
 provider cadence or gate acceptance is implied.
+
+### C7 first-use read-only discovery report (2026-10-30)
+
+The bounded #25 report joins complete curated-import JSON to current accepted
+SQLite revisions/positions and reviewed current matches, then optionally joins
+C0a's private complete snapshot. It reads authoritative accepted source facts
+rather than trusting preview acceptance/ranks. Pending/obsolete and unresolved
+records remain visible; only accepted, reviewed, freshly unwatched works enter
+suggestions. Missing/stale personal state suppresses suggestions without inventing
+watches. Both subjective scores, merit conflict/unknown, watched dates and public
+recognition stay distinct; raw comments/export provenance never enter the report.
+No-purchase/no-service is explicit; rental/streaming access, price, tier and
+freshness remain unknown rather than fabricated. No HTTP, notifications or writes
+are added. Shared CLI aliases expose import-list, refresh-movary, discover and
+acquisition-status, reusing the existing implementations.
+
+A private populated JSON/Markdown report is retained outside throwaway worktrees
+under `.cache/epic-c/results/`: ten independently audited scoped source entries,
+ten accepted observations, three reviewed TMDB identities and seven unresolved;
+no personal snapshot or last-successful refresh exists, so watched/personal
+scores are unknown and suggested picks total zero. This is real source/report
+integration, not genuine personal-data acceptance or a completed #25. The live
+5–15-film and changed/deleted rating/comment checks still need authorized data.
+
+Epic C's remaining acceptance matrix is unchanged by these bounded code PRs:
+
+| Component | Remaining finish gate |
+|---|---|
+| C0a #58 | Authorized genuine nonempty exports/readback, edits/deletions and C7 real-user acceptance |
+| C0b #59 | Remaining conservative work-ID review and populated personal-state integration; unresolved works remain review items |
+| C1 #19 | Selected runtime/CLI/report integration and C8 production recovery/rights acceptance |
+| C2 #20 | Source-specific permitted cohorts, independently complete extraction/identity and measured representative reviewer effort before bulk backfill |
+| C3 #21 | Typed award/reception integrations and appropriate empirical acceptance; no calibrated quality claim |
+| C4 #22 | Actual three-date B4 #14 outcome, reviewed B8 #18, provider-specific use/retention/quotas and runtime recovery before feed adoption |
+| C5 #23 | Final selected C3/C4/#58 inputs, real feasible tier/price decisions and utility acceptance |
+| C6 #24 | Deferred until sufficient genuine enjoyment ratings and a time-ordered holdout demonstrate lift |
+| C7 #25 | Genuine 5–15 watched/rated films, 10–30 candidates and changed/deleted enjoyment/merit readback; later alerts need durable verified transitions |
+| C8 #26 | Separately authorized full Movary restore, actual provider policy enforcement/quotas and production failed-job recovery |
+| C9 #27 | Conditional on measured second-score integration/edit/export friction; no speculative upstream fork/API |
+
+These code slices do not accept whole issues, Epic C or Gate C. B4's later-date
+jobs remain untouched; future observation dates are not represented as completed.
+C7 local validation passes Ruff/format/ty and 416 tests with one opt-in skip;
+all 213 tracked/new Python files have maximum CC8 and minimum MI50.025032.
+
+C7's combined exact-head review found three concrete report defects: null
+normalized document metadata discarded a known accepted curated publication day;
+a successful status from a different personal snapshot generation enabled stale
+suggestions; and self-consistent subset/empty preview JSON hid accepted entries.
+The correction retains the accepted raw publication day when the normalized
+column is unknown, requires matching snapshot/status refresh tokens, and checks
+supplied positions against the full current accepted revision. Regressions cover
+a dated actual curated-import/acceptance/report path, generation mismatch/missing
+tokens, empty previews and truncated accepted selections. No personal or source
+record is changed by these report-boundary fixes.
+
+Final C7 integration is based on `4e16b49`: reviewed PRs #61–#67 are merged
+(planner, personal snapshots, acquisition, curated import, scoring, recovery and
+provider-neutral offers), and their obsolete worktrees have been removed by the
+controller. This integrates their code contracts, not their outstanding live/
+production acceptance. Final local Ruff/format/ty pass; 446 tests pass with one
+opt-in skip. All 241 tracked Python files meet maximum CC8 and minimum
+MI50.025032. The private ten-candidate report was regenerated against scorer
+`independent-priority-rank-v2`: ten accepted source entries, three reviewed work
+identities, seven unresolved, personal state unknown/stale and zero suggestions.
+No real personal history, ratings or comments were read or invented. The
+remaining Epic C gate matrix above still applies.

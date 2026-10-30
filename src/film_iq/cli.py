@@ -1,30 +1,24 @@
 """Evidence reports and explicitly approved one-film Movary actions."""
 
-import argparse
 import sqlite3
+import sys
 from collections.abc import Sequence
-from pathlib import Path
 
-from film_iq import __version__
+from film_iq.cli_parser import build_parser
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(prog="film-iq", description=__doc__)
-    parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
-    commands = parser.add_subparsers(dest="command", required=True)
-    commands.add_parser("status", help="Show POC implementation and validation status")
-    report = commands.add_parser("report", help="Report current evidence and supplied US offers")
-    report.add_argument("--database", type=Path, required=True)
-    report.add_argument(
-        "--inputs", type=Path, required=True, help="Catalog and provider snapshot JSON"
-    )
-    report.add_argument("--format", choices=("markdown", "json"), default="markdown")
-    sync = commands.add_parser("sync", help="Preview one Movary watchlist addition")
-    sync.add_argument("--title", required=True)
-    sync.add_argument("--tmdb-id", type=int, required=True)
-    sync.add_argument("--execute", action="store_true")
-    sync.add_argument("--approve", action="store_true", help="Approve this selected preview")
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if argv and argv[0] in {"discover", "import-list", "refresh-movary", "acquisition-status"}:
+        from film_iq.discovery_cli import main as discovery_main
+
+        return discovery_main(argv)
+    parser = build_parser()
     args = parser.parse_args(argv)
+    return _execute(parser, args)
+
+
+def _execute(parser, args) -> int:
     if args.command == "status":
         print("film-iq POC modules available; see plan.md for validation status")
         return 0
