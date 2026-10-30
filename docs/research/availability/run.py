@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+from datetime import UTC, date, datetime
 from pathlib import Path
 
 from .observe import PROVIDERS, observe
@@ -21,8 +22,13 @@ def main() -> None:
     parser.add_argument("--provider", choices=(*PROVIDERS, "both"), required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--live", action="store_true")
+    parser.add_argument("--on-date", type=date.fromisoformat, help="only run on this UTC date")
     parser.add_argument("--retention-note", default="")
     args = parser.parse_args()
+    # Calendar jobs repeat annually and can also be triggered manually.
+    # Check the UTC date before reading the cohort or making requests.
+    if args.on_date is not None and args.on_date != datetime.now(UTC).date():
+        parser.error("--on-date must match today in UTC; no observation was attempted")
     if not args.output.resolve().is_relative_to(ROOT / ".cache"):
         parser.error("output must be within this worktree's .cache directory")
     if args.live and not args.retention_note.strip():

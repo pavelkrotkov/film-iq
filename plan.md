@@ -864,3 +864,22 @@ and SQLite first; heavier framework benefit remains unproven, and lifetime
 maintenance, human active minutes and model billing stay explicitly unknown.
 B3 closure can use this bounded measured/inconclusive outcome after review;
 Gate B still depends on the remaining issue-specific evidence.
+
+### Epic B finish goal and dated-run preparation (2026-10-30)
+
+The explicit finish goal resumes B2/B3 effort measurements in independent
+worktrees and B8 decision proposals in parallel. B4's three-date requirement
+cannot be replaced by same-day reruns or called completed because a runner exists.
+[Dated observation preparation](docs/research/availability/dated-observations.md)
+uses native local calendar jobs, the accepted manifest and a minimal UTC date
+guard for Oct 31/Nov 1. No credentials are uploaded and consumer login is not
+a prerequisite. Installation and actual future evidence must be verified
+separately; until then B4/B8/Epic remain open.
+
+The signed-out browser now renders TMDB's canonical API terms, dated 2023-10-20:
+six-month cache cap, termination purge and broader ML/AI-application restrictions
+are now documented in the [rights follow-up](docs/research/availability/rights-20261030.md).
+They supersede the unknown cache duration, not every unresolved applicability or
+third-party-rights question. The conservative TMDB study-cache deadline is
+2027-04-30. No new API requests, terms acceptance or data deletion occurred in
+that terms check.
