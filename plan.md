@@ -406,3 +406,37 @@ Recall is conditional on existing Wikidata lead retrieval, not TMDB full-catalog
 search. This convenience cohort and automated attestation do not establish
 calibrated accuracy, the 99% target, issue #7 closure or Gate A acceptance. No
 production identity behavior or ADR decision changes.
+
+### Issue #6 acceptance reconciliation and current status (2026-10-29)
+
+This finding supersedes the historical closure-gate statements above without
+rewriting their evidence. Comparing issue #6's exact body and Epic A with this
+plan confirms that requiring a licensed real partial individual ballot for #6
+closure was an inherited stronger requirement. Four licensed real pages (42
+records, two contrasting adapters) cover ranked, tied, unranked and partial
+aggregate cases. They remain aggregates/institutional selections, not individual
+ballots. One wholly synthetic anonymous individual-ballot case now exercises the
+existing extraction-to-persistence interface: eligibility and partial assessment
+survive, all published entries and context/locators are stored exactly, unranked
+positions remain `rank=None`, document revision/scope survive and reruns make no
+database changes. Complete extraction of published content is distinct from
+incomplete viewing/assessment; missing films are never inferred. No production
+code or abstraction was needed, and the synthetic case adds zero real pages.
+
+These cover the narrow missing semantics assertion under the issue criteria;
+parent review/CI still governs closure. A rights-cleared real partial individual
+fixture remains a factual coverage gap, and Film Comment adversarial work under
+§4 remains open with its rights restrictions and prior research preserved. See
+[the corrected evidence report](docs/a6/README.md) and
+[research lead](docs/a6/partial-ballot-lead.md). No issue or gate is closed here.
+
+Current parent-reported status: PR #44 merged at `3962fdb`; #4/#5/#7/#8/#9 are
+closed against their implementation/reporting criteria. #7 has four audited,
+scored cases with zero auto-accepts and undefined precision; no 99% accuracy claim
+is made. This supersedes historical notes that identity truth was unavailable
+without broadening the convenience cohort's evidentiary scope. #10 and Epic A
+remain open pending authenticated reads/export and a real approved round trip.
+The browser explicitly requested sign-in; no account token or signed-in session
+was available, and opening the extension UI paused automation. No unauthorized
+reset or key generation was performed. Root-plan reconciliation remains owned
+by the parent; this appendix is confined to this worktree.
