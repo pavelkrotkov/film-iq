@@ -59,3 +59,20 @@ specifically authorize exporting/retaining private personal data. Explicit user
 approval is required before retrying. Consequently nonempty live history,
 real merit readback, live edits/deletions and the 5–15-film acceptance remain
 pending; #58 must remain open.
+
+## Authorized live execution follow-up — 2026-10-30
+
+The user explicitly approved the previously blocked read-only operation. The
+configured-account API reads and both supported installed CSV exporters completed
+successfully, and the private complete snapshot/status were published. A fresh
+private discovery report was generated using the matching snapshot generation.
+Operational receipts and report files remain under the selected project's ignored
+`.cache/epic-c/personal/` and `.cache/epic-c/results/`; no personal records, scores,
+comments, identifiers or account-level counts are published here.
+
+This supersedes the authorization/execution blocker above, not the remaining
+acceptance requirements. Nonempty genuine enjoyment/merit readback, rated-only
+behavior and changed/deleted ratings or merit comments remain unverified live.
+No user records were fabricated or modified to manufacture those cases. #58/#25
+and the real-user acceptance gate remain open. No watchlist writes, service
+purchases, production-provider adoption or B4 job changes occurred.
