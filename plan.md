@@ -781,3 +781,44 @@ research modules/tests alone have maximum CC 7 and minimum MI 51.50. B2's timed
 review metric, B3's correction minutes, B4's remaining provider/date/account
 measurements and final Gate B synthesis remain open; automated audit wall time
 is not represented as human labor.
+
+
+### B4 paired availability and pre-subscription discovery (2026-10-30)
+
+The [same-date paired report](docs/research/availability/comparison-20261030.md)
+now records sixty TMDB and sixty native Movie of the Night HTTP 200 requests:
+53 explicit complete TMDB US responses/seven unknown and 49 native complete/
+eleven unknown; zero complete-empty. Independent automated review accepts all
+sixty work-level lookups while preserving year/runtime/cut uncertainty. A new
+local accepted both-ID manifest extends the earlier unchanged TMDB manifest and
+is the stable input for later dates; the public cohort keeps null activation IDs.
+
+Source granularity differs: TMDB returns 529 service/category units, native 274
+quality variants including 53 add-ons. Explicit nominal mapping covers only
+237/529 TMDB units versus all 274 native variants. In 49 jointly complete works,
+180 mapped tuples overlap, 51 are TMDB-only and 46 native-only. Unmapped TMDB
+units can explain native-only mapped tuples; neither difference is confirmed
+absence, error or provider superiority. Add-on hosts, quality, source categories,
+free/ads and uncertain tiers remain distinct in retained observations.
+
+Signed-out Netflix/Disney/Criterion pages provide public spot-check evidence;
+No Other Land Apple SKU metadata matches three native USD prices, while its
+95.87/92-minute runtime conflict remains. Public title pages are benchmark spot
+checks, not prerequisites for routine discovery. A separate native Peacock
+subscription-catalog query returns twenty rows with `hasMore=true`; this first
+page is outside the sixty-film denominator. Peacock publicly advertises
+Disclosure Day separately and lists movies in Premium/Premium Plus, not Select;
+ad exceptions remain explicit. Consumer login/subscription is unnecessary for
+public discovery. Personal entitlement stays unknown by design; any account-specific
+validation remains optional and does not block catalog discovery.
+
+This phase adds 60 TMDB/62 native requests (paired pass, native probe and one
+Peacock page), plus one public Apple HTTP lookup; browser/web-reader assets are
+unmetered. No quota headers or actual account allowance/cost evidence were
+returned. All observations remain 2026-10-30 UTC date one. Two genuinely later
+dates, change timeliness and unresolved rights/plan-specific classifications
+remain; B4 #14, B8 #18 and Gate B stay open, and ADR 0008 remains provisional.
+The rights report's native storage/attribution constraints and specific §10
+AI-model-use restriction remain applicable; no provider catalog or credentials
+are committed. Historical pending-access statements above describe earlier
+stages and are superseded only by this bounded continuation.
