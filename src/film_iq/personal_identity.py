@@ -5,6 +5,7 @@ from collections import defaultdict
 
 def api_movies(collections: dict[str, list[dict]]) -> dict[int, dict]:
     movies: dict[int, dict] = {}
+    reverse: dict[int, int] = {}
     for name, rows in collections.items():
         for row in rows:
             movie = row["movie"]
@@ -15,7 +16,7 @@ def api_movies(collections: dict[str, list[dict]]) -> dict[int, dict]:
             if min(tmdb, movary) < 1:
                 raise ValueError("Invalid Movary/TMDB crosswalk")
             item = movies.setdefault(tmdb, {"movary_id": movary, "title": movie.get("title")})
-            if item["movary_id"] != movary:
+            if item["movary_id"] != movary or reverse.setdefault(movary, tmdb) != tmdb:
                 raise ValueError("Conflicting Movary/TMDB crosswalk")
             item[name] = True
     return movies

@@ -2,7 +2,7 @@
 
 import re
 
-_TAG = re.compile(r"Artistic merit: (10|[1-9])/10(?![\w/])")
+_TAG = re.compile(r"Artistic merit: (10|[1-9])/10(?![\w/]|[.,]\d)")
 
 
 def merit(rows: list[dict[str, str]]) -> tuple[int | None, str]:

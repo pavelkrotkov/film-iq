@@ -3,6 +3,7 @@
 import csv
 import subprocess
 import tempfile
+from http.client import HTTPException
 from pathlib import Path
 from typing import Any
 
@@ -39,7 +40,15 @@ def refresh(
             )
             result = build_snapshot(collections, ratings, history)
             private_json(snapshot, result)
-    except (OSError, ValueError, KeyError, TypeError, csv.Error, subprocess.SubprocessError):
+    except (
+        OSError,
+        ValueError,
+        KeyError,
+        TypeError,
+        csv.Error,
+        HTTPException,
+        subprocess.SubprocessError,
+    ):
         private_json(
             snapshot.with_suffix(snapshot.suffix + ".status"),
             {"stale": True, "error": "refresh_failed"},

@@ -1217,3 +1217,15 @@ to read and retain live personal ratings/comments. Nonempty live readback and
 real-user acceptance remain pending, so this implementation does not close #58
 or accept the C7 populated-report milestone. No Movary data or scheduled B4 jobs
 were changed, and no personal source data is committed.
+
+C0a's independent GPT-6.1 Sol high review found one Standards issue and two Spec
+issues: inverse Movary-to-TMDB identity conflicts could pass, incomplete HTTP
+reads could leave freshness marked successful, and malformed decimal merit
+suffixes could be accepted as a valid prefix. All three findings are accepted.
+The correction validates both crosswalk directions, catches HTTP protocol
+failures in the existing stale-state boundary and rejects numeric suffixes while
+allowing sentence punctuation. Targeted regressions preserve the prior private
+snapshot after both failure classes and exercise malformed merit decimals.
+Validation now passes 364 tests with one opt-in live skip; Ruff/format/ty pass.
+The fourteen changed Python files have maximum CC 8 and minimum MI 52.59.
+Live personal acceptance remains pending explicit user permission.

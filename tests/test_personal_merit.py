@@ -20,6 +20,8 @@ def row(comment, watched="2026-01-01"):
         (["Artistic merit: 0/10"], (None, "invalid")),
         (["Artistic merit: 11/10"], (None, "invalid")),
         (["Artistic merit: 8/100"], (None, "invalid")),
+        (["Artistic merit: 8/10.5"], (None, "invalid")),
+        (["Artistic merit: 8/10,5"], (None, "invalid")),
         (["Artistic merit: 8/10 and Artistic merit: 12/10"], (None, "invalid")),
         (["Artistic merit: 10/10. Other private text"], (10, "known")),
     ],
