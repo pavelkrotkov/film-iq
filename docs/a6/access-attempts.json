@@ -1,0 +1,140 @@
+{
+  "note": "Retained successful acquisition URLs are in tests/fixtures/ingest/pages/captures.json and rights-receipt.json; this lists exploratory requests and failures. Search-result-only leads are not asserted as fetched endpoints.",
+  "attempts": [
+    {
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&titles=The_Sight_and_Sound_Greatest_Films_of_All_Time_2022&format=json",
+      "observed_outcome": "Sandbox DNS error; then HTTP 200 after authorized network access",
+      "approach": "Identified User-Agent: film-iq fixture research (https://github.com/pavelkrotkov/film-iq)"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/The_Sight_and_Sound_Greatest_Films_of_All_Time_2022",
+      "observed_outcome": "Sandbox DNS error; then HTTP 200 after authorized network access",
+      "approach": "Identified User-Agent: film-iq fixture research (https://github.com/pavelkrotkov/film-iq)"
+    },
+    {
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&titles=The+Sight+and+Sound+Greatest+Films+of+All+Time+2022&format=json",
+      "observed_outcome": "HTTP 403",
+      "approach": "No identified User-Agent; quote_plus titles. Replaced by prior working URL form and identified User-Agent, not retried unchanged."
+    },
+    {
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&titles=The+Sight+and+Sound+Greatest+Films+of+All+Time+2012&format=json",
+      "observed_outcome": "Submitted concurrently; result not observed before first future raised HTTP 403",
+      "approach": "No identified User-Agent; quote_plus titles. Replaced by prior working URL form and identified User-Agent, not retried unchanged."
+    },
+    {
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&titles=AFI+Awards+2023&format=json",
+      "observed_outcome": "Submitted concurrently; result not observed before first future raised HTTP 403",
+      "approach": "No identified User-Agent; quote_plus titles. Replaced by prior working URL form and identified User-Agent, not retried unchanged."
+    },
+    {
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&titles=National+Board+of+Review+Awards+2023&format=json",
+      "observed_outcome": "Submitted concurrently; result not observed before first future raised HTTP 403",
+      "approach": "No identified User-Agent; quote_plus titles. Replaced by prior working URL form and identified User-Agent, not retried unchanged."
+    },
+    {
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&titles=The_Sight_and_Sound_Greatest_Films_of_All_Time_2022&format=json",
+      "observed_outcome": "HTTP 200; revision 1332699136",
+      "approach": "Identified User-Agent and previously working parameter encoding"
+    },
+    {
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&titles=The_Sight_and_Sound_Greatest_Films_of_All_Time_2012&format=json",
+      "observed_outcome": "HTTP 200; redirect wikitext, not ranking",
+      "approach": "Identified User-Agent and previously working parameter encoding"
+    },
+    {
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&titles=AFI_Awards_2023&format=json",
+      "observed_outcome": "HTTP 200; missing page, abandoned",
+      "approach": "Identified User-Agent and previously working parameter encoding"
+    },
+    {
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&titles=National_Board_of_Review_Awards_2023&format=json",
+      "observed_outcome": "HTTP 200; revision 1370562803",
+      "approach": "Identified User-Agent and previously working parameter encoding"
+    },
+    {
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=The_Sight_%26_Sound_Greatest_Films_of_All_Time_2012&format=json",
+      "observed_outcome": "HTTP 200; actual canonical page/revision found",
+      "approach": "Canonical 2012 ampersand title; verified 2022 NBR title"
+    },
+    {
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=National_Board_of_Review_Awards_2022&format=json",
+      "observed_outcome": "HTTP 200; actual canonical page/revision found",
+      "approach": "Canonical 2012 ampersand title; verified 2022 NBR title"
+    },
+    {
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1332699136&prop=sections&format=json",
+      "observed_outcome": "HTTP 200; section indices and byte offsets returned",
+      "approach": "Pinned revisions"
+    },
+    {
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1370562803&prop=sections&format=json",
+      "observed_outcome": "HTTP 200; section indices and byte offsets returned",
+      "approach": "Pinned revisions"
+    },
+    {
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1196879962&prop=wikitext&format=json",
+      "observed_outcome": "HTTP 200; inspected, exploratory response not separately saved",
+      "approach": "Inspect before choosing sections"
+    },
+    {
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1269459635&prop=wikitext&section=1&format=json",
+      "observed_outcome": "HTTP 200; inspected, exploratory response not separately saved",
+      "approach": "Inspect before choosing sections"
+    },
+    {
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1332699136&prop=wikitext&section=2&format=json",
+      "observed_outcome": "HTTP 200; inspected, exploratory response not separately saved",
+      "approach": "Inspect before choosing sections"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/National_Board_of_Review_Awards_2023",
+      "observed_outcome": "Web reader succeeded",
+      "approach": "Rendered source lead"
+    },
+    {
+      "url": "https://nationalboardofreview.org/2023/12/national-board-of-review-names-2023-honorees/",
+      "observed_outcome": "Web reader succeeded; original selections checked",
+      "approach": "Public web reader or direct HTTP as explicitly stated"
+    },
+    {
+      "url": "https://nationalboardofreview.org/2022/12/national-board-of-review-names-2022-honorees/",
+      "observed_outcome": "Web reader inaccessible; guessed URL abandoned",
+      "approach": "Public web reader or direct HTTP as explicitly stated"
+    },
+    {
+      "url": "https://nationalboardofreview.org/2022/12/national-board-of-review-announces-2022-award-winners/",
+      "observed_outcome": "Found by search; full returned announcement selections checked",
+      "approach": "Public web reader or direct HTTP as explicitly stated"
+    },
+    {
+      "url": "https://www.bfi.org.uk/sight-and-sound/directors-100-greatest-films-all-time",
+      "observed_outcome": "Web reader succeeded; 2022 original ranking subset checked",
+      "approach": "Public web reader or direct HTTP as explicitly stated"
+    },
+    {
+      "url": "https://www.bfi.org.uk/sight-and-sound/polls/greatest-films-all-time/directors-100-best",
+      "observed_outcome": "Web reader timed out; new approach direct identified HTTP returned 200 and 652081 bytes. Full ranking validation not finished; body not saved",
+      "approach": "Public web reader or direct HTTP as explicitly stated"
+    },
+    {
+      "url": "https://www.bfi.org.uk/film/787b7bbc-165b-5884-bcf9-2e9c2c78d81a/vertigo",
+      "observed_outcome": "Web reader inaccessible; abandoned",
+      "approach": "Public web reader or direct HTTP as explicitly stated"
+    },
+    {
+      "url": "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use#7._Licensing_of_Content",
+      "observed_outcome": "Web reader succeeded, redirected to Policy:Terms_of_Use",
+      "approach": "Public web reader or direct HTTP as explicitly stated"
+    },
+    {
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "observed_outcome": "Web reader succeeded",
+      "approach": "Public web reader or direct HTTP as explicitly stated"
+    },
+    {
+      "url": "https://www.bfi.org.uk/sight-and-sound/polls/greatest-films-all-time/directors-100-best",
+      "observed_outcome": "HTTP 200; 654194 bytes; SHA-256 add59ba5a2ce848e31e25ac0592081c8e0e16358f7c3c92cb7d0693eb2efb28e; all ten 2012 title/rank/tie records and vote counts corroborated in memory; conflicting year labels noted; no raw body saved",
+      "approach": "Follow-up to previously successful HTTP: remove script/style blocks before stripping HTML, then inspect the Directors\u2019 top 100 section. No retry of failed access."
+    }
+  ]
+}

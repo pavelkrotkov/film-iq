@@ -1,0 +1,1087 @@
+{
+  "receipts": [
+    {
+      "url": "https://en.wikipedia.org/wiki/20_Days_in_Mariupol",
+      "final_url": "https://en.wikipedia.org/wiki/20_Days_in_Mariupol",
+      "retrieved_at": "2026-10-30T03:40:02.535801+00:00",
+      "response_sha256": "849021a462918f827b305a7ab55098fb2e25d5070ce3a0a83ada042c7ec86957",
+      "revision_candidates": [
+        "1382645531"
+      ],
+      "infobox": [
+        [
+          "Ukrainian",
+          "20 днів у Маріуполі"
+        ],
+        [
+          "Directed by",
+          "Mstyslav Chernov"
+        ],
+        [
+          "Release date",
+          "20 January 2023 ( 2023-01-20 ) ( Sundance ) [ 1 ]"
+        ],
+        [
+          "Running time",
+          "94 minutes"
+        ],
+        [
+          "Country",
+          "Ukraine"
+        ],
+        [
+          "Languages",
+          "Ukrainian English Russian"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1382645531",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1382645531",
+      "attribution": "Wikipedia contributors, 20 Days in Mariupol",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=20_Days_in_Mariupol&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-31-wiki.json",
+      "receipt_sha256": "d325a8a25879b58696bcaca9f30d2d0d3f7c56b78291bdcc490e10bcf866d74f"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Bobi_Wine:_The_People%27s_President",
+      "final_url": "https://en.wikipedia.org/wiki/Bobi_Wine:_The_People%27s_President",
+      "retrieved_at": "2026-10-30T03:40:03.947549+00:00",
+      "response_sha256": "916bfc4bec7b654985558c9515e5b5a7d0a41085c1e03eb4599eeefd5552fa7c",
+      "revision_candidates": [
+        "1382357367"
+      ],
+      "infobox": [
+        [
+          "Directed by",
+          "Christopher Sharp Moses Bwayo"
+        ],
+        [
+          "Release dates",
+          "1 September 2022 ( 2022-09-01 ) ( Venice ) 28 July 2023 ( 2023-07-28 ) (United States)"
+        ],
+        [
+          "Running time",
+          "113 minutes"
+        ],
+        [
+          "Countries",
+          "Uganda United Kingdom United States"
+        ],
+        [
+          "Language",
+          "English"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1382357367",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1382357367",
+      "attribution": "Wikipedia contributors, Bobi Wine: The People%27s President",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=Bobi_Wine:_The_People%27s_President&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-32-wiki.json",
+      "receipt_sha256": "9cca8f58c753a8ba8736f4f827bd458985f1308df440c1b5a8eca385b9df6692"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/The_Eternal_Memory",
+      "final_url": "https://en.wikipedia.org/wiki/The_Eternal_Memory",
+      "retrieved_at": "2026-10-30T03:40:02.447860+00:00",
+      "response_sha256": "c956596a05a6d0d5082d116e3d2876c76bcdfed94074861dea1b06b443cebd64",
+      "revision_candidates": [
+        "1380339248"
+      ],
+      "infobox": [
+        [
+          "Directed by",
+          "Maite Alberdi"
+        ],
+        [
+          "Release dates",
+          "21 January 2023 ( 2023-01-21 ) ( Sundance ) 24 August 2023 ( 2023-08-24 ) (Chile)"
+        ],
+        [
+          "Running time",
+          "85 minutes [ 1 ]"
+        ],
+        [
+          "Country",
+          "Chile"
+        ],
+        [
+          "Language",
+          "Spanish"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1380339248",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1380339248",
+      "attribution": "Wikipedia contributors, The Eternal Memory",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=The_Eternal_Memory&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-33-wiki.json",
+      "receipt_sha256": "738dbbc2844553b61978b8c39aee0a3db90a7aa3d036c789df7a9d04f5e537aa"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Four_Daughters_(2023_film)",
+      "final_url": "https://en.wikipedia.org/wiki/Four_Daughters_(2023_film)",
+      "retrieved_at": "2026-10-30T03:40:02.450765+00:00",
+      "response_sha256": "a3e3ffdbf8bda27d0358ea7c935f5813c79ad33a76c5e4690b21ba8de704c57a",
+      "revision_candidates": [
+        "1381910454"
+      ],
+      "infobox": [
+        [
+          "Arabic",
+          "بنات ألفة"
+        ],
+        [
+          "French",
+          "Les Filles d'Olfa"
+        ],
+        [
+          "Directed by",
+          "Kaouther Ben Hania"
+        ],
+        [
+          "Release dates",
+          "19 May 2023 ( 2023-05-19 ) ( Cannes ) 5 July 2023 ( 2023-07-05 ) (France) 20 September 2023 ( 2023-09-20 ) (Tunisia)"
+        ],
+        [
+          "Running time",
+          "107 minutes [ 1 ]"
+        ],
+        [
+          "Countries",
+          "France Germany Tunisia Saudi Arabia"
+        ],
+        [
+          "Language",
+          "Arabic"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1381910454",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1381910454",
+      "attribution": "Wikipedia contributors, Four Daughters (2023 film)",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=Four_Daughters_(2023_film)&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-34-wiki.json",
+      "receipt_sha256": "e2de2e106bc063ac0a723f37ab3740c3d8f2384c4f7c379ab78d4c854d2d8821"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/To_Kill_a_Tiger",
+      "final_url": "https://en.wikipedia.org/wiki/To_Kill_a_Tiger",
+      "retrieved_at": "2026-10-30T03:40:02.847046+00:00",
+      "response_sha256": "53efd37f31e9cec6194aae3d7a421fcc13e76bf3e250418acd26286148878bd9",
+      "revision_candidates": [
+        "1381395360"
+      ],
+      "infobox": [
+        [
+          "Directed by",
+          "Nisha Pahuja"
+        ],
+        [
+          "Release date",
+          "September 10, 2022 ( 2022-09-10 ) ( TIFF )"
+        ],
+        [
+          "Running time",
+          "127 minutes"
+        ],
+        [
+          "Country",
+          "Canada"
+        ],
+        [
+          "Language",
+          "Hindi"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1381395360",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1381395360",
+      "attribution": "Wikipedia contributors, To Kill a Tiger",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=To_Kill_a_Tiger&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-35-wiki.json",
+      "receipt_sha256": "8c6fecf63bb65a87f77479a7cd372f029d3eadae21d3d0cad677776660b05fba"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/No_Other_Land",
+      "final_url": "https://en.wikipedia.org/wiki/No_Other_Land",
+      "retrieved_at": "2026-10-30T03:40:03.017839+00:00",
+      "response_sha256": "1bd3f491ac3879303ed54d486b772dc63f57957cb14f91ba2a6afa7c9fbb19b9",
+      "revision_candidates": [
+        "1382372004"
+      ],
+      "infobox": [
+        [
+          "Arabic",
+          "لا أرض أخرى"
+        ],
+        [
+          "Directed by",
+          "Basel Adra Hamdan Ballal Yuval Abraham Rachel Szor"
+        ],
+        [
+          "Release date",
+          "16 February 2024 ( 2024-02-16 ) ( Berlinale )"
+        ],
+        [
+          "Running time",
+          "92 minutes [ 1 ]"
+        ],
+        [
+          "Countries",
+          "Palestine Norway"
+        ],
+        [
+          "Languages",
+          "Arabic Hebrew English"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1382372004",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1382372004",
+      "attribution": "Wikipedia contributors, No Other Land",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=No_Other_Land&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-36-wiki.json",
+      "receipt_sha256": "cc8d3367eb4aad7851162f0852718c9514ce129e19af4e37d847af7c02f35d2c"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Black_Box_Diaries",
+      "final_url": "https://en.wikipedia.org/wiki/Black_Box_Diaries",
+      "retrieved_at": "2026-10-30T03:40:03.019230+00:00",
+      "response_sha256": "eeb41b5492d6ff27fb5513eace3d43e69ef054d4467743b69fbdda56e314179e",
+      "revision_candidates": [
+        "1379997510"
+      ],
+      "infobox": [
+        [
+          "Directed by",
+          "Shiori Itō"
+        ],
+        [
+          "Release dates",
+          "January 20, 2024 ( 2024-01-20 ) ( Sundance ) October 25, 2024 ( 2024-10-25 ) (United States) October 25, 2024 ( 2024-10-25 ) (United Kingdom)"
+        ],
+        [
+          "Running time",
+          "103 minutes"
+        ],
+        [
+          "Countries",
+          "Japan United States United Kingdom"
+        ],
+        [
+          "Languages",
+          "English Japanese"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1379997510",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1379997510",
+      "attribution": "Wikipedia contributors, Black Box Diaries",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=Black_Box_Diaries&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-37-wiki.json",
+      "receipt_sha256": "b8e1a98e418f7bf68c4bbb3a2ef25bec68e5494e31902265ab1b836e1cec99a0"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Porcelain_War",
+      "final_url": "https://en.wikipedia.org/wiki/Porcelain_War",
+      "retrieved_at": "2026-10-30T03:40:03.236964+00:00",
+      "response_sha256": "c3d4f646a107476259da3262d8770ae0592cdeba1563ccb29bdb3f1ca2d51014",
+      "revision_candidates": [
+        "1379995596"
+      ],
+      "infobox": [
+        [
+          "Directed by",
+          "Brendan Bellomo Slava Leontyev"
+        ],
+        [
+          "Release dates",
+          "January 20, 2024 ( 2024-01-20 ) ( Sundance ) November 22, 2024 ( 2024-11-22 ) (United States)"
+        ],
+        [
+          "Running time",
+          "87 minutes"
+        ],
+        [
+          "Countries",
+          "United States Australia Ukraine"
+        ],
+        [
+          "Languages",
+          "Ukrainian English Russian"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1379995596",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1379995596",
+      "attribution": "Wikipedia contributors, Porcelain War",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=Porcelain_War&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-38-wiki.json",
+      "receipt_sha256": "e64c6e8d748d3c6434ed1339cb74ad3238fbd235161e3e3567241736de7d075c"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Soundtrack_to_a_Coup_d%27Etat",
+      "final_url": "https://en.wikipedia.org/wiki/Soundtrack_to_a_Coup_d%27Etat",
+      "retrieved_at": "2026-10-30T03:40:03.488406+00:00",
+      "response_sha256": "5777745b0ab2077437b2217720d38b2acadc9bb001abc10bd428b23b93f0ba66",
+      "revision_candidates": [
+        "1379997329"
+      ],
+      "infobox": [
+        [
+          "Directed by",
+          "Johan Grimonprez"
+        ],
+        [
+          "Release date",
+          "22 January 2024 ( 2024-01-22 ) ( Sundance )"
+        ],
+        [
+          "Running time",
+          "150 minutes"
+        ],
+        [
+          "Countries",
+          "Belgium France Netherlands"
+        ],
+        [
+          "Languages",
+          "French English Russian"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1379997329",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1379997329",
+      "attribution": "Wikipedia contributors, Soundtrack to a Coup d%27Etat",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=Soundtrack_to_a_Coup_d%27Etat&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-39-wiki.json",
+      "receipt_sha256": "6858cbe440f63fdc675822eb2cca75e091709dcafb9df76615610963c07b78ed"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Sugarcane_(film)",
+      "final_url": "https://en.wikipedia.org/wiki/Sugarcane_(film)",
+      "retrieved_at": "2026-10-30T03:40:03.419246+00:00",
+      "response_sha256": "2867ddc83486175e281f95d1253beb2449f7e0cdb1eaa4762b42e8358df27048",
+      "revision_candidates": [
+        "1379995652"
+      ],
+      "infobox": [
+        [
+          "Directed by",
+          "Julian Brave NoiseCat Emily Kassie"
+        ],
+        [
+          "Release dates",
+          "January 20, 2024 ( 2024-01-20 ) ( Sundance ) August 9, 2024 ( 2024-08-09 ) (United States and Canada)"
+        ],
+        [
+          "Running time",
+          "107 minutes [ 1 ]"
+        ],
+        [
+          "Countries",
+          "United States Canada"
+        ],
+        [
+          "Languages",
+          "English Secwepemctsín [ 1 ]"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1379995652",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1379995652",
+      "attribution": "Wikipedia contributors, Sugarcane (film)",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=Sugarcane_(film)&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-40-wiki.json",
+      "receipt_sha256": "ccd55095cbb43b8e8c007d17af8701d0e4c0cffd5b07982b771b536d33fb0542"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/The_Boy_and_the_Heron",
+      "read_at": "2026-10-30T03:42:25.401433+00:00",
+      "access": "public web rendering",
+      "web_reference": "turn324view1",
+      "revision": null,
+      "response_sha256": null,
+      "metadata": {
+        "director": "Hayao Miyazaki",
+        "release_date": "2023-07-14",
+        "running_time_minutes": 124,
+        "country": "Japan",
+        "language": "Japanese"
+      },
+      "rights": "CC BY-SA 4.0 Wikipedia contributors; text paraphrased to factual fields; no image retained",
+      "derived_metadata_sha256": "d7d8db2efb076b241a6ab454f6d70c772ccca72f0536a5154a3458627b3c44c3",
+      "receipt_path": ".cache/cohort-audit/part2/b4-41-web-supplement.json",
+      "receipt_sha256": "054547ec74d28961f4b878f4108ab97de2a958eee11b15af63f369f2896c168f"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/The_Boy_and_the_Heron",
+      "final_url": "https://en.wikipedia.org/wiki/The_Boy_and_the_Heron",
+      "retrieved_at": "2026-10-30T03:40:03.779965+00:00",
+      "response_sha256": "1591f6806b70e35e061b18004be48d4ff8aefb14d3707de92114d8ff130991e6",
+      "revision_candidates": [
+        "1380591230"
+      ],
+      "infobox": [
+        [
+          "Kanji",
+          "君たちはどう生きるか"
+        ],
+        [
+          "Revised Hepburn",
+          "Kimitachi wa Dō Ikiru ka"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1380591230",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1380591230",
+      "attribution": "Wikipedia contributors, The Boy and the Heron",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=The_Boy_and_the_Heron&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-41-wiki.json",
+      "receipt_sha256": "a02765e1a4f8d38e3089969fd4da69bdf66be4ca3d1cf89ad00e6067a69d3ffa"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Elemental_(2023_film)",
+      "final_url": "https://en.wikipedia.org/wiki/Elemental_(2023_film)",
+      "retrieved_at": "2026-10-30T03:40:04.064977+00:00",
+      "response_sha256": "4abde197784f7103db8c1adb58ec0958ab9226df858e5e3d656513293b5760b6",
+      "revision_candidates": [
+        "1382314951"
+      ],
+      "infobox": [
+        [
+          "Directed by",
+          "Peter Sohn"
+        ],
+        [
+          "Release dates",
+          "May 27, 2023 ( 2023-05-27 ) ( Cannes ) June 16, 2023 ( 2023-06-16 ) (United States)"
+        ],
+        [
+          "Running time",
+          "101 minutes [ 1 ]"
+        ],
+        [
+          "Country",
+          "United States"
+        ],
+        [
+          "Language",
+          "English"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1382314951",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1382314951",
+      "attribution": "Wikipedia contributors, Elemental (2023 film)",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=Elemental_(2023_film)&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-42-wiki.json",
+      "receipt_sha256": "263e8f9ecddc59e607d41261cc9a143aeb1c9437235b94f88eb15fe8230240bc"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Nimona_(film)",
+      "final_url": "https://en.wikipedia.org/wiki/Nimona_(film)",
+      "retrieved_at": "2026-10-30T03:40:04.067047+00:00",
+      "response_sha256": "c6777fb3be2fd44e8b2e61cdeadd7f6e75d4310e6bba072b66d7f834a92b30ea",
+      "revision_candidates": [
+        "1381500131"
+      ],
+      "infobox": [
+        [
+          "Directed by",
+          "Nick Bruno Troy Quane"
+        ],
+        [
+          "Release dates",
+          "June 14, 2023 ( 2023-06-14 ) ( Annecy ) June 23, 2023 ( 2023-06-23 ) (United States) June 30, 2023 ( 2023-06-30 ) (Netflix)"
+        ],
+        [
+          "Running time",
+          "99 minutes [ 2 ]"
+        ],
+        [
+          "Country",
+          "United States"
+        ],
+        [
+          "Language",
+          "English"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1381500131",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1381500131",
+      "attribution": "Wikipedia contributors, Nimona (film)",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=Nimona_(film)&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-43-wiki.json",
+      "receipt_sha256": "ed0a78bda9bd8b98fa8d9850e7d516a16bf8796d09dccc053da2031a37f3c998"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Robot_Dreams_(film)",
+      "final_url": "https://en.wikipedia.org/wiki/Robot_Dreams_(film)",
+      "retrieved_at": "2026-10-30T03:40:04.829612+00:00",
+      "response_sha256": "44eba0e269056a10f7189d0276f76d29b4d30e69967c78fd08f623cdc14db1c5",
+      "revision_candidates": [
+        "1382126864"
+      ],
+      "infobox": [
+        [
+          "Directed by",
+          "Pablo Berger"
+        ],
+        [
+          "Release dates",
+          "21 May 2023 ( 2023-05-21 ) ( Cannes ) 6 December 2023 ( 2023-12-06 ) (Spain) 27 December 2023 ( 2023-12-27 ) (France)"
+        ],
+        [
+          "Running time",
+          "102 minutes"
+        ],
+        [
+          "Countries",
+          "Spain France"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1382126864",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1382126864",
+      "attribution": "Wikipedia contributors, Robot Dreams (film)",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=Robot_Dreams_(film)&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-44-wiki.json",
+      "receipt_sha256": "28384078aba9a81a322827fe63ef0904cdd1625ff374517c168049e89d10543a"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Spider-Man:_Across_the_Spider-Verse",
+      "final_url": "https://en.wikipedia.org/wiki/Spider-Man:_Across_the_Spider-Verse",
+      "retrieved_at": "2026-10-30T03:40:05.201920+00:00",
+      "response_sha256": "1dfdc63e6aed61350e8b38ed089a150c21688ed9d1deaf3490079b285a909bae",
+      "revision_candidates": [
+        "1379727353"
+      ],
+      "infobox": [
+        [
+          "Directed by",
+          "Joaquim Dos Santos Kemp Powers Justin K. Thompson"
+        ],
+        [
+          "Release dates",
+          "May 30, 2023 ( 2023-05-30 ) ( Regency Village Theater ) June 2, 2023 ( 2023-06-02 ) (United States)"
+        ],
+        [
+          "Running time",
+          "140 minutes [ 1 ]"
+        ],
+        [
+          "Country",
+          "United States"
+        ],
+        [
+          "Language",
+          "English"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1379727353",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1379727353",
+      "attribution": "Wikipedia contributors, Spider-Man: Across the Spider-Verse",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=Spider-Man:_Across_the_Spider-Verse&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-45-wiki.json",
+      "receipt_sha256": "ab24168caecc9c52d5eb02a7cc3f1fcf34a782449abe955c872e7626a3d36701"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Flow_(2024_film)",
+      "final_url": "https://en.wikipedia.org/wiki/Flow_(2024_film)",
+      "retrieved_at": "2026-10-30T03:40:05.117927+00:00",
+      "response_sha256": "01c530a54e7045b6f40b3e8ffc7fca8c28923528022a01e23db7a3b1462c447c",
+      "revision_candidates": [
+        "1381278890"
+      ],
+      "infobox": [
+        [
+          "Latvian",
+          "Straume"
+        ],
+        [
+          "Directed by",
+          "Gints Zilbalodis"
+        ],
+        [
+          "Release dates",
+          "22 May 2024 ( 2024-05-22 ) ( Cannes ) 29 August 2024 ( 2024-08-29 ) (Latvia) 30 October 2024 ( 2024-10-30 ) (France) 15 January 2025 ( 2025-01-15 ) (Belgium)"
+        ],
+        [
+          "Running time",
+          "85 minutes [ 1 ]"
+        ],
+        [
+          "Countries",
+          "Latvia France Belgium"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1381278890",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1381278890",
+      "attribution": "Wikipedia contributors, Flow (2024 film)",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=Flow_(2024_film)&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-46-wiki.json",
+      "receipt_sha256": "b64563d5b19bb69d371f2cfe39b5fd39a2fa8fe7d72ebb1276a426110f57af75"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Inside_Out_2",
+      "final_url": "https://en.wikipedia.org/wiki/Inside_Out_2",
+      "retrieved_at": "2026-10-30T03:40:05.184332+00:00",
+      "response_sha256": "bfe4500c64ba66dcf4ee2cac687c3b4b4254d3a00ac9b4435813d1d243c2a963",
+      "revision_candidates": [
+        "1379327515"
+      ],
+      "infobox": [
+        [
+          "Directed by",
+          "Kelsey Mann"
+        ],
+        [
+          "Release dates",
+          "June 10, 2024 ( 2024-06-10 ) ( El Capitan Theatre ) June 14, 2024 ( 2024-06-14 ) (United States)"
+        ],
+        [
+          "Running time",
+          "96 minutes [ 1 ]"
+        ],
+        [
+          "Country",
+          "United States"
+        ],
+        [
+          "Language",
+          "English"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1379327515",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1379327515",
+      "attribution": "Wikipedia contributors, Inside Out 2",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=Inside_Out_2&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-47-wiki.json",
+      "receipt_sha256": "1ddbbf98e0ee0bf5ff2d2ae20655210c0bc4041c385af8893eb4efd97413c1e8"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Memoir_of_a_Snail",
+      "final_url": "https://en.wikipedia.org/wiki/Memoir_of_a_Snail",
+      "retrieved_at": "2026-10-30T03:40:05.422913+00:00",
+      "response_sha256": "e192149a4b0ac23e7326302c563fd8840729d328140950169805c74c68cfaf76",
+      "revision_candidates": [
+        "1382083192"
+      ],
+      "infobox": [
+        [
+          "Directed by",
+          "Adam Elliot"
+        ],
+        [
+          "Release dates",
+          "10 June 2024 ( 2024-06-10 ) ( Annecy ) 17 October 2024 ( 2024-10-17 ) (Australia)"
+        ],
+        [
+          "Running time",
+          "95 minutes [ 1 ]"
+        ],
+        [
+          "Country",
+          "Australia"
+        ],
+        [
+          "Language",
+          "English"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1382083192",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1382083192",
+      "attribution": "Wikipedia contributors, Memoir of a Snail",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=Memoir_of_a_Snail&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-48-wiki.json",
+      "receipt_sha256": "3a38391b9e24c1275ceebd3780435fce2058da32c0db48822c4a1106e007a404"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Wallace_%26_Gromit:_Vengeance_Most_Fowl",
+      "final_url": "https://en.wikipedia.org/wiki/Wallace_%26_Gromit:_Vengeance_Most_Fowl",
+      "retrieved_at": "2026-10-30T03:40:05.657955+00:00",
+      "response_sha256": "d60a899c580625e9feccbbf5c7303b10499c7c2c2373c3d893b0d0bbdaca04fe",
+      "revision_candidates": [
+        "1381890892"
+      ],
+      "infobox": [
+        [
+          "Directed by",
+          "Nick Park Merlin Crossingham"
+        ],
+        [
+          "Release dates",
+          "27 October 2024 ( 2024-10-27 ) ( AFI ) 25 December 2024 ( 2024-12-25 ) (BBC) 3 January 2025 ( 2025-01-03 ) (Netflix)"
+        ],
+        [
+          "Running time",
+          "79 minutes [ 1 ]"
+        ],
+        [
+          "Country",
+          "United Kingdom"
+        ],
+        [
+          "Language",
+          "English"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1381890892",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1381890892",
+      "attribution": "Wikipedia contributors, Wallace %26 Gromit: Vengeance Most Fowl",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=Wallace_%26_Gromit:_Vengeance_Most_Fowl&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-49-wiki.json",
+      "receipt_sha256": "b9215a02b0dc0bb188c46aa18a0a1f5319e7638ea8192d8ff5852d8995e3d171"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/The_Wild_Robot",
+      "final_url": "https://en.wikipedia.org/wiki/The_Wild_Robot",
+      "retrieved_at": "2026-10-30T03:40:05.733418+00:00",
+      "response_sha256": "25f4f1d8da42ebfef642a069951b01baf354cb55bb1148ff08ea3e61f8227224",
+      "revision_candidates": [
+        "1382061656"
+      ],
+      "infobox": [
+        [
+          "Directed by",
+          "Chris Sanders"
+        ],
+        [
+          "Release dates",
+          "September 8, 2024 ( 2024-09-08 ) ( TIFF ) September 27, 2024 ( 2024-09-27 ) (United States)"
+        ],
+        [
+          "Running time",
+          "102 minutes [ 1 ]"
+        ],
+        [
+          "Country",
+          "United States"
+        ],
+        [
+          "Language",
+          "English"
+        ]
+      ],
+      "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+      "revision": "1382061656",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1382061656",
+      "attribution": "Wikipedia contributors, The Wild Robot",
+      "history_url": "https://en.wikipedia.org/w/index.php?title=The_Wild_Robot&action=history",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "changes": "HTML infobox fields extracted to JSON, stylesheet omitted; no images or article body retained.",
+      "receipt_path": ".cache/cohort-audit/part2/b4-50-wiki.json",
+      "receipt_sha256": "84a9462be94dcd8dd55c7360e4e5040f61816de4cd4c1c1620665a554559024b"
+    },
+    {
+      "url": "https://www.festival-cannes.com/en/f/volcelest/",
+      "retrieved_at": "2026-10-30T03:41:14.539755+00:00",
+      "revision": null,
+      "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+      "response_sha256": "12d07453b85fc8cb161e201a93538a03f2473b53a9d890ff2204728f1607702e",
+      "http_status": 200,
+      "metadata": {
+        "Directed by :": "Éric BRICHE",
+        "Year of production:": "2024",
+        "Country:": "France",
+        "Durée :": "15"
+      },
+      "category": "Short Films",
+      "selection_year": 2024,
+      "receipt_path": ".cache/cohort-audit/part2/b4-51-cannes.json",
+      "receipt_sha256": "987b302c5dde534eff0f8d80c675b7acd4799505fb6430a9e0cedda6e007ec07"
+    },
+    {
+      "url": "https://www.festival-cannes.com/en/f/ootide/",
+      "retrieved_at": "2026-10-30T03:41:14.540576+00:00",
+      "revision": null,
+      "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+      "response_sha256": "230c592590c8958d044c05ab10611212c0e204b9ae475435c7ee8fdd040bb834",
+      "http_status": 200,
+      "metadata": {
+        "Directed by :": "Eglé RAZUMAITE",
+        "Year of production:": "2024",
+        "Country:": "Lithuania, France",
+        "Durée :": "10"
+      },
+      "category": "Short Films",
+      "selection_year": 2024,
+      "receipt_path": ".cache/cohort-audit/part2/b4-52-cannes.json",
+      "receipt_sha256": "755342d48a18103ec102c25e6a2c2e72b0562260f23458ebd78def8d272ed989"
+    },
+    {
+      "url": "https://www.festival-cannes.com/en/f/sanki-yoxsan/",
+      "retrieved_at": "2026-10-30T03:41:14.540791+00:00",
+      "revision": null,
+      "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+      "response_sha256": "e67e0a485f9612ccdc649e9ece9b49db999cc8320f423fb4c8bee9ae59836a31",
+      "http_status": 200,
+      "metadata": {
+        "Directed by :": "Azer GULIEV",
+        "Year of production:": "2024",
+        "Country:": "Azerbaijan, France",
+        "Durée :": "15"
+      },
+      "category": "Short Films",
+      "selection_year": 2024,
+      "receipt_path": ".cache/cohort-audit/part2/b4-53-cannes.json",
+      "receipt_sha256": "b49e9426fbd5e23d9d651fad9df0f9a91329f7f7e003ec0833f509b67f8bc8d7"
+    },
+    {
+      "url": "https://www.festival-cannes.com/en/f/les-belles-cicatrices/",
+      "retrieved_at": "2026-10-30T03:41:14.541093+00:00",
+      "revision": null,
+      "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+      "response_sha256": "b4d92fb70b1bce12fa1dbe10b630aa4792cd1b282932c5d54b34985c15e4bc71",
+      "http_status": 200,
+      "metadata": {
+        "Directed by :": "Raphaël JOUZEAU",
+        "Year of production:": "2024",
+        "Country:": "France",
+        "Durée :": "15"
+      },
+      "category": "Short Films",
+      "selection_year": 2024,
+      "receipt_path": ".cache/cohort-audit/part2/b4-54-cannes.json",
+      "receipt_sha256": "15193d652941906763ce3a692c37b2e19b5dfcc6be072c596a279a87696d197d"
+    },
+    {
+      "url": "https://www.festival-cannes.com/en/f/rruges/",
+      "retrieved_at": "2026-10-30T03:41:16.756152+00:00",
+      "revision": null,
+      "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+      "response_sha256": "40b09e44f4c603244926dc15cbe998941880eff6e2788ec9cf0e1f8215ab4874",
+      "http_status": 200,
+      "metadata": {
+        "Directed by :": "Samir KARAHODA",
+        "Year of production:": "2024",
+        "Country:": "Kosovo",
+        "Durée :": "15"
+      },
+      "category": "Short Films",
+      "selection_year": 2024,
+      "receipt_path": ".cache/cohort-audit/part2/b4-55-cannes.json",
+      "receipt_sha256": "ee389404773926cd5bbfd92c99891fc7acaaacda8586cf57c68e6a256e2f9ef8"
+    },
+    {
+      "url": "https://www.festival-cannes.com/en/f/across-the-waters/",
+      "retrieved_at": "2026-10-30T03:41:17.056053+00:00",
+      "revision": null,
+      "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+      "response_sha256": "46c2693065c676f30b6f9c9fdfbfccb20bae5d04fe5afab5390f088018d80ebf",
+      "http_status": 200,
+      "metadata": {
+        "Directed by :": "Viv LI",
+        "Year of production:": "2024",
+        "Country:": "France",
+        "Durée :": "15"
+      },
+      "category": "Short Films",
+      "selection_year": 2024,
+      "receipt_path": ".cache/cohort-audit/part2/b4-56-cannes.json",
+      "receipt_sha256": "fa3fab5930c9900b7178e309069960792a35dc6a745054a874c7a00a6e318e27"
+    },
+    {
+      "url": "https://www.festival-cannes.com/en/f/perfectly-a-strangeness/",
+      "retrieved_at": "2026-10-30T03:41:17.294462+00:00",
+      "revision": null,
+      "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+      "response_sha256": "70ba1e93b554bf7e86029a4b81893d4dd19d4928b1f06dd71aeb1dd88f543e2b",
+      "http_status": 200,
+      "metadata": {
+        "Directed by :": "Alison MCALPINE",
+        "Year of production:": "2024",
+        "Country:": "Canada",
+        "Durée :": "15"
+      },
+      "category": "Short Films",
+      "selection_year": 2024,
+      "receipt_path": ".cache/cohort-audit/part2/b4-57-cannes.json",
+      "receipt_sha256": "d094e73d32ceabaca69af4947767d70c4f16cefeeea983195b424490990eb071"
+    },
+    {
+      "url": "https://www.festival-cannes.com/en/f/tea/",
+      "retrieved_at": "2026-10-30T03:41:17.614964+00:00",
+      "revision": null,
+      "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+      "response_sha256": "9f912f2197cbcf53cdc82d1afe866ed0e3fdc251de910697c31f9ca31266b3a6",
+      "http_status": 200,
+      "metadata": {
+        "Directed by :": "Blake RICE",
+        "Year of production:": "2024",
+        "Country:": "United States",
+        "Durée :": "12"
+      },
+      "category": "Short Films",
+      "selection_year": 2024,
+      "receipt_path": ".cache/cohort-audit/part2/b4-58-cannes.json",
+      "receipt_sha256": "352e6b7271e4e2db0fbc147d21bbdf1dcac90aacd5e9647f49dd46b1e9e09f7c"
+    },
+    {
+      "url": "https://www.festival-cannes.com/en/f/amarela/",
+      "retrieved_at": "2026-10-30T03:41:17.915692+00:00",
+      "revision": null,
+      "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+      "response_sha256": "00ed6f32a2afcac3f3942c729ad3857b2df280fc61db87dfc521d82a63d39026",
+      "http_status": 200,
+      "metadata": {
+        "Directed by :": "Andre Hayato SAITO",
+        "Year of production:": "2024",
+        "Country:": "Brazil",
+        "Durée :": "15"
+      },
+      "category": "Short Films",
+      "selection_year": 2024,
+      "receipt_path": ".cache/cohort-audit/part2/b4-59-cannes.json",
+      "receipt_sha256": "263f583062439e70a532c30c75dbcc1c6bf4a00c36610a687ee4aadec0b06e88"
+    },
+    {
+      "url": "https://www.festival-cannes.com/en/f/the-man-who-could-not-remain-silent/",
+      "retrieved_at": "2026-10-30T03:41:18.783733+00:00",
+      "revision": null,
+      "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+      "response_sha256": "f039f00357688bb82bdece5f41c35589ca9ba777f00f7e8fad74d782fc8501d5",
+      "http_status": 200,
+      "metadata": {
+        "Directed by :": "Nebojša SLIJEPCEVIC",
+        "Year of production:": "2024",
+        "Country:": "Croatia, France, Bulgaria, Slovenia",
+        "Durée :": "14"
+      },
+      "category": "Short Films",
+      "selection_year": 2024,
+      "receipt_path": ".cache/cohort-audit/part2/b4-60-cannes.json",
+      "receipt_sha256": "771cb8bbe85bbb9f2046ab01a59116176ebb39181c16d7f52cea6e4a6e683f7e"
+    },
+    {
+      "url": "https://www.festival-cannes.com/en/2024/the-short-film-competition-programme/",
+      "retrieved_at": "2026-10-30T03:40:51.560459+00:00",
+      "rights": "Factual metadata extraction only; publisher copyright reserved; no prose/images retained",
+      "revision": null,
+      "response_sha256": "571d91eda6595af2a2bf507c3342a9b7be395ca921e4a0e18e94a8933173fbf3",
+      "http_status": 200,
+      "selection_fields": {
+        "VOLCELEST": "VOLCELEST by Éric Briche France – 15′",
+        "OOTIDĖ": "OOTIDĖ (Ootid) by Razumaitė Eglė Lithuania – 9′",
+        "SANKI YOXSAN": "SANKI YOXSAN by Azer Guliev Azerbaijan – 15′",
+        "LES BELLES CICATRICES": "LES BELLES CICATRICES by Raphaël Jouzeau France – 15′",
+        "RRUGËS": "RRUGËS (On The Way) by Samir Karahoda Kosovo – 15′",
+        "ACROSS THE WATERS": "ACROSS THE WATERS by Viv Li China – 15′",
+        "PERFECTLY A STRANGENESS": "PERFECTLY A STRANGENESS by Alison McAlpine Canada – 15′",
+        "TEA": "TEA by Blake Rice United States – 12′",
+        "AMARELA": "AMARELA (Yellow) by André Hayato Saito Brazil – 15′",
+        "THE MAN WHO COULD NOT REMAIN SILENT": "THE MAN WHO COULD NOT REMAIN SILENT by Nebojša Slijepčević Croatia – 13′"
+      },
+      "receipt_path": ".cache/cohort-audit/part2/cannes2024.json",
+      "receipt_sha256": "899e9f22cb57bb10f90cdc5a6262fc922a4b79927c5cbb357994f0c479d67a44"
+    },
+    {
+      "url": "https://www.oscars.org/oscars/ceremonies/2024",
+      "retrieved_at": "2026-10-30T03:40:51.347020+00:00",
+      "rights": "Factual metadata extraction only; publisher copyright reserved; no prose/images retained",
+      "revision": null,
+      "error": "HTTP Error 403: Forbidden",
+      "web_rendering_access": "accessible public rendering via web tool; no raw HTML received",
+      "web_reference": "turn322view2",
+      "rendering_read_at": "2026-10-30T03:42:25.401433+00:00",
+      "selection_metadata": {
+        "ceremony_year": 2024,
+        "edition": 96,
+        "Documentary Feature Film": [
+          "20 Days in Mariupol",
+          "Bobi Wine: The People's President",
+          "The Eternal Memory",
+          "Four Daughters",
+          "To Kill a Tiger"
+        ],
+        "Animated Feature Film": [
+          "The Boy and the Heron",
+          "Elemental",
+          "Nimona",
+          "Robot Dreams",
+          "Spider-Man: Across the Spider-Verse"
+        ]
+      },
+      "derived_metadata_sha256": "864016cb0f6e38fd754b6df22c94a7d5ddda705c5ff4b07c123249078aec5f78",
+      "receipt_path": ".cache/cohort-audit/part2/oscars2024.json",
+      "receipt_sha256": "c40d7b627beb10a311bbdbec16daab159a4f093bb9c3607a2c016ec208d8a35f"
+    },
+    {
+      "url": "https://www.oscars.org/oscars/ceremonies/2025",
+      "retrieved_at": "2026-10-30T03:40:51.498915+00:00",
+      "rights": "Factual metadata extraction only; publisher copyright reserved; no prose/images retained",
+      "revision": null,
+      "error": "HTTP Error 403: Forbidden",
+      "web_rendering_access": "accessible public rendering via web tool; no raw HTML received",
+      "web_reference": "turn324view0",
+      "rendering_read_at": "2026-10-30T03:42:25.401433+00:00",
+      "selection_metadata": {
+        "ceremony_year": 2025,
+        "edition": 97,
+        "Documentary Feature Film": [
+          "No Other Land",
+          "Black Box Diaries",
+          "Porcelain War",
+          "Soundtrack to a Coup d'Etat",
+          "Sugarcane"
+        ],
+        "Animated Feature Film": [
+          "Flow",
+          "Inside Out 2",
+          "Memoir of a Snail",
+          "Wallace & Gromit: Vengeance Most Fowl",
+          "The Wild Robot"
+        ]
+      },
+      "derived_metadata_sha256": "5e248a462d39c9263435fdb9f1ccad6c3b3f03ccfe68d4d0ac40866902661cc9",
+      "receipt_path": ".cache/cohort-audit/part2/oscars2025.json",
+      "receipt_sha256": "7b8a6420eedc7d1217168f6844547b7238653102b5b6dfb84915bfdccf5916dd"
+    }
+  ]
+}

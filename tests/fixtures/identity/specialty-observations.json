@@ -1,0 +1,37 @@
+{
+  "version": "specialty-2026-10-29-v1",
+  "selection": "Five purposive specialty observations selected before resolver execution: two prior leads, one short documentary with similar-title search distractors, one original-language title and one artist-only incomplete record. Convenience cohort, not representative or statistically independent population evidence. No resolver tuning on these cases.",
+  "frozen_at": "2026-10-29",
+  "cases": [
+    {
+      "id": "la-jetee",
+      "stratum": "short-year-disagreement",
+      "observation": {"title": "La Jetée", "director": "Chris Marker", "year": 1963},
+      "source": {"url": "https://www.criterion.com/films/329-la-jet-e", "locator": "Film Info; Credits / Director", "observed_at": "2026-10-29", "notes": "27 minutes. Preserve Criterion 1963 despite the earlier EIDR 1962 lead; discrepancy is unresolved."}
+    },
+    {
+      "id": "meshes",
+      "stratum": "short-multiple-directors",
+      "observation": {"title": "Meshes of the Afternoon", "director": "Maya Deren, Alexander Hammid", "year": 1943},
+      "source": {"url": "https://www.idfa.nl/en/film/ff61f1ef-4571-4e23-8385-5cc765d94a4d/meshes-of-the-afternoon/", "locator": "Film header; Credits / Director", "observed_at": "2026-10-29", "notes": "14 minutes. Keep both directors, without converting the source credit into a single director."}
+    },
+    {
+      "id": "night-and-fog",
+      "stratum": "short-documentary-similar-titles",
+      "observation": {"title": "Night and Fog", "director": "Alain Resnais", "year": 1955},
+      "source": {"url": "https://www.criterion.com/films/238-night-and-fog", "locator": "Film Info; Credits / Director", "observed_at": "2026-10-29", "notes": "32 minutes. Preserve the supplied year, including any catalog disagreement."}
+    },
+    {
+      "id": "moon",
+      "stratum": "short-original-language-title",
+      "observation": {"title": "LE VOYAGE DANS LA LUNE", "director": "Georges MÉLIES", "year": 1902},
+      "source": {"url": "https://www.festival-cannes.com/en/f/le-voyage-dans-la-lune/", "locator": "Heading; Directed by; Year of production", "observed_at": "2026-10-29", "notes": "16 minutes. 2011 is the festival edition, not production year. Preserve the supplied director spelling, which lacks the grave accent found in other records."}
+    },
+    {
+      "id": "at-land",
+      "stratum": "short-incomplete-credit",
+      "observation": {"title": "At Land", "director": null, "year": 1944},
+      "source": {"url": "https://lux.org.uk/work/at-land/", "locator": "Work heading; artist link; year; duration", "observed_at": "2026-10-29", "notes": "15 minutes. Maya Deren is linked as artist; no explicit Director field in this observation. Keep director unknown rather than infer the role."}
+    }
+  ]
+}

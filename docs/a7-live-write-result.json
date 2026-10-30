@@ -1,0 +1,62 @@
+{
+  "approved_actions": "User explicitly approved both configuration and selected watchlist operation",
+  "completed_at": "2026-10-30T11:59:59.939518+00:00",
+  "tmdb_id": 5156,
+  "title": "Bicycle Thieves",
+  "authentication_http_status": 200,
+  "metadata_search": "complete",
+  "catalog_present_before": false,
+  "watchlist_count_before": 0,
+  "selected_count_before": 0,
+  "first_cli_result": "added to watchlist",
+  "first_cli_http_events": [
+    {
+      "method": "GET",
+      "path": "/api/v1/movies/search",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/movies/add",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/{username}/watchlist/movies",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/users/{username}/watchlist/movies",
+      "status": 204
+    }
+  ],
+  "first_cli_elapsed_seconds": 0.459,
+  "readback_selected_count": 1,
+  "existing_watchlist_preserved": true,
+  "retry_cli_result": "already on watchlist",
+  "retry_http_events": [
+    {
+      "method": "GET",
+      "path": "/api/v1/movies/search",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/{username}/watchlist/movies",
+      "status": 200
+    }
+  ],
+  "retry_elapsed_seconds": 0.175,
+  "retry_post_requests": 0,
+  "watchlist_unchanged_on_retry": true,
+  "after_counts": {
+    "played": 0,
+    "history": 0,
+    "watchlist": 1
+  },
+  "database_access": "supported API only; no direct Movary database writes",
+  "selected_movary_id": 1,
+  "implementation_base_commit": "67ddb2ddf6aafeb5d2684e25345312f45b7b93e7",
+  "trace_method": "Actual CLI with a passthrough recorder delegating every request unchanged to the original HTTP transport; no mocked responses, credentials or bodies retained"
+}

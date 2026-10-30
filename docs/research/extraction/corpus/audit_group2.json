@@ -1,0 +1,1500 @@
+{
+  "auditor_kind": "independent_automated_agent",
+  "auditor": "/root/audit_corpus_2",
+  "human_audit": false,
+  "audited_at": "2026-10-30T03:11:44.025935+00:00",
+  "method": {
+    "scope": "Only AGENTS.md, selection, notice, rights declaration/receipt, these 12 rendered text captures, revision responses and capture receipts were read. No wikitext captures, implementation, tests, expected output or other audits read. No network requests.",
+    "enumeration": "Separate HTMLParser inspection displayed all rendered table cells/headers, list item text and rank attributes, headings and selected prose. Auditor then deliberately transcribed the film title/order/rank/category observations into independent arrays. Titles preserve displayed spelling/case; whitespace normalized; opening annotations and director/year/mention-count text excluded.",
+    "rank_semantics": "Explicit numbered poll order/No. columns supply ranks; repeated explicit values supply rank-N ties. Festival lists/tables unranked.",
+    "membership": "Every selected film in captured section retained, including Venice Out of Competition subgroup and poll-0 explicit prose runner-up; incidental narrative mentions/references/images excluded.",
+    "hash_verification": "All rendered and revision bytes/SHA-256/status checked against receipts, rendered title and revision checked against revision response. Wikitext bytes/hashes deliberately not verified."
+  },
+  "rights": {
+    "declaration": {
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
+      "text": "Creative Commons Attribution-Share Alike 4.0"
+    },
+    "declaration_sha256": "8a7345e12679082632295a2c2889b16f3c288f0fbc71082bc0fdf5929a518bb7",
+    "license": "CC BY-SA 4.0, with attribution via each receipt pinned article/history and NOTICE; audit records derive from same contributor material.",
+    "limits": "No primary-source factual/eligibility/identity verification or human attestation. License not inferred for original publications or media."
+  },
+  "per_case": [
+    {
+      "key": "venice-0",
+      "revision": "1373556622",
+      "section": "8",
+      "expected_count": 21,
+      "records": [
+        {
+          "title": "About Endlessness",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Ad Astra",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Babyteeth",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Domain",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Ema",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Gloria Mundi",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Guest of Honour",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Joker",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Laundromat",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Mafia Is No Longer What It Used to Be",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Marriage Story",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Martin Eden",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Mayor of Rione Sanità",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "No.7 Cherry Lane",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "An Officer and a Spy",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Painted Bird",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Perfect Candidate",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Saturday Fiction",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Truth",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Waiting for the Barbarians",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Wasp Network",
+          "position": 21,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        }
+      ],
+      "scope": [
+        "First displayed English-title column is the film title; original-title/director/country cells are context. Opening-film annotation excluded from title. No ordinal film rank is published in this table."
+      ],
+      "verified_capture_evidence": {
+        "text": {
+          "file": "venice-0.text.json",
+          "sha256": "234b33d5b972c104513274ecfe2d06073a315cc9677e87435fd1c8c506c92988",
+          "bytes": 14490,
+          "status": 200
+        },
+        "revision_receipt": {
+          "file": "venice-0.revision.json",
+          "sha256": "0f96ac09527b27eb2baaedb0afa5436080cc7ba2dee188242ff515367507ed1b",
+          "bytes": 220,
+          "status": 200
+        }
+      },
+      "unresolved_semantics": []
+    },
+    {
+      "key": "venice-1",
+      "revision": "1373100899",
+      "section": "12",
+      "expected_count": 14,
+      "records": [
+        {
+          "title": "Anita",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "BMM – Being My Mom",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Entre tú y milagros",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "À fleur de peau",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "The Game",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Live in a Cloud Cuckoo Land",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "The Night Train",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Places",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "The Shift",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Sogni al campo",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Was Wahrscheinlich Passiert Wäre, Wäre Ich Nicht Zuhause",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Workshop",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "The Return Of Tragedy",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "Out of Competition"
+        },
+        {
+          "title": "Sì",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "Out of Competition"
+        }
+      ],
+      "scope": [
+        "Includes two explicitly Out of Competition films after twelve competition selections; subgroup membership retained.",
+        "First displayed English-title column is the film title; original-title/director/country cells are context. Opening-film annotation excluded from title. No ordinal film rank is published in this table."
+      ],
+      "verified_capture_evidence": {
+        "text": {
+          "file": "venice-1.text.json",
+          "sha256": "70d584fcfbf55f52e9821f146ba3c026beafd141c238869aa7d271d1a9bb0be4",
+          "bytes": 4155,
+          "status": 200
+        },
+        "revision_receipt": {
+          "file": "venice-1.revision.json",
+          "sha256": "0f32007dd602c732ffc8dd6f26f9e51e7be2110ef0da38b612e5a4d029b967c4",
+          "bytes": 220,
+          "status": 200
+        }
+      },
+      "unresolved_semantics": []
+    },
+    {
+      "key": "venice-2",
+      "revision": "1373556517",
+      "section": "7",
+      "expected_count": 21,
+      "records": [
+        {
+          "title": "America Latina",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Another World",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Box",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Captain Volkonogov Escaped",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Card Counter",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Freaks Out",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Hand of God",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Happening",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Il buco",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Leave No Traces",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Lost Daughter",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Lost Illusions",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Mona Lisa and the Blood Moon",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Official Competition",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "On the Job: The Missing 8",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Parallel Mothers",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Power of the Dog",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The King of Laughter",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Reflection",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Spencer",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Sundown",
+          "position": 21,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        }
+      ],
+      "scope": [
+        "First displayed English-title column is the film title; original-title/director/country cells are context. Opening-film annotation excluded from title. No ordinal film rank is published in this table."
+      ],
+      "verified_capture_evidence": {
+        "text": {
+          "file": "venice-2.text.json",
+          "sha256": "798614e57add17347a86738af23dcc8460ed5a2672dc1d33b14dfb5fd42c7797",
+          "bytes": 12587,
+          "status": 200
+        },
+        "revision_receipt": {
+          "file": "venice-2.revision.json",
+          "sha256": "cc9736aec0fc7016f599540f271948a879072b17d3b61f58ceb926c5b63dd100",
+          "bytes": 220,
+          "status": 200
+        }
+      },
+      "unresolved_semantics": []
+    },
+    {
+      "key": "venice-3",
+      "revision": "1374553059",
+      "section": "7",
+      "expected_count": 23,
+      "records": [
+        {
+          "title": "All the Beauty and the Bloodshed",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Argentina, 1985",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Athena",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "The Banshees of Inisherin",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Bardo, False Chronicle of a Handful of Truths",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Beyond the Wall",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Blonde",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Bones and All",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Chiara",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "A Couple",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "The Eternal Daughter",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "L'immensità",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Lord of the Ants",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Love Life",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Monica",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "No Bears",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Other People's Children",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Our Ties",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Saint Omer",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "The Son",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Tár",
+          "position": 21,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "The Whale",
+          "position": 22,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "White Noise",
+          "position": 23,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        }
+      ],
+      "scope": [
+        "First displayed English-title column is the film title; original-title/director/country cells are context. Opening-film annotation excluded from title. No ordinal film rank is published in this table."
+      ],
+      "verified_capture_evidence": {
+        "text": {
+          "file": "venice-3.text.json",
+          "sha256": "75603b7113e7f90aded3322a1242b8d3717eebc4bc7727b0118c1e97f7c54f5e",
+          "bytes": 12322,
+          "status": 200
+        },
+        "revision_receipt": {
+          "file": "venice-3.revision.json",
+          "sha256": "d31c458fcc593b1d9e4ae7d39da973ddc1dd4ed4c5428247b3cdcecd4ee431c8",
+          "bytes": 220,
+          "status": 200
+        }
+      },
+      "unresolved_semantics": []
+    },
+    {
+      "key": "sundance-0",
+      "revision": "1373126917",
+      "section": "7",
+      "expected_count": 12,
+      "records": [
+        {
+          "title": "Acasă, My Home",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "The Earth Is Blue as an Orange",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Epicentro",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Influence",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Into the Deep",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "The Mole Agent",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Once Upon a Time in Venezuela",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "The Painter and the Thief",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "The Reason I Jump",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Saudi Runaway",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Softie",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "The Truffle Hunters",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        }
+      ],
+      "scope": [
+        "Unranked film list: italic film titles retained, director credits excluded. No rank inferred from list order."
+      ],
+      "verified_capture_evidence": {
+        "text": {
+          "file": "sundance-0.text.json",
+          "sha256": "44d6b0cbf702e71955fc9b361214e2b14fe7cc879dfa9e93d31cbbe863106a44",
+          "bytes": 4455,
+          "status": 200
+        },
+        "revision_receipt": {
+          "file": "sundance-0.revision.json",
+          "sha256": "816db568deddeaa931518feefa69e4d3dfcc9ea668845d4f22c65d90bffd02e7",
+          "bytes": 208,
+          "status": 200
+        }
+      },
+      "unresolved_semantics": []
+    },
+    {
+      "key": "sundance-1",
+      "revision": "1373127025",
+      "section": "14",
+      "expected_count": 10,
+      "records": [
+        {
+          "title": "The Fire Next Time",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        },
+        {
+          "title": "Forever",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        },
+        {
+          "title": "The Fourfold",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        },
+        {
+          "title": "Ghost Dogs",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        },
+        {
+          "title": "GNT",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        },
+        {
+          "title": "KKUM",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        },
+        {
+          "title": "Little Miss Fate",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        },
+        {
+          "title": "Misery Loves Company",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        },
+        {
+          "title": "Souvenir Souvenir",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        },
+        {
+          "title": "Trepanation",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        }
+      ],
+      "scope": [
+        "Unranked film list: italic film titles retained, director credits excluded. No rank inferred from list order."
+      ],
+      "verified_capture_evidence": {
+        "text": {
+          "file": "sundance-1.text.json",
+          "sha256": "c2161ef1517528a95d8f8ad1d92fcfc6022d037da30c7f8babff22a2c82bc63e",
+          "bytes": 2295,
+          "status": 200
+        },
+        "revision_receipt": {
+          "file": "sundance-1.revision.json",
+          "sha256": "26ba2dd2c99721e94d3b9950247fd99c422be9d8c7889ab61ae6956d404eb29c",
+          "bytes": 208,
+          "status": 200
+        }
+      },
+      "unresolved_semantics": []
+    },
+    {
+      "key": "sundance-2",
+      "revision": "1373127123",
+      "section": "6",
+      "expected_count": 10,
+      "records": [
+        {
+          "title": "All That Breathes",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Calendar Girls",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "A House Made of Splinters",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Midwives",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "The Mission",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Nothing Compares",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Sirens",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Tantura",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "The Territory",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "We Met in Virtual Reality",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        }
+      ],
+      "scope": [
+        "Unranked film list: italic film titles retained, director credits excluded. No rank inferred from list order."
+      ],
+      "verified_capture_evidence": {
+        "text": {
+          "file": "sundance-2.text.json",
+          "sha256": "421e14a0e292d5b61f918263961d1feda9f05cb8ac68f39b779ae4fdbc9adf53",
+          "bytes": 2786,
+          "status": 200
+        },
+        "revision_receipt": {
+          "file": "sundance-2.revision.json",
+          "sha256": "f0224af6da63f4096d155eeb3c930562ac8955a0437f2cd507f3eb4f12fe8fb1",
+          "bytes": 208,
+          "status": 200
+        }
+      },
+      "unresolved_semantics": []
+    },
+    {
+      "key": "sundance-3",
+      "revision": "1373127051",
+      "section": "3",
+      "expected_count": 12,
+      "records": [
+        {
+          "title": "AUM: The Cult at the End of the World",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "Bad Press",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "Beyond Utopia",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "The Disappearance of Shere Hite",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "Going to Mars: The Nikki Giovanni Project",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "Going Varsity in Mariachi",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "Joonam",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "Little Richard: I Am Everything",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "Nam June Paik: Moon Is the Oldest TV",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "A Still Small Voice",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "The Stroll",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "Victim/Suspect",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        }
+      ],
+      "scope": [
+        "Unranked film list: italic film titles retained, director credits excluded. No rank inferred from list order."
+      ],
+      "verified_capture_evidence": {
+        "text": {
+          "file": "sundance-3.text.json",
+          "sha256": "eba2647164b44b3f7f627c798aa867ea6d00efbf08748b2b1216370b54ff1286",
+          "bytes": 3782,
+          "status": 200
+        },
+        "revision_receipt": {
+          "file": "sundance-3.revision.json",
+          "sha256": "29fd279da556de8a3bffbc9801d340ab9894a6e15cc2062122fd189cf37f5e1b",
+          "bytes": 208,
+          "status": 200
+        }
+      },
+      "unresolved_semantics": []
+    },
+    {
+      "key": "poll-0",
+      "revision": "1196879962",
+      "section": "2",
+      "expected_count": 11,
+      "records": [
+        {
+          "title": "Vertigo",
+          "position": 1,
+          "rank": 1,
+          "tie": null,
+          "category": "Critics' poll"
+        },
+        {
+          "title": "Citizen Kane",
+          "position": 2,
+          "rank": 2,
+          "tie": null,
+          "category": "Critics' poll"
+        },
+        {
+          "title": "Tokyo Story",
+          "position": 3,
+          "rank": 3,
+          "tie": null,
+          "category": "Critics' poll"
+        },
+        {
+          "title": "The Rules of the Game",
+          "position": 4,
+          "rank": 4,
+          "tie": null,
+          "category": "Critics' poll"
+        },
+        {
+          "title": "Sunrise: A Song of Two Humans",
+          "position": 5,
+          "rank": 5,
+          "tie": null,
+          "category": "Critics' poll"
+        },
+        {
+          "title": "2001: A Space Odyssey",
+          "position": 6,
+          "rank": 6,
+          "tie": null,
+          "category": "Critics' poll"
+        },
+        {
+          "title": "The Searchers",
+          "position": 7,
+          "rank": 7,
+          "tie": null,
+          "category": "Critics' poll"
+        },
+        {
+          "title": "Man with a Movie Camera",
+          "position": 8,
+          "rank": 8,
+          "tie": null,
+          "category": "Critics' poll"
+        },
+        {
+          "title": "The Passion of Joan of Arc",
+          "position": 9,
+          "rank": 9,
+          "tie": null,
+          "category": "Critics' poll"
+        },
+        {
+          "title": "8½",
+          "position": 10,
+          "rank": 10,
+          "tie": null,
+          "category": "Critics' poll"
+        },
+        {
+          "title": "Battleship Potemkin",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Closest runner-up"
+        }
+      ],
+      "scope": [
+        "Ten ranked selections plus explicit Closest runner-up Battleship Potemkin (63 mentions). Runner-up is a positive selection outside ordered list and must not silently disappear. No ordinal rank assigned to runner-up; passing prose film mentions and poster caption excluded. Published excerpt is not the entire critics aggregate or any individual ballot."
+      ],
+      "verified_capture_evidence": {
+        "text": {
+          "file": "poll-0.text.json",
+          "sha256": "085d702c67d412ed9065bad1806f2baab7de179b565ca77c90f52d67e2e5522e",
+          "bytes": 21786,
+          "status": 200
+        },
+        "revision_receipt": {
+          "file": "poll-0.revision.json",
+          "sha256": "b795e2cf7da11778261a6674e9a4495afab993cde30ed6d77cabda9ba7f3d749",
+          "bytes": 230,
+          "status": 200
+        }
+      },
+      "unresolved_semantics": []
+    },
+    {
+      "key": "poll-1",
+      "revision": "1332699136",
+      "section": "2",
+      "expected_count": 11,
+      "records": [
+        {
+          "title": "2001: A Space Odyssey",
+          "position": 1,
+          "rank": 1,
+          "tie": null,
+          "category": "Directors' poll"
+        },
+        {
+          "title": "Citizen Kane",
+          "position": 2,
+          "rank": 2,
+          "tie": null,
+          "category": "Directors' poll"
+        },
+        {
+          "title": "The Godfather",
+          "position": 3,
+          "rank": 3,
+          "tie": null,
+          "category": "Directors' poll"
+        },
+        {
+          "title": "Jeanne Dielman, 23 quai du Commerce, 1080 Bruxelles",
+          "position": 4,
+          "rank": 4,
+          "tie": "rank-4",
+          "category": "Directors' poll"
+        },
+        {
+          "title": "Tokyo Story",
+          "position": 5,
+          "rank": 4,
+          "tie": "rank-4",
+          "category": "Directors' poll"
+        },
+        {
+          "title": "Vertigo",
+          "position": 6,
+          "rank": 6,
+          "tie": "rank-6",
+          "category": "Directors' poll"
+        },
+        {
+          "title": "8½",
+          "position": 7,
+          "rank": 6,
+          "tie": "rank-6",
+          "category": "Directors' poll"
+        },
+        {
+          "title": "Mirror",
+          "position": 8,
+          "rank": 8,
+          "tie": null,
+          "category": "Directors' poll"
+        },
+        {
+          "title": "Close-up",
+          "position": 9,
+          "rank": 9,
+          "tie": "rank-9",
+          "category": "Directors' poll"
+        },
+        {
+          "title": "In the Mood for Love",
+          "position": 10,
+          "rank": 9,
+          "tie": "rank-9",
+          "category": "Directors' poll"
+        },
+        {
+          "title": "Persona",
+          "position": 11,
+          "rank": 9,
+          "tie": "rank-9",
+          "category": "Directors' poll"
+        }
+      ],
+      "scope": [
+        "Top-ten aggregate excerpt has eleven films because rank 9 has three selections. Explicit li values retain ranks/ties; empty list elements, poster caption, people, years and references excluded. No individual ballot completeness asserted."
+      ],
+      "verified_capture_evidence": {
+        "text": {
+          "file": "poll-1.text.json",
+          "sha256": "62394f13f5e2d537c1dd3728c09e785492b997bc73ef1a7d610761b718125ad4",
+          "bytes": 9576,
+          "status": 200
+        },
+        "revision_receipt": {
+          "file": "poll-1.revision.json",
+          "sha256": "27197629e96004c29f2a94ab6441102fe901400acb069e0c5e0b18578f83072b",
+          "bytes": 232,
+          "status": 200
+        }
+      },
+      "unresolved_semantics": []
+    },
+    {
+      "key": "poll-2",
+      "revision": "1364662999",
+      "section": "2",
+      "expected_count": 10,
+      "records": [
+        {
+          "title": "Mulholland Drive",
+          "position": 1,
+          "rank": 1,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "In the Mood for Love",
+          "position": 2,
+          "rank": 2,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "There Will Be Blood",
+          "position": 3,
+          "rank": 3,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "Spirited Away",
+          "position": 4,
+          "rank": 4,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "Boyhood",
+          "position": 5,
+          "rank": 5,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "Eternal Sunshine of the Spotless Mind",
+          "position": 6,
+          "rank": 6,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "The Tree of Life",
+          "position": 7,
+          "rank": 7,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "Yi Yi",
+          "position": 8,
+          "rank": 8,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "A Separation",
+          "position": 9,
+          "rank": 9,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "No Country for Old Men",
+          "position": 10,
+          "rank": 10,
+          "tie": null,
+          "category": "Partial list"
+        }
+      ],
+      "scope": [
+        "Complete selected Partial list section contains ten explicit numeric ranks, not the full underlying top-100 aggregate. Rowspans in country cells do not alter title/rank columns."
+      ],
+      "verified_capture_evidence": {
+        "text": {
+          "file": "poll-2.text.json",
+          "sha256": "1f985c08fce9fe19b9d638d3b6c7a6d7db9da03adc72bfe8d95d080170c14106",
+          "bytes": 4805,
+          "status": 200
+        },
+        "revision_receipt": {
+          "file": "poll-2.revision.json",
+          "sha256": "89dfae6578b296116c05e7cf24ebffad8bfdf4b4482fa53b1b30987574811196",
+          "bytes": 225,
+          "status": 200
+        }
+      },
+      "unresolved_semantics": []
+    },
+    {
+      "key": "foreign-0",
+      "revision": "1318399468",
+      "section": "3",
+      "expected_count": 10,
+      "records": [
+        {
+          "title": "Seven Samurai",
+          "position": 1,
+          "rank": 1,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "Bicycle Thieves",
+          "position": 2,
+          "rank": 2,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "Tokyo Story",
+          "position": 3,
+          "rank": 3,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "Rashomon",
+          "position": 4,
+          "rank": 4,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "The Rules of the Game",
+          "position": 5,
+          "rank": 5,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "Persona",
+          "position": 6,
+          "rank": 6,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "8½",
+          "position": 7,
+          "rank": 7,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "The 400 Blows",
+          "position": 8,
+          "rank": 8,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "In the Mood for Love",
+          "position": 9,
+          "rank": 9,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "La Dolce Vita",
+          "position": 10,
+          "rank": 10,
+          "tie": null,
+          "category": "Partial list"
+        }
+      ],
+      "scope": [
+        "Complete selected Partial list section contains ten explicit numeric ranks, not the full underlying top-100 aggregate. Rowspans in country cells do not alter title/rank columns."
+      ],
+      "verified_capture_evidence": {
+        "text": {
+          "file": "foreign-0.text.json",
+          "sha256": "30ac951be8deed2b2e7b5cabd7810aca4148499692e9a1d6343d95ae0aa23d5e",
+          "bytes": 14064,
+          "status": 200
+        },
+        "revision_receipt": {
+          "file": "foreign-0.revision.json",
+          "sha256": "8595604086b898e48a5b74a268882253c71cd611403044f416c1eb15eb63d151",
+          "bytes": 222,
+          "status": 200
+        }
+      },
+      "unresolved_semantics": []
+    }
+  ],
+  "summary": {
+    "cases": 12,
+    "records": 165,
+    "rendered_revision_integrity": "passed",
+    "primary_source_verification": "not_performed",
+    "human_audit": false,
+    "representative_format_claim": false
+  }
+}

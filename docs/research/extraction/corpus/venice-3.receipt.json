@@ -1,0 +1,38 @@
+{
+  "key": "venice-3",
+  "title": "79th Venice International Film Festival",
+  "section": "7",
+  "heading": "In competition",
+  "split": "development",
+  "lineage": "Wikipedia derivative of Venice International Film Festival; original-source accuracy and rights not established by this capture",
+  "revision": "1374553059",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=79th+Venice+International+Film+Festival&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=79th+Venice+International+Film+Festival&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:17.216825+00:00",
+    "bytes": 220,
+    "sha256": "d31c458fcc593b1d9e4ae7d39da973ddc1dd4ed4c5428247b3cdcecd4ee431c8",
+    "file": "venice-3.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1374553059&section=7&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1374553059&section=7&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:18.316615+00:00",
+    "bytes": 3512,
+    "sha256": "1d3d57f4a40722c2489c123fdc6681ae60e969b0f09bb309b303359022ea7999",
+    "file": "venice-3.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1374553059&section=7&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1374553059&section=7&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:19.414802+00:00",
+    "bytes": 12322,
+    "sha256": "75603b7113e7f90aded3322a1242b8d3717eebc4bc7727b0118c1e97f7c54f5e",
+    "file": "venice-3.text.json"
+  },
+  "corpus_stratum": "venice",
+  "original_source_family": "Venice International Film Festival"
+}

@@ -1,0 +1,38 @@
+{
+  "key": "shorts-3",
+  "title": "Academy Award for Best Documentary Feature Film",
+  "section": "10",
+  "heading": "2020s",
+  "split": "holdout",
+  "lineage": "Wikipedia derivative of Academy of Motion Picture Arts and Sciences; original-source accuracy and rights not established by this capture",
+  "revision": "1381214933",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=Academy+Award+for+Best+Documentary+Feature+Film&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=Academy+Award+for+Best+Documentary+Feature+Film&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:41.761054+00:00",
+    "bytes": 222,
+    "sha256": "87d45623d1c58944189754511cf21f6eeb49920bd863db299f64e76f77f0947e",
+    "file": "shorts-3.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381214933&section=10&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381214933&section=10&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:42.929589+00:00",
+    "bytes": 4222,
+    "sha256": "f3f5f3207cc21c85dffa9ab42227054783589d5f1c5994779ea46a89a48d1bc3",
+    "file": "shorts-3.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381214933&section=10&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381214933&section=10&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:44.115632+00:00",
+    "bytes": 14226,
+    "sha256": "c24b85e65dfe2203a7a5b07659ec817fb9ddf8478ff230d3e76d12d21c27826b",
+    "file": "shorts-3.text.json"
+  },
+  "corpus_stratum": "shorts",
+  "original_source_family": "Academy of Motion Picture Arts and Sciences"
+}

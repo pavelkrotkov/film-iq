@@ -1,0 +1,203 @@
+{
+  "dataset_version": "specialty-2026-10-29-v1",
+  "scope": "Resolver conditional on supplied retrieval policy; not population precision",
+  "counts_and_ratios": {
+    "attempted": 5,
+    "scored": 4,
+    "unknown_truth": 1,
+    "incomplete_retrieval": 1,
+    "auto_accepted": 0,
+    "correct_auto_accepted": 0,
+    "unresolved": 4,
+    "truth_in_candidates": 4,
+    "precision": null,
+    "coverage": 0.0,
+    "review_rate": 1.0,
+    "candidate_recall": 1.0
+  },
+  "by_method": {
+    "title_director_year": {
+      "attempted": 5,
+      "scored": 4,
+      "unknown_truth": 1,
+      "incomplete_retrieval": 1,
+      "auto_accepted": 0,
+      "correct_auto_accepted": 0,
+      "unresolved": 4,
+      "truth_in_candidates": 4,
+      "precision": null,
+      "coverage": 0.0,
+      "review_rate": 1.0,
+      "candidate_recall": 1.0
+    }
+  },
+  "by_stratum": {
+    "short-documentary-similar-titles": {
+      "attempted": 1,
+      "scored": 1,
+      "unknown_truth": 0,
+      "incomplete_retrieval": 0,
+      "auto_accepted": 0,
+      "correct_auto_accepted": 0,
+      "unresolved": 1,
+      "truth_in_candidates": 1,
+      "precision": null,
+      "coverage": 0.0,
+      "review_rate": 1.0,
+      "candidate_recall": 1.0
+    },
+    "short-incomplete-credit": {
+      "attempted": 1,
+      "scored": 0,
+      "unknown_truth": 1,
+      "incomplete_retrieval": 1,
+      "auto_accepted": 0,
+      "correct_auto_accepted": 0,
+      "unresolved": 0,
+      "truth_in_candidates": 0,
+      "precision": null,
+      "coverage": null,
+      "review_rate": null,
+      "candidate_recall": null
+    },
+    "short-multiple-directors": {
+      "attempted": 1,
+      "scored": 1,
+      "unknown_truth": 0,
+      "incomplete_retrieval": 0,
+      "auto_accepted": 0,
+      "correct_auto_accepted": 0,
+      "unresolved": 1,
+      "truth_in_candidates": 1,
+      "precision": null,
+      "coverage": 0.0,
+      "review_rate": 1.0,
+      "candidate_recall": 1.0
+    },
+    "short-original-language-title": {
+      "attempted": 1,
+      "scored": 1,
+      "unknown_truth": 0,
+      "incomplete_retrieval": 0,
+      "auto_accepted": 0,
+      "correct_auto_accepted": 0,
+      "unresolved": 1,
+      "truth_in_candidates": 1,
+      "precision": null,
+      "coverage": 0.0,
+      "review_rate": 1.0,
+      "candidate_recall": 1.0
+    },
+    "short-year-disagreement": {
+      "attempted": 1,
+      "scored": 1,
+      "unknown_truth": 0,
+      "incomplete_retrieval": 0,
+      "auto_accepted": 0,
+      "correct_auto_accepted": 0,
+      "unresolved": 1,
+      "truth_in_candidates": 1,
+      "precision": null,
+      "coverage": 0.0,
+      "review_rate": 1.0,
+      "candidate_recall": 1.0
+    }
+  },
+  "cases": [
+    {
+      "id": "la-jetee",
+      "stratum": "short-year-disagreement",
+      "method": "title_director_year",
+      "candidate_ids": [
+        662
+      ],
+      "match": null,
+      "truth_id": 662,
+      "truth_status": "audited",
+      "retrieval_complete": true,
+      "scored": true,
+      "exclusions": []
+    },
+    {
+      "id": "meshes",
+      "stratum": "short-multiple-directors",
+      "method": "title_director_year",
+      "candidate_ids": [
+        27040
+      ],
+      "match": null,
+      "truth_id": 27040,
+      "truth_status": "audited",
+      "retrieval_complete": true,
+      "scored": true,
+      "exclusions": []
+    },
+    {
+      "id": "night-and-fog",
+      "stratum": "short-documentary-similar-titles",
+      "method": "title_director_year",
+      "candidate_ids": [
+        803,
+        50650,
+        362639,
+        109276
+      ],
+      "match": null,
+      "truth_id": 803,
+      "truth_status": "audited",
+      "retrieval_complete": true,
+      "scored": true,
+      "exclusions": []
+    },
+    {
+      "id": "moon",
+      "stratum": "short-original-language-title",
+      "method": "title_director_year",
+      "candidate_ids": [
+        775,
+        444101
+      ],
+      "match": null,
+      "truth_id": 775,
+      "truth_status": "audited",
+      "retrieval_complete": true,
+      "scored": true,
+      "exclusions": []
+    },
+    {
+      "id": "at-land",
+      "stratum": "short-incomplete-credit",
+      "method": "title_director_year",
+      "candidate_ids": [],
+      "match": null,
+      "truth_id": null,
+      "truth_status": "unknown",
+      "retrieval_complete": false,
+      "scored": false,
+      "exclusions": [
+        "unknown_truth",
+        "incomplete_retrieval"
+      ]
+    }
+  ],
+  "audit": {
+    "checked_at_utc": "2026-10-30",
+    "auditor": "automated:Codex-browser",
+    "kind": "automated operator audit; not independent human review",
+    "access": "Parent operator directly inspected public TMDB records in the actual user browser; earlier webfetch was robots-blocked. This implementation records the parent-supplied observations, not a new browser inspection.",
+    "separation": "Parent auditor is separate from resolver implementation authors. Independent GPT evidence-adequacy review is pending.",
+    "basis": "Operator judgment from title, creator and work context, comparing visible TMDB facts with frozen primary observations dated 2026-10-29; not Wikidata crosswalk agreement alone.",
+    "limitations": "Four purposive cases; automated attestation is not calibrated accuracy or population precision. Retrieval remains the existing Wikidata lead search, not TMDB full-catalog search. At Land stays unknown with incomplete retrieval. No resolver tuning, 99% target validation, issue closure or Gate A acceptance.",
+    "retention": "Minimal factual comparisons and URLs only; no provider pages, images, prose copies or catalog dumps."
+  },
+  "input_sha256": {
+    "tests/fixtures/identity/specialty-observations.json": "c7596a0c9706e3da7d5b1b5fe610b9aafd3da2b1e5cd1efeffa5492793f8cac2",
+    "tests/fixtures/identity/specialty-candidates.json": "fc09ab35017ecc745cb77428f7e336a86b15190c2f836fef6551ebb2f340652b",
+    "tests/fixtures/identity/specialty-browser-truth.json": "9e9f27c7ff17fa367e72ead01bbd043b3899cafff5c27b1f89d01bc355265462"
+  },
+  "code_sha256": {
+    "evaluation.py": "9ad8cb6a45e3388817e4c197a38ae59605612e1757e82f027d6b87e9d0c0d380",
+    "matching.py": "3ae39b59ee1c5b3926613d10f123309865c80e3b5a1348fd20a717b930bb4362",
+    "models.py": "40c09c674dcf6582cc02554b773762fd3e6ca2538276ea634d6802d3ab7edf0a"
+  }
+}

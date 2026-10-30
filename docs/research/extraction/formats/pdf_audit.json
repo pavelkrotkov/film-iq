@@ -1,0 +1,334 @@
+{
+  "auditor_kind": "independent_automated_agent",
+  "human_audit": false,
+  "method": "Direct visual enumeration of every factual row in the supplied original first-page PNG using view_image; manual transcription in top-to-bottom order. No PDF text extraction, parser output, expected rows, tests or other audits were read. SHA-256 and byte count computed directly from original PDF and compared with receipt.",
+  "source": {
+    "url": "https://www.loc.gov/static/programs/national-film-preservation-board/documents/Registry-Titles-alphabetically.pdf",
+    "pdf_path": ".cache/formats/registry.pdf",
+    "render_path": ".cache/formats/registry-page1.png",
+    "receipt_path": ".cache/formats/registry-receipt.json",
+    "sha256": "a3029ab9dbe880e5f904e48b263eb5d42c53c204cb137269d3a95f5584dd37c8",
+    "bytes": 207602,
+    "receipt_hash_and_bytes_match": true,
+    "receipt_retrieved_at": "2026-10-30T03:19:25.107792+00:00"
+  },
+  "scope": {
+    "page": 1,
+    "row_count": 36,
+    "displayed_heading": "National Film Registry Titles Selected 1989-2017, Listed Alphabetically",
+    "displayed_columns": [
+      "Title",
+      "Year Released",
+      "Year Inducted"
+    ],
+    "first_row": "3:10 to Yuma",
+    "last_row": "The Awful Truth",
+    "limit": "Complete visible factual rows on first page only; historical selections through 2017, not the current Registry catalog. No claims about later pages, other formats, general extraction accuracy, film identity matches, or streaming availability."
+  },
+  "uncertainties": [
+    {
+      "position": 35,
+      "field": "release_year_display",
+      "displayed_value": "1930s-1950s",
+      "note": "Source displays a decade range rather than a single release year; retain verbatim and do not coerce to one year."
+    }
+  ],
+  "layout_notes": [
+    "Single table with 36 rows, read top to bottom; no wrapped rows or apparent clipping.",
+    "Leading articles, parenthetical aka text, punctuation, curly apostrophes and accented Café preserved as visually displayed.",
+    "Year Inducted is transcribed as registry_selection_year; it is separate from Year Released.",
+    "Alphabetical display positions are source order, not rank; rank is null for every record."
+  ],
+  "provenance_limits": "Independent automated visual audit, not a human audit. Supplied PNG was treated as the original first-page render; the original PDF bytes independently match the retrieval receipt. No independent rerender or live source freshness check was performed.",
+  "rights_limits": "Factual bibliographic rows only. No film media or source PDF copy is included in this audit. Receipt and visual inspection do not establish copyright ownership, reuse permission, public-domain status of any film, streaming availability or personal entitlement. No rights clearance was performed.",
+  "records": [
+    {
+      "title": "3:10 to Yuma",
+      "year_released": "1957",
+      "year_inducted": "2012",
+      "position": 1,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "The 7th Voyage of Sinbad",
+      "year_released": "1958",
+      "year_inducted": "2008",
+      "position": 2,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "12 Angry Men",
+      "year_released": "1957",
+      "year_inducted": "2007",
+      "position": 3,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "13 Lakes",
+      "year_released": "2004",
+      "year_inducted": "2014",
+      "position": 4,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "20,000 Leagues Under the Sea",
+      "year_released": "1916",
+      "year_inducted": "2016",
+      "position": 5,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "42nd Street",
+      "year_released": "1933",
+      "year_inducted": "1998",
+      "position": 6,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "2001: A Space Odyssey",
+      "year_released": "1968",
+      "year_inducted": "1991",
+      "position": 7,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "Abbott and Costello Meet Frankenstein",
+      "year_released": "1948",
+      "year_inducted": "2001",
+      "position": 8,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "Ace in the Hole (aka Big Carnival, The)",
+      "year_released": "1951",
+      "year_inducted": "2017",
+      "position": 9,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "Adam’s Rib",
+      "year_released": "1949",
+      "year_inducted": "1992",
+      "position": 10,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "The Adventures of Robin Hood",
+      "year_released": "1938",
+      "year_inducted": "1995",
+      "position": 11,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "The African Queen",
+      "year_released": "1951",
+      "year_inducted": "1994",
+      "position": 12,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "Airplane!",
+      "year_released": "1980",
+      "year_inducted": "2010",
+      "position": 13,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "Alien",
+      "year_released": "1979",
+      "year_inducted": "2002",
+      "position": 14,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "All About Eve",
+      "year_released": "1950",
+      "year_inducted": "1990",
+      "position": 15,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "All My Babies",
+      "year_released": "1953",
+      "year_inducted": "2002",
+      "position": 16,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "All Quiet on the Western Front",
+      "year_released": "1930",
+      "year_inducted": "1990",
+      "position": 17,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "All That Heaven Allows",
+      "year_released": "1955",
+      "year_inducted": "1995",
+      "position": 18,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "All That Jazz",
+      "year_released": "1979",
+      "year_inducted": "2001",
+      "position": 19,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "All the King’s Men",
+      "year_released": "1949",
+      "year_inducted": "2001",
+      "position": 20,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "All the President’s Men",
+      "year_released": "1976",
+      "year_inducted": "2010",
+      "position": 21,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "Allures",
+      "year_released": "1961",
+      "year_inducted": "2011",
+      "position": 22,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "America, America",
+      "year_released": "1963",
+      "year_inducted": "2001",
+      "position": 23,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "American Graffiti",
+      "year_released": "1973",
+      "year_inducted": "1995",
+      "position": 24,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "An American in Paris",
+      "year_released": "1951",
+      "year_inducted": "1993",
+      "position": 25,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "Anatomy of a Murder",
+      "year_released": "1959",
+      "year_inducted": "2012",
+      "position": 26,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "Annie Hall",
+      "year_released": "1977",
+      "year_inducted": "1992",
+      "position": 27,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "Antonia: A Portrait of the Woman",
+      "year_released": "1974",
+      "year_inducted": "2003",
+      "position": 28,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "The Apartment",
+      "year_released": "1960",
+      "year_inducted": "1994",
+      "position": 29,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "Apocalypse Now",
+      "year_released": "1979",
+      "year_inducted": "2000",
+      "position": 30,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "Applause",
+      "year_released": "1929",
+      "year_inducted": "2006",
+      "position": 31,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "The Asphalt Jungle",
+      "year_released": "1950",
+      "year_inducted": "2008",
+      "position": 32,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "Atlantic City",
+      "year_released": "1980",
+      "year_inducted": "2003",
+      "position": 33,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "The Atomic Café",
+      "year_released": "1982",
+      "year_inducted": "2016",
+      "position": 34,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "The Augustas",
+      "year_released": "1930s-1950s",
+      "year_inducted": "2012",
+      "position": 35,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    },
+    {
+      "title": "The Awful Truth",
+      "year_released": "1937",
+      "year_inducted": "1996",
+      "position": 36,
+      "rank": null,
+      "category": "National Film Registry selections 1989–2017"
+    }
+  ]
+}

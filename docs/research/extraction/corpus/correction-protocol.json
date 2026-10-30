@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "frozen_at": "2026-10-30T14:04:57.845220+00:00",
+  "base_commit": "2dadac4b8125e1699da34e2dd530a77714535311",
+  "purpose": "Measure bounded post-holdout correction effort on every recorded baseline failure without changing baseline/parser/oracles.",
+  "inputs": {
+    "static-results.json": "14c0d45df19bfac036a5c6adb59182e225ddf9eac9e852bbe935de8f9f450842",
+    "selection.json": "c4c0556e8e2b46026bbc3117915ff48aa6692720300beb893de73c359e30ccfb",
+    "audit_group1.json": "e23c6dcd12105983b214529fde6192a6517ef76f4d7d21b85b23690962e633d7",
+    "audit_group2.json": "56c4fb6fb730af518c4bd6373af6552674096187de83893e38782448e02d2974",
+    "audit_holdout.json": "206f8fc0b6e0bf7193228b15c7fa0f09f8110d2694ae68ad4e673dbf2a5687b6",
+    "baseline-freeze.json": "eaf5b44618c7882cf35f6e4f9756b5fd3e97cec30ef054c71a6a4741a6b7254a"
+  },
+  "cases": [
+    "poll-0",
+    "shorts-0",
+    "shorts-1",
+    "shorts-2",
+    "shorts-3",
+    "locarno-2"
+  ],
+  "procedure": [
+    "Start an individual UTC and monotonic wall timer before inspecting each source case and its independent audit in this correction session.",
+    "Read retained source HTML, rendered context and expected observations; diagnose differences using existing metrics. Review original membership and fields, not merely copy a passing JSON result.",
+    "Record explicit sparse before/after field edits or inserted observations, source references, reason and unresolved questions. Use the existing independent oracle as correction assistance; this is not a blinded evaluation.",
+    "Apply the recorded edits to the saved first-run output. Stop timer after writing corrected artifact and comparing all five fields and complete record order to the unchanged audit.",
+    "Report each raw monotonic elapsed interval and minutes including inference/tool latency, with UTC bounds. Preparation, prior source familiarity, later documentation/CI and concurrent scheduling gaps are excluded. This is agent-assisted wall time, not active human minutes or billed model cost.",
+    "Publish unchanged initial metrics alongside corrected-document results and code-footprint/runtime/maintenance boundaries. Neither repaired results nor correction time measure untouched-source generalization."
+  ],
+  "success": "Every edit is source-supported and replayable; exact equality may pass or fail and is reported. Any unresolved issue remains explicit. No new parser/framework/production dependency.",
+  "rights": "Factual adapted observations from the retained CC BY-SA 4.0 derivative corpus; corpus/NOTICE.md source attribution and share-alike apply. No new network acquisition."
+}

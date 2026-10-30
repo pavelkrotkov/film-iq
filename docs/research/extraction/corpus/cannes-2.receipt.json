@@ -1,0 +1,38 @@
+{
+  "key": "cannes-2",
+  "title": "2022 Cannes Film Festival",
+  "section": "13",
+  "heading": "Short Films Competition",
+  "split": "development",
+  "lineage": "Wikipedia derivative of Cannes Film Festival; original-source accuracy and rights not established by this capture",
+  "revision": "1375928252",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=2022+Cannes+Film+Festival&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=2022+Cannes+Film+Festival&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:35.142662+00:00",
+    "bytes": 206,
+    "sha256": "a91fc8b64a4a810247f1b645e4a29c9d67e932dc538239c6e13b73d76b01acef",
+    "file": "cannes-2.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1375928252&section=13&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1375928252&section=13&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:36.176678+00:00",
+    "bytes": 1389,
+    "sha256": "b12cb7eb2f9b5193f7fdd8470bb32f866ac1947cdea671b0cba31b4d18ddbd35",
+    "file": "cannes-2.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1375928252&section=13&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1375928252&section=13&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:37.332584+00:00",
+    "bytes": 4133,
+    "sha256": "3a70085e154d20609ed8155780b1ea2288ae42db26e71806dc6765a09da67092",
+    "file": "cannes-2.text.json"
+  },
+  "corpus_stratum": "cannes",
+  "original_source_family": "Cannes Film Festival"
+}

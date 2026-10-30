@@ -1,0 +1,159 @@
+{
+  "version": "specialty-2026-10-29-v1",
+  "audit": {
+    "checked_at_utc": "2026-10-30",
+    "auditor": "automated:Codex-browser",
+    "kind": "automated operator audit; not independent human review",
+    "access": "Parent operator directly inspected public TMDB records in the actual user browser; earlier webfetch was robots-blocked. This implementation records the parent-supplied observations, not a new browser inspection.",
+    "separation": "Parent auditor is separate from resolver implementation authors. Independent GPT evidence-adequacy review is pending.",
+    "basis": "Operator judgment from title, creator and work context, comparing visible TMDB facts with frozen primary observations dated 2026-10-29; not Wikidata crosswalk agreement alone.",
+    "limitations": "Four purposive cases; automated attestation is not calibrated accuracy or population precision. Retrieval remains the existing Wikidata lead search, not TMDB full-catalog search. At Land stays unknown with incomplete retrieval. No resolver tuning, 99% target validation, issue closure or Gate A acceptance.",
+    "retention": "Minimal factual comparisons and URLs only; no provider pages, images, prose copies or catalog dumps."
+  },
+  "cases": [
+    {
+      "id": "la-jetee",
+      "truth": {
+        "status": "audited",
+        "tmdb_id": 662,
+        "reviewer": "automated:Codex-browser",
+        "evidence": [
+          {
+            "tmdb_url": "https://www.themoviedb.org/movie/662-la-jetee",
+            "tmdb_locator": "Movie title/year header, runtime, creator credits",
+            "tmdb_checked_at_utc": "2026-10-30",
+            "tmdb_facts": {
+              "title": "La Jetée",
+              "year": 1962,
+              "credits": {
+                "Chris Marker": [
+                  "Director"
+                ]
+              },
+              "runtime_minutes": 29
+            },
+            "primary_url": "https://www.criterion.com/films/329-la-jet-e",
+            "primary_locator": "Film Info; Credits / Director",
+            "primary_observed_at": "2026-10-29",
+            "primary_facts": {
+              "title": "La Jetée",
+              "director": "Chris Marker",
+              "year": 1963,
+              "runtime_minutes": 27
+            },
+            "comparison": "Title and director identify the short work. TMDB 1962 / 29m differs from frozen Criterion 1963 / 27m; neither is normalized."
+          }
+        ]
+      }
+    },
+    {
+      "id": "meshes",
+      "truth": {
+        "status": "audited",
+        "tmdb_id": 27040,
+        "reviewer": "automated:Codex-browser",
+        "evidence": [
+          {
+            "tmdb_url": "https://www.themoviedb.org/movie/27040-meshes-of-the-afternoon",
+            "tmdb_locator": "Movie title/year header, runtime, creator credits",
+            "tmdb_checked_at_utc": "2026-10-30",
+            "tmdb_facts": {
+              "title": "Meshes of the Afternoon",
+              "year": 1943,
+              "credits": {
+                "Maya Deren": [
+                  "Director",
+                  "Writer"
+                ],
+                "Alexander Hammid": [
+                  "Director"
+                ]
+              },
+              "runtime_minutes": 14
+            },
+            "primary_url": "https://www.idfa.nl/en/film/ff61f1ef-4571-4e23-8385-5cc765d94a4d/meshes-of-the-afternoon/",
+            "primary_locator": "Film header; Credits / Director",
+            "primary_observed_at": "2026-10-29",
+            "primary_facts": {
+              "title": "Meshes of the Afternoon",
+              "director": "Maya Deren, Alexander Hammid",
+              "year": 1943,
+              "runtime_minutes": 14
+            },
+            "comparison": "Title, year, runtime and both director credits agree with frozen IDFA. Preserve both directors; do not substitute a single director or rewrite Wikidata name forms."
+          }
+        ]
+      }
+    },
+    {
+      "id": "night-and-fog",
+      "truth": {
+        "status": "audited",
+        "tmdb_id": 803,
+        "reviewer": "automated:Codex-browser",
+        "evidence": [
+          {
+            "tmdb_url": "https://www.themoviedb.org/movie/803-nuit-et-brouillard",
+            "tmdb_locator": "Movie title/year header, runtime, creator credits",
+            "tmdb_checked_at_utc": "2026-10-30",
+            "tmdb_facts": {
+              "title": "Night and Fog",
+              "year": 1956,
+              "credits": {
+                "Alain Resnais": [
+                  "Director"
+                ]
+              },
+              "runtime_minutes": 32
+            },
+            "primary_url": "https://www.criterion.com/films/238-night-and-fog",
+            "primary_locator": "Film Info; Credits / Director",
+            "primary_observed_at": "2026-10-29",
+            "primary_facts": {
+              "title": "Night and Fog",
+              "director": "Alain Resnais",
+              "year": 1955,
+              "runtime_minutes": 32
+            },
+            "comparison": "Title, director and short-documentary context identify the work among similar-title leads. TMDB 1956 differs from frozen Criterion 1955; runtime agrees at 32m."
+          }
+        ]
+      }
+    },
+    {
+      "id": "moon",
+      "truth": {
+        "status": "audited",
+        "tmdb_id": 775,
+        "reviewer": "automated:Codex-browser",
+        "evidence": [
+          {
+            "tmdb_url": "https://www.themoviedb.org/movie/775-le-voyage-dans-la-lune",
+            "tmdb_locator": "Movie title/year header, runtime, creator credits",
+            "tmdb_checked_at_utc": "2026-10-30",
+            "tmdb_facts": {
+              "title": "A Trip to the Moon",
+              "year": 1902,
+              "credits": {
+                "Georges Méliès": [
+                  "Director"
+                ]
+              },
+              "runtime_minutes": 15
+            },
+            "primary_url": "https://www.festival-cannes.com/en/f/le-voyage-dans-la-lune/",
+            "primary_locator": "Heading; Directed by; Year of production",
+            "primary_observed_at": "2026-10-29",
+            "primary_facts": {
+              "title": "LE VOYAGE DANS LA LUNE",
+              "director": "Georges MÉLIES",
+              "year": 1902,
+              "runtime_minutes": 16
+            },
+            "comparison": "Translated title, director and 1902 short-work context support the mapping. Preserve Cannes LE VOYAGE DANS LA LUNE / Georges MÉLIES / 16m alongside TMDB A Trip to the Moon / Georges Méliès / 15m; no spelling or runtime normalization."
+          }
+        ]
+      }
+    }
+  ]
+}

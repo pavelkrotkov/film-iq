@@ -1,0 +1,38 @@
+{
+  "key": "locarno-3",
+  "title": "75th Locarno Film Festival",
+  "section": "9",
+  "heading": "Main competition",
+  "split": "holdout",
+  "lineage": "Wikipedia derivative of Locarno Film Festival; original-source accuracy and rights not established by this capture",
+  "revision": "1381676569",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=75th+Locarno+Film+Festival&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=75th+Locarno+Film+Festival&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:51.208927+00:00",
+    "bytes": 207,
+    "sha256": "6fbf7afa7a79220b7bf759433d3f312f213a99920a7143147072954fd628b83c",
+    "file": "locarno-3.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381676569&section=9&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381676569&section=9&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:52.270246+00:00",
+    "bytes": 2020,
+    "sha256": "945f9909bb5c603c29ef0f6c39d0ea0d56cdae01e4adca61f7fadcefb322199a",
+    "file": "locarno-3.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381676569&section=9&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381676569&section=9&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:53.275948+00:00",
+    "bytes": 5196,
+    "sha256": "73cfaa1ff07820a83d20baadfec8820ae65ebb494beb35ea1e222463f7eb8d85",
+    "file": "locarno-3.text.json"
+  },
+  "corpus_stratum": "locarno",
+  "original_source_family": "Locarno Film Festival"
+}

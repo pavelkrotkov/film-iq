@@ -1,0 +1,20 @@
+{
+  "valid_spans": 12,
+  "total_spans": 12,
+  "metrics": {
+    "expected": 11,
+    "extracted": 12,
+    "matched_titles": 11,
+    "entry_precision": 0.9166666666666666,
+    "entry_recall": 1.0,
+    "exact_records": 11,
+    "fields": {
+      "title": 1.0,
+      "position": 1.0,
+      "rank": 1.0,
+      "tie": 1.0,
+      "category": 1.0
+    },
+    "complete": false
+  }
+}

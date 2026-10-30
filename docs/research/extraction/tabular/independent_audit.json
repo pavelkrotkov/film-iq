@@ -1,0 +1,375 @@
+{
+  "audit_type": "independent_automated_agent",
+  "independent_automated_agent": true,
+  "human_audit": false,
+  "method": {
+    "inputs_read": [
+      "AGENTS.md",
+      "docs/research/extraction/tabular/source-window.csv",
+      "docs/research/extraction/tabular/source_receipt.json",
+      ".cache/tabular/original.csv"
+    ],
+    "independence": "Records independently enumerated from the frozen native CSV bytes before comparing against Python standard-library csv parsing. No extraction parser, output, tests, expectations, baseline, README, gold data, or other audit was read.",
+    "encoding": "UTF-8 with initial EF BB BF BOM; decoded strictly with utf-8-sig",
+    "delimiter": ";",
+    "quote_character": "double quote; no quoted fields or quote characters occur in the bounded window",
+    "line_endings": "CRLF throughout the bounded window",
+    "headers": [
+      "Titre",
+      "Réalisation",
+      "Production",
+      "Format",
+      "Date",
+      "Nationalité",
+      "N° de visa",
+      "Décision",
+      "Localisation du dossier visa"
+    ],
+    "field_mapping": {
+      "raw_title": "Titre",
+      "raw_director": "Réalisation",
+      "raw_date": "Date",
+      "category": "Format",
+      "visa_id": "N° de visa"
+    },
+    "completeness": "The bounded CSV contains the complete header and exactly the first 25 logical data records of the original. Standard-library CSV reader line_num establishes that these records end at physical line 26; their unchanged native bytes equal the entire subset. No record is split.",
+    "preservation": "No trimming, Unicode normalization, case correction, title matching, year inference, or visa-ID conversion. Position is one-based source record order, not rank; rank=null, tie=false, film_id=null.",
+    "whitespace_observations": [
+      {
+        "position": 1,
+        "field": "raw_director",
+        "detail": "U+00A0 between Pierre and Seguin"
+      },
+      {
+        "position": 6,
+        "field": "raw_title",
+        "detail": "Trailing U+00A0 after Breathless"
+      },
+      {
+        "position": 7,
+        "field": "raw_title",
+        "detail": "Trailing U+0020 after ka"
+      },
+      {
+        "position": 21,
+        "field": "raw_title",
+        "detail": "Trailing U+0020 after autre"
+      }
+    ]
+  },
+  "record_count": 25,
+  "records": [
+    {
+      "position": 1,
+      "raw_title": "À bout de nerfs",
+      "raw_director": "Pierre Seguin",
+      "raw_date": "1988",
+      "category": "Court-métrage",
+      "visa_id": "67623",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 2,
+      "raw_title": "About love Tokyo. Ai ni tsuite Tokyo",
+      "raw_director": "Mitsuo Yanagimachi",
+      "raw_date": "1993",
+      "category": "Long-métrage",
+      "visa_id": "81776",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 3,
+      "raw_title": "A ay",
+      "raw_director": "Reha Erdem",
+      "raw_date": "1991",
+      "category": "Long-métrage",
+      "visa_id": "71420",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 4,
+      "raw_title": "À bout de course. Running on empty",
+      "raw_director": "Sidney Lumet",
+      "raw_date": "1988",
+      "category": "Long-métrage",
+      "visa_id": "68657",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 5,
+      "raw_title": "Abandons",
+      "raw_director": "Bartolome De San",
+      "raw_date": "1985",
+      "category": "Court-métrage",
+      "visa_id": "59005",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 6,
+      "raw_title": "À bout de souffle made in USA. Breathless ",
+      "raw_director": "Jim McBride",
+      "raw_date": "1983",
+      "category": "Long-métrage",
+      "visa_id": "56918",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 7,
+      "raw_title": "Aashiq hoon baharon ka ",
+      "raw_director": "Lam Prakash",
+      "raw_date": "1979",
+      "category": "Long-métrage",
+      "visa_id": "50907",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 8,
+      "raw_title": "À bout de sexe",
+      "raw_director": "Serge Korber",
+      "raw_date": "1975",
+      "category": "Long-métrage",
+      "visa_id": "44433",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 9,
+      "raw_title": "À bout portant. The killers",
+      "raw_director": "Donald Siegel (alias Don Siegel)",
+      "raw_date": "1964",
+      "category": "Long-métrage",
+      "visa_id": "29509",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 10,
+      "raw_title": "À bout de nerfs. Labyrinth",
+      "raw_director": "Wilhem Thiele",
+      "raw_date": "1960",
+      "category": "Long-métrage",
+      "visa_id": "23163",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 11,
+      "raw_title": "À bout portant Jack. Mc Call desperado",
+      "raw_director": "Sidney Salkow",
+      "raw_date": "1954",
+      "category": "Long-métrage",
+      "visa_id": "15170",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 12,
+      "raw_title": "L'abandonnée. Al hirman",
+      "raw_director": "Atef Salem",
+      "raw_date": "1953",
+      "category": "Long-métrage",
+      "visa_id": "14985",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 13,
+      "raw_title": "À bas l'amour. Yaskout el hob",
+      "raw_director": "Ibrahim Lama",
+      "raw_date": "1949",
+      "category": "Court-métrage",
+      "visa_id": "9257",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 14,
+      "raw_title": "Abou Zeid el Hilali",
+      "raw_director": "Ezzel-Dine Zulficar",
+      "raw_date": "1948",
+      "category": "Long-métrage",
+      "visa_id": "8102",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 15,
+      "raw_title": "Les abandonnées. Las abandonadas",
+      "raw_director": "Non renseigné",
+      "raw_date": "1947",
+      "category": "Long-métrage",
+      "visa_id": "5469",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 16,
+      "raw_title": "À bout portant. Smoking gun",
+      "raw_director": "James Alan",
+      "raw_date": "1946",
+      "category": "Court-métrage",
+      "visa_id": "3059",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 17,
+      "raw_title": "À armes égales. GI Jane",
+      "raw_director": "Ridley Scott",
+      "raw_date": "1998",
+      "category": "Long-métrage",
+      "visa_id": "92919",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 18,
+      "raw_title": "Abattages",
+      "raw_director": "Joël Warnant",
+      "raw_date": "1998",
+      "category": "Court-métrage",
+      "visa_id": "91079",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 19,
+      "raw_title": "À cloche pied",
+      "raw_director": "Éric Canda",
+      "raw_date": "1996",
+      "category": "Court-métrage",
+      "visa_id": "89249",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 20,
+      "raw_title": "À bout touchant",
+      "raw_director": "Emmanuelle Caquille",
+      "raw_date": "1994",
+      "category": "Court-métrage",
+      "visa_id": "84723",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 21,
+      "raw_title": "À aucune autre ",
+      "raw_director": "Bertrand Boutillier",
+      "raw_date": "1994",
+      "category": "Court-métrage",
+      "visa_id": "84256",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 22,
+      "raw_title": "L'abri",
+      "raw_director": "Arnaud Pendrie",
+      "raw_date": "1996",
+      "category": "Court-métrage",
+      "visa_id": "83525",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 23,
+      "raw_title": "Abracadabra",
+      "raw_director": "Harry Cleven",
+      "raw_date": "1992",
+      "category": "Long-métrage",
+      "visa_id": "78230",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 24,
+      "raw_title": "Ab irato",
+      "raw_director": "Henri Lièvre",
+      "raw_date": "1991",
+      "category": "Court-métrage",
+      "visa_id": "76832",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    },
+    {
+      "position": 25,
+      "raw_title": "Abracadabra",
+      "raw_director": "Hélène Guetary",
+      "raw_date": "1989",
+      "category": "Court-métrage",
+      "visa_id": "70560",
+      "rank": null,
+      "tie": false,
+      "film_id": null
+    }
+  ],
+  "verified_hashes": {
+    "algorithm": "sha256",
+    "full_source": {
+      "path": ".cache/tabular/original.csv",
+      "bytes": 12821667,
+      "sha256": "61674d72814c60789a1f04b7ef93bfba9ee39033cbc4ade26b3bfe03daec2e91",
+      "matches_receipt": true
+    },
+    "subset": {
+      "path": "docs/research/extraction/tabular/source-window.csv",
+      "bytes": 3522,
+      "sha256": "a7d6a0fd081daef6a2aeb089181c253733873a0204631836489d8c5fcda0288a",
+      "matches_receipt": true
+    },
+    "exact_original_byte_prefix": true,
+    "header_and_first_25_logical_records": true,
+    "subset_physical_lines": 26,
+    "field_width": 9
+  },
+  "rights": {
+    "declared_license": "Licence Ouverte 2.0",
+    "receipt_license_code": "lov2",
+    "declaration_source": "source_receipt.json; no independent network/legal verification",
+    "attribution": "Centre national du cinéma et de l'image animée (CNC), Liste des visas d'exploitations cinématographiques délivrés de 1945 à 2025; publisher update 2025-11-13; Licence Ouverte 2.0",
+    "license_url": "https://www.data.gouv.fr/pages/legal/licences/etalab-2-0",
+    "limitations": [
+      "This records the receipt declaration and is not a legal opinion or independent rights clearance.",
+      "Attribution and source/update information should accompany reuse; consult the declared license for its terms.",
+      "Only this bounded supplement is audited; no full-dataset completeness or accuracy claim."
+    ]
+  },
+  "uncertainties": [
+    "Date is preserved as the source administrative Date string; it is not asserted to be production year, premiere date, or release date.",
+    "Visa ID is an administrative source identifier, not a catalog film identity.",
+    "Non renseigné at position 15 is retained literally as an unknown director indication; no director is inferred.",
+    "No film identity, critical ranking, streaming availability, or entitlement was established."
+  ]
+}

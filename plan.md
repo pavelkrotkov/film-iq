@@ -231,6 +231,32 @@ Output: recommended service or no purchase; 5–8 or configured films and why; t
 
 **Gate A:** a reproducible source→film→score→US offer→recommendation→approved Movary write trace; complete rated-only films; no silent truncation, duplicate observations, unapproved writes or false removal claims. Document actual time/cost/error metrics. POC is not the finished discovery backfill or calibrated recommender.
 
+**A7 preliminary finding:** A dry-run and explicit-approval boundary exercises sequential retries against a stub using the published Movary 0.82.1 route contract. The target instance's version and live write semantics remain unverified; no live round trip is claimed. Gate A requires integrated A1–A6 results and explicit authorization for any live write.
+
+**A7 CLI implementation:** The report command opens accepted evidence read-only and renders Markdown or JSON with an explicit identity crosswalk, original/excluded evidence, provider links, freshness, tentative entitlement, plan assumptions and selected-film previews. The sync command defaults to an offline preview; live execution requires both execution/approval flags and local environment configuration. HTTP and CLI paths are mock-tested; no live write has been attempted.
+
+**A2 preliminary finding:** Synthetic fixtures exercise paginated reads and replacement of a ratings CSV, including rated-only films and removed ratings. The installed Movary version, live export, and completeness of an upstream successful export have not been verified.
+
+**A1 preliminary finding:** The SQLite schema records source rights, list-linked extraction revisions, review decisions and source-supplied external IDs; migration and restore fixtures pass on patched SQLite. Independence and lineage verification default to unknown, and current accepted matches are explicit. Real-source rights and downstream integration remain unverified. IDs supplied by a source remain distinct from resolved film identifiers.
+
+**A3 preliminary finding:** One NBR 2023 section has been checked against the original announcement: its winner is ranked, while the other nine titles are alphabetical and unranked. Three Library of Congress selection transcriptions exercise a contrasting unranked format, but are not raw pages or independently audited. The NBR fixture's claimed Wikipedia revision remains unverified. Audited pages, tied and partial examples, rights verification and persisted idempotence remain open.
+
+**A3 source leads:** [BFI's 2022 poll announcement](https://www.bfi.org.uk/news/revealed-results-2022-sight-sound-greatest-films-all-time-poll) describes tied ranks, and [Film Comment's 2024 ballots](https://www.filmcomment.com/best-films-of-2024-individual-ballots/) publishes a selection of ballots. Their [BFI](https://www.bfi.org.uk/terms-use) and [Film Comment](https://www.filmcomment.com/terms-of-service/) terms do not establish permission to commit raw captures. Partial publication of ballots does not establish that a particular displayed ballot is incomplete.
+
+**A3 persistence:** Provisional fixture output can be stored with rights metadata and parser provenance. Repeat ingestion is idempotent; conflicting output fails rather than silently replacing accepted evidence. An explicit independent audit attestation can promote a complete revision; its correctness and independence are auditor claims. Historical human-only wording was an implementation assumption, not issue #6’s requirement. Automated versus human kind must be labelled in the auditor/evidence record. No real fixture has been promoted to accepted.
+
+**A4 preliminary finding:** Synthetic identity decisions and manual corrections persist against the A1 schema with links to extraction revisions. Held-out specialty-film precision, coverage and review rate remain unmeasured; the matching fixtures do not establish real-world accuracy.
+
+**A4 evaluation status:** Five frozen specialty observations and eight CC0 Wikidata candidate leads now have a runnable offline evaluation; four lead retrievals completed and one failed with HTTP 429. Independently audited TMDB truth remains unavailable for all five, so the scored denominator is zero and precision, coverage, review rate and candidate recall remain undefined. `docs/identity-held-out-plan.md` records source locators, preserved discrepancies, rights, retrieval policy and remaining audit gate; `docs/identity-held-out-results.json` records the execution. This does not close #7 or verify the 99% target.
+
+**A5 preliminary finding:** A deterministic baseline counts independent groups and sums reciprocal published ranks; its A1 adapter includes only current matches from explicitly verified original, independent sources. Input snapshots can be replayed with the same scorer version. Real-source verification, richer uncertainty and ranking evaluation remain open.
+
+**A6 preliminary finding:** Synthetic TMDB responses and a small monthly planner exercise offer uncertainty, freshness and no-purchase/rental alternatives. Live provider behavior, terms, entitlement, integration and planner usefulness remain unverified; the planner is limited to small POC shortlists.
+
+**A6 provisional bridge:** The planner resolves internal scoring IDs through the stored film_index TMDB crosswalk and uses `independent-count-additive-v1`: one utility point per independent endorsement. This utility is uncalibrated and ignores rank and personal preference; plan-specific entitlement remains unvalidated. Full cross-issue integration remains in the local integration probe.
+
+**A3 partial-ballot follow-up:** A real incomplete individual assessment was located in Film Comment's 2022 Gina Telaroli ballot, but permission to redistribute a captured fixture remains unverified. No copy was retained. `docs/a6/partial-ballot-lead.md` distinguishes incomplete viewing from editorial truncation and records the remaining narrow fixture gap.
+
 ### Epic B — Explore source universe and provider quality
 
 Runs in parallel with POC under its own controller; B1–B7 may all begin independently using their own representative sources, synthetic inputs or benchmark fixtures. B8 can maintain a living draft immediately but finalizes Gate B only after the relevant B1–B7 evidence. No issue in Epic B has a hard start or completion dependency on Epic A.
@@ -243,6 +269,24 @@ Runs in parallel with POC under its own controller; B1–B7 may all begin indepe
 6. Publish evidence and decision records: adopted dependencies and APIs, source priorities, permissions and unresolved issues.
 
 **Gate B:** explicit evidence supporting initial source adapters, providers, extraction techniques and scoring approach; publish open questions when evidence is insufficient. This epic is *research work*, not a mandate to integrate every candidate service.
+
+**B preliminary findings (updated 2026-10-30):** Original-source terms can restrict automated collection or reuse. The same critic can appear in multiple publications, so preserve each source and rank while counting independent people once. The fourteen-film historical sample began with cached, derivative or inaccessible catalog results. Its authenticated continuation now records 35 bounded TMDB requests, twelve automated-review acceptances and two ambiguous date-conflicted cases; five of six alternate queries retrieve the reviewed work. These convenience observations cannot establish general coverage or precision. The credential-free dry run still processes all fourteen cases with zero requests. Failed, incomplete and budget-limited searches remain unknown, and no candidate is automatically accepted or declared absent.
+
+The extraction smoke test rejects a 47-of-50 result. One unranked Library of Congress page returned 18 of 18 agent-transcribed titles; its expected observations have not received independent audit. A separate candidate returned HTTP 403 and remains unknown. A supplemental A3 rerun matched 42 records from four derivative Wikipedia sections against an independently automated oracle. A new 32-section Wikipedia corpus has frozen revisions, attribution and a 24-development/8-holdout split. Three independent rendered-source audits enumerated 539 expected records and verified capture metadata. The frozen deterministic baseline passed complete-document checks on 23/24 development sections and 3/8 held-out sections; missing runner-up membership, translated-title disagreement and lost award-year categories remain failures. These are static derivative lists and tables, not coverage of every required source format. Auditors must be identified accurately as automated or human; no human audit or human correction-time measurement is claimed.
+
+A grounded-LLM comparison on one failed development section supplied 12 valid source spans but only 11 scoped memberships; it recovered the missing runner-up and added an out-of-scope directors-poll leader. Scoped precision was 11/12, recall 1, and completeness failed. One case cannot establish comparative method quality. A permitted real-source edition replay loaded ten NBR 2021 selections, attempted eleven 2022 additions, preserved the original ten after an injected source failure, reopened persistent SQLite/dlt state and accepted retry to 21 rows. SQLite made zero writes on an unchanged rerun. One documented run took 0.005 seconds for SQLite and 1.454 seconds for dlt; these tiny replay timings do not establish live incremental performance or process-crash recovery.
+
+A separate Library of Congress PDF first-page supplement matched all 36 independently visually audited factual rows with native PDFKit and a small parser, including a release-year range. It is a bounded historical 1989–2017 registry selection, not a complete or current catalog or a held-out publisher test. A cross-platform retained-text check validates the snapshot but does not exercise PDF extraction. The examined NFB CSV resource could not be acquired because its resource hostname failed DNS resolution; no NFB extraction or availability result is claimed. A separate original CNC CSV under declared Licence Ouverte 2.0 matched all 25 independently audited records in a frozen first-record window, preserving whitespace, unknown director labels and raw administrative dates. The full source stays in ignored cache; the bounded 3,522-byte fixture is not a full-dataset or film-identity accuracy claim. A supplemental two-entity Wikidata query showed a real JavaScript interface rendering rows whose labels were absent from its initial HTML; the interface's documented HTTP JSON API returned the same two rows without rendering. This user-defined query is not an original critic-list or unseen-layout test. Original-publisher browser-only inputs, partial individual-ballot coverage and other untested layouts remain open.
+
+The availability experiment now has a runnable, opt-in TMDB/Movie of the Night observer and 60 machine-readable candidates in six strata. Two automated source audits checked all 60 published work identities and selection context, with pinned encyclopedia revisions and authoritative-source receipts; 64 raw/metadata receipt hashes were checked. Film-year, award edition, premiere and production assertions remain distinct. Duration and country conflicts for shorts are preserved. The public frozen cohort keeps null activation fields. A separate automated audit now supports 60 TMDB work IDs in a local reviewed manifest; date/cut conflicts remain. The first US observation yields 53 usable responses and seven unknown responses in 60 HTTP 200 requests. Movie of the Night, account checks and two further genuinely separate dates remain pending. The dry run still makes zero requests. Offline fixtures exercise failed, partial and truncated responses as unknown. Six long-tail investigations support manual first-party checks and an explicitly inconclusive access outcome; no US playback or personal entitlement was verified. One anonymous player request returned HTTP 401 and remains unknown. OSS reuse findings are qualitative.
+
+Independent PR review found that malformed provider identifiers could be accepted as complete offers. The correction validates TMDB IDs before conversion and requires a nonempty add-on ID; regressions retain the whole response as unknown when a malformed row follows a valid one. The [review and disposition](https://github.com/pavelkrotkov/film-iq/pull/41#discussion_r4420172819) record the evidence. Passing code checks does not complete the outstanding live provider acceptance criteria.
+
+Identity-search review also identified lost diagnostic causes. Failed searches now retain a bounded processing phase, exception class and validated pagination totals without exception messages or credentials. The [diagnostic review and correction](https://github.com/pavelkrotkov/film-iq/pull/39#discussion_r4420208093) include regression evidence. Both correction conversations were resolved after independent re-review and green CI; acceptance gaps remain separate from code correctness.
+
+The scoring study now includes a real ten-film 2008 convenience cohort: three pages yield 61 observed critic selections, while seven have unknown list observations. Independent automated audit found and corrected one omitted unranked selection. Training counts and reciprocal-rank sums favor Milk, while the observed New Yorker held-out rank sum favors The Wrestler. The held-out evidence comprises three critic/film selections across two films. A second independent audit verified reception/context transcriptions for all ten films: RT positivity and critic counts, Metacritic scores and counts, nine RT averages, and four categorical CinemaScore grades without sample sizes. No numeric audience evidence was observed, so the full weighted formula remains unknown for all ten; explicitly renormalized audience-omitted ablations run only on the three list-observed films. Rankings preserve ties. Format and overlapping country missingness are reported, without stability claims. Mixed citation dates and unknown overlap with reception critics prevent temporal-backtest or independent reception-validation claims. The [Gate B working matrix](docs/research/gate-b.md) records evidence and open decisions as the research progresses.
+
+Timing review corrected an import-boundary claim in the loader comparison. Installation is outside both function timers, but SQLite imports precede its timer while dlt can import dependencies inside its timed pipeline construction. The recorded warm-up state is unknown; the original measured values remain unchanged and do not support controlled startup or steady-state comparisons. The [timing finding and disposition](https://github.com/pavelkrotkov/film-iq/pull/35#discussion_r4420403127) distinguish this runner from the historical synthetic implementation that imported dlt before timing.
 
 ### Epic C — Final implementation, conditional on gates
 
@@ -392,6 +436,129 @@ filename patterns returned no configured file. No broader private-folder search
 was performed. Authenticated HTTP read tests remain pending the actual Movary
 credential; sign-in and endpoint discovery are no longer blockers.
 
+### A3 captured-page continuation (2026-10-29)
+
+Four exact, pinned Wikipedia section responses from distinct source pages now cover
+42 published records with ranked, tied, alphabetical/unranked and partial-aggregate
+semantics. Two frozen deterministic page adapters match a separate read-only agent's
+rendered-HTML oracle. Rights notices, hashes, endpoints and limits are in
+[the A6 evidence report](docs/a6/README.md). These are actual API captures, not
+transcriptions or whole-page snapshots. All records remain provisional/pending;
+a genuine partial individual-ballot fixture remains open. The 2012 title/rank subset
+is now corroborated against upstream BFI HTML without retaining it; conflicting
+year labels remain unresolved. Independent automated audit is valid within its
+stated scope; no human-only gate applies. Explicit acceptance has not been recorded.
+No Gate A completion claimed.
+
+**Issue #8 uncertainty followup finding (ADR 0006):** Baseline scores explicitly expose extraction, identity and evidence/disagreement uncertainty as `not_evaluated`, and personal-prediction uncertainty as `not_applicable` without a personal model. Accepted extraction/match status does not imply calibrated reliability, and endorsement/rank totals do not establish disagreement. These fixed defaults serialize with the score and replay from both existing and new v1 input snapshots; input hashes and numeric ranking remain unchanged. The merged PR #32 report now exposes these states in Markdown and JSON. No live accuracy, calibration or personal-prediction validation is claimed.
+
+
+### Epic A integration and merge findings (2026-10-29)
+
+Implementation PRs #29 (schema), #30 (Movary reads/ratings), #28 (scoring),
+#31 (offers/planning), #34 (identity) and #33 (captured-page extraction) have merged
+with green CI and resolved review threads. A7 (#32) integrates these modules into
+read-only Markdown/JSON reports and a one-selection, explicit-approval sync CLI.
+The source and identity issues remain open for their empirical acceptance gaps.
+
+The combined A7 tree passes 291 tests with one opt-in live test skipped; Ruff,
+formatting and ty pass. Radon 6.0.1 over all 107 source/test
+Python files reports maximum CC 8 and minimum MI 50.025. A duplicated identity-test
+setup and callback were simplified to meet the all-files maintainability target;
+no production identity behavior was changed. The complete synthetic public-API test now connects persisted extraction, explicit audit, reviewed identity, score, offer, feasible plan, default preview and approved stub write; an unchanged rerun preserves evidence and watchlist state. No new runtime dependency was added.
+
+GPT-6.1 Sol High reviewers posted findings and follow-up reviews on the PRs.
+Agreed defects received regression checks, replies and resolved threads. Native
+nested parallel agents were unavailable in those review sessions, so their
+standards/spec axes were reviewed separately; this is a workflow limitation,
+not a claim that the requested nested parallel review ran. No external CI bot
+review arrived; all available review conversations were examined.
+
+Gate A is **not accepted**. Remaining evidence includes a redistributable genuine
+partial individual-assessment fixture (#6), independently audited TMDB truth and
+nonzero scored held-out cases (#7), and target Movary version/export/live semantics
+and a real source-to-offer trace (#5/#9/#10). The current five-case identity run
+has zero scored cases; unknown truth is not an accuracy result. The actual Movary
+instance and authorized local configuration have been requested. No live account
+call or watchlist write has occurred. Any selected live write still requires its
+preview and explicit approval; merging code does not authorize it. Epic B research
+and provisional ADR decisions remain independent.
+
+
+A separate acceptance audit confirms #4 is complete and it is now closed. The
+same audit found that #8 still needs explicit, separate extraction, identity,
+evidence/disagreement and prediction uncertainty states under ADR 0006. A small
+follow-up is being implemented; no calibration or prediction confidence is claimed.
+
+
+### Epic A final implementation reconciliation (2026-10-29)
+
+All seven original implementation PRs (#28–#34) are merged. #4 (schema), #5
+(Movary reads/export) and #9 (offers/planning with integrated A7 evidence) satisfy
+their implementation acceptance criteria and are closed. Their live behavior is
+still unverified; closing code issues does not accept Gate A. #8 has a small
+follow-up PR #43 for the explicit uncertainty states above. #6, #7 and #10 retain
+the documented fixture-rights, identity-measurement and real demonstration gates.
+
+The final PR #32 head received separate **parallel** GPT-6.1 Sol High Standards
+and Spec reviews, both clean; prior reviews' nested-agent limitation does not
+apply to this final pair. All review threads were resolved and CI was green.
+The user's root skill/configuration changes and Epic B worktrees/PRs were preserved.
+
+The #43 integrated tree passes 292 tests with one opt-in live skip (2.04 seconds
+locally), Ruff/format/ty and diff checks. All 107 source/test Python files retain
+maximum CC 8 and minimum MI 50.025. Legacy v1 snapshot input IDs and numeric
+results replay unchanged; new uncertainty fields remain explicitly unmeasured.
+
+### Issue #7 automated browser-audit finding (2026-10-30 UTC)
+
+A separate-from-resolver parent operator inspected four public TMDB records in
+the actual user browser. The auditor is `automated:Codex-browser`, not an
+independent human; independent GPT evidence-adequacy review is pending. A minimal
+[truth-only overlay and reproducible report](docs/identity-browser-audit.md)
+preserves differing primary/TMDB years, runtimes and name forms without changing
+frozen observations, candidates or earlier results. Existing `evaluate()` scores
+four cases: zero auto-accepts, coverage 0, review rate 1, conditional candidate
+recall 1, precision undefined. At Land remains unknown/incomplete and excluded.
+Recall is conditional on existing Wikidata lead retrieval, not TMDB full-catalog
+search. This convenience cohort and automated attestation do not establish
+calibrated accuracy, the 99% target, issue #7 closure or Gate A acceptance. No
+production identity behavior or ADR decision changes.
+
+### Issue #6 acceptance reconciliation and current status (2026-10-29)
+
+This finding supersedes the historical closure-gate statements above without
+rewriting their evidence. Comparing issue #6's exact body and Epic A with this
+plan confirms that requiring a licensed real partial individual ballot for #6
+closure was an inherited stronger requirement. Four licensed real pages (42
+records, two contrasting adapters) cover ranked, tied, unranked and partial
+aggregate cases. They remain aggregates/institutional selections, not individual
+ballots. One wholly synthetic anonymous individual-ballot case now exercises the
+existing extraction-to-persistence interface: eligibility and partial assessment
+survive, all published entries and context/locators are stored exactly, unranked
+positions remain `rank=None`, document revision/scope survive and reruns make no
+database changes. Complete extraction of published content is distinct from
+incomplete viewing/assessment; missing films are never inferred. No production
+code or abstraction was needed, and the synthetic case adds zero real pages.
+
+These cover the narrow missing semantics assertion under the issue criteria;
+parent review/CI still governs closure. A rights-cleared real partial individual
+fixture remains a factual coverage gap, and Film Comment adversarial work under
+§4 remains open with its rights restrictions and prior research preserved. See
+[the corrected evidence report](docs/a6/README.md) and
+[research lead](docs/a6/partial-ballot-lead.md). No issue or gate is closed here.
+
+Current parent-reported status: PR #44 merged at `3962fdb`; #4/#5/#7/#8/#9 are
+closed against their implementation/reporting criteria. #7 has four audited,
+scored cases with zero auto-accepts and undefined precision; no 99% accuracy claim
+is made. This supersedes historical notes that identity truth was unavailable
+without broadening the convenience cohort's evidentiary scope. #10 and Epic A
+remain open pending authenticated reads/export and a real approved round trip.
+The browser explicitly requested sign-in; no account token or signed-in session
+was available, and opening the extension UI paused automation. No unauthorized
+reset or key generation was performed. Root-plan reconciliation remains owned
+by the parent; this appendix is confined to this worktree.
+
 
 ### A7 authenticated API validation (2026-10-30)
 
@@ -479,6 +646,7 @@ No such authorization or live mutation has occurred at this record point.
 Gate A/#10 remains open; no ready implementation PR is being held for review.
 
 
+
 ### Gate A accepted: approved live round trip completed (2026-10-30)
 
 The user explicitly approved both pending actions. The existing saved TMDB key
@@ -536,6 +704,139 @@ or personal CSV was committed. This strengthens live adapter/export evidence
 without claiming a nonempty live rated-only/deleted-rating test.
 
 
+### Epic B authenticated TMDB continuation (2026-10-30)
+
+The user configured a project-local, ignored `TMDB_API_KEY`. A read-only
+authentication probe returned HTTP 200 / success; no secret value was printed or
+committed. The research runners now support TMDB's documented v3 query-key
+authentication as a fallback to Bearer authentication, while keeping credentials
+out of recorded endpoints and failure diagnostics. The earlier credential
+blocker is superseded for TMDB only; Movie of the Night access remains pending.
+
+The frozen fourteen-film historical cohort completed all fourteen searches in
+fifteen API requests, including the second page for A Separation. These are
+current candidate observations, not accepted identities or an accuracy result.
+The completed details/director checks and independent automated adjudication are reported below.
+Only selected factual metadata is retained in ignored worktree-local caches;
+raw responses/images are not published. The TMDB FAQ supports attributed
+noncommercial use; historical retention/redistribution rights are not inferred
+from that statement. No provider superiority, account entitlement or Gate B
+acceptance is established by successful authentication.
+
+The historical run now includes 14 successful detail/credit requests and six
+paired source-alias searches, for 35 benchmark requests in total (21 search,
+14 detail). All returned HTTP 200. A separate automated audit supports twelve
+identities and leaves two date-conflicted cases ambiguous; this is not human
+ground truth or a precision estimate. Five of six source-alias queries retrieve
+the reviewed candidate. The romanized Uncle Boonmee alias yields no candidates
+even though the English query finds the work, demonstrating why an empty search
+cannot establish catalog absence. Automatic acceptance remains zero; human
+review minutes and monetary cost remain unknown. The recorded 103.617-second
+audit interval is automated elapsed wall time, not human labor.
+
+The availability cohort now has 60 independently automated, evidence-supported
+TMDB work identities for offer lookup, with date/cut conflicts retained. Four
+broad searches exceeded the five-page budget and remain incomplete despite
+positive identity evidence. The local reviewed manifest preserves the original
+cohort and audit hashes; it activates TMDB only, with IMDb IDs still null because
+they have not been independently verified. B2's conservative date-conflicted
+statuses remain separate; neither audit is human precision truth.
+
+B4 made 225 successful TMDB requests: 91 search, 66 detail, 60 first US offers,
+seven diagnostic rechecks and one service-label mapping. The earlier 60
+restricted-network attempts returned URLError with no confirmed upstream request;
+they are preserved separately rather than counted as HTTP failures. All 60
+offer requests returned HTTP 200: 53 contain an explicit usable US object and
+offers; seven shorts fail schema processing and remain unknown. Seven later
+diagnostic rechecks lack an explicit US object. The original failed payloads and
+hashes were not retained, so the later rechecks do not prove the original cause. No complete empty-US
+response or removal event was observed. The five other assigned strata each
+have ten usable responses; shorts/experimental has three usable and seven
+unknown. These are assigned reporting strata, not a feature/short partition.
+The 529 normalized offer rows are 81 subscription, 218 rent, 204 buy, eight ads
+and eighteen free; all account entitlements remain unknown. The catalog sum
+13.9719 seconds includes processing, whereas the offer-fetch sum 5.1723 seconds
+excludes normalization and pacing. Neither is a total labor/cost measurement.
+
+Three bounded public first-party page checks support title presence at Netflix,
+Disney+ and Apple. Web-reader snapshots, generic plan advertisements and a title
+page without a transaction/price do not verify US account/ad-tier access or
+rent/buy correctness. Duration discrepancies are retained. Movie of the Night
+access, historical-retention permission, two further dates, actual account and
+transaction checks, and comparative change/expiry measurements remain open.
+The updated [B2 review](https://github.com/pavelkrotkov/film-iq/pull/39#pullrequestreview-5711278183)
+found no actionable Standards or Spec defects at 8317a76; its empirical gaps remain
+explicit. Gate B is not accepted.
+
+
+### Epic B implementation merge ledger (2026-10-30)
+
+Seven reviewed research/implementation PRs were merged into main. Each merge
+commit below is verified in main history; these merges do not accept Gate B or
+close an issue by themselves. PR #35 remains the separately reviewed evidence
+consolidation. All source worktrees and branches were preserved.
+
+| PR | Merge commit | Merged UTC |
+| --- | --- | --- |
+| [#36](https://github.com/pavelkrotkov/film-iq/pull/36) | `530051d4ab351e17c456d4e7142e9814b7bd2c1a` | 2026-10-30T12:00:55Z |
+| [#38](https://github.com/pavelkrotkov/film-iq/pull/38) | `ff0c7cb43662804d50f765937e7114a3ebd7a4c1` | 2026-10-30T12:00:59Z |
+| [#37](https://github.com/pavelkrotkov/film-iq/pull/37) | `49e944bdf50eb268c9641149eae97899d92030c3` | 2026-10-30T12:01:03Z |
+| [#39](https://github.com/pavelkrotkov/film-iq/pull/39) | `fa9caa61252811547f0c61065c7687c63aa5f5ff` | 2026-10-30T12:01:06Z |
+| [#40](https://github.com/pavelkrotkov/film-iq/pull/40) | `fa441797326cd5b1a511f1f9efac5d080d8191eb` | 2026-10-30T12:01:10Z |
+| [#41](https://github.com/pavelkrotkov/film-iq/pull/41) | `af0b41c9df4e56828f1a396a16ad9a1ed7c733cb` | 2026-10-30T12:01:13Z |
+| [#42](https://github.com/pavelkrotkov/film-iq/pull/42) | `a6c1416c2d2d30a1a15e215ebc46712d33f481a3` | 2026-10-30T12:01:17Z |
+
+The independent single-PR branches could not be merged by `gh stack merge`: the
+first attempt reported that the PR was not stacked, and `gh stack link` requires
+at least two branches. The controller therefore used native GitHub squash
+merges guarded by each reviewed head SHA and re-read the merged results. This
+consolidation was synchronized through gh-stack; its additive plan conflict
+retains all A7 and Epic B evidence. Research acceptance remains a separate
+issue-by-issue and gate decision.
+
+After synchronization onto main `a6c1416c2d2d30a1a15e215ebc46712d33f481a3`,
+the integrated tree passes Ruff, formatting, ty and 333 tests with one opt-in
+live test skipped. Radon over all 154 tracked Python files reports maximum
+CC 8 and minimum MI 50.025032. No additional runtime dependency or unrelated
+code change was needed. The source CSV retains its intentional CRLF bytes; the
+diff check permits CR-at-EOL rather than normalizing source evidence.
+
+[TMDB's published rate guidance](https://developer.themoviedb.org/docs/rate-limiting),
+checked 2026-10-30, describes an approximate 40-request/second anti-bulk ceiling
+that may change and requires respecting HTTP 429. Its old 40-per-ten-seconds
+limit was retired in 2019. This guidance is distinct from the account/monthly
+quota, cost and retention questions above; no observed quota headers does not
+mean unlimited access or zero charges.
+
+### Epic B issue acceptance reconciliation (2026-10-30)
+
+After independent review against the actual issue criteria, the controller closed
+[B1 #11](https://github.com/pavelkrotkov/film-iq/issues/11#issuecomment-6522320655),
+[B5 #15](https://github.com/pavelkrotkov/film-iq/issues/15#issuecomment-6522322222)
+and [B6 #16](https://github.com/pavelkrotkov/film-iq/issues/16#issuecomment-6522323392)
+as completed bounded research, with their source PRs merged. Unresolved source
+permissions are valid B1 audit findings; unknown playback/library eligibility is
+an accepted B5 outcome where testing is infeasible; qualitative adoption cost
+satisfies B6 without measured integration hours. None of these closures accepts
+Gate B, grants source rights or verifies personal entitlement. Epic #2 remains
+open and its three corresponding child checkboxes are updated.
+
+The remaining experiments follow their exact criteria: B2 needs timed manual
+review/correction by source stratum; B3 needs measured correction minutes and an
+honest boundary for withheld-layout evidence. Preserve the frozen extraction
+baseline and record corrections as a separate supplement. B7's New Yorker
+source-family holdout was performed and remains valid as a bounded experiment;
+its explicit period/diversity holdout still needs an informative extension or an
+accepted deferral. Missing numeric audience evidence legitimately leaves the full
+weighted formula inconclusive. No human-only identity oracle, mandatory
+primary-publisher fetching or broad statistical stability requirement is added.
+B4 still requires Movie of the Night access, genuinely separate observation
+dates, applicable rights and authorized first-party/account comparisons. B8 #18
+and Epic #2 stay open while these non-deferred experiments remain outstanding.
+The [working matrix](docs/research/gate-b.md) records concrete next measurements;
+no architecture change or additional paid dependency is needed for them.
+
+
 Final integration against the independently merged Epic B main passed 333 tests
 with one opt-in live skip (2.54 seconds locally), plus Ruff, formatting, ty and
 diff checks. All 154 tracked Python files, including the merged research code,
@@ -563,3 +864,254 @@ Nonempty ratings edge cases remain fixture-backed; playback, entitlement,
 population precision, commercial retention and production readiness remain
 unverified. Epic B and its provisional decisions remain independent and open.
 The user's root configuration/plan edits and existing worktrees are preserved.
+
+### B4 published rights and public quota supplement (2026-10-30)
+
+The [provider ledger](docs/research/availability/rights-20261030.md) traces the
+official repository's current terms link to Movie of the Night's native
+Developers Platform. The rendered current terms permit local retained data under
+use/attribution/third-party-content conditions; the older pinned GitHub TERMS.md
+has materially different image and plan provisions and is not applied as the
+current native contract. Public native Free pricing is $0 for 1,000 requests per
+month, with a hard limit and no overage fees. Three 60-title offer passes budget
+180 requests before identity/auxiliary calls and other account usage; the actual
+account's plan, remaining quota and charges were not inspected. No API requests,
+registration, paid subscription or provider messages were made by this audit.
+
+Native terms specifically prohibit using API data to train, fine-tune, evaluate
+or improve ML models or AI systems. The planned availability-provider comparison
+is not an AI-model evaluation, and this clause is not treated as a prohibition
+on all AI-agent assistance. Future model-training/evaluation data uses need an
+applicable permitted basis. TMDB archival rights and actual account terms remain
+unverified. This closes part of the public terms investigation, not B4: two later
+dates, Movie of the Night access, first-party offers and intended account/ad-tier
+checks remain. ADR 0008 remains provisional and Gate B is not accepted.
+
+
+### B7 period/format continuation and merged follow-ups (2026-10-30)
+
+All eight original Epic B PRs are now merged; the Gate B report merged as
+[PR #35](https://github.com/pavelkrotkov/film-iq/pull/35) at
+`cee6b3b4c48bad19e94bd415001a24c3f9305cc0`. The reviewed provider-terms follow-up
+[PR #48](https://github.com/pavelkrotkov/film-iq/pull/48) merged at
+`3d486140ad7744cae118f386af24781c6236e8ff`, documenting current native storage,
+attribution and quota terms separately from older repository terms and actual
+account state. Issues #11/#15/#16 are closed against their exact research criteria.
+
+[PR #47](https://github.com/pavelkrotkov/film-iq/pull/47) executes the formerly
+missing B7 period/diversity holdout. Its twelve 2023–2024 works were frozen before
+source acquisition. Fifteen Wikipedia requests preserve failures and a wrong
+article before correction; the Wiki-only pass supplies one named-critic selection.
+An explicitly exploratory original-list backfill, frozen after that missingness,
+adds independently audited NPR/New Yorker selections without replacing films or
+tuning weights. Nine distinct critic/film selections cover five works, including
+two animated features; a derivative duplicate is counted once. The optional
+unverified rank is excluded after the independent source check returned 403.
+
+New Yorker is globally held out by family, including newer writers. Inclusive
+typed categories yield three supported overlaps; main-only yields one. Training
+counts tie and no training ordinal is observed, so the comparison is inconclusive
+for predictive quality. The four shorts remain unknown rather than negative
+judgments. Format/country/period denominators are explicit; broad stability and
+discovery benefit are not established. This executes the required bounded
+experiment, without treating a positive validation result as an invented closure
+condition. Acceptance is mapped against #17 separately from Gate B.
+
+The extension adds no dependency or production behavior and preserves the 2008
+results. Validation passes 336 tests with one opt-in skip, Ruff/format/ty and
+157 tracked Python files with maximum CC 8 and minimum MI 50.025032. The new
+research modules/tests alone have maximum CC 7 and minimum MI 51.50. B2's timed
+review metric, B3's correction minutes, B4's remaining provider/date/account
+measurements and final Gate B synthesis remain open; automated audit wall time
+is not represented as human labor.
+
+
+### B4 paired availability and pre-subscription discovery (2026-10-30)
+
+The [same-date paired report](docs/research/availability/comparison-20261030.md)
+now records sixty TMDB and sixty native Movie of the Night HTTP 200 requests:
+53 explicit complete TMDB US responses/seven unknown and 49 native complete/
+eleven unknown; zero complete-empty. Independent automated review accepts all
+sixty work-level lookups while preserving year/runtime/cut uncertainty. A new
+local accepted both-ID manifest extends the earlier unchanged TMDB manifest and
+is the stable input for later dates; the public cohort keeps null activation IDs.
+
+Source granularity differs: TMDB returns 529 service/category units, native 274
+quality variants including 53 add-ons. Explicit nominal mapping covers only
+237/529 TMDB units versus all 274 native variants. In 49 jointly complete works,
+180 mapped tuples overlap, 51 are TMDB-only and 46 native-only. Unmapped TMDB
+units can explain native-only mapped tuples; neither difference is confirmed
+absence, error or provider superiority. Add-on hosts, quality, source categories,
+free/ads and uncertain tiers remain distinct in retained observations.
+
+Signed-out Netflix/Disney/Criterion pages provide public spot-check evidence;
+No Other Land Apple SKU metadata matches three native USD prices, while its
+95.87/92-minute runtime conflict remains. Public title pages are benchmark spot
+checks, not prerequisites for routine discovery. A separate native Peacock
+subscription-catalog query returns twenty rows with `hasMore=true`; this first
+page is outside the sixty-film denominator. Peacock publicly advertises
+Disclosure Day separately and lists movies in Premium/Premium Plus, not Select;
+ad exceptions remain explicit. Consumer login/subscription is unnecessary for
+public discovery. Personal entitlement stays unknown by design; any account-specific
+validation remains optional and does not block catalog discovery.
+
+This phase adds 60 TMDB/62 native requests (paired pass, native probe and one
+Peacock page), plus one public Apple HTTP lookup; browser/web-reader assets are
+unmetered. No quota headers or actual account allowance/cost evidence were
+returned. All observations remain 2026-10-30 UTC date one. Two genuinely later
+dates, change timeliness and unresolved rights/plan-specific classifications
+remain; B4 #14, B8 #18 and Gate B stay open, and ADR 0008 remains provisional.
+The rights report's native storage/attribution constraints and specific §10
+AI-model-use restriction remain applicable; no provider catalog or credentials
+are committed. Historical pending-access statements above describe earlier
+stages and are superseded only by this bounded continuation.
+
+
+### B2 source-stratified review effort (2026-10-30)
+
+A [frozen-protocol timed supplement](docs/research/history/review-effort-20261030.md)
+performed the manual evidence-review task for all fourteen existing cases in five
+primary-source blocks. One agent took 59.235865 seconds across Cannes (nine),
+Berlinale (two), Annecy (one), Criterion's derivative retrospective (one) and
+Film at Lincoln Center (one). These intervals include reading, reasoning,
+tool/model latency and entering decisions; they exclude setup, acquisition,
+report/CI work and earlier audits. This is an unblinded repeat review, not human
+labor or independent truth: human n=0/minutes null and model billing unknown.
+Twelve accepted/two ambiguous decisions remain unchanged, with zero source-field
+corrections, zero automatic acceptances and zero new provider requests. Date,
+runtime, lineage and local-release uncertainty are preserved. Precision and a
+missing-catalog rate remain inconclusive; the review does not create a new
+human-only oracle requirement or certify general coverage. Source-frame taxonomy
+is reconciled with B1, and festival shorts/translated aliases are the first
+recommended expansion. ADRs 0003/0011 and the frozen null-ID sample are unchanged.
+
+### B3 measured correction effort and withheld-layout finding (2026-10-30)
+
+The [post-holdout correction supplement](docs/research/extraction/correction-20261030.md)
+froze a protocol before reviewing and repairing all six original failed
+documents. Individual UTC/monotonic intervals total 97.345139154 seconds
+(1.6224 minutes) of agent-assisted review/correction wall time, including
+inference/tool latency; this is not active human labor or billed model cost.
+The ledger records one omitted runner-up insertion, 120 award-year/edition
+category repairs and one English-title correction with source revisions,
+hashes, reasons and before/after metrics. All 151 reviewed records then match
+the unchanged independently automated audit. Original parser/audits/results
+remain untouched: 23/24 development and 3/8 holdout complete documents.
+
+A post-hoc markup inventory identifies twenty-four rowspan year headers only
+in the four failed Academy holdout cases, none in development. This explains
+a concrete withheld layout-feature failure; it does not recast the reviewed
+corrections or PDF/CSV/dynamic supplements as a new holdout. Named-module
+footprints and runtime/maintenance boundaries support deterministic extraction
+and SQLite first; heavier framework benefit remains unproven, and lifetime
+maintenance, human active minutes and model billing stay explicitly unknown.
+B3 closure can use this bounded measured/inconclusive outcome after review;
+Gate B still depends on the remaining issue-specific evidence.
+
+### Epic B finish goal and dated-run preparation (2026-10-30)
+
+The explicit finish goal resumes B2/B3 effort measurements in independent
+worktrees and B8 decision proposals in parallel. B4's three-date requirement
+cannot be replaced by same-day reruns or called completed because a runner exists.
+[Dated observation preparation](docs/research/availability/dated-observations.md)
+uses native local calendar jobs, the accepted manifest and a minimal UTC date
+guard for Oct 31/Nov 1. No credentials are uploaded and consumer login is not
+a prerequisite. Installation and actual future evidence must be verified
+separately; until then B4/B8/Epic remain open.
+
+The signed-out browser now renders TMDB's canonical API terms, dated 2023-10-20:
+six-month cache cap, termination purge and broader ML/AI-application restrictions
+are now documented in the [rights follow-up](docs/research/availability/rights-20261030.md).
+They supersede the unknown cache duration, not every unresolved applicability or
+third-party-rights question. The conservative TMDB study-cache deadline is
+2027-04-30. No new API requests, terms acceptance or data deletion occurred in
+that terms check.
+
+### B8 prepared choices and explicit finish boundary (2026-10-30)
+
+The [Gate B dossier](docs/research/gate-b.md#prepared-initial-choices-and-final-gate-boundary--2026-10-30)
+now makes the initial choices concrete: distinct critic/festival/retrospective
+strata with source rights and eligibility intact; native API/HTTP and
+source-specific deterministic parsing with transactional SQLite; the existing
+TMDB/JustWatch baseline plus native Movie of the Night as a provisional
+comparison/discovery candidate; distinct public-scoring components without
+selected calibrated weights; and no unsupported larger OSS stack adoption.
+ADRs 0005/0006/0008/0012 gain evidence appendices preserving their existing
+statuses and required validation. This does not alter production interfaces.
+
+Exact issue reconciliation removes a stale B7 task: #17 is closed after its
+performed period/format extension, even though scoring benefit is inconclusive.
+B2/B3 effort supplements can proceed now. B4 is genuinely time-blocked on two
+later observations: all retained captures are Oct 30 UTC date one. The allowance
+for an inconclusive research outcome does not turn missing dates into completed
+measurements. No recorded scope deferral exists. B4 #14, B8 #18 and Epic #2
+remain open; no consumer-account sign-in or Epic A dependency blocks them.
+
+The dossier names concrete remaining questions for C2 #20, C3 #21, C4 #22 and
+C8 #26. It preserves required B4 work rather than silently moving it out of the
+epic. If later captures contain no observed changes, report the no-change
+interval and unknown change-detection latency without inventing removals,
+expiry events, entitlement or a preferred poll interval.
+
+Validation for this docs-only synthesis: Ruff check/format and ty pass;
+340 tests pass and one opt-in integration test skips. Radon over all 159
+tracked Python files reports maximum CC 8 and minimum MI 50.025032. No code,
+dependency, source payload or credential is added by this supplement.
+
+
+B8 consolidation now includes the fourteen-case, five-primary-source-frame B2
+review: 59.235865 seconds of unblinded agent-task wall time, twelve accepted/two
+ambiguous unchanged decisions, zero source-field corrections. Human sample size
+is zero and human minutes remain null; automatic precision and missing-catalog
+rate remain inconclusive. The public TMDB terms follow-up supersedes the prior
+unreadable/unknown-cache status with a six-month cap and termination purge.
+Broader AI-application and commercial-use conditions need proposed-use
+assessment; no coding-agent ban or AI-product permission is inferred.
+
+
+B3's [separately timed correction supplement](docs/research/extraction/correction-20261030.md)
+now covers all six recorded failures in 97.345139154 seconds (1.6224 minutes)
+of oracle-assisted agent wall time, including inference/tool latency. It changes
+120 category fields, one title field and inserts the missing runner-up, yielding
+151/151 exact reviewed records. The original frozen 539-observation benchmark
+remains 23/24 development and 3/8 holdout complete documents. A post-hoc inventory
+finds twenty-four year-rowspan headers only in the four failed Academy holdouts,
+none in development; this explains a real withheld-feature failure without
+claiming universal unfamiliar-layout coverage. Human active minutes and billing
+remain unknown. B2/B3 supplements are now merged as #51/#54 and issues #12/#13 are closed
+after independent review and controller acceptance. B8 consolidates these
+results without inventing broader accuracy or cost outcomes.
+
+
+### Verified Epic B progress and remaining time blocker (2026-10-30)
+
+B2 #12 and B3 #13 are closed after supplements #51/#54 merged at independently
+reviewed heads with green PR and merge CI. All six completed B1–B3/B5–B7
+research issues retain bounded outcomes and explicit unknowns. The three-date
+B4 benchmark remains mandatory; its two unperformed dates are not a deferral.
+
+PR #53 is now merged. Both local Oct 31/Nov 1 observation jobs are registered
+in `gui/502` and re-observed with zero runs; no immediate provider calls occurred.
+Configurations, logs, receipts and future observations stay inside the approved
+project's ignored cache, and no credentials were uploaded. The initial REST
+merge response was empty; SHA-guarded native PR merge succeeded and merged state
+was re-read. Registration occurred after review/CI, before that fallback merge
+confirmation; neither future job ran in that interval. The final dossier
+records concrete choices and Epic C questions without accepting Gate B early.
+
+The remaining external/time blocker is actual later-date evidence on Oct 31 and
+Nov 1, followed by comparison and final reviewed gate decision. Mac/network
+availability is required; missed dates need genuinely later replacements.
+No streaming sign-in, purchase or extra credential is requested from the user.
+
+Final consolidated validation before B8 PR review: Ruff check/format and ty pass;
+341 tests pass with one opt-in integration skip. All 161 tracked Python files
+have maximum CC 8 and minimum MI 50.025032. This synthesis adds no Python code.
+
+
+B8 combined review: Standards found one stale footprint-scope label; Spec found
+no issue with the partial dossier or its preserved finish gate. The 692-LLOC
+figure is now explicitly historical/source-version scoped, with a link to the
+later named-module counts and correction replay. No new footprint measurement
+or runtime change is claimed; the factual documentation correction is checked
+against its source report and sent for exact-head follow-up review.

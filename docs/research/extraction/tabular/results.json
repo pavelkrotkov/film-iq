@@ -1,0 +1,13 @@
+{
+  "source_records_in_window": 25,
+  "extracted_records": 25,
+  "exact_records": 25,
+  "complete": true,
+  "missing_final_rejected": true,
+  "elapsed_seconds": 0.0013070160057395697,
+  "scope": "development CSV supplement; not held-out or identity accuracy",
+  "correction_minutes": null,
+  "acquisition_labor_minutes": null,
+  "resource_cost": null,
+  "recorded_at": "2026-10-30T04:36:51.419140+00:00"
+}

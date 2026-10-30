@@ -1,0 +1,38 @@
+{
+  "key": "poll-0",
+  "title": "The Sight & Sound Greatest Films of All Time 2012",
+  "section": "2",
+  "heading": "Critics' poll",
+  "split": "development",
+  "lineage": "Wikipedia derivative of BFI / Sight and Sound; original-source accuracy and rights not established by this capture",
+  "revision": "1196879962",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=The+Sight+%26+Sound+Greatest+Films+of+All+Time+2012&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=The+Sight+%26+Sound+Greatest+Films+of+All+Time+2012&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:55.002734+00:00",
+    "bytes": 230,
+    "sha256": "b795e2cf7da11778261a6674e9a4495afab993cde30ed6d77cabda9ba7f3d749",
+    "file": "poll-0.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1196879962&section=2&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1196879962&section=2&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:56.257393+00:00",
+    "bytes": 4640,
+    "sha256": "96da540ee654ece04bd5100cf75dea67c1830665da95e9a5784b07d64b9d0174",
+    "file": "poll-0.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1196879962&section=2&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1196879962&section=2&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:57.406522+00:00",
+    "bytes": 21786,
+    "sha256": "085d702c67d412ed9065bad1806f2baab7de179b565ca77c90f52d67e2e5522e",
+    "file": "poll-0.text.json"
+  },
+  "corpus_stratum": "poll",
+  "original_source_family": "BFI / Sight and Sound"
+}

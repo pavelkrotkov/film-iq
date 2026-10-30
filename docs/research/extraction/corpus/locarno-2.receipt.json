@@ -1,0 +1,38 @@
+{
+  "key": "locarno-2",
+  "title": "74th Locarno Film Festival",
+  "section": "16",
+  "heading": "International competition (<i>Concorso internazionale</i>)",
+  "split": "holdout",
+  "lineage": "Wikipedia derivative of Locarno Film Festival; original-source accuracy and rights not established by this capture",
+  "revision": "1381832392",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=74th+Locarno+Film+Festival&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=74th+Locarno+Film+Festival&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:48.068156+00:00",
+    "bytes": 207,
+    "sha256": "2a80eb35cb0e3f72b656bf6363676f6e69a6ca57b7141dbba285175429453e5d",
+    "file": "locarno-2.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381832392&section=16&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381832392&section=16&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:49.134894+00:00",
+    "bytes": 2024,
+    "sha256": "c0316cf980d8f4219636e91f3d4e2d15fd4902f559842234e849e27c3c835e40",
+    "file": "locarno-2.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381832392&section=16&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381832392&section=16&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:50.315016+00:00",
+    "bytes": 5083,
+    "sha256": "ee5e8482ec89d3122734a862985b4fe5306e390bfd5409592af18ca12f3bebd7",
+    "file": "locarno-2.text.json"
+  },
+  "corpus_stratum": "locarno",
+  "original_source_family": "Locarno Film Festival"
+}

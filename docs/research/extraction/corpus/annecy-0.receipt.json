@@ -1,0 +1,38 @@
+{
+  "key": "annecy-0",
+  "title": "2024 Annecy International Animation Film Festival",
+  "section": "6",
+  "heading": "Short films",
+  "split": "holdout",
+  "lineage": "Wikipedia derivative of Annecy International Animation Film Festival; original-source accuracy and rights not established by this capture",
+  "revision": "1378523182",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=2024+Annecy+International+Animation+Film+Festival&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=2024+Annecy+International+Animation+Film+Festival&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:54.259356+00:00",
+    "bytes": 230,
+    "sha256": "ee7d9f2b6f40b20f31d59fcc28da6116e5ac15e59919569217082d227e523325",
+    "file": "annecy-0.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1378523182&section=6&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1378523182&section=6&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:55.347986+00:00",
+    "bytes": 3105,
+    "sha256": "33d0e2d5fca0000f085c906228cb2167223a4553c84724a98d320099997773ee",
+    "file": "annecy-0.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1378523182&section=6&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1378523182&section=6&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:56.453782+00:00",
+    "bytes": 6537,
+    "sha256": "6b4da81371b211212a2452bc3ffc22ad11c47cff3a859017d5cfd4c323d6b0c5",
+    "file": "annecy-0.text.json"
+  },
+  "corpus_stratum": "annecy",
+  "original_source_family": "Annecy International Animation Film Festival"
+}

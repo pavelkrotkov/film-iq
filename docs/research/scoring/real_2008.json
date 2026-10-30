@@ -1,0 +1,566 @@
+{
+  "license": "CC BY-SA 4.0",
+  "holdout_publication": "The New Yorker",
+  "selection": "Retrospective convenience sample after layout inspection; not preregistered.",
+  "sources": [
+    {
+      "film": "Milk (2008 American film)",
+      "revision": 1379683314,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&page=Milk+%282008+American+film%29&prop=wikitext%7Crevid&format=json",
+      "response_sha256": "c9e4b6608fec288dc1ccf7b934e14d2ab27086bdc00d2227b822510abac5e13b",
+      "records": [
+        {
+          "critic": "Michael Rechtshaffen",
+          "publication": "The Hollywood Reporter",
+          "rank": 1,
+          "line": 184
+        },
+        {
+          "critic": "Peter Travers",
+          "publication": "Rolling Stone",
+          "rank": 1,
+          "line": 185
+        },
+        {
+          "critic": "Ella Taylor",
+          "publication": "LA Weekly",
+          "rank": 2,
+          "line": 186
+        },
+        {
+          "critic": "Frank Scheck",
+          "publication": "The Hollywood Reporter",
+          "rank": 2,
+          "line": 187
+        },
+        {
+          "critic": "Lisa Schwarzbaum",
+          "publication": "Entertainment Weekly",
+          "rank": 2,
+          "line": 188
+        },
+        {
+          "critic": "Mick LaSalle",
+          "publication": "San Francisco Chronicle",
+          "rank": 2,
+          "line": 189
+        },
+        {
+          "critic": "Ann Hornaday",
+          "publication": "The Washington Post",
+          "rank": 3,
+          "line": 190
+        },
+        {
+          "critic": "Marjorie Baumgarten",
+          "publication": "The Austin Chronicle",
+          "rank": 3,
+          "line": 191
+        },
+        {
+          "critic": "Robert Mondello",
+          "publication": "NPR",
+          "rank": 3,
+          "line": 192
+        },
+        {
+          "critic": "Ben Lyons",
+          "publication": "At the Movies",
+          "rank": 3,
+          "line": 193
+        },
+        {
+          "critic": "Andrea Gronvall",
+          "publication": "Chicago Reader",
+          "rank": 4,
+          "line": 194
+        },
+        {
+          "critic": "Peter Hartlaub",
+          "publication": "San Francisco Chronicle",
+          "rank": 4,
+          "line": 195
+        },
+        {
+          "critic": "Stephen Holden",
+          "publication": "The New York Times",
+          "rank": 4,
+          "line": 196
+        },
+        {
+          "critic": "Ty Burr",
+          "publication": "The Boston Globe",
+          "rank": 4,
+          "line": 197
+        },
+        {
+          "critic": "Ben Mankiewicz",
+          "publication": "At the Movies",
+          "rank": 4,
+          "line": 198
+        },
+        {
+          "critic": "Marc Doyle",
+          "publication": "Metacritic",
+          "rank": 5,
+          "line": 199
+        },
+        {
+          "critic": "Richard Corliss",
+          "publication": "TIME magazine",
+          "rank": 5,
+          "line": 200
+        },
+        {
+          "critic": "Stephen Farber",
+          "publication": "The Hollywood Reporter",
+          "rank": 5,
+          "line": 202
+        },
+        {
+          "critic": "Carrie Rickey",
+          "publication": "The Philadelphia Inquirer",
+          "rank": 6,
+          "line": 203
+        },
+        {
+          "critic": "Keith Phipps",
+          "publication": "The A.V. Club",
+          "rank": 6,
+          "line": 204
+        },
+        {
+          "critic": "Kirk Honeycutt",
+          "publication": "The Hollywood Reporter",
+          "rank": 6,
+          "line": 205
+        },
+        {
+          "critic": "Dana Stevens",
+          "publication": "Slate",
+          "rank": 7,
+          "line": 206
+        },
+        {
+          "critic": "David Denby",
+          "publication": "The New Yorker",
+          "rank": 7,
+          "line": 207
+        },
+        {
+          "critic": "Wesley Morris",
+          "publication": "The Boston Globe",
+          "rank": 7,
+          "line": 208
+        },
+        {
+          "critic": "A. O. Scott",
+          "publication": "The New York Times",
+          "rank": 8,
+          "line": 209
+        },
+        {
+          "critic": "Lawrence Toppman",
+          "publication": "The Charlotte Observer",
+          "rank": 9,
+          "line": 210
+        },
+        {
+          "critic": "Liam Lacey",
+          "publication": "The Globe and Mail",
+          "rank": 9,
+          "line": 211
+        },
+        {
+          "critic": "Noel Murray",
+          "publication": "The A.V. Club",
+          "rank": 9,
+          "line": 212
+        },
+        {
+          "critic": "Owen Gleiberman",
+          "publication": "Entertainment Weekly",
+          "rank": 9,
+          "line": 213
+        },
+        {
+          "critic": "Sean Axmaker",
+          "publication": "Seattle Post-Intelligencer",
+          "rank": 9,
+          "line": 214
+        },
+        {
+          "critic": "Nathan Rabin",
+          "publication": "The A.V. Club",
+          "rank": 10,
+          "line": 215
+        },
+        {
+          "critic": "Roger Ebert",
+          "publication": "Chicago Sun-Times",
+          "rank": null,
+          "line": 216
+        }
+      ],
+      "excerpts": {
+        "184": "* 1st&nbsp;– Michael Rechtshaffen, ''[[The Hollywood Reporter]]''<ref name=mctop08 />",
+        "185": "* 1st&nbsp;– [[Peter Travers]], ''[[Rolling Stone]]''<ref name=mctop08 />",
+        "186": "* 2nd&nbsp;– Ella Taylor, ''[[LA Weekly]]''<ref name=mctop08 />",
+        "187": "* 2nd&nbsp;– Frank Scheck, ''[[The Hollywood Reporter]]''<ref name=mctop08 />",
+        "188": "* 2nd&nbsp;– Lisa Schwarzbaum, ''[[Entertainment Weekly]]''<ref name=mctop08 />",
+        "189": "* 2nd&nbsp;– [[Mick LaSalle]], ''[[San Francisco Chronicle]]''<ref name=mctop08 />",
+        "190": "* 3rd&nbsp;– Ann Hornaday, ''[[The Washington Post]]''<ref name=mctop08 />",
+        "191": "* 3rd&nbsp;– Marjorie Baumgarten, ''[[The Austin Chronicle]]''<ref name=mctop08 />",
+        "192": "* 3rd&nbsp;– Robert Mondello, ''[[National Public Radio|NPR]]''<ref name=mctop08 />",
+        "193": "* 3rd&nbsp;– [[Ben Lyons]], ''[[At the Movies (1986 TV program)|At the Movies]]''",
+        "194": "* 4th&nbsp;– Andrea Gronvall, ''[[Chicago Reader]]''<ref name=mctop08 />",
+        "195": "* 4th&nbsp;– Peter Hartlaub, ''[[San Francisco Chronicle]]''<ref name=mctop08 />",
+        "196": "* 4th&nbsp;– [[Stephen Holden]], ''[[The New York Times]]''<ref name=mctop08 />",
+        "197": "* 4th&nbsp;– [[Ty Burr]], ''[[The Boston Globe]]''<ref name=mctop08 />",
+        "198": "* 4th&nbsp;– [[Ben Mankiewicz]], ''[[At the Movies (1986 TV program)|At the Movies]]''",
+        "199": "* 5th&nbsp;– Marc Doyle, [[Metacritic]]<ref name=mctop08 />",
+        "200": "* 5th&nbsp;– [[Richard Corliss]], [[Time (magazine)|''TIME'' magazine]]<ref name=mctop08 />",
+        "202": "* 5th&nbsp;– Stephen Farber, ''[[The Hollywood Reporter]]''<ref name=mctop08 />",
+        "203": "* 6th&nbsp;– Carrie Rickey, ''[[The Philadelphia Inquirer]]''<ref name=mctop08 />",
+        "204": "* 6th&nbsp;– Keith Phipps, ''[[The A.V. Club]]''<ref name=mctop08 />",
+        "205": "* 6th&nbsp;– Kirk Honeycutt, ''[[The Hollywood Reporter]]''<ref name=mctop08 />",
+        "206": "* 7th&nbsp;– [[Dana Stevens (critic)|Dana Stevens]], ''[[Slate (magazine)|Slate]]''<ref name=mctop08 />",
+        "207": "* 7th&nbsp;– [[David Denby (film critic)|David Denby]], ''[[The New Yorker]]''<ref name=mctop08 />",
+        "208": "* 7th&nbsp;– [[Wesley Morris]], ''[[The Boston Globe]]''<ref name=mctop08 />",
+        "209": "* 8th&nbsp;– [[A. O. Scott]], ''[[The New York Times]]''<ref name=mctop08 />",
+        "210": "* 9th&nbsp;– Lawrence Toppman, ''[[The Charlotte Observer]]''<ref name=mctop08 />",
+        "211": "* 9th&nbsp;– Liam Lacey, ''[[The Globe and Mail]]''<ref name=mctop08 />",
+        "212": "* 9th&nbsp;– Noel Murray, ''[[The A.V. Club]]''<ref name=mctop08 />",
+        "213": "* 9th&nbsp;– [[Owen Gleiberman]], ''[[Entertainment Weekly]]''<ref name=mctop08 />",
+        "214": "* 9th&nbsp;– Sean Axmaker, ''[[Seattle Post-Intelligencer]]''<ref name=mctop08 />",
+        "215": "* 10th&nbsp;– [[Nathan Rabin]], ''[[The A.V. Club]]''<ref name=mctop08 />",
+        "216": "* Listed&nbsp;– [[Roger Ebert]], ''[[Chicago Sun-Times]]''<ref name=mctop08 /> (Ebert gave a top 20 list in alphabetical order without ranking and announced on his website that he considered it the most deserving 2008 'Best Picture' nominee at the Oscars.)"
+      },
+      "coverage": "partial_selection_observations",
+      "named_award_win": false,
+      "pinned_url": "https://en.wikipedia.org/w/index.php?oldid=1379683314"
+    },
+    {
+      "film": "The Wrestler (2008 film)",
+      "revision": 1381358616,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&page=The+Wrestler+%282008+film%29&prop=wikitext%7Crevid&format=json",
+      "response_sha256": "1a5cab1e90d1ca0888f0f4960b7f19f30f1286dc60928dea0b9ce26a0570bfa9",
+      "records": [
+        {
+          "critic": "Matt Cale",
+          "publication": "Ruthless Reviews",
+          "rank": 1,
+          "line": 150
+        },
+        {
+          "critic": "Ben Mankiewicz",
+          "publication": "At the Movies",
+          "rank": 1,
+          "line": 151
+        },
+        {
+          "critic": "Joshua Rothkopf",
+          "publication": "Time Out",
+          "rank": 1,
+          "line": 152
+        },
+        {
+          "critic": "Owen Gleiberman",
+          "publication": "Entertainment Weekly",
+          "rank": 1,
+          "line": 153
+        },
+        {
+          "critic": "Marc Doyle",
+          "publication": "Metacritic",
+          "rank": 2,
+          "line": 154
+        },
+        {
+          "critic": "Peter Hartlaub",
+          "publication": "San Francisco Chronicle",
+          "rank": 2,
+          "line": 155
+        },
+        {
+          "critic": "Anthony Lane",
+          "publication": "The New Yorker",
+          "rank": 3,
+          "line": 156
+        },
+        {
+          "critic": "Marc Savlov",
+          "publication": "The Austin Chronicle",
+          "rank": 3,
+          "line": 157
+        },
+        {
+          "critic": "Peter Vonder Haar",
+          "publication": "Film Threat",
+          "rank": 3,
+          "line": 158
+        },
+        {
+          "critic": "Richard Roeper",
+          "publication": "Chicago Sun-Times",
+          "rank": 4,
+          "line": 159
+        },
+        {
+          "critic": "Ben Lyons",
+          "publication": "At the Movies",
+          "rank": 4,
+          "line": 160
+        },
+        {
+          "critic": "David Denby",
+          "publication": "The New Yorker",
+          "rank": 4,
+          "line": 161
+        },
+        {
+          "critic": "James Berardinelli",
+          "publication": "ReelViews",
+          "rank": 5,
+          "line": 162
+        },
+        {
+          "critic": "Mick LaSalle",
+          "publication": "San Francisco Chronicle",
+          "rank": 5,
+          "line": 164
+        },
+        {
+          "critic": "Ty Burr",
+          "publication": "The Boston Globe",
+          "rank": 6,
+          "line": 165
+        },
+        {
+          "critic": "David Ansen",
+          "publication": "Newsweek",
+          "rank": 7,
+          "line": 166
+        },
+        {
+          "critic": "Ray Bennett",
+          "publication": "The Hollywood Reporter",
+          "rank": 7,
+          "line": 167
+        },
+        {
+          "critic": "V.A. Musetto",
+          "publication": "New York Post",
+          "rank": 7,
+          "line": 168
+        },
+        {
+          "critic": null,
+          "publication": "Premiere",
+          "rank": 8,
+          "line": 169
+        },
+        {
+          "critic": "Nathan Rabin",
+          "publication": "The A.V. Club",
+          "rank": 8,
+          "line": 170
+        },
+        {
+          "critic": "Elizabeth Weitzman",
+          "publication": "New York Daily News",
+          "rank": 9,
+          "line": 171
+        },
+        {
+          "critic": "Josh Rosenblatt",
+          "publication": "The Austin Chronicle",
+          "rank": 9,
+          "line": 172
+        },
+        {
+          "critic": "Dana Stevens",
+          "publication": "Slate",
+          "rank": 10,
+          "line": 173
+        },
+        {
+          "critic": "Joe Morgenstern",
+          "publication": "The Wall Street Journal",
+          "rank": 10,
+          "line": 174
+        },
+        {
+          "critic": "Joe Neumaier",
+          "publication": "New York Daily News",
+          "rank": 10,
+          "line": 175
+        }
+      ],
+      "excerpts": {
+        "150": "* 1st&nbsp;– Matt Cale, ''Ruthless Reviews''<ref>{{cite web |url=http://www.ruthlessreviews.com/reviews.cfm/id/1570/page/cale_s____best_films_of_____.html |title=CALE'S 10 BEST FILMS OF 2008 |date=January 4, 2009 |access-date=2009-01-16 |publisher=Ruthless Reviews |archive-url=https://web.archive.org/web/20090118220809/http://www.ruthlessreviews.com/reviews.cfm/id/1570/page/cale_s____best_films_of_____.html |archive-date=January 18, 2009 |url-status=live }}</ref>",
+        "151": "* 1st&nbsp;– [[Ben Mankiewicz]], ''[[At the Movies with Gene Siskel and Roger Ebert|At the Movies]]''",
+        "152": "* 1st&nbsp;– Joshua Rothkopf, ''[[Time Out (company)|Time Out]]''",
+        "153": "* 1st&nbsp;– [[Owen Gleiberman]], ''[[Entertainment Weekly]]''",
+        "154": "* 2nd&nbsp;– Marc Doyle, [[Metacritic]]",
+        "155": "* 2nd&nbsp;– Peter Hartlaub, ''[[San Francisco Chronicle]]''",
+        "156": "* 3rd&nbsp;– [[Anthony Lane]], ''[[The New Yorker]]''",
+        "157": "* 3rd&nbsp;– Marc Savlov, ''[[The Austin Chronicle]]''",
+        "158": "* 3rd&nbsp;– Peter Vonder Haar, ''[[Film Threat]]''",
+        "159": "* 4th&nbsp;– [[Richard Roeper]], ''[[Chicago Sun-Times]]''",
+        "160": "* 4th&nbsp;– [[Ben Lyons]], ''At the Movies''",
+        "161": "* 4th&nbsp;– [[David Denby (film critic)|David Denby]], ''The New Yorker''",
+        "162": "* 5th&nbsp;– [[James Berardinelli]], ReelViews",
+        "164": "* 5th&nbsp;– [[Mick LaSalle]], ''San Francisco Chronicle''",
+        "165": "* 6th&nbsp;– [[Ty Burr]], ''[[The Boston Globe]]''",
+        "166": "* 7th&nbsp;– [[David Ansen]], ''[[Newsweek]]''",
+        "167": "* 7th&nbsp;– Ray Bennett, ''[[The Hollywood Reporter]]''",
+        "168": "* 7th&nbsp;– V.A. Musetto, ''[[New York Post]]''",
+        "169": "* 8th&nbsp;– ''[[Premiere (magazine)|Premiere]]''",
+        "170": "* 8th&nbsp;– [[Nathan Rabin]], ''[[The A.V. Club]]''",
+        "171": "* 9th&nbsp;– Elizabeth Weitzman, ''[[Daily News (New York)|New York Daily News]]''",
+        "172": "* 9th&nbsp;– Josh Rosenblatt, ''[[The Austin Chronicle]]''",
+        "173": "* 10th&nbsp;– Dana Stevens, ''[[Slate (magazine)|Slate]]''",
+        "174": "* 10th&nbsp;– [[Joe Morgenstern]], ''[[The Wall Street Journal]]''",
+        "175": "* 10th&nbsp;– Joe Neumaier, ''New York Daily News''"
+      },
+      "coverage": "partial_selection_observations",
+      "named_award_win": false,
+      "pinned_url": "https://en.wikipedia.org/w/index.php?oldid=1381358616"
+    },
+    {
+      "film": "The Reader (2008 film)",
+      "revision": 1378967681,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&page=The+Reader+%282008+film%29&prop=wikitext%7Crevid&format=json",
+      "response_sha256": "8050588883860d109b01ee2fe3b00ca5f586e8e78e1f7b1e5368e0487abdfb84",
+      "records": [
+        {
+          "critic": "Rex Reed",
+          "publication": "The New York Observer",
+          "rank": 2,
+          "line": 134
+        },
+        {
+          "critic": "Stephen Farber",
+          "publication": "The Hollywood Reporter",
+          "rank": 4,
+          "line": 134
+        },
+        {
+          "critic": "Tasha Robinson",
+          "publication": "The A.V. Club",
+          "rank": 8,
+          "line": 134
+        },
+        {
+          "critic": "Roger Ebert",
+          "publication": "Chicago Sun-Times",
+          "rank": null,
+          "line": 134
+        }
+      ],
+      "excerpts": {
+        "134": "The film appeared on several critics' top ten lists of the best films of 2008. [[Rex Reed]] of ''[[The New York Observer]]'' named it the second best film of 2008. Stephen Farber of ''[[The Hollywood Reporter]]'' named it the fourth best film of 2008,<ref name=mctop08/> Tasha Robinson of ''[[The A.V. Club]]'' named it the eighth best film of 2008,<ref name=mctop08/> and [[Roger Ebert]] of the ''[[Chicago Sun-Times]]'' placed it on his unranked top 20 list.<ref name=mctop08>{{cite web |url=https://www.metacritic.com/film/awards/2008/toptens.shtml |title=2008 Film Critic Top Ten Lists |website=[[Metacritic]] |access-date=January 11, 2009 |url-status=dead |archive-url=https://web.archive.org/web/20090102205252/http://www.metacritic.com/film/awards/2008/toptens.shtml |archive-date=January 2, 2009 }}</ref>"
+      },
+      "coverage": "partial_selection_observations",
+      "named_award_win": false,
+      "pinned_url": "https://en.wikipedia.org/w/index.php?oldid=1378967681"
+    },
+    {
+      "film": "The Curious Case of Benjamin Button (film)",
+      "revision": 1379730511,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&page=The+Curious+Case+of+Benjamin+Button+%28film%29&prop=wikitext%7Crevid&format=json",
+      "response_sha256": "beab2cd56dda398d3253e2a17282b9cd47d71867da8e6fd458f00644c51275f6",
+      "records": [],
+      "excerpts": {},
+      "coverage": "no_individual_ordinal_rows_observed_unknown",
+      "named_award_win": false,
+      "pinned_url": "https://en.wikipedia.org/w/index.php?oldid=1379730511"
+    },
+    {
+      "film": "Frost/Nixon (film)",
+      "revision": 1380568022,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&page=Frost%2FNixon+%28film%29&prop=wikitext%7Crevid&format=json",
+      "response_sha256": "2da7f9a30a2092bb7e5c31828e79b936311bd628aaf26967602116dfe4b3f551",
+      "records": [],
+      "excerpts": {},
+      "coverage": "no_individual_ordinal_rows_observed_unknown",
+      "named_award_win": false,
+      "pinned_url": "https://en.wikipedia.org/w/index.php?oldid=1380568022"
+    },
+    {
+      "film": "Slumdog Millionaire",
+      "revision": 1379601586,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&page=Slumdog+Millionaire&prop=wikitext%7Crevid&format=json",
+      "response_sha256": "1a4b8a3262b1e9278a79c2bcd9a38f6890ee97474f9d23a04ad4ae0b0337e39a",
+      "records": [],
+      "excerpts": {},
+      "coverage": "no_individual_ordinal_rows_observed_unknown",
+      "named_award_win": true,
+      "pinned_url": "https://en.wikipedia.org/w/index.php?oldid=1379601586"
+    },
+    {
+      "film": "The Visitor (2007 feature film)",
+      "revision": 1370281508,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&page=The+Visitor+%282007+feature+film%29&prop=wikitext%7Crevid&format=json",
+      "response_sha256": "6a0c88ce61b9b1cd2a3cb978b59f40868a901c3d672a069ff5e89552d48509c5",
+      "records": [],
+      "excerpts": {},
+      "coverage": "no_individual_ordinal_rows_observed_unknown",
+      "named_award_win": false,
+      "pinned_url": "https://en.wikipedia.org/w/index.php?oldid=1370281508"
+    },
+    {
+      "film": "Bolt (2008 film)",
+      "revision": 1380813477,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&page=Bolt+%282008+film%29&prop=wikitext%7Crevid&format=json",
+      "response_sha256": "167663427fdfb5795f61df7758b6f7a9e20987db8445da7e38356f14f1a22057",
+      "records": [],
+      "excerpts": {},
+      "coverage": "no_individual_ordinal_rows_observed_unknown",
+      "named_award_win": false,
+      "pinned_url": "https://en.wikipedia.org/w/index.php?oldid=1380813477"
+    },
+    {
+      "film": "Kung Fu Panda (film)",
+      "revision": 1381957478,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&page=Kung+Fu+Panda+%28film%29&prop=wikitext%7Crevid&format=json",
+      "response_sha256": "f25dfb977b45f1ad90e1c247bbcb7c4ab7c31781cd2c06ffaa90bd2082c5a866",
+      "records": [],
+      "excerpts": {},
+      "coverage": "no_individual_ordinal_rows_observed_unknown",
+      "named_award_win": false,
+      "pinned_url": "https://en.wikipedia.org/w/index.php?oldid=1381957478"
+    },
+    {
+      "film": "WALL-E",
+      "revision": 1380240647,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&page=WALL-E&prop=wikitext%7Crevid&format=json",
+      "response_sha256": "2acadbbcc3b1ae1e79cb86e67875e860cb6b30dd48c3e3b014df45b8f9b20988",
+      "records": [],
+      "excerpts": {},
+      "coverage": "no_individual_ordinal_rows_observed_unknown",
+      "named_award_win": false,
+      "pinned_url": "https://en.wikipedia.org/w/index.php?oldid=1380240647"
+    }
+  ],
+  "cohort": "Union of 81st Academy Awards Best Picture, Best Actor and Animated Feature nominees: ten distinct films. Retrospective, no as-of prediction claim.",
+  "acquisition_window_start": "2026-10-30T02:07:07.734855+00:00",
+  "acquisition_window_end": "2026-10-30T02:08:47.566437+00:00",
+  "named_award_event": {
+    "event": "81st Academy Awards Best Picture",
+    "url": "https://www.oscars.org/oscars/ceremonies/2009",
+    "winner": "Slumdog Millionaire",
+    "scope": "Only this single complete award event, not all prizes"
+  },
+  "corrections": [
+    {
+      "source": "Milk (2008 American film)",
+      "revision": 1379683314,
+      "line": 216,
+      "kind": "independent automated audit found selector omitted unranked Roger Ebert membership",
+      "before_total_records": 60,
+      "after_total_records": 61
+    }
+  ]
+}

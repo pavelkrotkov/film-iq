@@ -1,0 +1,46 @@
+{
+  "phase": "Pre-approval planning snapshot; approved execution is in a7-live-write-result.json",
+  "scope": "Configured Tubi-only advertised ad-supported scenario; full observed US offers retained in the CLI report JSON",
+  "plan": {
+    "option": "no purchase",
+    "choices": [
+      {
+        "film": {
+          "id": 5156,
+          "title": "Bicycle Thieves",
+          "minutes": 89,
+          "score": 1.0,
+          "watched": false,
+          "utility_assumption": "independent-count-additive-v1: provisional, uncalibrated utility; one point per independent endorsement; rank and personal preference are ignored"
+        },
+        "offer": {
+          "film_id": 5156,
+          "provider_id": 73,
+          "kind": "ads",
+          "entitlement": "unconfirmed",
+          "price_cents": null,
+          "expires": null
+        },
+        "viewing_date": "2026-11-01"
+      }
+    ],
+    "total_minutes": 89,
+    "cost_cents": 0,
+    "utility": 1.0,
+    "assumptions": "USD cents; prices include tax; unconfirmed entitlement is tentative; independent-count-additive-v1: provisional, uncalibrated utility; one point per independent endorsement; rank and personal preference are ignored"
+  },
+  "provider": {
+    "film_id": 5156,
+    "provider_id": 73,
+    "provider": "Tubi TV",
+    "kind": "ads",
+    "url": "https://www.themoviedb.org/movie/5156-ladri-di-biciclette/watch?locale=US",
+    "checked_at": "2026-10-30 10:53:38.097610+00:00",
+    "entitlement": "unconfirmed",
+    "source": "TMDB / JustWatch"
+  },
+  "preview": "Preview: add Bicycle Thieves (TMDB 5156) to watchlist",
+  "playback_verified": false,
+  "personal_entitlement_verified": false,
+  "write_attempted": false
+}

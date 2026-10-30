@@ -1,0 +1,38 @@
+{
+  "key": "foreign-0",
+  "title": "BBC's 100 Greatest Foreign-Language Films",
+  "section": "3",
+  "heading": "Partial list",
+  "split": "development",
+  "lineage": "Wikipedia derivative of BBC; original-source accuracy and rights not established by this capture",
+  "revision": "1318399468",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=BBC%27s+100+Greatest+Foreign-Language+Films&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=BBC%27s+100+Greatest+Foreign-Language+Films&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:04.430402+00:00",
+    "bytes": 222,
+    "sha256": "8595604086b898e48a5b74a268882253c71cd611403044f416c1eb15eb63d151",
+    "file": "foreign-0.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1318399468&section=3&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1318399468&section=3&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:05.612274+00:00",
+    "bytes": 1476,
+    "sha256": "0703fe2957e25353e68fa9ea9e2233a927925b3f4ad49761ba88e3c961d05b88",
+    "file": "foreign-0.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1318399468&section=3&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1318399468&section=3&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:06.703877+00:00",
+    "bytes": 14064,
+    "sha256": "30ac951be8deed2b2e7b5cabd7810aca4148499692e9a1d6343d95ae0aa23d5e",
+    "file": "foreign-0.text.json"
+  },
+  "corpus_stratum": "foreign",
+  "original_source_family": "BBC"
+}
