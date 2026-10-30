@@ -1,6 +1,6 @@
 # B3: Extraction benchmark and loader experiments
 
-**Version:** 0.2, preliminary. **Updated:** 2026-10-30 UTC. **Issue:** [#13](https://github.com/pavelkrotkov/film-iq/issues/13). **Context:** [plan §4](../../../plan.md), [ADR 0005](../../adr/0005-extraction-choice.md), [ADR 0012](../../adr/0012-empirical-gates.md).
+**Version:** 0.3, bounded research. **Updated:** 2026-10-30 UTC. **Issue:** [#13](https://github.com/pavelkrotkov/film-iq/issues/13). **Context:** [plan §4](../../../plan.md), [ADR 0005](../../adr/0005-extraction-choice.md), [ADR 0012](../../adr/0012-empirical-gates.md).
 
 The frozen static cohort now contains 32 distinct Wikipedia article sections and 539 expected film observations, independently audited by three separate automated agents. A deterministic baseline completed 23/24 development documents and 3/8 held-out documents; its first-run failures are retained. One blinded grounded-LLM experiment recovered an omitted observation but added a cross-poll observation outside the evaluation scope. A persistent SQLite/dlt replay uses two actual captured source editions. These are measured bounded experiments, not evidence for all planned formats, live source reliability, primary-publisher accuracy or production integration. The corpus and audits are licensed separately from the code; see [attribution and limitations](corpus/NOTICE.md).
 
@@ -34,7 +34,7 @@ and reviewed every source film row, displayed position, numeric rank/tie and
 section/subgroup category. These are explicitly **automated audits**, not human
 attestations or independent original-publisher corroboration. They verify
 captured derivative observations, not catalog identity, release eligibility or
-award-winner status. Hands-on human correction minutes were not measured.
+award-winner status. Hands-on human correction minutes were not measured. A later [timed correction supplement](correction-20261030.md) records 1.6224 agent-assisted wall minutes for all six failures; that is not active human time or a new held-out result.
 
 The [parser freeze](corpus/baseline-freeze.json) precedes the first held-out run.
 No parser changes were made after reading the oracle or held-out content.
@@ -286,8 +286,11 @@ holdout or an original critic-list sample.
 Radon 6.0.1 measures **692 logical Python lines including tests** across the
 changed research modules and pytest wrapper. This is a code-footprint measure,
 not an estimate of engineering labor, JavaScript/native-engine size or total
-maintenance cost. Human correction minutes and full model billing remain
-unmeasured; the single-run timing boundaries are stated with each experiment.
+maintenance cost. This historical footprint has a different scope from the
+[current named-module counts](correction-20261030.md). Human correction minutes
+and full model billing remain unmeasured; the later supplement measures actual
+agent-assisted correction wall time separately. Single-run timing boundaries
+are stated with each experiment.
 
 | Component | Bounded recommendation from these observations |
 |---|---|
@@ -302,3 +305,21 @@ For each permitted source and method, record entry precision/recall, per-field c
 Further evaluation should use a live, rights-permitted incremental source and test a killed process or failure during commit; the captured-edition replay above only exercises source-iterator failure and persisted reconstruction. dlt's [pipeline documentation](https://dlthub.com/docs/general-usage/pipeline) places state in `~/.dlt/pipelines` by default, so configure the pipeline/state, database, temp and cache paths under the selected worktree before any test, and disable unsolicited telemetry. Its [SQLAlchemy destination](https://dlthub.com/docs/dlt-ecosystem/destinations/sqlalchemy) documents delete-insert and SCD2 merge strategies; measure actual duplicate and correction behavior rather than assuming an upsert. dlt's [Apache-2.0 license](https://github.com/dlt-hub/dlt/blob/devel/LICENSE) does not grant rights to source data.
 
 No production dependency, source adapter or scoring decision is adopted by this research PR. The component recommendations above are bounded by the actual measured formats and costs; untested formats and live-source reliability remain open.
+
+## Timed post-holdout correction supplement
+
+The [frozen protocol and correction ledger](correction-20261030.md) preserve
+the original benchmark and review every failed document. Six case timers total
+97.345139154 seconds (1.6224 minutes), including agent inference/tool latency;
+active human effort and billing are not measured. One missing unranked runner-up,
+120 award-year/edition categories and one English-title selection are explicitly
+repaired and replay-checked against the unchanged independent audits: 151/151
+reviewed records, not a new automatic success rate.
+
+A post-hoc inventory found twenty-four rowspan year headers only in the four
+Academy holdout cases and none in development. This explains a genuinely
+withheld layout feature's failure without claiming all layouts were novel.
+The frozen first run remains 23/24 development and 3/8 holdout complete. The
+report separates component footprints, existing runtime/recovery boundaries
+and remaining lifetime/human/model-cost unknowns; the recommendation remains
+deterministic extraction and SQLite first, no added framework justified.

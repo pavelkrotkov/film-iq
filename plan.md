@@ -841,3 +841,26 @@ missing-catalog rate remain inconclusive; the review does not create a new
 human-only oracle requirement or certify general coverage. Source-frame taxonomy
 is reconciled with B1, and festival shorts/translated aliases are the first
 recommended expansion. ADRs 0003/0011 and the frozen null-ID sample are unchanged.
+
+### B3 measured correction effort and withheld-layout finding (2026-10-30)
+
+The [post-holdout correction supplement](docs/research/extraction/correction-20261030.md)
+froze a protocol before reviewing and repairing all six original failed
+documents. Individual UTC/monotonic intervals total 97.345139154 seconds
+(1.6224 minutes) of agent-assisted review/correction wall time, including
+inference/tool latency; this is not active human labor or billed model cost.
+The ledger records one omitted runner-up insertion, 120 award-year/edition
+category repairs and one English-title correction with source revisions,
+hashes, reasons and before/after metrics. All 151 reviewed records then match
+the unchanged independently automated audit. Original parser/audits/results
+remain untouched: 23/24 development and 3/8 holdout complete documents.
+
+A post-hoc markup inventory identifies twenty-four rowspan year headers only
+in the four failed Academy holdout cases, none in development. This explains
+a concrete withheld layout-feature failure; it does not recast the reviewed
+corrections or PDF/CSV/dynamic supplements as a new holdout. Named-module
+footprints and runtime/maintenance boundaries support deterministic extraction
+and SQLite first; heavier framework benefit remains unproven, and lifetime
+maintenance, human active minutes and model billing stay explicitly unknown.
+B3 closure can use this bounded measured/inconclusive outcome after review;
+Gate B still depends on the remaining issue-specific evidence.
