@@ -13,6 +13,8 @@ class Film:
     score: float
     watched: bool = False
     utility_assumption: str = ""
+    personal_enjoyment: int | None = None
+    personal_artistic_merit: int | None = None
 
 
 @dataclass(frozen=True)
@@ -40,3 +42,4 @@ class Plan:
     cost_cents: int
     utility: float
     assumptions: str
+    feasibility: Literal["verified", "tentative"] = "verified"

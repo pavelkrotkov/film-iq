@@ -1165,3 +1165,28 @@ open rather than being inferred from the fixture results.
 Validation: Ruff check/format and ty pass; 353 tests pass with one opt-in skip.
 All fifteen changed/new Python files have maximum cyclomatic complexity 8 and
 minimum maintainability index 51.10 (Radon 6.0.1). No runtime dependency is added.
+
+### Epic C orchestration and C5 deterministic planner slice (2026-10-30)
+
+Epic C starts with independent #58 personal snapshot, #59 curated CSV and #19
+acquisition-attempt worktrees. The controller separately implements #23's pure
+planner corrections; #25 integrates the first two only after their contracts
+are reviewed. Production C4 adoption still requires genuinely later B4 dates
+and reviewed B8; C6 modeling and C9 upstream changes remain conditional.
+No scheduled B4 jobs or live Movary data are changed by this dispatch.
+
+C5 now compares existing access, rentals, one service and service-plus-rentals
+without duplicating films. Every result labels verified/tentative entitlement;
+`verified_only=True` separately finds the confirmed alternative. Unknown rental
+and subscription prices are excluded from priced plans, never treated as free;
+existing subscription fees are explicitly sunk costs. A declared
+`utility_power` (recognition-power-v1, default additive) sensitivity can prefer
+one exceptional film over several good ones. Both optional personal scores
+remain separate and are neither fitted nor blended. Existing slot/runtime,
+watched, add-on and asserted-expiry constraints remain in force.
+
+Validation: Ruff check/format and ty pass; 345 tests pass, one opt-in skip.
+All 164 tracked/new Python files meet maximum CC 8 and minimum MI 50.025032.
+These are offline deterministic results, not production provider/tier, live
+personal-state or user-satisfaction validation. C5's final input integration
+remains pending C3/C4/#58; the implementation PR does not close #23.

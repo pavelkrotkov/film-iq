@@ -1,5 +1,6 @@
 """Small exhaustive bundle search."""
 
+from dataclasses import replace
 from datetime import date
 from itertools import combinations, product
 
@@ -57,4 +58,10 @@ def _best(
         utility = sum(f.score for f, _ in bundle)
         if _better(schedule, utility, cost, best):
             best = Plan(label, schedule or (), minutes, cost, utility, best.assumptions)
-    return best
+    return replace(best, feasibility=_feasibility(best))
+
+
+def _feasibility(plan: Plan):
+    return (
+        "tentative" if any(c.offer.entitlement != "confirmed" for c in plan.choices) else "verified"
+    )
