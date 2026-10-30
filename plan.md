@@ -935,5 +935,6 @@ remains 23/24 development and 3/8 holdout complete documents. A post-hoc invento
 finds twenty-four year-rowspan headers only in the four failed Academy holdouts,
 none in development; this explains a real withheld-feature failure without
 claiming universal unfamiliar-layout coverage. Human active minutes and billing
-remain unknown. B2/B3 delivery acceptance is still reviewed separately; B8
-consolidates these results without inventing broader accuracy or cost outcomes.
+remain unknown. B2/B3 supplements are now merged as #51/#54 and issues #12/#13 are closed
+after independent review and controller acceptance. B8 consolidates these
+results without inventing broader accuracy or cost outcomes.
