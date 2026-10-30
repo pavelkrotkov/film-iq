@@ -246,3 +246,13 @@ checks. Credentials and results stay local. No future observation is claimed;
 the Mac/network must be available and resulting timestamps/counts must be
 verified. After date three, compare changes and perform final B4/B8 adjudication,
 then unload the two jobs. Until then #14, #18 and Epic #2 remain open.
+
+
+The later local cleanup consolidated private evidence under the user-approved
+`.cache/research-evidence/<worktree-name>/<original-relative-path>` layout, with
+SHA-256 verification before source removal. The same calendar jobs now run the
+merged code from root `main`, installed Python and the unchanged accepted cohort
+in that ignored folder. No old worktree is required for observations. The
+[dated-run protocol](availability/dated-observations.md) records current paths;
+GitHub and this dossier remain the public findings record. This housekeeping
+adds no live provider request, observation date or gate acceptance.

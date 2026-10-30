@@ -1115,3 +1115,28 @@ figure is now explicitly historical/source-version scoped, with a link to the
 later named-module counts and correction replay. No new footprint measurement
 or runtime change is claimed; the factual documentation correction is checked
 against its source report and sent for exact-head follow-up review.
+
+
+### Local evidence consolidation and worktree-independent observations (2026-10-30)
+
+On the user's cleanup request, private research artifacts were copied into the
+explicitly approved `.cache/research-evidence/<worktree-name>/<original-relative-path>`
+layout. All 790 selected files (about 26.4 MB) were SHA-256 verified; local
+`index.json` preserves old/new paths and branch heads. Rebuildable tool/test
+caches are excluded. The cleanup removes old checkouts while preserving every
+branch/commit, credentials and research evidence. Public findings remain in
+GitHub issues, this plan and the linked reports.
+
+The two Oct 31/Nov 1 jobs now run from root `main` with installed Python 3.12,
+the existing `.env` and the unchanged cohort in the consolidated folder. Their
+active native registrations contain no worktree paths. Both date guards pass;
+a full non-live run emits 120 observations and zero requests. No worktree or
+extra retained virtual environment is required for collection. The
+[current protocol](docs/research/availability/dated-observations.md) gives paths.
+Future measurements remain unperformed; B4/B8/Epic B stay open. This cleanup
+does not install an agent wake-up or claim future analysis is automated.
+
+Cleanup review found a manual-command working-directory ambiguity: the paired
+example now explicitly enters the main project folder before reading the
+consolidated cohort. The native jobs already used that folder; no runtime
+behavior or observation result changed.
