@@ -568,7 +568,9 @@ seven diagnostic rechecks and one service-label mapping. The earlier 60
 restricted-network attempts returned URLError with no confirmed upstream request;
 they are preserved separately rather than counted as HTTP failures. All 60
 offer requests returned HTTP 200: 53 contain an explicit usable US object and
-offers; seven shorts lack that object and remain unknown. No complete empty-US
+offers; seven shorts fail schema processing and remain unknown. Seven later
+diagnostic rechecks lack an explicit US object. The original failed payloads and
+hashes were not retained, so the later rechecks do not prove the original cause. No complete empty-US
 response or removal event was observed. The five other assigned strata each
 have ten usable responses; shorts/experimental has three usable and seven
 unknown. These are assigned reporting strata, not a feature/short partition.
