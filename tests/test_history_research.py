@@ -43,21 +43,24 @@ def test_dry_run_and_sample(monkeypatch):
 
 
 @pytest.mark.parametrize(
-    "body,status",
+    "body,status,phase",
     [
-        (b"", 429),
-        (b'{"results":', 200),
-        (response([CANDIDATE], total_results=2), 200),
-        (response([CANDIDATE, CANDIDATE]), 200),
-        (response([CANDIDATE], total_pages=10), 200),
-        (response([CANDIDATE | {"id": True}]), 200),
+        (b"", 429, "http_status"),
+        (b'{"results":', 200, "json_decode"),
+        (response([CANDIDATE], total_results=2), 200, "result_set"),
+        (response([CANDIDATE, CANDIDATE]), 200, "result_set"),
+        (response([CANDIDATE], total_pages=10), 200, "page_budget"),
+        (response([CANDIDATE | {"id": True}]), 200, "schema"),
     ],
 )
-def test_failed_partial_and_truncated_remain_unknown(monkeypatch, body, status):
+def test_failed_partial_and_truncated_remain_unknown(monkeypatch, body, status, phase):
     result = run(monkeypatch, body, status)
     assert result["state"] == "unknown" and not result["confirmed_absent"]
     assert result["identity"] == "unreviewed" and "candidates" not in result
     assert result["requests"] == 1
+    assert result["failure"]["phase"] == phase
+    if phase == "page_budget":
+        assert result["attempts"][0]["total_pages"] == 10
 
 
 def test_empty_search_is_not_confirmed_absence(monkeypatch):
