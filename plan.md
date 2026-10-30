@@ -278,6 +278,8 @@ Identity-search review also identified lost diagnostic causes. Failed searches n
 
 The scoring study now includes a real ten-film 2008 convenience cohort: three pages yield 61 observed critic selections, while seven remain unknown. Independent automated audit found and corrected one omitted unranked selection. Training counts and reciprocal-rank sums favor Milk, while the observed New Yorker held-out rank sum favors The Wrestler. Only two films have known held-out selections; shared intermediary, retrospective selection and eligibility limits prevent broader quality or discovery conclusions. The [Gate B working matrix](docs/research/gate-b.md) records evidence and open decisions as the research progresses.
 
+Timing review corrected an import-boundary claim in the loader comparison. Installation is outside both function timers, but SQLite imports precede its timer while dlt can import dependencies inside its timed pipeline construction. The recorded warm-up state is unknown; the original measured values remain unchanged and do not support controlled startup or steady-state comparisons. The [timing finding and disposition](https://github.com/pavelkrotkov/film-iq/pull/35#discussion_r4420403127) distinguish this runner from the historical synthetic implementation that imported dlt before timing.
+
 ### Epic C — Final implementation, conditional on gates
 
 Epic C components may start as their **specific** POC or research prerequisites become available; do not force every component to wait for both whole epics to close. Final release still requires accepted relevant Gate A/Gate B evidence and production acceptance criteria.
