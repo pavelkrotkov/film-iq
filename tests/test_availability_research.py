@@ -40,6 +40,7 @@ def test_all_60_unresolved_candidates_are_retained_without_requests():
 )
 def test_credentials_and_live_flag_are_required(monkeypatch, provider, env_key):
     monkeypatch.delenv(env_key, raising=False)
+    monkeypatch.delenv("TMDB_API_KEY", raising=False)
     assert observe(FILM, provider, True)["requests"] == 0
     monkeypatch.setenv(env_key, "fictional-secret")
     assert observe(FILM, provider, False)["requests"] == 0

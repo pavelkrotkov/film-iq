@@ -9,7 +9,7 @@ from urllib.error import URLError
 
 from .motn_rows import motn_rows
 from .provider_rows import tmdb_rows
-from .transport import fetch, quota, request_for
+from .transport import endpoint, fetch, quota, request_for
 
 PROVIDERS = {"tmdb": tmdb_rows, "motn": motn_rows}
 
@@ -29,7 +29,7 @@ def observe(film: dict[str, Any], provider: str, live: bool, get=fetch) -> dict[
     request, film_id, reason = request_for(film, provider, live)
     if request is None:
         return result | {"reason": reason}
-    result.update(endpoint=request.full_url, requests=1)
+    result.update(endpoint=endpoint(provider, film_id), requests=1)
     try:
         status, body, headers = get(request)
         result.update(http_status=status, quota=quota(headers))

@@ -2,7 +2,7 @@
 
 **Version:** 0.1 · **Prepared:** 2026-10-29 · [Issue #14](https://github.com/pavelkrotkov/film-iq/issues/14) · [Epic B](https://github.com/pavelkrotkov/film-iq/issues/2)
 
-**Status:** Published work metadata checked for all 60 candidates, with source revisions/receipts and unresolved source discrepancies. Provider-catalog identities remain unverified. The opt-in observer and offline checks are runnable; no live provider observation, account entitlement check, coverage estimate or three-date comparison has been completed.
+**Status (2026-10-30):** The [first live TMDB/JustWatch US observation](live-20261030.md) returned 53 complete explicit US responses and seven unknowns across all 60 candidates after a separate automated work-identity audit. All account entitlements remain unknown. Movie of the Night comparison, two later observation dates, transaction checks and retention rights remain open; no provider superiority or Gate B acceptance is claimed.
 
 This convenience cohort deliberately assigns ten candidates to each of six strata. Assignments are for reporting and may overlap in reality; for example, an older film can also be a short. The samples are not a random or representative estimate of all cinema. Confirm each title against a source, director and an unambiguous provider identifier before freezing the cohort; a year of festival selection or award eligibility is not automatically the production or premiere year. Replace an ambiguous candidate only with a recorded reason and source. Follow [plan §7](../../../plan.md), [ADR 0008](../../adr/0008-availability-providers.md) and [ADR 0011](../../adr/0011-cost-rights.md).
 
@@ -33,8 +33,11 @@ receipt limitations are in the adjacent `part1-attribution.md`,
 and revision-bound; these are automated checks of published metadata, not human
 attestations or independent current TMDB/IMDb matches.
 
-All 60 work records were retained, and all provider activation fields remain
-null. A source-reported film year is kept separate from production, premiere,
+All 60 work records were retained, and all provider activation fields in the
+committed original cohort remain null. A later separate automated catalog audit
+supported work IDs for the local-only first observation; see the
+[dated report](live-20261030.md). Date/cut conflicts remain unresolved. A
+source-reported film year is kept separate from production, premiere,
 regional release and award-edition years. For example, two films in the 2024
 Oscar frame have 2022 film/premiere contexts. Older-cohort membership does not
 imply feature length: Meshes of the Afternoon is a short. The BFI retrospective
@@ -47,7 +50,9 @@ assertions remain in the audit; a particular cut, country interpretation or
 source error has not been adjudicated. API 403s, rendering-derived receipts and
 source-access limitations are recorded rather than treated as missing works.
 Provider identifiers require a separate, current catalog check before the
-observer may make requests; this work audit does not enable live calls.
+observer may make requests; the original source work audit alone does not enable
+live calls. The later catalog audit and ignored reviewed manifest are distinct
+artifacts and do not modify this original evidence.
 
 ## Observation and comparison
 
@@ -59,7 +64,7 @@ observer may make requests; this work audit does not enable live calls.
 
 | Observation | Date | Provider results | First-party / account verification |
 | --- | --- | --- | --- |
-| 1 | Pending | Not run; credentials not found among the expected environment variables during initial setup. | Not run |
+| 1 | 2026-10-30 UTC | TMDB: 60 HTTP 200, 53 complete explicit US responses, seven unknown; Movie of the Night not run. See [bounded findings](live-20261030.md). | Three public web-reader title-page checks; transactions, playback, accounts and ad tiers unverified. |
 | 2 | Pending | Not run | Not run |
 | 3 | Pending | Not run | Not run |
 
@@ -76,9 +81,9 @@ No provider has been selected as superior. Keep actual provider data, credential
 
 ## Runnable observation experiment
 
-`cohort.json` preserves all 60 candidates and assigned strata. Every catalog ID and identity-evidence field is initially null. These are unresolved candidates, not audited matches. Before querying a film, fill its numeric `tmdb_id` and/or `imdb_id` (`tt…`) and `identity_evidence` with the dated independent review and sources establishing those particular IDs. Freeze and retain that reviewed manifest across all three dates; the output records its SHA-256. Unsupported or unresolved IDs remain in the denominator as unknown and cause zero requests. Do not copy a search suggestion into an audited ID field.
+`cohort.json` preserves all 60 candidates and assigned strata. Every catalog ID and identity-evidence field is initially null. These are unresolved candidates, not audited matches. Before querying a film, create an ignored local copy and fill its numeric `tmdb_id` and/or `imdb_id` (`tt…`) and `identity_evidence` with the dated independent review and sources establishing those particular IDs. Freeze and retain that reviewed manifest across all three dates; the output records its SHA-256. Unsupported or unresolved IDs remain in the denominator as unknown and cause zero requests. Do not copy a search suggestion into an audited ID field.
 
-The standard-library observer makes at most one request per resolved film, with a 30-second timeout and no automatic retry. TMDB uses `TMDB_READ_ACCESS_TOKEN`; Movie of the Night uses a **developer-platform** `MOVIE_OF_THE_NIGHT_API_KEY`, not a RapidAPI key. Expected credential names were checked again on 2026-10-29 and were unset; other local secret locations were not inspected. Credential values and failed-response bodies are never written to observation files.
+The standard-library observer makes at most one request per resolved film, with a 30-second timeout and no automatic retry. TMDB uses `TMDB_READ_ACCESS_TOKEN`, falling back to `TMDB_API_KEY` when no Bearer token is set, following its [application-authentication documentation](https://developer.themoviedb.org/docs/authentication-application); Movie of the Night uses a **developer-platform** `MOVIE_OF_THE_NIGHT_API_KEY`, not a RapidAPI key. Expected credential names were checked again on 2026-10-29 and were unset; other local secret locations were not inspected. The v3 API key is sent only in the actual HTTPS request query; the recorded endpoint excludes credentials. Credential values and failed-response bodies are never written to observation files.
 
 From the worktree root, first run without network access:
 
@@ -97,6 +102,6 @@ Each observation records UTC time, US region, endpoint, attempted-request count,
 
 `complete_response` means only that this single, non-paginated endpoint returned an identity-consistent, structurally usable US object/list. It does not establish catalog completeness, current first-party playback, freshness, an ad-tier entitlement, or verified absence. An absent country, malformed row, mismatched identity, HTTP error or failed request yields unknown with no offers, even if an earlier row was valid. Only an explicit empty US result can produce an empty offer list. The experiment emits **no removal events** and performs no negative inference across dates.
 
-Offline tests use fictional IDs/services and exercise all 60 unresolved entries, credential/live opt-in, distinct ad/rent/buy/add-on types, unknown entitlement and expiry, explicit empty versus missing country data, mismatched IDs, a partial response, rate-limit failure and transport failure. They are run by the normal pytest suite; no fixture is a real provider-quality measurement. Subsequent analysis still needs audited identities, live observations on three dates, actual quota/cost accounting, first-party offer checks and intended account/plan evidence.
+Offline tests use fictional IDs/services and exercise all 60 unresolved entries, credential/live opt-in, distinct ad/rent/buy/add-on types, unknown entitlement and expiry, explicit empty versus missing country data, mismatched IDs, a partial response, rate-limit failure and transport failure. They are run by the normal pytest suite; no fixture is a real provider-quality measurement. The later first observation used a separately audited local manifest. Subsequent comparison still needs two later dates, the other provider, actual quota/cost accounting, first-party transaction checks and intended account/plan evidence.
 
-Validation on 2026-10-29: Ruff check, format check, ty and pytest passed (44 passed, one credential-dependent integration test skipped). Radon 6.0.1 over every new Python module and test reported maximum CC 8 and minimum MI 50.38. The dry-run CLI preserved all 60 unresolved candidates and made zero requests. No live provider-performance result is implied by these checks.
+Validation on 2026-10-29: Ruff check, format check, ty and pytest passed (44 passed, one credential-dependent integration test skipped). Radon 6.0.1 over every new Python module and test reported maximum CC 8 and minimum MI 50.38. The initial dry-run CLI preserved all 60 unresolved candidates and made zero requests. These historical checks did not measure live provider performance. On 2026-10-30, API-key authentication tests and the full suite passed (314 passed, one opt-in integration test skipped), with Ruff/format/ty and diff checks passing. Current B4 Python modules/tests have maximum CC 8 and minimum MI 50.57; the [dated live report](live-20261030.md) records the separately acquired evidence and remaining acceptance gaps.
