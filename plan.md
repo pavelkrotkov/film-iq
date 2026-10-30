@@ -1345,3 +1345,43 @@ preview named the alias but execution unlinked its resolved target. The correcti
 validates resolved containment and unlinks the selected lexical path, preserving
 the unselected target. A disposable symlink regression covers that exact defect;
 no live cache/source data is touched. Follow-up review precedes merge.
+
+### C4 provider-neutral offline offer contracts (2026-10-30)
+
+The startable #22 slice separates source-free opportunity identity (work,
+service, kind, country, exact plan, add-on, quality and cut) from each source's
+price/currency, URL/check time, entitlement, work/cut uncertainty and asserted
+arrival/expiry. Deduplication retains conflicting source claims. Earliest supplied
+observation is explicitly first_seen_by_us, never an inferred provider arrival.
+A separate purchasing qualification requires reviewed work, confirmed applicable
+access and explicit price/currency; exploratory discovery requires no login.
+
+Pure reconciliation compares only complete, reviewed same-source/work/country/
+plan snapshots. Failed/partial, unknown-plan and uncertain-work observations
+produce no disappearance event. A source_absent event is source-specific, not
+proof of global absence; identical replays emit no changes. Tests also reject
+scope mismatches, reversed/naive timestamps, invalid prices and unsupported
+plan assertions. No provider feed, history storage, polling cadence, alerts,
+watchlist mutation or B4 job change is introduced.
+
+Ruff check/format and ty pass; 364 tests pass, one opt-in skips. All 183 Python
+files satisfy maximum CC 8 and minimum MI 50.025032. #22 remains open for
+B4/B8 provider adoption, exact-use rights/retention/quotas, C1/C8 durable state
+and expiry/recovery integration and account-plan acceptance. Offline contract
+tests are not live offer, entitlement or provider superiority validation.
+
+
+C4 combined review found purchasing qualification accepted a confirmed priced
+rental whose asserted expiry preceded its check time. The agreed correction
+requires an explicit assessment time and caller-declared maximum observation
+age, rejects future/stale checks and asserted intervals excluding that time,
+and preserves unknown dates without inventing expiry or provider cadence.
+Synthetic regressions cover expiry equality/past, future arrival, contradictory
+intervals, stale/future observations and invalid freshness inputs. Public
+discovery assertions and failed/partial no-removal semantics remain unchanged.
+
+After rebasing C4 onto the reviewed C1/C3/C5/C8 and personal/import foundations,
+Ruff/format/ty pass and 433 tests pass with one opt-in skip. All 226 tracked
+Python files satisfy maximum CC 8 and minimum MI 50.025032. The corrected
+advice timing remains an offline, caller-declared policy; no live offer state,
+provider cadence or gate acceptance is implied.
