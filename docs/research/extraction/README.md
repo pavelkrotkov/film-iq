@@ -244,12 +244,30 @@ An additional uncounted development lead is NEH's [Created Equal page](https://w
 
 Before running, freeze manually audited entries, ranks/ties, membership, source family/lineage and locators, with publisher, document revision, audit date and rights. Keep holdout layouts out of development. Distinguish a publisher's partial selection of ballots, an author's intentionally unranked or partial ballot, and an incomplete extraction. A cited span alone does not validate list membership, rank, identity or category.
 
+## Supplemental dynamic interface
+
+A separate [Wikidata Query Service experiment](dynamic/README.md) exercised a
+real JavaScript interface with a deliberately defined two-film query. Neither
+observed result label appeared literally in the initial HTML. The browser
+rendered both rows; the interface's documented HTTP JSON endpoint returned the
+same two IDs and labels without browser rendering. Retained CC0 data, request
+receipts and automated cross-surface observations are linked from that report.
+This supports the native API for this query, not a general publisher, browser
+framework, completeness or timing claim. It is not part of the frozen static
+holdout or an original critic-list sample.
+
 ## Remaining measurements and decision
+
+Radon 6.0.1 measures **645 logical Python lines including tests** across the
+changed research modules and pytest wrapper. This is a code-footprint measure,
+not an estimate of engineering labor, JavaScript/native-engine size or total
+maintenance cost. Human correction minutes and full model billing remain
+unmeasured; the single-run timing boundaries are stated with each experiment.
 
 | Component | Bounded recommendation from these observations |
 |---|---|
 | Stdlib static selectors | Retain as the first attempt with explicit completeness review. The measured 26/32 full-document result does not justify automatic acceptance across sources. |
-| Browser rendering / Crawl4AI | No adoption decision from this static cohort: a content-missing, browser-dependent source has not been tested. |
+| Browser rendering / Crawl4AI | The supplemental dynamic query interface rendered two rows missing from its initial HTML, but its native HTTP API supplied the same data. Use that API for this case; no framework or original-publisher generalization is demonstrated. |
 | Grounded LLM / LangExtract | The single agent run improves recall but introduces an out-of-scope record despite valid spans. Keep semantic review; framework benefit, model cost and repeatability remain unmeasured. |
 | Transactional SQLite | Smallest demonstrated loader for this 21-observation replay, including zero unchanged writes and persisted retry. No production-scale performance claim. |
 | dlt | No adoption justified by this replay: both paths recover, while dlt adds dependencies, state configuration and a warning. Its broader connectors and larger-job benefits were not measured. |
