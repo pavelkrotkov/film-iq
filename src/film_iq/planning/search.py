@@ -1,5 +1,6 @@
 """Small exhaustive bundle search."""
 
+from dataclasses import replace
 from datetime import date
 from itertools import combinations, product
 
@@ -44,6 +45,7 @@ def _best(
     max_minutes: int,
     max_films: int,
     budget: int,
+    utility_power: float = 1,
 ) -> Plan:
     best = Plan(
         label, (), 0, fee, 0, "USD cents; prices include tax; unconfirmed entitlement is tentative"
@@ -54,7 +56,13 @@ def _best(
         if max(minutes - max_minutes, cost - budget) > 0:
             continue
         schedule = _schedule(bundle, slots)
-        utility = sum(f.score for f, _ in bundle)
+        utility = sum(f.score**utility_power for f, _ in bundle)
         if _better(schedule, utility, cost, best):
             best = Plan(label, schedule or (), minutes, cost, utility, best.assumptions)
-    return best
+    return replace(best, feasibility=_feasibility(best))
+
+
+def _feasibility(plan: Plan):
+    return (
+        "tentative" if any(c.offer.entitlement != "confirmed" for c in plan.choices) else "verified"
+    )

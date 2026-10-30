@@ -5,6 +5,7 @@ from datetime import date
 
 from .models import Access, Film, Plan
 from .search import _best
+from .utility import known_inputs, options, validate_utility
 
 
 def _eligible(offer: Access, current: set[int], service: int | None, rentals: bool) -> bool:
@@ -52,24 +53,22 @@ def compare(
     max_minutes: int,
     max_films: int,
     budget_cents: int,
-    services: dict[int, int],
+    services: dict[int, int | None],
+    *,
+    verified_only: bool = False,
+    utility_power: float = 1,
 ) -> tuple[Plan, ...]:
     """Compare positive-score bundles with caller-provided viewing slots and total USD prices.
 
     Costs break utility ties. Unconfirmed entitlement is tentative, not verified.
     """
-    _validate(films, offers, [max_minutes, max_films, budget_cents, *services.values()])
+    offers, prices = known_inputs(offers, services, verified_only)
+    _validate(films, offers, [max_minutes, max_films, budget_cents, *prices])
+    validate_utility(films, utility_power)
     slots = tuple(sorted(set(dates)))
-    options: list[tuple[str, int | None, bool, int]] = [
-        ("no purchase", None, False, 0),
-        ("rentals", None, True, 0),
-    ]
-    options += [
-        (f"service {s}", s, False, price)
-        for s, price in sorted(services.items())
-        if s not in current
-    ]
     assumptions = sorted({film.utility_assumption for film in films if film.utility_assumption})
+    assumptions.append(f"recognition-power-v1 power={utility_power}; personal scores not blended")
+    assumptions.append("Unknown prices are excluded; existing subscriptions are sunk costs")
     plans = tuple(
         _best(
             label,
@@ -79,8 +78,9 @@ def compare(
             max_minutes,
             max_films,
             budget_cents,
+            utility_power,
         )
-        for label, service, rentals, fee in options
+        for label, service, rentals, fee in options(current, services)
         if fee <= budget_cents
     )
     return tuple(

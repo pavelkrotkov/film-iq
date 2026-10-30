@@ -21,7 +21,7 @@ def test_bundle_compares_access_cost_overlap_and_expiry():
     plans = compare(
         films, offers, {1}, [date(2026, 11, 1), date(2026, 11, 8)], 150, 2, 1000, {2: 700}
     )
-    base, rental, service = plans
+    base, rental, service, _hybrid = plans
     assert [c.film.id for c in base.choices] == [1]
     assert rental.utility == 17 and rental.cost_cents == 300
     assert service.utility == 18 and service.cost_cents == 700 and service.total_minutes == 150
@@ -44,4 +44,4 @@ def test_add_on_requires_confirmed_existing_access():
     plans = compare(
         films, offers, {1}, [date(2026, 11, day) for day in range(1, 5)], 240, 4, 1000, {2: 500}
     )
-    assert [[choice.film.id for choice in plan.choices] for plan in plans] == [[1], [1], [1]]
+    assert [[choice.film.id for choice in plan.choices] for plan in plans] == [[1], [1], [1], [1]]
