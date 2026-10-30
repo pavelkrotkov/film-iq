@@ -60,6 +60,14 @@ TMDB/JustWatch, alternative offers → normalized current offers + events
 
 ### Movary
 
+**POC instance (deployed 2026-10-29):** stock Movary **0.82.1** on Hermes. Open [go/movies](http://go/movies) while connected to the family's Tailscale tailnet. The short link redirects to [Movary on Hermes](https://hermes.tail377b2a.ts.net:8449/); use this full URL if your browser treats `go/movies` as a search. Access is private to the tailnet, over HTTPS; Tailscale must be connected on the device you use.
+
+- **First use:** create the initial administrator on the setup page, then configure a TMDB API key under **Settings → Server**. No account credentials or TMDB key were supplied during installation.
+- **Deployment and storage:** `/home/pavel/services/movary` on Hermes contains `compose.yaml`, the secret-bearing `.env`, persistent local SQLite/application `storage/`, and an operations `README.md`. The container restarts automatically unless explicitly stopped. Keep secrets, database files and personal exports out of Git.
+- **Operations:** `ssh hermes`, then `cd /home/pavel/services/movary`; use `docker compose ps` for status and `docker compose logs --tail 50` for logs. The local service listens on `127.0.0.1:8090`, with Tailscale Serve providing HTTPS on port `8449`.
+- **Verified at deployment:** healthy container, running background worker, access through `go/movies` after restart, and availability of `user:export:ratings`. Movie metadata, authenticated integration, scheduled backups and restoration remain unverified; deployment alone does not satisfy Gate A.
+- **Read-only integration recheck (2026-10-29):** SSH and the documented HTTPS endpoint are reachable; the endpoint returns HTTP 200 with the Movary login page, and Docker reports a healthy `leepeuker/movary:0.82.1` container. The documented `.env` exists but contains none of `MOVARY_USERNAME`, `MOVARY_TOKEN`, `TMDB_API_KEY` or `TMDB_READ_ACCESS_TOKEN`; this does not establish whether a TMDB key was configured through the UI. The deployment address/version are known; authenticated API access and movie metadata remain unverified. No credential values were printed and no watchlist write was attempted.
+
 Use published/version-tested `/api/v1` endpoints for paginated played/history and watchlist reads, TMDB movie addition when required, and explicitly approved watchlist additions. Check the installed instance's OpenAPI payloads; distinguish the Movary database ID from TMDB ID. Never write the Movary DB.
 
 **Ratings-only films require a complete ratings path.** Movary 0.82.1 provides `user:export:ratings` CLI and a CSV containing title, year, TMDB ID, IMDb ID and personal rating. The command iterates all rated catalog movies, including those without watched entries. POC: run the export within the self-hosted Movary environment, publish a completed file atomically, then ingest as a replaceable snapshot; a deleted rating must disappear. This avoids a speculative upstream API change. Treat unknown viewing dates as unknown.
@@ -336,6 +344,98 @@ Primary references (revalidate versions/terms during implementation):
 Issue is linked to an epic and relevant ADR; acceptance tests demonstrate requested behavior; new data fields have origins/rights and migration/rollback; error and review states are explicit; no unapproved writes; docs/config and CI updated; actual measurement or a precise “not yet verified” note attached; PR review and CI requirements in AGENTS.md satisfied.
 
 
+
+### Live integration continuation (2026-10-29, UTC 2026-10-30)
+
+The supported Movary `user:list` CLI confirms one existing account. The current
+Brave session displays the sign-in form; no existing authenticated browser tab
+was found. The account is not assumed absent merely because deployment notes
+precede its creation. Sign-in was requested in the prepared tab, without asking
+for a password in chat or resetting credentials. Authenticated reads and the
+ratings-only export remain pending that access; no personal watchlist was changed.
+
+Public TMDB records are accessible through the actual browser despite prior
+fetch-tool robots blocks. Four held-out mappings were checked against visible
+catalog titles/creators and frozen primary-source metadata: La Jetée → 662,
+Meshes of the Afternoon → 27040, Night and Fog → 803, and A Trip to the Moon /
+Le voyage dans la lune → 775. PR #44 merged the separate issue-7 audit overlay and
+reproducible measurement: four scored, zero auto-accepts, coverage 0, review rate 1,
+conditional candidate recall 1 and undefined precision. #7 is closed against its
+implementation/reporting criteria; original frozen inputs remain unchanged. Source
+versus catalog year/runtime/name discrepancies remain explicit. This is an
+automated factual audit, not human review or evidence of ≥99% auto-match precision.
+
+The public [TMDB/JustWatch US watch page for 775](https://www.themoviedb.org/movie/775-le-voyage-dans-la-lune/watch)
+was inspected with United States selected: subscription, free, ads, rent and buy
+categories were present. Kanopy requires eligibility verification; HBO Max Amazon
+Channel is not proof of inclusion with base Prime. The displayed Amazon rental
+was USD 0.99 SD and purchase USD 2.99 SD at inspection; taxes, actual checkout,
+playback and personal entitlement were not verified. These are browser-observed
+facts, not a captured TMDB API response or a catalog dump.
+
+A bounded source-rights follow-up inspected Rosenbaum, Bordwell/Thompson and
+Senses of Cinema leads. None supplied both a verified genuine partial individual
+assessment and a verified reusable capture license. Issue #6's narrow gap remains;
+public accessibility was not treated as redistribution permission. A subsequent
+independent scope audit found that requiring a real partial individual-ballot
+capture was stronger than issue #6: its four real pages already include partial
+aggregate cases. A focused synthetic partial-individual extraction/persistence
+check is being added without changing the real-page count or claiming real
+individual-ballot parsing coverage. The actual source-rights limitation remains
+documented for broader research, rather than an invented issue-6 closure gate.
+
+
+### Epic A continuation outcome (2026-10-30 UTC)
+
+PR #44 (browser-audited identity measurements) and PR #45 (partial-assessment
+persistence and acceptance-scope correction) are merged. #4–#9 / A1–A6 are now
+closed against their actual implementation criteria. Both follow-ups passed
+parallel GPT-6.1 Sol High Standards/Spec reviews, required CI and resolved-thread
+checks. The latest integrated suite has 294 passes and one opt-in live test skip;
+all 109 source/test Python files have maximum CC 8 and minimum MI 50.025. Neither
+closure nor the four-case identity measurements verify population accuracy.
+
+The installed Movary 0.82.1 supported `user:export:ratings` CLI was run for the
+sole existing account via SSH. PHP's native `php://stdout` with `--silent` streamed
+the CSV directly into an ignored, mode-0600 snapshot under this selected project's
+`.worktrees/a6-partial-semantics/.cache/movary-live/`; no remote export file was
+created. An initial separate-file-descriptor attempt failed; the standard PHP
+stream succeeded. film-iq's actual `read_ratings` validated the 36-byte header-only
+CSV with zero ratings in 1.39 seconds. Thus real export/schema compatibility is
+verified, but a live rated-only record cannot be demonstrated from this empty
+ratings snapshot. Fixtures still cover that case; no test rating was invented or
+written to the account. No private CSV, account identifier or credentials enter Git.
+
+#10 / Gate A remains open for authenticated paginated API reads, metadata/provider
+integration and the concrete selected-film approved write/readback. The current
+Brave session is signed out and no account API credential is present in the
+documented deployment environment. Sign-in was requested in the prepared Movary
+tab; an open browser-extension UI subsequently paused automation. No password was
+reset, API credential generated or personal watchlist changed. User sign-in is
+required to continue that authenticated path; the deployment location/version are
+already known and do not need to be requested again.
+
+
+### API-only integration handoff (2026-10-30 UTC)
+
+User confirmed browser sign-in and requested API-based integration. The session
+is authenticated; browser use was limited to credential/settings discovery.
+The installed `/app/docs/openapi.json` and application authentication source
+confirm personal API tokens via `Authorization: Bearer` or `X-Movary-Token`;
+web-session authentication is separate, and the API source exposes no legacy
+web-cookie authentication fallback. A direct unauthenticated GET to
+`/api/v1/authentication/token` reached the service and returned HTTP 401.
+
+The current account's Personal API tokens page explicitly reports no tokens,
+confirmed after its Refresh API tokens action. The server TMDB credential field
+is populated, but its presence does not establish valid Movary API authentication
+or TMDB access. No credential was sent to an external metadata API, created,
+rotated or revoked. The user reports an existing token; clarification of its
+service and existing file/config location was requested. Known project credential
+filename patterns returned no configured file. No broader private-folder search
+was performed. Authenticated HTTP read tests remain pending the actual Movary
+credential; sign-in and endpoint discovery are no longer blockers.
+
 ### A3 captured-page continuation (2026-10-29)
 
 Four exact, pinned Wikipedia section responses from distinct source pages now cover
@@ -525,6 +625,28 @@ claim is made. The NBR award fact remains a separate unused candidate, without
 an invented numeric rank or an assumed film release year.
 
 
+### A7 approval-ready evidence merged (2026-10-30)
+
+PR #46 is merged at `67ddb2d`. Parallel GPT-6.1 Sol High Standards and Spec
+reviews reported no actionable findings, independently checked all five input
+hashes, and reproduced both the read-only CLI report and selected Tubi scenario.
+All five CI checks passed; local validation was 294 passed/one opt-in live skip,
+CC maximum 8, MI minimum 50.025 across all 109 source/test Python files. No
+credential was provided to reviewers or included in the committed artifacts.
+
+The explicit pending request was presented for two live steps: persist the
+existing saved TMDB key in the documented Hermes deployment and recreate only
+the same-image Movary service; then add Bicycle Thieves (1948), TMDB 5156, to the
+catalog if absent and watchlist if absent through the existing API boundary,
+read back, and retry to verify idempotence. The actual offline preview/report is
+reviewable. Automatic approval review rejected the key transfer/configuration
+mutation without explicit authorization; AGENTS.md separately requires selected
+watchlist approval. Neither elapsed time nor a preselected UI option is approval.
+No such authorization or live mutation has occurred at this record point.
+Gate A/#10 remains open; no ready implementation PR is being held for review.
+
+
+
 ### Gate A accepted: approved live round trip completed (2026-10-30)
 
 The user explicitly approved both pending actions. The existing saved TMDB key
@@ -580,6 +702,7 @@ was also exercised twice against the installed supported CLI: identical validate
 all temporary files remain in the selected project cache; no remote export file
 or personal CSV was committed. This strengthens live adapter/export evidence
 without claiming a nonempty live rated-only/deleted-rating test.
+
 
 ### Epic B authenticated TMDB continuation (2026-10-30)
 
@@ -721,6 +844,26 @@ have CC at most 8 and MI at least 50.025. Both controllers' plan findings were
 preserved; the merge removed no main-branch plan content. The actual approved
 live trace still used the previously recorded implementation base; only the
 CLI status guidance changed in this outcome PR, not its read/write behavior.
+
+
+### Epic A delivery complete (2026-10-30)
+
+Final outcome [PR #49](https://github.com/pavelkrotkov/film-iq/pull/49) merged
+at `c0f24c583f607dd8daddef1ddfbb470e6cedd72e` after all five exact-head CI
+checks passed. Parallel GPT-6.1 Sol High Standards and Spec reviews, plus
+integration addenda on `eee7992a5576d12335d77bad708e90cedc28bfad`, found zero
+actionable findings; the controller reconciled them on the PR and verified zero
+unresolved review threads. No bot findings or pending requested reviewers appeared.
+A7/#10 and Epic A/#1 are closed; all children #4–#10 are closed and their
+acceptance checklists reconciled. Gate A accepts the narrow POC described above.
+
+The actual approved watchlist write/readback and zero-POST retry are complete;
+Bicycle Thieves is present exactly once. Integrated validation remains 333 passed,
+one opt-in live skip, CC≤8 and MI≥50.025 across 154 tracked Python files.
+Nonempty ratings edge cases remain fixture-backed; playback, entitlement,
+population precision, commercial retention and production readiness remain
+unverified. Epic B and its provisional decisions remain independent and open.
+The user's root configuration/plan edits and existing worktrees are preserved.
 
 ### B4 published rights and public quota supplement (2026-10-30)
 
