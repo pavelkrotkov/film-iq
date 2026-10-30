@@ -1,0 +1,38 @@
+{
+  "key": "sundance-0",
+  "title": "2020 Sundance Film Festival",
+  "section": "7",
+  "heading": "World Cinema Documentary Competition",
+  "split": "development",
+  "lineage": "Wikipedia derivative of Sundance Film Festival; original-source accuracy and rights not established by this capture",
+  "revision": "1373126917",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=2020+Sundance+Film+Festival&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=2020+Sundance+Film+Festival&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:20.331804+00:00",
+    "bytes": 208,
+    "sha256": "816db568deddeaa931518feefa69e4d3dfcc9ea668845d4f22c65d90bffd02e7",
+    "file": "sundance-0.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373126917&section=7&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373126917&section=7&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:21.280074+00:00",
+    "bytes": 879,
+    "sha256": "aff52bc5a73fb75af3d29884cd3eab15ac3bb2445d8d1a304240248d54be6e98",
+    "file": "sundance-0.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373126917&section=7&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373126917&section=7&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:22.555531+00:00",
+    "bytes": 4455,
+    "sha256": "44d6b0cbf702e71955fc9b361214e2b14fe7cc879dfa9e93d31cbbe863106a44",
+    "file": "sundance-0.text.json"
+  },
+  "corpus_stratum": "sundance",
+  "original_source_family": "Sundance Film Festival"
+}

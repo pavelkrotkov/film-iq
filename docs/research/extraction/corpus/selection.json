@@ -1,0 +1,322 @@
+[
+  {
+    "key": "nbr-0",
+    "title": "National Board of Review Awards 2021",
+    "section": "1",
+    "heading": "Top 10 Films",
+    "split": "development",
+    "lineage": "Wikipedia derivative of National Board of Review; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "nbr",
+    "original_source_family": "National Board of Review"
+  },
+  {
+    "key": "nbr-1",
+    "title": "National Board of Review Awards 2022",
+    "section": "1",
+    "heading": "Top 10 Films",
+    "split": "development",
+    "lineage": "Wikipedia derivative of National Board of Review; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "nbr",
+    "original_source_family": "National Board of Review"
+  },
+  {
+    "key": "nbr-2",
+    "title": "National Board of Review Awards 2023",
+    "section": "1",
+    "heading": "Top 10 Films",
+    "split": "development",
+    "lineage": "Wikipedia derivative of National Board of Review; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "nbr",
+    "original_source_family": "National Board of Review"
+  },
+  {
+    "key": "nbr-3",
+    "title": "National Board of Review Awards 2024",
+    "section": "1",
+    "heading": "Top 10 Films",
+    "split": "development",
+    "lineage": "Wikipedia derivative of National Board of Review; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "nbr",
+    "original_source_family": "National Board of Review"
+  },
+  {
+    "key": "cannes-0",
+    "title": "2019 Cannes Film Festival",
+    "section": "10",
+    "heading": "In Competition",
+    "split": "development",
+    "lineage": "Wikipedia derivative of Cannes Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "cannes",
+    "original_source_family": "Cannes Film Festival"
+  },
+  {
+    "key": "cannes-1",
+    "title": "2021 Cannes Film Festival",
+    "section": "14",
+    "heading": "Short Films Competition",
+    "split": "development",
+    "lineage": "Wikipedia derivative of Cannes Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "cannes",
+    "original_source_family": "Cannes Film Festival"
+  },
+  {
+    "key": "cannes-2",
+    "title": "2022 Cannes Film Festival",
+    "section": "13",
+    "heading": "Short Films Competition",
+    "split": "development",
+    "lineage": "Wikipedia derivative of Cannes Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "cannes",
+    "original_source_family": "Cannes Film Festival"
+  },
+  {
+    "key": "cannes-3",
+    "title": "2023 Cannes Film Festival",
+    "section": "11",
+    "heading": "Un Certain Regard",
+    "split": "development",
+    "lineage": "Wikipedia derivative of Cannes Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "cannes",
+    "original_source_family": "Cannes Film Festival"
+  },
+  {
+    "key": "berlin-0",
+    "title": "69th Berlin International Film Festival",
+    "section": "7",
+    "heading": "Main Competition",
+    "split": "development",
+    "lineage": "Wikipedia derivative of Berlin International Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "berlin",
+    "original_source_family": "Berlin International Film Festival"
+  },
+  {
+    "key": "berlin-1",
+    "title": "70th Berlin International Film Festival",
+    "section": "8",
+    "heading": "Main Competition",
+    "split": "development",
+    "lineage": "Wikipedia derivative of Berlin International Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "berlin",
+    "original_source_family": "Berlin International Film Festival"
+  },
+  {
+    "key": "berlin-2",
+    "title": "71st Berlin International Film Festival",
+    "section": "6",
+    "heading": "Main Competition",
+    "split": "development",
+    "lineage": "Wikipedia derivative of Berlin International Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "berlin",
+    "original_source_family": "Berlin International Film Festival"
+  },
+  {
+    "key": "berlin-3",
+    "title": "72nd Berlin International Film Festival",
+    "section": "6",
+    "heading": "Main Competition",
+    "split": "development",
+    "lineage": "Wikipedia derivative of Berlin International Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "berlin",
+    "original_source_family": "Berlin International Film Festival"
+  },
+  {
+    "key": "poll-0",
+    "title": "The Sight & Sound Greatest Films of All Time 2012",
+    "section": "2",
+    "heading": "Critics' poll",
+    "split": "development",
+    "lineage": "Wikipedia derivative of BFI / Sight and Sound; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "poll",
+    "original_source_family": "BFI / Sight and Sound"
+  },
+  {
+    "key": "poll-1",
+    "title": "The Sight and Sound Greatest Films of All Time 2022",
+    "section": "2",
+    "heading": "Directors' poll",
+    "split": "development",
+    "lineage": "Wikipedia derivative of BFI / Sight and Sound; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "poll",
+    "original_source_family": "BFI / Sight and Sound"
+  },
+  {
+    "key": "poll-2",
+    "title": "BBC's 100 Greatest Films of the 21st Century",
+    "section": "2",
+    "heading": "Partial list",
+    "split": "development",
+    "lineage": "Wikipedia derivative of BBC; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "poll",
+    "original_source_family": "BBC"
+  },
+  {
+    "key": "foreign-0",
+    "title": "BBC's 100 Greatest Foreign-Language Films",
+    "section": "3",
+    "heading": "Partial list",
+    "split": "development",
+    "lineage": "Wikipedia derivative of BBC; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "foreign",
+    "original_source_family": "BBC"
+  },
+  {
+    "key": "venice-0",
+    "title": "76th Venice International Film Festival",
+    "section": "8",
+    "heading": "In Competition",
+    "split": "development",
+    "lineage": "Wikipedia derivative of Venice International Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "venice",
+    "original_source_family": "Venice International Film Festival"
+  },
+  {
+    "key": "venice-1",
+    "title": "77th Venice International Film Festival",
+    "section": "12",
+    "heading": "Short Films Competition",
+    "split": "development",
+    "lineage": "Wikipedia derivative of Venice International Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "venice",
+    "original_source_family": "Venice International Film Festival"
+  },
+  {
+    "key": "venice-2",
+    "title": "78th Venice International Film Festival",
+    "section": "7",
+    "heading": "In Competition",
+    "split": "development",
+    "lineage": "Wikipedia derivative of Venice International Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "venice",
+    "original_source_family": "Venice International Film Festival"
+  },
+  {
+    "key": "venice-3",
+    "title": "79th Venice International Film Festival",
+    "section": "7",
+    "heading": "In competition",
+    "split": "development",
+    "lineage": "Wikipedia derivative of Venice International Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "venice",
+    "original_source_family": "Venice International Film Festival"
+  },
+  {
+    "key": "sundance-0",
+    "title": "2020 Sundance Film Festival",
+    "section": "7",
+    "heading": "World Cinema Documentary Competition",
+    "split": "development",
+    "lineage": "Wikipedia derivative of Sundance Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "sundance",
+    "original_source_family": "Sundance Film Festival"
+  },
+  {
+    "key": "sundance-1",
+    "title": "2021 Sundance Film Festival",
+    "section": "14",
+    "heading": "Animation",
+    "split": "development",
+    "lineage": "Wikipedia derivative of Sundance Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "sundance",
+    "original_source_family": "Sundance Film Festival"
+  },
+  {
+    "key": "sundance-2",
+    "title": "2022 Sundance Film Festival",
+    "section": "6",
+    "heading": "World Cinema Documentary Competition",
+    "split": "development",
+    "lineage": "Wikipedia derivative of Sundance Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "sundance",
+    "original_source_family": "Sundance Film Festival"
+  },
+  {
+    "key": "sundance-3",
+    "title": "2023 Sundance Film Festival",
+    "section": "3",
+    "heading": "U.S. Documentary Competition",
+    "split": "development",
+    "lineage": "Wikipedia derivative of Sundance Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "sundance",
+    "original_source_family": "Sundance Film Festival"
+  },
+  {
+    "key": "shorts-0",
+    "title": "Academy Award for Best Animated Short Film",
+    "section": "11",
+    "heading": "2020s",
+    "split": "holdout",
+    "lineage": "Wikipedia derivative of Academy of Motion Picture Arts and Sciences; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "shorts",
+    "original_source_family": "Academy of Motion Picture Arts and Sciences"
+  },
+  {
+    "key": "shorts-1",
+    "title": "Academy Award for Best Live Action Short Film",
+    "section": "11",
+    "heading": "2020s",
+    "split": "holdout",
+    "lineage": "Wikipedia derivative of Academy of Motion Picture Arts and Sciences; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "shorts",
+    "original_source_family": "Academy of Motion Picture Arts and Sciences"
+  },
+  {
+    "key": "shorts-2",
+    "title": "Academy Award for Best Documentary Short Film",
+    "section": "12",
+    "heading": "2020s",
+    "split": "holdout",
+    "lineage": "Wikipedia derivative of Academy of Motion Picture Arts and Sciences; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "shorts",
+    "original_source_family": "Academy of Motion Picture Arts and Sciences"
+  },
+  {
+    "key": "shorts-3",
+    "title": "Academy Award for Best Documentary Feature Film",
+    "section": "10",
+    "heading": "2020s",
+    "split": "holdout",
+    "lineage": "Wikipedia derivative of Academy of Motion Picture Arts and Sciences; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "shorts",
+    "original_source_family": "Academy of Motion Picture Arts and Sciences"
+  },
+  {
+    "key": "locarno-0",
+    "title": "72nd Locarno Film Festival",
+    "section": "9",
+    "heading": "International Competition (<i>Concorso internazionale</i>)",
+    "split": "holdout",
+    "lineage": "Wikipedia derivative of Locarno Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "locarno",
+    "original_source_family": "Locarno Film Festival"
+  },
+  {
+    "key": "locarno-2",
+    "title": "74th Locarno Film Festival",
+    "section": "16",
+    "heading": "International competition (<i>Concorso internazionale</i>)",
+    "split": "holdout",
+    "lineage": "Wikipedia derivative of Locarno Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "locarno",
+    "original_source_family": "Locarno Film Festival"
+  },
+  {
+    "key": "locarno-3",
+    "title": "75th Locarno Film Festival",
+    "section": "9",
+    "heading": "Main competition",
+    "split": "holdout",
+    "lineage": "Wikipedia derivative of Locarno Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "locarno",
+    "original_source_family": "Locarno Film Festival"
+  },
+  {
+    "key": "annecy-0",
+    "title": "2024 Annecy International Animation Film Festival",
+    "section": "6",
+    "heading": "Short films",
+    "split": "holdout",
+    "lineage": "Wikipedia derivative of Annecy International Animation Film Festival; original-source accuracy and rights not established by this capture",
+    "corpus_stratum": "annecy",
+    "original_source_family": "Annecy International Animation Film Festival"
+  }
+]

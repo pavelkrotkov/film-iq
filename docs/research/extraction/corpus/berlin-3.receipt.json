@@ -1,0 +1,38 @@
+{
+  "key": "berlin-3",
+  "title": "72nd Berlin International Film Festival",
+  "section": "6",
+  "heading": "Main Competition",
+  "split": "development",
+  "lineage": "Wikipedia derivative of Berlin International Film Festival; original-source accuracy and rights not established by this capture",
+  "revision": "1375216101",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=72nd+Berlin+International+Film+Festival&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=72nd+Berlin+International+Film+Festival&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:51.442114+00:00",
+    "bytes": 220,
+    "sha256": "6701f1e73abe60fefaa83c266df356006b6ea0eed48cf28bffc0100a3ac263f2",
+    "file": "berlin-3.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1375216101&section=6&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1375216101&section=6&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:52.882426+00:00",
+    "bytes": 3328,
+    "sha256": "98ef75e11ec188bbd157cc0c0447b453a27e2657001aa977bc59bd07f668b2dd",
+    "file": "berlin-3.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1375216101&section=6&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1375216101&section=6&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:54.068803+00:00",
+    "bytes": 12428,
+    "sha256": "b6f3149a19a0789b71084b73dba6275e02e19d20c476dbc70bbc1f8a580267e9",
+    "file": "berlin-3.text.json"
+  },
+  "corpus_stratum": "berlin",
+  "original_source_family": "Berlin International Film Festival"
+}

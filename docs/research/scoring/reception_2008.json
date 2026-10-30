@@ -1,0 +1,626 @@
+{
+  "license": "CC BY-SA 4.0, Wikipedia contributors; see REAL_DATA_NOTICE.md",
+  "method": "Manual factual transcription from same pinned wikitext revisions; no provider verification; citation access dates do not date the reported value.",
+  "numeric_audience_policy": "No numeric audience score/vote denominator observed in inspected revision text; CinemaScore letters are separate categorical observations, counts unknown.",
+  "sources": [
+    {
+      "film": "Milk (2008 American film)",
+      "revision": 1379683314,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1379683314&prop=wikitext%7Crevid&format=json",
+      "retrieved_at": "2026-10-30T04:27:27.857309+00:00",
+      "response_sha256": "c9e4b6608fec288dc1ccf7b934e14d2ab27086bdc00d2227b822510abac5e13b",
+      "elapsed_seconds": 0.482,
+      "additional_request": {
+        "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1379683314&prop=wikitext%7Crevid&format=json",
+        "retrieved_at": "2026-10-30T04:29:12.887679+00:00",
+        "sha256": "c9e4b6608fec288dc1ccf7b934e14d2ab27086bdc00d2227b822510abac5e13b",
+        "elapsed_seconds": 0.483
+      },
+      "rt_positivity_pct": 93,
+      "rt_critic_count": 245,
+      "rt_average_10": 8,
+      "metascore_100": 83,
+      "mc_critic_count": 39,
+      "cited_access_dates": {
+        "rt": "2021-03-06",
+        "mc": "2009-05-04",
+        "cinemascore": null
+      },
+      "cinemascore_letter": null,
+      "cinemascore_sample_n": null,
+      "audience_numeric_10": null,
+      "audience_votes": null,
+      "countries": [
+        "United States"
+      ],
+      "runtime_minutes": 128,
+      "format_group": "other_feature",
+      "format_inference": "Animated Feature nominee for last three; otherwise feature-length runtime, animation status not independently audited",
+      "evidence": [
+        {
+          "line": 161,
+          "kind": "rt_factual_prefix",
+          "text": "As per the review aggregator website [[Rotten Tomatoes]], 93% of critics have given the film a positive review based on 245 reviews, with an average rating of 8 out of 10."
+        },
+        {
+          "line": 161,
+          "kind": "mc_factual_span",
+          "text": "\" On [[Metacritic]], the film has a weighted average score of 83 out of 100, with 95% positive reviews based on 39 critics"
+        },
+        {
+          "line": 32,
+          "kind": "country",
+          "text": "| country        = United States\n"
+        },
+        {
+          "line": 38,
+          "kind": "intro",
+          "text": "'''''Milk''''' is a 2008 American [[biographical film"
+        },
+        {
+          "line": 31,
+          "text": "| runtime        = 128 minutes<!--Theatrical runtime: 128:10--><ref>{{cite web|title=''MILK'' (15)|url= http://www.bbfc.co.uk/releases/milk-2009-0 |archive-url= https://web.archive.org/web/20140324190521/http://www.bbfc.co.uk/releases/milk-2009-0 |url-status= dead |archive-date= March 24, 2014 |work=[[Momentum Pictures]]|publisher=[[British Board of Film Classification]]|access-date=March 24, 2014}}</ref>"
+        }
+      ]
+    },
+    {
+      "film": "The Wrestler (2008 film)",
+      "revision": 1381358616,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381358616&prop=wikitext%7Crevid&format=json",
+      "retrieved_at": "2026-10-30T04:27:29.262914+00:00",
+      "response_sha256": "1a5cab1e90d1ca0888f0f4960b7f19f30f1286dc60928dea0b9ce26a0570bfa9",
+      "elapsed_seconds": 0.404,
+      "additional_request": {
+        "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381358616&prop=wikitext%7Crevid&format=json",
+        "retrieved_at": "2026-10-30T04:29:14.367025+00:00",
+        "sha256": "1a5cab1e90d1ca0888f0f4960b7f19f30f1286dc60928dea0b9ce26a0570bfa9",
+        "elapsed_seconds": 0.471
+      },
+      "rt_positivity_pct": 99,
+      "rt_critic_count": 229,
+      "rt_average_10": 8.5,
+      "metascore_100": 80,
+      "mc_critic_count": 36,
+      "cited_access_dates": {
+        "rt": "2025-01-31",
+        "mc": "2008-12-24",
+        "cinemascore": null
+      },
+      "cinemascore_letter": null,
+      "cinemascore_sample_n": null,
+      "audience_numeric_10": null,
+      "audience_votes": null,
+      "countries": [
+        "United States"
+      ],
+      "runtime_minutes": 109,
+      "format_group": "other_feature",
+      "format_inference": "Animated Feature nominee for last three; otherwise feature-length runtime, animation status not independently audited",
+      "evidence": [
+        {
+          "line": 121,
+          "kind": "rt_factual_prefix",
+          "text": "''The Wrestler'' received universal acclaim. [[Rotten Tomatoes]] reported that 99% of critics gave the film positive reviews based upon a sample of 229 reviews, with an average rating of 8.5/10."
+        },
+        {
+          "line": 121,
+          "kind": "mc_factual_span",
+          "text": "\" At [[Metacritic]], which assigns a rating out of 100 to reviews from mainstream critics, the film has received an average score of 80, based on 36 reviews"
+        },
+        {
+          "line": 34,
+          "kind": "country",
+          "text": "| country        = United States\n"
+        },
+        {
+          "line": 39,
+          "kind": "intro",
+          "text": "'''''The Wrestler''''' is a 2008 American [[sports]] [[drama film"
+        },
+        {
+          "line": 33,
+          "text": "| runtime        = 109 minutes<!--Theatrical runtime: 109:19--><ref>{{cite web|title=''THE WRESTLER'' (15)|url=https://www.bbfc.co.uk/releases/wrestler-2009-0|archive-url=https://archive.today/20130910054529/http://www.bbfc.co.uk/releases/wrestler-2009-0|url-status=dead|archive-date=September 10, 2013|work=[[Optimum Releasing]]|publisher=[[British Board of Film Classification]]|date=October 31, 2008|access-date=September 9, 2013}}</ref>"
+        }
+      ]
+    },
+    {
+      "film": "The Reader (2008 film)",
+      "revision": 1378967681,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1378967681&prop=wikitext%7Crevid&format=json",
+      "retrieved_at": "2026-10-30T04:27:30.616986+00:00",
+      "response_sha256": "8050588883860d109b01ee2fe3b00ca5f586e8e78e1f7b1e5368e0487abdfb84",
+      "elapsed_seconds": 0.346,
+      "additional_request": {
+        "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1378967681&prop=wikitext%7Crevid&format=json",
+        "retrieved_at": "2026-10-30T04:29:15.735022+00:00",
+        "sha256": "8050588883860d109b01ee2fe3b00ca5f586e8e78e1f7b1e5368e0487abdfb84",
+        "elapsed_seconds": 0.362
+      },
+      "rt_positivity_pct": 63,
+      "rt_critic_count": 202,
+      "rt_average_10": 6.4,
+      "metascore_100": 58,
+      "mc_critic_count": 38,
+      "cited_access_dates": {
+        "rt": "2021-03-10",
+        "mc": "2021-03-10",
+        "cinemascore": null
+      },
+      "cinemascore_letter": null,
+      "cinemascore_sample_n": null,
+      "audience_numeric_10": null,
+      "audience_votes": null,
+      "countries": [
+        "Germany",
+        "United States"
+      ],
+      "runtime_minutes": 124,
+      "format_group": "other_feature",
+      "format_inference": "Animated Feature nominee for last three; otherwise feature-length runtime, animation status not independently audited",
+      "evidence": [
+        {
+          "line": 119,
+          "kind": "rt_factual_prefix",
+          "text": "On [[Rotten Tomatoes]], the film holds an approval rating of 63% based on 202 reviews, with an average rating of 6.4/10."
+        },
+        {
+          "line": 119,
+          "kind": "mc_factual_span",
+          "text": "\" At [[Metacritic]] the film was assigned a weighted average score of 58 out of 100, based on 38 critics"
+        },
+        {
+          "line": 41,
+          "kind": "country",
+          "text": "| country = {{Plainlist|\n* Germany<ref name=NYT>{{cite news| url=https://www.nytimes.com/2008/12/10/movies/10read.html| title=Innocence Is Lost in Postwar Germany| first=Manohla| last=Dargis| date=December 9, 2008| newspaper=[[The New York Times]]| access-date=August 3, 2020}}</ref>\n* United States\n}}\n"
+        },
+        {
+          "line": 53,
+          "kind": "intro",
+          "text": "'''''The Reader''''' is a 2008 [[romantic drama]] film"
+        },
+        {
+          "line": 40,
+          "text": "| runtime = 124 minutes<!--Theatrical runtime: 123:48--><ref>{{cite web| url=https://www.bbfc.co.uk/releases/reader-2009-0| archive-url=https://archive.today/20130620010126/http://www.bbfc.co.uk/releases/reader-2009-0| url-status=dead| archive-date=June 20, 2013| title=''The Reader'' (15)| website=[[British Board of Film Classification]]| date=2008-12-02| access-date=2013-06-17}}</ref>"
+        }
+      ]
+    },
+    {
+      "film": "The Curious Case of Benjamin Button (film)",
+      "revision": 1379730511,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1379730511&prop=wikitext%7Crevid&format=json",
+      "retrieved_at": "2026-10-30T04:27:34.103068+00:00",
+      "response_sha256": "beab2cd56dda398d3253e2a17282b9cd47d71867da8e6fd458f00644c51275f6",
+      "elapsed_seconds": 2.475,
+      "additional_request": {
+        "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1379730511&prop=wikitext%7Crevid&format=json",
+        "retrieved_at": "2026-10-30T04:29:17.182968+00:00",
+        "sha256": "beab2cd56dda398d3253e2a17282b9cd47d71867da8e6fd458f00644c51275f6",
+        "elapsed_seconds": 0.447
+      },
+      "rt_positivity_pct": 72,
+      "rt_critic_count": 254,
+      "rt_average_10": 7.5,
+      "metascore_100": 70,
+      "mc_critic_count": 37,
+      "cited_access_dates": {
+        "rt": "2021-06-01",
+        "mc": "2009-12-14",
+        "cinemascore": null
+      },
+      "cinemascore_letter": "A−",
+      "cinemascore_sample_n": null,
+      "audience_numeric_10": null,
+      "audience_votes": null,
+      "countries": [
+        "United States"
+      ],
+      "runtime_minutes": 166,
+      "format_group": "other_feature",
+      "format_inference": "Animated Feature nominee for last three; otherwise feature-length runtime, animation status not independently audited",
+      "evidence": [
+        {
+          "line": 141,
+          "kind": "rt_factual_prefix",
+          "text": "The review aggregator [[Rotten Tomatoes]] reports that 72% of critics gave the film positive reviews based on 254 reviews, with an average rating of 7.50/10."
+        },
+        {
+          "line": 141,
+          "kind": "mc_factual_span",
+          "text": "\" On [[Metacritic]], the film has a weighted average score of 70 out of 100, based on 37 reviews"
+        },
+        {
+          "line": 44,
+          "kind": "country",
+          "text": "| country        = United States\n"
+        },
+        {
+          "line": 50,
+          "kind": "intro",
+          "text": "'''''The Curious Case of Benjamin Button''''' is a 2008 American [[fantasy drama]] film"
+        },
+        {
+          "line": 43,
+          "text": "| runtime        = 166 minutes<!--Theatrical runtime: 165:49--><ref>{{cite web | url=https://www.bbfc.co.uk/releases/curious-case-benjamin-button-film | archive-url=https://web.archive.org/web/20160828131323/http://www.bbfc.co.uk/releases/curious-case-benjamin-button-film | url-status=dead | archive-date=August 28, 2016 | title=''The Curious Case of Benjamin Button'' (12A) | publisher=[[British Board of Film Classification]] | date=December 16, 2008 | access-date=August 27, 2016}}</ref>"
+        },
+        {
+          "line": 141,
+          "text": "Audiences surveyed by [[CinemaScore]] gave the film a grade A− on scale of A to F."
+        }
+      ]
+    },
+    {
+      "film": "Frost/Nixon (film)",
+      "revision": 1380568022,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1380568022&prop=wikitext%7Crevid&format=json",
+      "retrieved_at": "2026-10-30T04:27:35.428948+00:00",
+      "response_sha256": "2da7f9a30a2092bb7e5c31828e79b936311bd628aaf26967602116dfe4b3f551",
+      "elapsed_seconds": 0.319,
+      "additional_request": {
+        "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1380568022&prop=wikitext%7Crevid&format=json",
+        "retrieved_at": "2026-10-30T04:29:18.488948+00:00",
+        "sha256": "2da7f9a30a2092bb7e5c31828e79b936311bd628aaf26967602116dfe4b3f551",
+        "elapsed_seconds": 0.297
+      },
+      "rt_positivity_pct": 93,
+      "rt_critic_count": 258,
+      "rt_average_10": 8,
+      "metascore_100": 80,
+      "mc_critic_count": 38,
+      "cited_access_dates": {
+        "rt": "2021-06-05",
+        "mc": "2009-04-21",
+        "cinemascore": null
+      },
+      "cinemascore_letter": null,
+      "cinemascore_sample_n": null,
+      "audience_numeric_10": null,
+      "audience_votes": null,
+      "countries": [
+        "United States",
+        "United Kingdom",
+        "France"
+      ],
+      "runtime_minutes": 122,
+      "format_group": "other_feature",
+      "format_inference": "Animated Feature nominee for last three; otherwise feature-length runtime, animation status not independently audited",
+      "evidence": [
+        {
+          "line": 109,
+          "kind": "rt_factual_prefix",
+          "text": "On review aggregation website [[Rotten Tomatoes]], the film has an approval rating of 93% based on 258 reviews, with a weighted average score of 8.00/10."
+        },
+        {
+          "line": 109,
+          "kind": "mc_factual_span",
+          "text": "\" [[Metacritic]] gives the film an average score of 80 out of 100, based on 38 critics"
+        },
+        {
+          "line": 41,
+          "kind": "country",
+          "text": "| country        = {{Plainlist|\n* United States\n* United Kingdom\n* France\n}}\n"
+        },
+        {
+          "line": 50,
+          "kind": "intro",
+          "text": "'''''Frost/Nixon''''' is a 2008 [[List of historical period drama film"
+        },
+        {
+          "line": 40,
+          "text": "| runtime        = 122 minutes"
+        }
+      ]
+    },
+    {
+      "film": "Slumdog Millionaire",
+      "revision": 1379601586,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1379601586&prop=wikitext%7Crevid&format=json",
+      "retrieved_at": "2026-10-30T04:27:36.883559+00:00",
+      "response_sha256": "1a4b8a3262b1e9278a79c2bcd9a38f6890ee97474f9d23a04ad4ae0b0337e39a",
+      "elapsed_seconds": 0.443,
+      "additional_request": {
+        "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1379601586&prop=wikitext%7Crevid&format=json",
+        "retrieved_at": "2026-10-30T04:29:20.078895+00:00",
+        "sha256": "1a4b8a3262b1e9278a79c2bcd9a38f6890ee97474f9d23a04ad4ae0b0337e39a",
+        "elapsed_seconds": 0.585
+      },
+      "rt_positivity_pct": 91,
+      "rt_critic_count": 290,
+      "rt_average_10": 8.4,
+      "metascore_100": 86,
+      "mc_critic_count": 36,
+      "cited_access_dates": {
+        "rt": "2023-08-21",
+        "mc": "2018-02-27",
+        "cinemascore": null
+      },
+      "cinemascore_letter": null,
+      "cinemascore_sample_n": null,
+      "audience_numeric_10": null,
+      "audience_votes": null,
+      "countries": [
+        "United Kingdom"
+      ],
+      "runtime_minutes": 120,
+      "format_group": "other_feature",
+      "format_inference": "Animated Feature nominee for last three; otherwise feature-length runtime, animation status not independently audited",
+      "evidence": [
+        {
+          "line": 141,
+          "kind": "rt_factual_prefix",
+          "text": "Outside of India, ''Slumdog Millionaire'' was met with critical acclaim. The film holds a 91% approval rating on [[Rotten Tomatoes]] based on 290 reviews, with an [[weighted arithmetic mean|average]] score of 8.4/10."
+        },
+        {
+          "line": 141,
+          "kind": "mc_factual_span",
+          "text": "\" On [[Metacritic]], the film has an average score of 86 out of 100, based on 36 reviews"
+        },
+        {
+          "line": 29,
+          "kind": "country",
+          "text": "| country        = United Kingdom<ref>{{Cite web |date=6 September 2008 |title=Slumdog Millionaire (2008) |url=https://www.screendaily.com/features/slumdog-millionaire-/4040676.article |url-status=live |website=[[Screen Daily]] |archive-url=https://web.archive.org/web/20140530052457/http://www.screendaily.com/reviews/uk-ireland/features/slumdog-millionaire/4040676.article |archive-date=30 May 2014 |access-date=30 May 2014}}</ref><ref>{{Cite web |title=Slumdog Millionaire (2008) |url=http://explore.bfi.org.uk/4ce2b8c7d9ca6 |url-status=dead |archive-url=https://web.archive.org/web/20140502195226/http://explore.bfi.org.uk/4ce2b8c7d9ca6 |archive-date=2 May 2014 |access-date=2 May 2014 |website=[[British Film Institute]]}}</ref><ref name=\"Bradshaw-20090109\">{{Cite news |last=Bradshaw |first=Peter |author-link=Peter Bradshaw |date=9 January 2009 |title=Slumdog Millionaire |work=[[The Guardian]] |url=https://www.theguardian.com/film/2009/jan/09/slumdog-millionaire-review-danny-boyle |url-status=live |access-date=13 December 2016 |archive-url=https://web.archive.org/web/20170115055012/https://www.theguardian.com/film/2009/jan/09/slumdog-millionaire-review-danny-boyle |archive-date=15 January 2017}}</ref>\n"
+        },
+        {
+          "line": 35,
+          "kind": "intro",
+          "text": "'''''Slumdog Millionaire''''' is a 2008 British [[Drama (film"
+        },
+        {
+          "line": 28,
+          "text": "| runtime        = 120 minutes<ref name=\"langu\">{{Cite web |date=7 May 2017 |title=Slumdog Millionaire (15) |url=https://www.bbfc.co.uk/release/slumdog-millionaire-q29sbgvjdglvbjpwwc00mtu4ode |url-status=live |archive-url=https://web.archive.org/web/20170928150732/http://www.bbfc.co.uk/releases/slumdog-millionaire-film#bbfcinsight |archive-date=28 September 2017 |access-date=7 May 2017 |website=[[British Board of Film Classification]]}}</ref>"
+        }
+      ]
+    },
+    {
+      "film": "The Visitor (2007 feature film)",
+      "revision": 1370281508,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1370281508&prop=wikitext%7Crevid&format=json",
+      "retrieved_at": "2026-10-30T04:27:38.226610+00:00",
+      "response_sha256": "6a0c88ce61b9b1cd2a3cb978b59f40868a901c3d672a069ff5e89552d48509c5",
+      "elapsed_seconds": 0.336,
+      "additional_request": {
+        "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1370281508&prop=wikitext%7Crevid&format=json",
+        "retrieved_at": "2026-10-30T04:29:21.530041+00:00",
+        "sha256": "6a0c88ce61b9b1cd2a3cb978b59f40868a901c3d672a069ff5e89552d48509c5",
+        "elapsed_seconds": 0.442
+      },
+      "rt_positivity_pct": 89,
+      "rt_critic_count": 120,
+      "rt_average_10": 7.62,
+      "metascore_100": 79,
+      "mc_critic_count": 29,
+      "cited_access_dates": {
+        "rt": "2015-02-02",
+        "mc": "2015-02-02",
+        "cinemascore": null
+      },
+      "cinemascore_letter": null,
+      "cinemascore_sample_n": null,
+      "audience_numeric_10": null,
+      "audience_votes": null,
+      "countries": [
+        "United States"
+      ],
+      "runtime_minutes": 103,
+      "format_group": "other_feature",
+      "format_inference": "Animated Feature nominee for last three; otherwise feature-length runtime, animation status not independently audited",
+      "evidence": [
+        {
+          "line": 60,
+          "kind": "rt_factual_prefix",
+          "text": "''The Visitor'' received mostly positive reviews from critics and has a rating of 89% on [[Rotten Tomatoes]] based on 120 reviews with an average rating of 7.62 out of 10."
+        },
+        {
+          "line": 60,
+          "kind": "mc_factual_span",
+          "text": "\" The film also has a score of 79 out of 100 on [[Metacritic]] based on 29 reviews"
+        },
+        {
+          "line": 20,
+          "kind": "country",
+          "text": "| country = United States\n"
+        },
+        {
+          "line": 26,
+          "kind": "intro",
+          "text": "'''''The Visitor''''' is a 2007 American [[Drama (film"
+        },
+        {
+          "line": 19,
+          "text": "| runtime = 103 minutes<ref name=\"bomojo\"/>"
+        }
+      ]
+    },
+    {
+      "film": "Bolt (2008 film)",
+      "revision": 1380813477,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1380813477&prop=wikitext%7Crevid&format=json",
+      "retrieved_at": "2026-10-30T04:27:39.597124+00:00",
+      "response_sha256": "167663427fdfb5795f61df7758b6f7a9e20987db8445da7e38356f14f1a22057",
+      "elapsed_seconds": 0.36,
+      "additional_request": {
+        "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1380813477&prop=wikitext%7Crevid&format=json",
+        "retrieved_at": "2026-10-30T04:29:22.929151+00:00",
+        "sha256": "167663427fdfb5795f61df7758b6f7a9e20987db8445da7e38356f14f1a22057",
+        "elapsed_seconds": 0.389
+      },
+      "rt_positivity_pct": 90,
+      "rt_critic_count": 191,
+      "rt_average_10": 7.2,
+      "metascore_100": 67,
+      "mc_critic_count": 29,
+      "cited_access_dates": {
+        "rt": null,
+        "mc": "2024-03-08",
+        "cinemascore": "2022-02-05"
+      },
+      "cinemascore_letter": "A−",
+      "cinemascore_sample_n": null,
+      "audience_numeric_10": null,
+      "audience_votes": null,
+      "countries": [
+        "United States"
+      ],
+      "runtime_minutes": 96,
+      "format_group": "animated_feature",
+      "format_inference": "Animated Feature nominee for last three; otherwise feature-length runtime, animation status not independently audited",
+      "evidence": [
+        {
+          "line": 190,
+          "kind": "rt_factual_prefix",
+          "text": "{{Rotten Tomatoes prose|90|7.2|191|"
+        },
+        {
+          "line": 190,
+          "kind": "mc_factual_span",
+          "text": "|ref=yes|access-date={{RT data|access date}}}} [[Metacritic]], which uses a [[Weighted arithmetic mean|weighted average]], assigned the {{#switch:  | episode = episode | series = series | season = season | film }} a score of 67 out of 100, based on 29 critics"
+        },
+        {
+          "line": 31,
+          "kind": "country",
+          "text": "| country        = United States\n"
+        },
+        {
+          "line": 37,
+          "kind": "intro",
+          "text": "'''''Bolt''''' is a 2008 American animated adventure [[comedy film"
+        },
+        {
+          "line": 30,
+          "text": "| runtime        = 96 minutes"
+        },
+        {
+          "line": 190,
+          "text": "Audiences polled by [[CinemaScore]] gave the film an average grade of \"A−\" on an A+ to F scale."
+        }
+      ]
+    },
+    {
+      "film": "Kung Fu Panda (film)",
+      "revision": 1381957478,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381957478&prop=wikitext%7Crevid&format=json",
+      "retrieved_at": "2026-10-30T04:27:40.970660+00:00",
+      "response_sha256": "f25dfb977b45f1ad90e1c247bbcb7c4ab7c31781cd2c06ffaa90bd2082c5a866",
+      "elapsed_seconds": 0.364,
+      "additional_request": {
+        "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381957478&prop=wikitext%7Crevid&format=json",
+        "retrieved_at": "2026-10-30T04:29:24.431139+00:00",
+        "sha256": "f25dfb977b45f1ad90e1c247bbcb7c4ab7c31781cd2c06ffaa90bd2082c5a866",
+        "elapsed_seconds": 0.497
+      },
+      "rt_positivity_pct": 87,
+      "rt_critic_count": 191,
+      "rt_average_10": null,
+      "metascore_100": 74,
+      "mc_critic_count": 36,
+      "cited_access_dates": {
+        "rt": "2025-06-18",
+        "mc": "2021-07-23",
+        "cinemascore": "2022-05-01"
+      },
+      "cinemascore_letter": "A−",
+      "cinemascore_sample_n": null,
+      "audience_numeric_10": null,
+      "audience_votes": null,
+      "countries": [
+        "United States"
+      ],
+      "runtime_minutes": 92,
+      "format_group": "animated_feature",
+      "format_inference": "Animated Feature nominee for last three; otherwise feature-length runtime, animation status not independently audited",
+      "evidence": [
+        {
+          "line": 124,
+          "kind": "rt_factual_prefix",
+          "text": "[[Rotten Tomatoes]] reports that 87% of 191 reviewers gave the film a positive review; the average rating is {{RT data|average}}."
+        },
+        {
+          "line": 124,
+          "kind": "mc_factual_span",
+          "text": "\" At [[Metacritic]], the film has an average score of 74 out of 100, based on 36 reviews"
+        },
+        {
+          "line": 37,
+          "kind": "country",
+          "text": "| country        = United States\n"
+        },
+        {
+          "line": 42,
+          "kind": "intro",
+          "text": "'''''Kung Fu Panda''''' is a 2008 American animated [[martial arts film"
+        },
+        {
+          "line": 36,
+          "text": "| runtime        = 92 minutes<ref name=\"BBFC\">{{Cite web |date=May 26, 2008 |title=''Kung Fu Panda'' (PG) |url=https://www.bbfc.co.uk/release/kung-fu-panda-q29sbgvjdglvbjpwwc00nje2mja |access-date=July 30, 2026 |website=[[British Board of Film Classification]]}}</ref><!-- Theatrical runtime: 91:55 -->"
+        },
+        {
+          "line": 124,
+          "text": "Audiences polled by [[CinemaScore]] gave the film an average grade of \"A−\" on a scale of A+ to F."
+        }
+      ]
+    },
+    {
+      "film": "WALL-E",
+      "revision": 1380240647,
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1380240647&prop=wikitext%7Crevid&format=json",
+      "retrieved_at": "2026-10-30T04:27:46.314347+00:00",
+      "response_sha256": "2acadbbcc3b1ae1e79cb86e67875e860cb6b30dd48c3e3b014df45b8f9b20988",
+      "elapsed_seconds": 4.333,
+      "additional_request": {
+        "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1380240647&prop=wikitext%7Crevid&format=json",
+        "retrieved_at": "2026-10-30T04:29:25.943241+00:00",
+        "sha256": "2acadbbcc3b1ae1e79cb86e67875e860cb6b30dd48c3e3b014df45b8f9b20988",
+        "elapsed_seconds": 0.509
+      },
+      "rt_positivity_pct": 95,
+      "rt_critic_count": 258,
+      "rt_average_10": 8.9,
+      "metascore_100": 95,
+      "mc_critic_count": 39,
+      "cited_access_dates": {
+        "rt": null,
+        "mc": "2017-07-28",
+        "cinemascore": "2022-06-14"
+      },
+      "cinemascore_letter": "A",
+      "cinemascore_sample_n": null,
+      "audience_numeric_10": null,
+      "audience_votes": null,
+      "countries": [
+        "United States"
+      ],
+      "runtime_minutes": 98,
+      "format_group": "animated_feature",
+      "format_inference": "Animated Feature nominee for last three; otherwise feature-length runtime, animation status not independently audited",
+      "evidence": [
+        {
+          "line": 216,
+          "kind": "rt_factual_prefix",
+          "text": "{{RT prose|95|8.9|258|"
+        },
+        {
+          "line": 216,
+          "kind": "mc_factual_span",
+          "text": "}} At [[Metacritic]], which assigns a normalized rating to reviews from mainstream critics, the film has an [[weighted mean|average]] score of 95 out of 100 based on 39 reviews"
+        },
+        {
+          "line": 39,
+          "kind": "country",
+          "text": "| country        = United States <!--The film's IMDB page says that the film is a co-production between the United States and Japan. However, there is no source to verify if this is accurate, so please do not add Japan as a country.-->\n"
+        },
+        {
+          "line": 46,
+          "kind": "intro",
+          "text": "'''''WALL-E''''' (stylized with an [[interpunct]] as '''''WALL·E'''''{{--)}} is a 2008 American animated [[science fiction film"
+        },
+        {
+          "line": 38,
+          "text": "| runtime        = 98 minutes<ref name=\"BOM\">{{cite web|url=https://www.boxofficemojo.com/movies/?id=wall-e.htm|title=WALL-E (2008)|publisher=Box Office Mojo|access-date=December 30, 2020|archive-date=August 6, 2010|archive-url=https://web.archive.org/web/20100806015631/http://www.boxofficemojo.com/movies/?id=wall-e.htm|url-status=live}}</ref>"
+        },
+        {
+          "line": 216,
+          "text": "Audiences polled by [[CinemaScore]] gave the film an average rating of \"A\" on an A+ to F scale."
+        }
+      ]
+    }
+  ]
+}

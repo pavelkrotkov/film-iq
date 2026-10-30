@@ -1,0 +1,38 @@
+{
+  "key": "shorts-0",
+  "title": "Academy Award for Best Animated Short Film",
+  "section": "11",
+  "heading": "2020s",
+  "split": "holdout",
+  "lineage": "Wikipedia derivative of Academy of Motion Picture Arts and Sciences; original-source accuracy and rights not established by this capture",
+  "revision": "1381717375",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=Academy+Award+for+Best+Animated+Short+Film&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=Academy+Award+for+Best+Animated+Short+Film&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:32.286327+00:00",
+    "bytes": 217,
+    "sha256": "bbca3ca15278273db12ed953afbf10dd8321c133c84fbf60790fec708c9a2f61",
+    "file": "shorts-0.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381717375&section=11&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381717375&section=11&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:33.391488+00:00",
+    "bytes": 3864,
+    "sha256": "268f58d4c4cd725e8730ea3ff6e2da84bd26f0587ca8c44fec7443547f2e89ed",
+    "file": "shorts-0.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381717375&section=11&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381717375&section=11&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:34.513494+00:00",
+    "bytes": 11081,
+    "sha256": "03dd2a59068573fb7a9ec6d8cbd83a0381986a77a812393923620e9aa1fa928b",
+    "file": "shorts-0.text.json"
+  },
+  "corpus_stratum": "shorts",
+  "original_source_family": "Academy of Motion Picture Arts and Sciences"
+}

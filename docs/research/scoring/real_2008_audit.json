@@ -1,0 +1,515 @@
+{
+  "auditor_kind": "automated",
+  "human_audit": false,
+  "audit_utc": "2026-10-30T02:14:31.293605+00:00",
+  "dataset_path": "docs/research/scoring/real_2008.json",
+  "dataset_sha256_at_comparison": "af7c45508284c6cf02e7f8bab2bf9057b04ec0977720cb626fc628ba17bf4c90",
+  "scope": "Independent factual transcription comparison against freshly fetched exact rendered Wikipedia revisions; no evaluator, results or study read. Preserves original 60-record audit scope even if the omitted row is added later.",
+  "original_records_verified": 60,
+  "original_record_mismatches": [],
+  "primary_publication_verification": false,
+  "sources": [
+    {
+      "film": "Milk (2008 American film)",
+      "requested_revision": 1379683314,
+      "observed_wgRevisionId": 1379683314,
+      "url": "https://en.wikipedia.org/wiki/Milk_(2008_American_film)?oldid=1379683314",
+      "cache": ".cache/audit/1379683314.html",
+      "rendered_response_sha256": "da9a0fee1f2ebb426a037a20dfc3e3a13deb4c0b85c66c01038f4059cea5059b",
+      "observed_selection_count": 32,
+      "original_records_compared": 31
+    },
+    {
+      "film": "The Wrestler (2008 film)",
+      "requested_revision": 1381358616,
+      "observed_wgRevisionId": 1381358616,
+      "url": "https://en.wikipedia.org/wiki/The_Wrestler_(2008_film)?oldid=1381358616",
+      "cache": ".cache/audit/1381358616.html",
+      "rendered_response_sha256": "071c6225f8657fbf71c7afb528b0d17ba1818344efa7dcc29a03a2de9ad02551",
+      "observed_selection_count": 25,
+      "original_records_compared": 25
+    },
+    {
+      "film": "The Reader (2008 film)",
+      "requested_revision": 1378967681,
+      "observed_wgRevisionId": 1378967681,
+      "url": "https://en.wikipedia.org/wiki/The_Reader_(2008_film)?oldid=1378967681",
+      "cache": ".cache/audit/1378967681.html",
+      "rendered_response_sha256": "2a6088e5b8c27478e1d455684b7965bc6fe088133d751af28470851c5ec6fe7d",
+      "observed_selection_count": 4,
+      "original_records_compared": 4
+    }
+  ],
+  "record_checks": [
+    {
+      "revision": 1379683314,
+      "critic": "Michael Rechtshaffen",
+      "publication": "The Hollywood Reporter",
+      "rank": 1,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Peter Travers",
+      "publication": "Rolling Stone",
+      "rank": 1,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Ella Taylor",
+      "publication": "LA Weekly",
+      "rank": 2,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Frank Scheck",
+      "publication": "The Hollywood Reporter",
+      "rank": 2,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Lisa Schwarzbaum",
+      "publication": "Entertainment Weekly",
+      "rank": 2,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Mick LaSalle",
+      "publication": "San Francisco Chronicle",
+      "rank": 2,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Ann Hornaday",
+      "publication": "The Washington Post",
+      "rank": 3,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Marjorie Baumgarten",
+      "publication": "The Austin Chronicle",
+      "rank": 3,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Robert Mondello",
+      "publication": "NPR",
+      "rank": 3,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Ben Lyons",
+      "publication": "At the Movies",
+      "rank": 3,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Andrea Gronvall",
+      "publication": "Chicago Reader",
+      "rank": 4,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Peter Hartlaub",
+      "publication": "San Francisco Chronicle",
+      "rank": 4,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Stephen Holden",
+      "publication": "The New York Times",
+      "rank": 4,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Ty Burr",
+      "publication": "The Boston Globe",
+      "rank": 4,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Ben Mankiewicz",
+      "publication": "At the Movies",
+      "rank": 4,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Marc Doyle",
+      "publication": "Metacritic",
+      "rank": 5,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Richard Corliss",
+      "publication": "TIME magazine",
+      "rank": 5,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Stephen Farber",
+      "publication": "The Hollywood Reporter",
+      "rank": 5,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Carrie Rickey",
+      "publication": "The Philadelphia Inquirer",
+      "rank": 6,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Keith Phipps",
+      "publication": "The A.V. Club",
+      "rank": 6,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Kirk Honeycutt",
+      "publication": "The Hollywood Reporter",
+      "rank": 6,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Dana Stevens",
+      "publication": "Slate",
+      "rank": 7,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "David Denby",
+      "publication": "The New Yorker",
+      "rank": 7,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Wesley Morris",
+      "publication": "The Boston Globe",
+      "rank": 7,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "A. O. Scott",
+      "publication": "The New York Times",
+      "rank": 8,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Lawrence Toppman",
+      "publication": "The Charlotte Observer",
+      "rank": 9,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Liam Lacey",
+      "publication": "The Globe and Mail",
+      "rank": 9,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Noel Murray",
+      "publication": "The A.V. Club",
+      "rank": 9,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Owen Gleiberman",
+      "publication": "Entertainment Weekly",
+      "rank": 9,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Sean Axmaker",
+      "publication": "Seattle Post-Intelligencer",
+      "rank": 9,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1379683314,
+      "critic": "Nathan Rabin",
+      "publication": "The A.V. Club",
+      "rank": 10,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Matt Cale",
+      "publication": "Ruthless Reviews",
+      "rank": 1,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Ben Mankiewicz",
+      "publication": "At the Movies",
+      "rank": 1,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Joshua Rothkopf",
+      "publication": "Time Out",
+      "rank": 1,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Owen Gleiberman",
+      "publication": "Entertainment Weekly",
+      "rank": 1,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Marc Doyle",
+      "publication": "Metacritic",
+      "rank": 2,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Peter Hartlaub",
+      "publication": "San Francisco Chronicle",
+      "rank": 2,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Anthony Lane",
+      "publication": "The New Yorker",
+      "rank": 3,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Marc Savlov",
+      "publication": "The Austin Chronicle",
+      "rank": 3,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Peter Vonder Haar",
+      "publication": "Film Threat",
+      "rank": 3,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Richard Roeper",
+      "publication": "Chicago Sun-Times",
+      "rank": 4,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Ben Lyons",
+      "publication": "At the Movies",
+      "rank": 4,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "David Denby",
+      "publication": "The New Yorker",
+      "rank": 4,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "James Berardinelli",
+      "publication": "ReelViews",
+      "rank": 5,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Mick LaSalle",
+      "publication": "San Francisco Chronicle",
+      "rank": 5,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Ty Burr",
+      "publication": "The Boston Globe",
+      "rank": 6,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "David Ansen",
+      "publication": "Newsweek",
+      "rank": 7,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Ray Bennett",
+      "publication": "The Hollywood Reporter",
+      "rank": 7,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "V.A. Musetto",
+      "publication": "New York Post",
+      "rank": 7,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": null,
+      "publication": "Premiere",
+      "rank": 8,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Nathan Rabin",
+      "publication": "The A.V. Club",
+      "rank": 8,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Elizabeth Weitzman",
+      "publication": "New York Daily News",
+      "rank": 9,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Josh Rosenblatt",
+      "publication": "The Austin Chronicle",
+      "rank": 9,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Dana Stevens",
+      "publication": "Slate",
+      "rank": 10,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Joe Morgenstern",
+      "publication": "The Wall Street Journal",
+      "rank": 10,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1381358616,
+      "critic": "Joe Neumaier",
+      "publication": "New York Daily News",
+      "rank": 10,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1378967681,
+      "critic": "Rex Reed",
+      "publication": "The New York Observer",
+      "rank": 2,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1378967681,
+      "critic": "Stephen Farber",
+      "publication": "The Hollywood Reporter",
+      "rank": 4,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1378967681,
+      "critic": "Tasha Robinson",
+      "publication": "The A.V. Club",
+      "rank": 8,
+      "matches_observed_source": true
+    },
+    {
+      "revision": 1378967681,
+      "critic": "Roger Ebert",
+      "publication": "Chicago Sun-Times",
+      "rank": null,
+      "matches_observed_source": true
+    }
+  ],
+  "omissions_from_original_60": [
+    {
+      "film": "Milk (2008 American film)",
+      "revision": 1379683314,
+      "critic": "Roger Ebert",
+      "publication": "Chicago Sun-Times",
+      "rank": null,
+      "membership": "unranked alphabetical top 20",
+      "locator": "#Top_ten_lists, final (32nd) list item; citation id cite_ref-mctop08_40-30",
+      "observed_text": "Listed \u2013 Roger Ebert, Chicago Sun-Times (Ebert gave a top 20 list in alphabetical order without ranking and announced on his website that he considered it the most deserving 2008 Best Picture nominee at the Oscars.)",
+      "other_omissions_in_the_three_selection_sections": 0
+    }
+  ],
+  "unranked_original_records": [
+    {
+      "film": "The Reader (2008 film)",
+      "critic": "Roger Ebert",
+      "publication": "Chicago Sun-Times",
+      "rank": null,
+      "membership": "unranked top 20"
+    }
+  ],
+  "unidentified_original_records": [
+    {
+      "film": "The Wrestler (2008 film)",
+      "critic": null,
+      "publication": "Premiere",
+      "rank": 8,
+      "interpretation": "Publication-only row; no person identity can be inferred."
+    }
+  ],
+  "lineage": [
+    "Milk: Wikipedia selection section cites Metacritic 2008 compilation; 29 ranked rows cite mctop08, two At the Movies ranked rows have no individual citation; omitted Ebert row also cites mctop08.",
+    "The Wrestler: section introduction cites two Metacritic references; one displays title Metacritic: 2007 Film Critic Top Ten Lists despite the 2008 section. Matt Cale row has its own Ruthless Reviews citation. Remaining list rows have no individual footnotes. Section citations do not prove every row originates in Metacritic.",
+    "The Reader: paragraph supplies four observations; Metacritic citations follow Farber, Robinson and Ebert; Rex Reed sentence has no individual footnote.",
+    "Wikipedia and compilations are derivative carriers and must not be added as extra independent critic votes; Marc Doyle is a named critic attributed to Metacritic, distinct from the intermediary role."
+  ],
+  "completeness_limits": [
+    "All 60 originally included person/publication/rank triples match these three revisions, including a null critic and a null rank. This verifies Wikipedia transcription, not primary source accuracy, real-world identities or complete critic ballots.",
+    "Observed selection sections contain 61 memberships: Milk32, Wrestler25, Reader4. Original Milk ordinal selector omitted one explicit unranked selection.",
+    "Other seven cohort pages were not independently audited; zero extracted rows remains unknown rather than negative membership.",
+    "No complete original critic ballots, full candidate universe, eligibility rules, source availability or predictive outcome were established.",
+    "Rendered pages confirm revision IDs; original wikitext line locators and original API response hashes were not independently reproduced. Dataset acquisition URLs use page= rather than oldid=, so URLs alone are not revision pins."
+  ],
+  "network_limitations": [
+    "web open on w/index.php?oldid URLs returned cache misses.",
+    "Sandbox urllib DNS failed. Authorized escalated urllib API fetches returned HTTP403 for all three revisions.",
+    "Escalated urllib rendered /wiki/TITLE?oldid=REV with Mozilla/5.0 succeeded for all three, and wgRevisionId matched requested revisions."
+  ],
+  "license": "Wikipedia contributors, CC BY-SA 4.0; attribution and source histories in REAL_DATA_NOTICE.md; no publisher review bodies or images fetched."
+}

@@ -1,0 +1,1782 @@
+{
+  "auditor_kind": "independent_automated_agent",
+  "auditor": "/root/audit_corpus_holdout",
+  "human_audit": false,
+  "method": {
+    "inputs": "Only AGENTS.md, selection.json, NOTICE.md, rights JSON/receipt, eight rendered *.text.json responses, revision JSON and receipts. No wikitext captures, adapters, evaluators, tests, gold or other audit reports read. No network requests.",
+    "enumeration": "Independently inspected all normalized rendered HTML table rows and source headers/cells. A standalone stdlib HTMLParser helper enumerated cells; the auditor reviewed every displayed film row. Raw markup separately checked the live-action tied-winner title annotations. No implementation output was consulted.",
+    "title_policy": "Use displayed English/first title cell, preserving punctuation/case. Award TIE annotations outside italic titles are not title text. Alternative original-language title cells identify the same selection and are not separate records.",
+    "category_policy": "Normalize rendered local heading by stripping markup; Academy tables additionally preserve displayed year plus award-edition subgroup after a slash. Rowspan-only year headers set subsequent film grouping.",
+    "rank_policy": "All eight sections are unranked memberships/award nominees; rank and ordinal tie are null. Display order and award-win/tied-win annotations are distinct.",
+    "independence_limits": "Independent automated enumeration of derivative Wikipedia renderings only; same publisher material is not independent critical evidence, a human audit, or original festival/Academy factual corroboration. API response hashes verify captured evidence consistency, not external authenticity or perpetual rendering stability."
+  },
+  "rights": {
+    "declaration": {
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
+      "text": "Creative Commons Attribution-Share Alike 4.0"
+    },
+    "receipt_verification": {
+      "file": "rights.json",
+      "bytes": 162,
+      "sha256": "8a7345e12679082632295a2c2889b16f3c288f0fbc71082bc0fdf5929a518bb7",
+      "matches_receipt": true
+    },
+    "attribution_notice": "NOTICE.md",
+    "limits": "Retained Wikipedia text and derived audit records use CC BY-SA 4.0 with pinned contributor attribution. No license for images, media, external primary pages or independent primary factual verification is inferred."
+  },
+  "per_case": [
+    {
+      "key": "shorts-0",
+      "title": "Academy Award for Best Animated Short Film",
+      "section": "11",
+      "revision": "1381717375",
+      "heading": "2020s",
+      "split": "holdout",
+      "records": [
+        {
+          "title": "If Anything Happens I Love You",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "Burrow",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "Genius Loci",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "Opera",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "Yes-People",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "The Windshield Wiper",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "Affairs of the Art",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "Bestia",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "Boxballet",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "Robin Robin",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "The Boy, the Mole, the Fox and the Horse",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "The Flying Sailor",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "Ice Merchants",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "My Year of Dicks",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "An Ostrich Told Me the World Is Fake and I Think I Believe It",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "War Is Over! Inspired by the Music of John & Yoko",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "Letter to a Pig",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "Ninety-Five Senses",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "Our Uniform",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "Pachyderme",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "In the Shadow of the Cypress",
+          "position": 21,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "Beautiful Men",
+          "position": 22,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "Magic Candies",
+          "position": 23,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "Wander to Wonder",
+          "position": 24,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "Yuck!",
+          "position": 25,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "The Girl Who Cried Pearls",
+          "position": 26,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        },
+        {
+          "title": "Butterfly",
+          "position": 27,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        },
+        {
+          "title": "Forevergreen",
+          "position": 28,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        },
+        {
+          "title": "Retirement Plan",
+          "position": 29,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        },
+        {
+          "title": "The Three Sisters",
+          "position": 30,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        }
+      ],
+      "expected_count": 30,
+      "scope": "complete published captured section, not full underlying source event or independent primary-source corroboration",
+      "notes": [
+        "All selected section table rows enumerated; original-title aliases, directors/nominees, production countries, headings, footnotes and image/navigation text are not additional films.",
+        "Positions are global one-based film display positions within the captured section, not ranks. All entries here are unranked; winner highlighting does not create rank 1.",
+        "Category retains displayed decade heading and year/award-edition grouping, including rowspan-only year-header rows. Year is an award-table label, not a verified film production/release year. Winners and nominees are both included; separate award-outcome accuracy is not evaluated.",
+        "The selected 2020s table contains six published annual groups, 2020/21 through 2025, with five films each."
+      ],
+      "annotations": [],
+      "capture_verification": [
+        {
+          "file": "shorts-0.text.json",
+          "bytes": 11081,
+          "sha256": "03dd2a59068573fb7a9ec6d8cbd83a0381986a77a812393923620e9aa1fa928b",
+          "matches_receipt": true
+        },
+        {
+          "file": "shorts-0.revision.json",
+          "bytes": 217,
+          "sha256": "bbca3ca15278273db12ed953afbf10dd8321c133c84fbf60790fec708c9a2f61",
+          "matches_receipt": true
+        }
+      ],
+      "metadata_verification": {
+        "title_page_id_and_revision_match": true,
+        "receipt_selection_section_and_split_match": true,
+        "request_section_matches": true
+      },
+      "errors": []
+    },
+    {
+      "key": "shorts-1",
+      "title": "Academy Award for Best Live Action Short Film",
+      "section": "11",
+      "revision": "1378335253",
+      "heading": "2020s",
+      "split": "holdout",
+      "records": [
+        {
+          "title": "Two Distant Strangers",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "Feeling Through",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "The Letter Room",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "The Present",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "White Eye",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "The Long Goodbye",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "Ala Kachuu – Take and Run",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "The Dress",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "On My Mind",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "Please Hold",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "An Irish Goodbye",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "Ivalu",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "Le pupille",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "Night Ride",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "The Red Suitcase",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "The Wonderful Story of Henry Sugar",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "The After",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "Invincible",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "Knight of Fortune",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "Red, White and Blue",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "I'm Not a Robot",
+          "position": 21,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "A Lien",
+          "position": 22,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "Anuja",
+          "position": 23,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "The Last Ranger",
+          "position": 24,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "The Man Who Could Not Remain Silent",
+          "position": 25,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "The Singers",
+          "position": 26,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        },
+        {
+          "title": "Two People Exchanging Saliva",
+          "position": 27,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        },
+        {
+          "title": "Butcher's Stain",
+          "position": 28,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        },
+        {
+          "title": "A Friend of Dorothy",
+          "position": 29,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        },
+        {
+          "title": "Jane Austen's Period Drama",
+          "position": 30,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        }
+      ],
+      "expected_count": 30,
+      "scope": "complete published captured section, not full underlying source event or independent primary-source corroboration",
+      "notes": [
+        "All selected section table rows enumerated; original-title aliases, directors/nominees, production countries, headings, footnotes and image/navigation text are not additional films.",
+        "Positions are global one-based film display positions within the captured section, not ranks. All entries here are unranked; winner highlighting does not create rank 1.",
+        "Category retains displayed decade heading and year/award-edition grouping, including rowspan-only year-header rows. Year is an award-table label, not a verified film production/release year. Winners and nominees are both included; separate award-outcome accuracy is not evaluated.",
+        "The selected 2020s table contains six published annual groups, 2020/21 through 2025, with five films each.",
+        "The rendered section contains an unresolved note-reference error after the table. All thirty film rows remain readable. Two 2025 films are explicitly marked tied award winners; their title annotations are retained in audit notes while ordinal rank/tie stay null."
+      ],
+      "annotations": [
+        {
+          "position": 26,
+          "annotation": "Source small-print (TIE) is an award-outcome annotation outside the italic title, not an ordinal rank tie."
+        },
+        {
+          "position": 27,
+          "annotation": "Source small-print (TIE) is an award-outcome annotation outside the italic title, not an ordinal rank tie."
+        }
+      ],
+      "capture_verification": [
+        {
+          "file": "shorts-1.text.json",
+          "bytes": 10784,
+          "sha256": "32910d18b391176e01cb6ede1fb12a3d162da71c32a24b48c971ef1f975cf30a",
+          "matches_receipt": true
+        },
+        {
+          "file": "shorts-1.revision.json",
+          "bytes": 220,
+          "sha256": "68ffcde5f70e944c76a8245dd1df827d80ddde5a62f347925025f24e4341ef68",
+          "matches_receipt": true
+        }
+      ],
+      "metadata_verification": {
+        "title_page_id_and_revision_match": true,
+        "receipt_selection_section_and_split_match": true,
+        "request_section_matches": true
+      },
+      "errors": []
+    },
+    {
+      "key": "shorts-2",
+      "title": "Academy Award for Best Documentary Short Film",
+      "section": "12",
+      "revision": "1381329372",
+      "heading": "2020s",
+      "split": "holdout",
+      "records": [
+        {
+          "title": "Colette",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "A Concerto Is a Conversation",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "Do Not Split",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "Hunger Ward",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "A Love Song for Latasha",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "The Queen of Basketball",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "Audible",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "Lead Me Home",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "Three Songs for Benazir",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "When We Were Bullies",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "The Elephant Whisperers",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "Haulout",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "How Do You Measure a Year?",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "The Martha Mitchell Effect",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "Stranger at the Gate",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "The Last Repair Shop",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "The ABCs of Book Banning",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "The Barber of Little Rock",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "Island in Between",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "Nǎi Nai & Wài Pó",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "The Only Girl in the Orchestra",
+          "position": 21,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "Death by Numbers",
+          "position": 22,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "I Am Ready, Warden",
+          "position": 23,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "Incident",
+          "position": 24,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "Instruments of a Beating Heart",
+          "position": 25,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "All the Empty Rooms",
+          "position": 26,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        },
+        {
+          "title": "Armed Only with a Camera: The Life and Death of Brent Renaud",
+          "position": 27,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        },
+        {
+          "title": "Children No More: \"Were and Are Gone\"",
+          "position": 28,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        },
+        {
+          "title": "The Devil Is Busy",
+          "position": 29,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        },
+        {
+          "title": "Perfectly a Strangeness",
+          "position": 30,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        }
+      ],
+      "expected_count": 30,
+      "scope": "complete published captured section, not full underlying source event or independent primary-source corroboration",
+      "notes": [
+        "All selected section table rows enumerated; original-title aliases, directors/nominees, production countries, headings, footnotes and image/navigation text are not additional films.",
+        "Positions are global one-based film display positions within the captured section, not ranks. All entries here are unranked; winner highlighting does not create rank 1.",
+        "Category retains displayed decade heading and year/award-edition grouping, including rowspan-only year-header rows. Year is an award-table label, not a verified film production/release year. Winners and nominees are both included; separate award-outcome accuracy is not evaluated.",
+        "The selected 2020s table contains six published annual groups, 2020/21 through 2025, with five films each."
+      ],
+      "annotations": [],
+      "capture_verification": [
+        {
+          "file": "shorts-2.text.json",
+          "bytes": 10571,
+          "sha256": "5f23afe685b47ebea84a21429e47e1aa5173ec062e62e3f5fce0934b0498234c",
+          "matches_receipt": true
+        },
+        {
+          "file": "shorts-2.revision.json",
+          "bytes": 222,
+          "sha256": "287876ebdbf438b773c6b35e5f2782cf1bbc2ddac04d7843e9beaf84eeefb830",
+          "matches_receipt": true
+        }
+      ],
+      "metadata_verification": {
+        "title_page_id_and_revision_match": true,
+        "receipt_selection_section_and_split_match": true,
+        "request_section_matches": true
+      },
+      "errors": []
+    },
+    {
+      "key": "shorts-3",
+      "title": "Academy Award for Best Documentary Feature Film",
+      "section": "10",
+      "revision": "1381214933",
+      "heading": "2020s",
+      "split": "holdout",
+      "records": [
+        {
+          "title": "My Octopus Teacher",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "Collective",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "Crip Camp",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "The Mole Agent",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "Time",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "title": "Summer of Soul",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "Ascension",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "Attica",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "Flee",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "Writing with Fire",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2021 (94th)"
+        },
+        {
+          "title": "Navalny",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "All That Breathes",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "All the Beauty and the Bloodshed",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "Fire of Love",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "A House Made of Splinters",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2022 (95th)"
+        },
+        {
+          "title": "20 Days in Mariupol",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "Bobi Wine: The People's President",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "The Eternal Memory",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "Four Daughters",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "To Kill a Tiger",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2023 (96th)"
+        },
+        {
+          "title": "No Other Land",
+          "position": 21,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "Black Box Diaries",
+          "position": 22,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "Porcelain War",
+          "position": 23,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "Soundtrack to a Coup d'Etat",
+          "position": 24,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "Sugarcane",
+          "position": 25,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2024 (97th)"
+        },
+        {
+          "title": "Mr Nobody Against Putin",
+          "position": 26,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        },
+        {
+          "title": "The Alabama Solution",
+          "position": 27,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        },
+        {
+          "title": "Come See Me in the Good Light",
+          "position": 28,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        },
+        {
+          "title": "Cutting Through Rocks",
+          "position": 29,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        },
+        {
+          "title": "The Perfect Neighbor",
+          "position": 30,
+          "rank": null,
+          "tie": null,
+          "category": "2020s / 2025 (98th)"
+        }
+      ],
+      "expected_count": 30,
+      "scope": "complete published captured section, not full underlying source event or independent primary-source corroboration",
+      "notes": [
+        "All selected section table rows enumerated; original-title aliases, directors/nominees, production countries, headings, footnotes and image/navigation text are not additional films.",
+        "Positions are global one-based film display positions within the captured section, not ranks. All entries here are unranked; winner highlighting does not create rank 1.",
+        "Category retains displayed decade heading and year/award-edition grouping, including rowspan-only year-header rows. Year is an award-table label, not a verified film production/release year. Winners and nominees are both included; separate award-outcome accuracy is not evaluated.",
+        "The selected 2020s table contains six published annual groups, 2020/21 through 2025, with five films each."
+      ],
+      "annotations": [],
+      "capture_verification": [
+        {
+          "file": "shorts-3.text.json",
+          "bytes": 14226,
+          "sha256": "c24b85e65dfe2203a7a5b07659ec817fb9ddf8478ff230d3e76d12d21c27826b",
+          "matches_receipt": true
+        },
+        {
+          "file": "shorts-3.revision.json",
+          "bytes": 222,
+          "sha256": "87d45623d1c58944189754511cf21f6eeb49920bd863db299f64e76f77f0947e",
+          "matches_receipt": true
+        }
+      ],
+      "metadata_verification": {
+        "title_page_id_and_revision_match": true,
+        "receipt_selection_section_and_split_match": true,
+        "request_section_matches": true
+      },
+      "errors": []
+    },
+    {
+      "key": "locarno-0",
+      "title": "72nd Locarno Film Festival",
+      "section": "9",
+      "revision": "1357148463",
+      "heading": "International Competition (Concorso internazionale)",
+      "split": "holdout",
+      "records": [
+        {
+          "title": "The Fever",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "Echo",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "Cat in the Wall",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "A Voluntary Year",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "Douze Mille",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "During Revolution",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "The Science of Fictions",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "Maternal",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "Isadora's Children",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "Endless Night",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "O Fim do Mundo",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "Height of the Wave",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "Technoboss",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "South Terminal",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "The Last Black Man in San Francisco",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "Vitalina Varela",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "A Girl Missing",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        }
+      ],
+      "expected_count": 17,
+      "scope": "complete published captured section, not full underlying source event or independent primary-source corroboration",
+      "notes": [
+        "All selected section table rows enumerated; original-title aliases, directors/nominees, production countries, headings, footnotes and image/navigation text are not additional films.",
+        "Positions are global one-based film display positions within the captured section, not ranks. All entries here are unranked; winner highlighting does not create rank 1."
+      ],
+      "annotations": [],
+      "capture_verification": [
+        {
+          "file": "locarno-0.text.json",
+          "bytes": 5240,
+          "sha256": "bb5c6dc77718695ddf31dddce6f7cb9bf0b1c91c8bee76287b5fbe5b2727a19d",
+          "matches_receipt": true
+        },
+        {
+          "file": "locarno-0.revision.json",
+          "bytes": 207,
+          "sha256": "a0ebcb1968610de7d68603dea329bfae04cb488e3bf84136f8da507ac34f4ad3",
+          "matches_receipt": true
+        }
+      ],
+      "metadata_verification": {
+        "title_page_id_and_revision_match": true,
+        "receipt_selection_section_and_split_match": true,
+        "request_section_matches": true
+      },
+      "errors": []
+    },
+    {
+      "key": "locarno-2",
+      "title": "74th Locarno Film Festival",
+      "section": "16",
+      "revision": "1381832392",
+      "heading": "International competition (Concorso internazionale)",
+      "split": "holdout",
+      "records": [
+        {
+          "title": "The Infernal Machine",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "And Then They Burn the Sea",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Suncatcher",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Christmas",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "FIRST TIME [The Time for All but Sunset - VIOLET]",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Neon Phantom",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Playtime",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Home",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "In Flow of Words",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Night",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "The Demons of Dorothy",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Love, Dad",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Mask",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Dad's Sneakers",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Sound of the Night",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Squish!",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Steakhouse",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "The Sunset Special",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Strawberry Cheesecake",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Time Flows in Strange Ways on Sundays",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        }
+      ],
+      "expected_count": 20,
+      "scope": "complete published captured section, not full underlying source event or independent primary-source corroboration",
+      "notes": [
+        "All selected section table rows enumerated; original-title aliases, directors/nominees, production countries, headings, footnotes and image/navigation text are not additional films.",
+        "Positions are global one-based film display positions within the captured section, not ranks. All entries here are unranked; winner highlighting does not create rank 1.",
+        "The captured local heading is International competition (Concorso internazionale). Do not infer feature/main-competition scope from this local heading; parent programme context is not in the captured section."
+      ],
+      "annotations": [],
+      "capture_verification": [
+        {
+          "file": "locarno-2.text.json",
+          "bytes": 5083,
+          "sha256": "ee5e8482ec89d3122734a862985b4fe5306e390bfd5409592af18ca12f3bebd7",
+          "matches_receipt": true
+        },
+        {
+          "file": "locarno-2.revision.json",
+          "bytes": 207,
+          "sha256": "2a80eb35cb0e3f72b656bf6363676f6e69a6ca57b7141dbba285175429453e5d",
+          "matches_receipt": true
+        }
+      ],
+      "metadata_verification": {
+        "title_page_id_and_revision_match": true,
+        "receipt_selection_section_and_split_match": true,
+        "request_section_matches": true
+      },
+      "errors": []
+    },
+    {
+      "key": "locarno-3",
+      "title": "75th Locarno Film Festival",
+      "section": "9",
+      "revision": "1381676569",
+      "heading": "Main competition",
+      "split": "holdout",
+      "records": [
+        {
+          "title": "The Adventures of Gigi the Law",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "At Night the Cats Are Brown",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Declaration",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Fairytale",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Human Flowers of Flesh",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "I Have Electric Dreams",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Il Pataffio",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Matter Out of Place",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Piaffe",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Rule 34",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Sermon to the Fish",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Saturn Bowling",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Serviam – I Will Serve",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Stella in Love",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Stone Turtle",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Tales of the Purple House",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Tommy Guns",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        }
+      ],
+      "expected_count": 17,
+      "scope": "complete published captured section, not full underlying source event or independent primary-source corroboration",
+      "notes": [
+        "All selected section table rows enumerated; original-title aliases, directors/nominees, production countries, headings, footnotes and image/navigation text are not additional films.",
+        "Positions are global one-based film display positions within the captured section, not ranks. All entries here are unranked; winner highlighting does not create rank 1."
+      ],
+      "annotations": [],
+      "capture_verification": [
+        {
+          "file": "locarno-3.text.json",
+          "bytes": 5196,
+          "sha256": "73cfaa1ff07820a83d20baadfec8820ae65ebb494beb35ea1e222463f7eb8d85",
+          "matches_receipt": true
+        },
+        {
+          "file": "locarno-3.revision.json",
+          "bytes": 207,
+          "sha256": "6fbf7afa7a79220b7bf759433d3f312f213a99920a7143147072954fd628b83c",
+          "matches_receipt": true
+        }
+      ],
+      "metadata_verification": {
+        "title_page_id_and_revision_match": true,
+        "receipt_selection_section_and_split_match": true,
+        "request_section_matches": true
+      },
+      "errors": []
+    },
+    {
+      "key": "annecy-0",
+      "title": "2024 Annecy International Animation Film Festival",
+      "section": "6",
+      "revision": "1378523182",
+      "heading": "Short films",
+      "split": "holdout",
+      "records": [
+        {
+          "title": "[S]",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Aquatic",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Beautiful Men",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Circle",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "In the Shadow of the Cypress",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Drizzle in Johnson",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "When It Comes (It Will Have Your Eyes)",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Flower Show",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Free the Chickens",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Gina Kamentsky's Pinocchio in 70MM",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Hurikán",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "In Perpetuum",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Joko",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Kaminhu",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Maybe Elephants",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Kawauso",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "La Voix des Sirènes",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "The Painting",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Margarethe 89",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Miserable Miracle",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Mont Noir",
+          "position": 21,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Moral Support",
+          "position": 22,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Butterfly",
+          "position": 23,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Percebes",
+          "position": 24,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Plus douce est la nuit",
+          "position": 25,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Horse Portrait",
+          "position": 26,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Preoperational Model",
+          "position": 27,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Return to Hairy Hill",
+          "position": 28,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Shoes and Hooves",
+          "position": 29,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Tennis, Oranges",
+          "position": 30,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "The Car That Came Back from the Sea",
+          "position": 31,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        }
+      ],
+      "expected_count": 31,
+      "scope": "complete published captured section, not full underlying source event or independent primary-source corroboration",
+      "notes": [
+        "All selected section table rows enumerated; original-title aliases, directors/nominees, production countries, headings, footnotes and image/navigation text are not additional films.",
+        "Positions are global one-based film display positions within the captured section, not ranks. All entries here are unranked; winner highlighting does not create rank 1.",
+        "[S] is the literal displayed title, not a footnote or placeholder. Percebes is highlighted as an award winner, not ordinal rank 1."
+      ],
+      "annotations": [],
+      "capture_verification": [
+        {
+          "file": "annecy-0.text.json",
+          "bytes": 6537,
+          "sha256": "6b4da81371b211212a2452bc3ffc22ad11c47cff3a859017d5cfd4c323d6b0c5",
+          "matches_receipt": true
+        },
+        {
+          "file": "annecy-0.revision.json",
+          "bytes": 230,
+          "sha256": "ee7d9f2b6f40b20f31d59fcc28da6116e5ac15e59919569217082d227e523325",
+          "matches_receipt": true
+        }
+      ],
+      "metadata_verification": {
+        "title_page_id_and_revision_match": true,
+        "receipt_selection_section_and_split_match": true,
+        "request_section_matches": true
+      },
+      "errors": []
+    }
+  ],
+  "total_records": 205,
+  "status": "independent automated held-out oracle prepared without evaluator output; holdout evaluation not performed by auditor"
+}

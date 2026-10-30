@@ -1,0 +1,38 @@
+{
+  "key": "cannes-3",
+  "title": "2023 Cannes Film Festival",
+  "section": "11",
+  "heading": "Un Certain Regard",
+  "split": "development",
+  "lineage": "Wikipedia derivative of Cannes Film Festival; original-source accuracy and rights not established by this capture",
+  "revision": "1381922752",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=2023+Cannes+Film+Festival&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=2023+Cannes+Film+Festival&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:38.258798+00:00",
+    "bytes": 206,
+    "sha256": "a66c78ff810be54b638a7180193cd1cdb2c15b71b92ffbca389072f8498f9079",
+    "file": "cannes-3.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381922752&section=11&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381922752&section=11&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:39.559653+00:00",
+    "bytes": 4188,
+    "sha256": "0fe4a8eb9363ff4fc20dcca138fad9c8298ba6434b548c65dfc72b5bd6c77d3a",
+    "file": "cannes-3.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381922752&section=11&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381922752&section=11&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:41.035705+00:00",
+    "bytes": 14789,
+    "sha256": "cfd17599ef09e37393ee716a61c922b9f0946d53b4f73d25c869983c16fd6167",
+    "file": "cannes-3.text.json"
+  },
+  "corpus_stratum": "cannes",
+  "original_source_family": "Cannes Film Festival"
+}

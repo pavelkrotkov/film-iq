@@ -1,0 +1,63 @@
+{
+  "requested_url": "https://static.data.gouv.fr/resources/liste-des-visas-dexploitations-cinematographiques-delivres-de-1945-a-2025/20251113-091845/liste-des-films-sortis-dans-les-salles-de-cinema-en-france-de-1945-a-2025.csv",
+  "final_url": "https://static.data.gouv.fr/resources/liste-des-visas-dexploitations-cinematographiques-delivres-de-1945-a-2025/20251113-091845/liste-des-films-sortis-dans-les-salles-de-cinema-en-france-de-1945-a-2025.csv",
+  "acquired_at": "2026-10-30T04:30:26.273359+00:00",
+  "status": 200,
+  "bytes": 12821667,
+  "sha256": "61674d72814c60789a1f04b7ef93bfba9ee39033cbc4ade26b3bfe03daec2e91",
+  "elapsed_seconds": 39.71952259889804,
+  "headers": {
+    "server": "nginx",
+    "date": "Fri, 30 Oct 2026 04:29:47 GMT",
+    "content-type": "text/csv; charset=utf-8",
+    "content-length": "12821667",
+    "vary": "Accept-Encoding",
+    "x-amz-meta-btime": "2026-10-16T12:26:36Z",
+    "x-amz-meta-mtime": "1763025526.213054002",
+    "etag": "\"9f8c32491fab8e6b7f706ab394697d6d\"",
+    "x-amz-version-id": "1792499285.539981",
+    "last-modified": "Tue, 20 Oct 2026 12:28:22 GMT",
+    "accept-ranges": "bytes",
+    "expires": "Sun, 29 Nov 2026 04:29:47 GMT",
+    "cache-control": "max-age=2592000",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "1; mode=block",
+    "x-frame-options": "SAMEORIGIN",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": "GET, OPTIONS",
+    "access-control-allow-headers": "Origin,Authorization,Accept,DNT,User-Agent,If-Modified-Since,Cache-Control,Content-Type,Range,sentry-trace,baggage",
+    "access-control-allow-credentials": "true",
+    "content-disposition": "attachment",
+    "pragma": "public",
+    "strict-transport-security": "max-age=15768000; includeSubDomains; preload;",
+    "connection": "close"
+  },
+  "dataset_id": "6311c164ebfb165ddc828ded",
+  "resource_id": "1c5075ec-7ce1-49cb-ab89-94f507812daf",
+  "license": "lov2",
+  "publisher": "Centre national du cinéma et de l'image animée",
+  "resource_last_modified": "2025-11-13T09:18:46.563000+00:00",
+  "selection": {
+    "type": "native-byte-prefix",
+    "header_physical_line": 1,
+    "data_physical_lines": [
+      2,
+      26
+    ],
+    "data_records": 25,
+    "window_bytes": 3522,
+    "window_sha256": "a7d6a0fd081daef6a2aeb089181c253733873a0204631836489d8c5fcda0288a",
+    "scope": "only this bounded first-25-record supplement; no full-dataset completeness claim",
+    "data_logical_records": [
+      1,
+      25
+    ],
+    "full_source_logical_data_records": 95764,
+    "full_source_field_width": 9,
+    "logical_prefix_verified": true
+  },
+  "dataset_metadata_sha256": "6d3e7dd21f64dcbff5ef86c02780a22c1215cc14d498fb79a4b3b2e92eac7d66",
+  "attribution": "Centre national du cinéma et de l'image animée (CNC), Liste des visas d'exploitations cinématographiques délivrés de 1945 à 2025; publisher update 2025-11-13; Licence Ouverte 2.0",
+  "dataset_url": "https://www.data.gouv.fr/datasets/6311c164ebfb165ddc828ded",
+  "license_url": "https://www.data.gouv.fr/pages/legal/licences/etalab-2-0"
+}

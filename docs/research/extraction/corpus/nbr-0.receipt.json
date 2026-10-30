@@ -1,0 +1,38 @@
+{
+  "key": "nbr-0",
+  "title": "National Board of Review Awards 2021",
+  "section": "1",
+  "heading": "Top 10 Films",
+  "split": "development",
+  "lineage": "Wikipedia derivative of National Board of Review; original-source accuracy and rights not established by this capture",
+  "revision": "1360506026",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=National+Board+of+Review+Awards+2021&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=National+Board+of+Review+Awards+2021&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:16.941992+00:00",
+    "bytes": 217,
+    "sha256": "796bbf8a2a2b215acce5bd7332ce74ffe344c188c92c50800a4fe685bdd5c870",
+    "file": "nbr-0.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1360506026&section=1&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1360506026&section=1&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:17.958102+00:00",
+    "bytes": 652,
+    "sha256": "72a5b5ca91022e7293d4b2f091a17866d00d38d9628a41a856234fd5ba913c03",
+    "file": "nbr-0.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1360506026&section=1&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1360506026&section=1&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:18.913659+00:00",
+    "bytes": 2783,
+    "sha256": "82a8a22dcb38874644223b6a148b3a8ff076fe47079077a5f22c88e9babe0a95",
+    "file": "nbr-0.text.json"
+  },
+  "corpus_stratum": "nbr",
+  "original_source_family": "National Board of Review"
+}

@@ -1,0 +1,38 @@
+{
+  "key": "shorts-1",
+  "title": "Academy Award for Best Live Action Short Film",
+  "section": "11",
+  "heading": "2020s",
+  "split": "holdout",
+  "lineage": "Wikipedia derivative of Academy of Motion Picture Arts and Sciences; original-source accuracy and rights not established by this capture",
+  "revision": "1378335253",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=Academy+Award+for+Best+Live+Action+Short+Film&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=Academy+Award+for+Best+Live+Action+Short+Film&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:35.484492+00:00",
+    "bytes": 220,
+    "sha256": "68ffcde5f70e944c76a8245dd1df827d80ddde5a62f347925025f24e4341ef68",
+    "file": "shorts-1.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1378335253&section=11&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1378335253&section=11&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:36.627269+00:00",
+    "bytes": 3833,
+    "sha256": "1e98a740a31745fc8e3aa96feb8445203a117fb7763853d026abfd58adaa074b",
+    "file": "shorts-1.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1378335253&section=11&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1378335253&section=11&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:37.725891+00:00",
+    "bytes": 10784,
+    "sha256": "32910d18b391176e01cb6ede1fb12a3d162da71c32a24b48c971ef1f975cf30a",
+    "file": "shorts-1.text.json"
+  },
+  "corpus_stratum": "shorts",
+  "original_source_family": "Academy of Motion Picture Arts and Sciences"
+}

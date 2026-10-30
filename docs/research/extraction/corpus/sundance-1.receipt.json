@@ -1,0 +1,38 @@
+{
+  "key": "sundance-1",
+  "title": "2021 Sundance Film Festival",
+  "section": "14",
+  "heading": "Animation",
+  "split": "development",
+  "lineage": "Wikipedia derivative of Sundance Film Festival; original-source accuracy and rights not established by this capture",
+  "revision": "1373127025",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=2021+Sundance+Film+Festival&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=2021+Sundance+Film+Festival&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:23.512810+00:00",
+    "bytes": 208,
+    "sha256": "26ba2dd2c99721e94d3b9950247fd99c422be9d8c7889ab61ae6956d404eb29c",
+    "file": "sundance-1.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373127025&section=14&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373127025&section=14&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:24.483511+00:00",
+    "bytes": 626,
+    "sha256": "fab3306fa559d03d75c18bc6ff1b8690855c10b9e618891fec21bd74feeb9c24",
+    "file": "sundance-1.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373127025&section=14&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373127025&section=14&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:25.453220+00:00",
+    "bytes": 2295,
+    "sha256": "c2161ef1517528a95d8f8ad1d92fcfc6022d037da30c7f8babff22a2c82bc63e",
+    "file": "sundance-1.text.json"
+  },
+  "corpus_stratum": "sundance",
+  "original_source_family": "Sundance Film Festival"
+}
