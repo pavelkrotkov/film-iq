@@ -187,9 +187,14 @@ publisher correction or arbitrary failure during database commit.
 
 [Recorded validation run](corpus/loader-results.json): Python 3.12.15, SQLite
 3.54.1, dlt 1.31.0 and SQLAlchemy 2.1.6; SQLite took 0.005 seconds and dlt 1.454
-seconds. These are one tiny replay's setup/load/retry measurements, excluding
-package installation/import; they are not throughput or maintenance-cost
-estimates. dlt emitted the same SQLAlchemy scalar-subquery warning as the
+seconds. Package installation is outside the timers. SQLite's module import
+precedes its timer, while the current dlt timer starts before pipeline
+construction and includes lazy imports if they have not already run. The
+recorded process warm-up state is unknown, so these are not controlled cold-start
+or steady-state comparisons, throughput or maintenance-cost estimates. The
+separately pinned historical synthetic implementation below imported dlt before
+starting its timer; its import boundary must not be applied to this runner.
+dlt emitted the same SQLAlchemy scalar-subquery warning as the
 synthetic experiment. No source polling or model API was used.
 
 With the optional pinned dependencies installed, repeat from the worktree root:
