@@ -26,3 +26,12 @@ the empty live account does not verify those nonempty cases. No test rating was
 created. [Gate A evidence](../a7-live-validation.md) records these limits. The
 decision remains accepted for POC; no upstream API enhancement was required.
 
+## Two-score MVP read protocol — 2026-10-30
+
+Retain `user:export:ratings` and a validated **atomic full replacement** CSV for Movary's movie-level **enjoyment** score, including rated-only films and deletions. Gate A exercised two identical real *header-only* exports; nonempty rated-only, changed and deleted real ratings remain unverified. Do not interpret the empty account as proof of nonempty behavior.
+
+Movary's [published personal-data CSV specification](https://docs.movary.org/user-guide/personal-data/) separately provides **History CSV** with `watchedAt` and `comment`; the **Ratings CSV** has `userRating` and no comments. Its comment is per viewing, so import `Artistic merit: N/10` only from an actual verified nonempty History CSV/API read. Keep all other free text unchanged; absent/invalid fields are unknown; conflicting tagged values across repeated plays enter a review state, not last-write-wins. If the installed version's read/export route does not supply comments, use an explicit temporary private user-owned CSV, not a direct Movary database read.
+
+C0a #58 must confirm the actual route and re-read after a genuine rating/comment edit and deletion before declaring a working two-dimensional round trip; C9 #27 is a **conditional** upstream API/field investigation after measured friction, not a precondition.
+
+**Evidence:** [A7 empty live export and authoritative reads](../a7-live-validation.md), [Movary documented export columns](https://docs.movary.org/user-guide/personal-data/).

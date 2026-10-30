@@ -38,3 +38,16 @@ B8 and the epic remain open until the required later observations and
 issue-specific acceptance are recorded, or an explicit scope change is accepted.
 No Epic A closure or consumer subscription is a prerequisite. This clarification
 preserves the accepted decision and does not accept Gate B.
+
+## Component-specific execution and accepted MVP priority — 2026-10-30
+
+The user chose a **small working personal discovery companion first**, not a broad original-publisher extraction program. **Start gates are component-specific**, not `Epic B complete → every C issue starts`:
+
+- Gate A is **accepted narrowly** (real Movary reads, a header-only export, one approved watchlist addition and safe retry). Begin #58 real personal-state/two-score sync, #59 rights-appropriate curated input and C7 #25 populated read-only report now, alongside scoped C1/C3/C5/C8 correctness/recovery work.
+- B1/B2/B3/B5/B6/B7 are completed as **bounded research**, including performed but inconclusive holdouts and explicitly unmeasured human effort. They do not establish unattended extraction, population matching precision, score calibration, actual provider entitlement or source permission.
+- B4 #14 **has not completed** three genuinely time-separated dates; registered October 31/November 1 jobs are plans, not observations. B8 #18 and Epic B #2 remain open until those results or an explicitly approved formal gate revision. Production provider/cadence adoption in C4 #22 waits for the reviewed decision; do not alter or trigger the existing jobs as part of the MVP work.
+- C2 bulk ingestion waits for source-specific permission, validation and review throughput. C6 modeling and C9 upstream Movary additions are conditional; no unmeasured dependencies are mandated.
+
+Each completed issue or accepted inconclusive experiment must state **performed test**, sample/denominator, rights, what it proves and what remains unknown. No speculative complexity or hidden gate expansion. The initial MVP is a product checkpoint, **not** an automatic Gate B or production Gate C pass.
+
+**Evidence:** [Gate A](../a7-live-validation.md), [Gate B dossier](../research/gate-b.md), [B4 dated protocol](../research/availability/dated-observations.md); current issues #3/#14/#18/#58/#59.
