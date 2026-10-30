@@ -1229,3 +1229,30 @@ snapshot after both failure classes and exercise malformed merit decimals.
 Validation now passes 364 tests with one opt-in live skip; Ruff/format/ty pass.
 The fourteen changed Python files have maximum CC 8 and minimum MI 52.59.
 Live personal acceptance remains pending explicit user permission.
+
+### C0b curated CSV implementation and private cohort (2026-10-30)
+
+Issue #59 now has a strict single-ballot curated CSV path, documented in
+[the importer guide](docs/implementation/curated-list.md). It reuses source
+policies, pending extraction revisions, explicit independent acceptance and
+reversible identity decisions. Blank facts remain unknown; source ordinals do
+not invent ranks, named identity-review evidence is required for supplied IDs,
+and a corrected import preserves the active accepted revision until review.
+There is no crawler, new dependency or Movary mutation.
+
+BFI's unresolved use/retention/link conditions are not treated as permission.
+An alternative original ten-film contributor ballot is retained only as private
+minimal factual research records under the Senses of Cinema private-study/
+research policy. Full poll coverage remains intentionally partial. Policy
+retrieval succeeded through the worker's web reader while the controller saw a
+suspended redirect; broad rights or retention duration are not inferred.
+Private inputs live in `.cache/epic-c/curated/`, with no publisher prose/images
+or actual source-derived cohort committed. Independent work-ID audit and C7
+integration with the current private Movary snapshot remain acceptance work.
+
+Initial validation: Ruff/format/ty pass; 354 tests pass with one opt-in skip.
+The eleven new Python modules/tests have maximum cyclomatic complexity 8 and
+minimum maintainability index 51.289236. Tests cover rank/tie/unranked and scoped
+selection, malformed schema/facts, missing identity review, re-import and
+accepted-revision preservation. They do not establish real source permissions,
+identity precision or recommendation quality.
