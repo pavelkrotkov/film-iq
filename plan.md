@@ -1440,3 +1440,15 @@ supplied positions against the full current accepted revision. Regressions cover
 a dated actual curated-import/acceptance/report path, generation mismatch/missing
 tokens, empty previews and truncated accepted selections. No personal or source
 record is changed by these report-boundary fixes.
+
+Final C7 integration is based on `4e16b49`: reviewed PRs #61–#67 are merged
+(planner, personal snapshots, acquisition, curated import, scoring, recovery and
+provider-neutral offers), and their obsolete worktrees have been removed by the
+controller. This integrates their code contracts, not their outstanding live/
+production acceptance. Final local Ruff/format/ty pass; 446 tests pass with one
+opt-in skip. All 241 tracked Python files meet maximum CC8 and minimum
+MI50.025032. The private ten-candidate report was regenerated against scorer
+`independent-priority-rank-v2`: ten accepted source entries, three reviewed work
+identities, seven unresolved, personal state unknown/stale and zero suggestions.
+No real personal history, ratings or comments were read or invented. The
+remaining Epic C gate matrix above still applies.

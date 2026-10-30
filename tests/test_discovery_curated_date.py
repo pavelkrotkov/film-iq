@@ -3,7 +3,6 @@
 from dataclasses import replace
 
 import pytest
-
 from test_accept import AUDIT
 from test_curated_csv import MANIFEST, body
 
