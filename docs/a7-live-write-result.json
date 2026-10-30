@@ -56,5 +56,7 @@
     "watchlist": 1
   },
   "database_access": "supported API only; no direct Movary database writes",
-  "selected_movary_id": 1
+  "selected_movary_id": 1,
+  "implementation_base_commit": "67ddb2ddf6aafeb5d2684e25345312f45b7b93e7",
+  "trace_method": "Actual CLI with a passthrough recorder delegating every request unchanged to the original HTTP transport; no mocked responses, credentials or bodies retained"
 }

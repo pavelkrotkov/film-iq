@@ -554,8 +554,9 @@ The user's root configuration/skill edits and Epic B worktrees/PRs are preserved
 
 Final outcome validation: 294 tests passed, one opt-in live test skipped (2.71
 seconds locally); uv-run Ruff/format/ty and diff checks passed. All 109 source/test
-Python files retain maximum CC 8 and minimum MI 50.025. No production Python or
-runtime dependency changed. The actual `export_ratings` atomic replacement path
+Python files retain maximum CC 8 and minimum MI 50.025. The only production Python adjustment is a neutral status message pointing to
+plan.md; its existing smoke assertion and operator/README guidance were updated.
+No data-read/write implementation or runtime dependency changed. The actual `export_ratings` atomic replacement path
 was also exercised twice against the installed supported CLI: identical validated
 36-byte/zero-rating snapshots, mode 0600, 2.017 seconds total. Private CSVs and
 all temporary files remain in the selected project cache; no remote export file

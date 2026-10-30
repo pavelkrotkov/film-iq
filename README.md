@@ -2,7 +2,7 @@
 
 **An open-source, evidence-driven film discovery and streaming-planning companion to [Movary](https://github.com/leepeuker/movary).**
 
-**Status:** architecture approved for a proof of concept; implementation and data-provider selections are not yet validated.
+**Status:** Gate A's narrow POC is validated through real API reads, a sourced report and a user-approved watchlist round trip. Source/provider research and production release remain open; see [the evidence and limits](docs/a7-live-validation.md).
 
 film-iq connects critics' lists, polls, festivals, awards, film identity, personal viewing history and US viewing availability. It explains **why a film matters**, distinguishes critical recognition from predicted personal enjoyment, and proposes realistic viewing bundles and optional monthly streaming-service choices. It is not another watch-history application.
 
@@ -34,7 +34,19 @@ uv run pytest
 uv run film-iq --version
 ```
 
-CI validates lint, formatting, types, tests, GitHub workflows and dependencies. External API keys are not required for the seeded smoke tests. Future integration tests must use opt-in credentials and redistributable fixtures.
+CI validates lint, formatting, types, tests, GitHub workflows and dependencies. External API keys are not required for credential-free tests. Live integration checks are opt-in.
+
+### POC commands
+
+```sh
+uv run film-iq status
+uv run film-iq report --database path/to/evidence.db --inputs path/to/report-inputs.json
+uv run film-iq sync --title "Bicycle Thieves" --tmdb-id 5156
+```
+
+The report defaults to Markdown; `--format json` returns structured output.
+The sync command above is an offline preview. See [report inputs](docs/poc-report.md)
+and the [approved-write boundary](docs/a7-write-boundary.md) before live execution.
 
 ### Opt-in Movary integration
 
@@ -49,7 +61,9 @@ to a private existing directory visible at the same path to the export command.
 Then run `uv run pytest -s tests/test_movary_integration.py::test_live_movary`. The test
 creates and removes a temporary snapshot there. Commands run without a shell;
 wrappers must expose the installed version and make the export path visible.
-This check requires real credentials and has not yet been verified live.
+This dedicated nonempty rated-only check remains unrun on the empty POC ratings
+account. Real API reads, atomic empty ratings export/replay and an approved
+watchlist addition/readback/retry are recorded in [the live validation](docs/a7-live-validation.md).
 
 ## SQLite migration and recovery
 
