@@ -1,6 +1,6 @@
 # B5: Long-tail viewing leads
 
-**Version:** 0.1, research in progress. **Checked:** 2026-10-29 UTC. **Issue:** [#15](https://github.com/pavelkrotkov/film-iq/issues/15). **Context:** [plan §7](../../../plan.md) and [ADR 0008](../../adr/0008-availability-providers.md), [ADR 0011](../../adr/0011-cost-rights.md).
+**Version:** 0.2, bounded research findings. **Checked:** 2026-10-29 UTC. **Issue:** [#15](https://github.com/pavelkrotkov/film-iq/issues/15). **Context:** [plan §7](../../../plan.md) and [ADR 0008](../../adr/0008-availability-providers.md), [ADR 0011](../../adr/0011-cost-rights.md).
 
 This convenience sample investigates bounded searches for named films. It is not a provider coverage estimate, a complete survey, or an assertion that any title is playable in the US. Public page text, search-index snapshots and anonymous metadata were checked; no video was played and no library or streaming account was used. A blocked or partial response is **unknown**, not evidence that a film is unavailable. The sample is independent of the pending #12 and #14 cohorts.
 
@@ -30,3 +30,15 @@ On 2026-10-29 at 22:36:12 UTC, anonymous requests to [Vimeo's oEmbed endpoint](h
 ## Recommendation and outstanding evidence
 
 Use manual first-party links and targeted verification for the shortlist. The sample contains promising leads but no measured comparison with TMDB/JustWatch or Movie of the Night, so it cannot show which source fills a real coverage gap. Do not add a general video crawler or provider adapter until a repeated, rights-permitted use case demonstrates benefit. Follow up on actual US playback, account/library eligibility, first-party offer classification and matched #12/#14 gaps; keep unsupported cases on the unavailable-film radar as unknown.
+
+## Bounded outcome against issue #15
+
+| Required investigation | Evidence and outcome |
+| --- | --- |
+| Official video, filmmaker, NFB/PBS, archive and library sample | Six named leads above cover the requested source types; the sample is intentionally bounded and is not a coverage estimate. |
+| Full film versus trailer, excerpt or uncertain copy | The source claims for Sintel, the PBS preview, NFB excerpt and incomplete archive holdings are distinguished above. Complete playback and authorization of uncertain copies remain unverified. |
+| US and institutional/account access where testable | Anonymous metadata succeeded, but the tested player page returned 401. No eligible library or streaming account was used, and no verified US playback result was obtained. Outcome: insufficient evidence for a personal viewing recommendation. |
+| Bounded search, evidence and confidence | Named-title searches, identity fields, source authority and access uncertainty are recorded above. No broad catalog acquisition was performed. |
+| Minimal recommendation | Keep these as manual first-party leads; do not implement an adapter from this sample. No source has demonstrated a measured coverage advantage over the baseline providers. |
+
+Issue #15 permits unknown eligibility and has no hard dependency on #12 or #14. Those comparisons would improve prioritization, but are not required to publish this bounded, inconclusive access finding. A later claim that a specific film is watchable must add a dated playback check in the relevant region and account; the present findings do not supply that evidence. Acquisition labor and manual review minutes were not measured.
