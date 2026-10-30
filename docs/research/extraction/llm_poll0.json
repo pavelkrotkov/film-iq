@@ -1,0 +1,266 @@
+{
+  "source_key": "poll-0",
+  "source_receipt": {
+    "key": "poll-0",
+    "title": "The Sight & Sound Greatest Films of All Time 2012",
+    "section": "2",
+    "heading": "Critics' poll",
+    "split": "development",
+    "lineage": "Wikipedia derivative of BFI / Sight and Sound; original-source accuracy and rights not established by this capture",
+    "revision": "1196879962",
+    "revision_receipt": {
+      "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=The+Sight+%26+Sound+Greatest+Films+of+All+Time+2012&format=json",
+      "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=The+Sight+%26+Sound+Greatest+Films+of+All+Time+2012&format=json",
+      "status": 200,
+      "accessed_at": "2026-10-30T03:06:55.002734+00:00",
+      "bytes": 230,
+      "sha256": "b795e2cf7da11778261a6674e9a4495afab993cde30ed6d77cabda9ba7f3d749",
+      "file": "poll-0.revision.json"
+    },
+    "wikitext": {
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1196879962&section=2&prop=wikitext&format=json",
+      "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1196879962&section=2&prop=wikitext&format=json",
+      "status": 200,
+      "accessed_at": "2026-10-30T03:06:56.257393+00:00",
+      "bytes": 4640,
+      "sha256": "96da540ee654ece04bd5100cf75dea67c1830665da95e9a5784b07d64b9d0174",
+      "file": "poll-0.wikitext.json"
+    },
+    "text": {
+      "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1196879962&section=2&prop=text&format=json",
+      "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1196879962&section=2&prop=text&format=json",
+      "status": 200,
+      "accessed_at": "2026-10-30T03:06:57.406522+00:00",
+      "bytes": 21786,
+      "sha256": "085d702c67d412ed9065bad1806f2baab7de179b565ca77c90f52d67e2e5522e",
+      "file": "poll-0.text.json"
+    },
+    "corpus_stratum": "poll",
+    "original_source_family": "BFI / Sight and Sound"
+  },
+  "source_receipt_sha256": "ab72173a34681fa92cddb7bb6a8325b98f1cbefcf51a5dd8d1fe58740b83f9be",
+  "source_revision_url": "https://en.wikipedia.org/w/index.php?oldid=1196879962",
+  "method": "blinded_grounded_LLM_single_case",
+  "auditor_kind": "automated",
+  "human_audit": false,
+  "model": null,
+  "model_note": "Exact model identity is not available to this worker; no identity inferred.",
+  "starting_utc": null,
+  "starting_utc_note": "Initial source reading preceded clock measurement. First measured in-progress UTC was 2026-10-30T03:12:45.048999+00:00.",
+  "ending_utc": "2026-10-30T03:13:31.419012+00:00",
+  "records": [
+    {
+      "title": "Vertigo",
+      "position": 1,
+      "rank": 1,
+      "tie": false,
+      "category": "Critics' poll",
+      "subcategory": "Top 10",
+      "evidence": {
+        "source_file": "corpus/poll-0.wikitext.json",
+        "line_start": 11,
+        "line_end": 11,
+        "quote": "# ''[[Vertigo (film)|Vertigo]]'' (191 mentions) ",
+        "semantics": "Numbered list item; rank is its ordinal in the uninterrupted ten-item # list under Critics' poll. Context at lines 5 and 7 identifies first place and the top ten."
+      }
+    },
+    {
+      "title": "Citizen Kane",
+      "position": 2,
+      "rank": 2,
+      "tie": false,
+      "category": "Critics' poll",
+      "subcategory": "Top 10",
+      "evidence": {
+        "source_file": "corpus/poll-0.wikitext.json",
+        "line_start": 12,
+        "line_end": 12,
+        "quote": "# ''[[Citizen Kane]]'' (157 mentions)",
+        "semantics": "Numbered list item; rank is its ordinal in the uninterrupted ten-item # list under Critics' poll. Context at lines 5 and 7 identifies first place and the top ten."
+      }
+    },
+    {
+      "title": "Tokyo Story",
+      "position": 3,
+      "rank": 3,
+      "tie": false,
+      "category": "Critics' poll",
+      "subcategory": "Top 10",
+      "evidence": {
+        "source_file": "corpus/poll-0.wikitext.json",
+        "line_start": 13,
+        "line_end": 13,
+        "quote": "# ''[[Tokyo Story]]'' (107 mentions)",
+        "semantics": "Numbered list item; rank is its ordinal in the uninterrupted ten-item # list under Critics' poll. Context at lines 5 and 7 identifies first place and the top ten."
+      }
+    },
+    {
+      "title": "The Rules of the Game",
+      "position": 4,
+      "rank": 4,
+      "tie": false,
+      "category": "Critics' poll",
+      "subcategory": "Top 10",
+      "evidence": {
+        "source_file": "corpus/poll-0.wikitext.json",
+        "line_start": 14,
+        "line_end": 14,
+        "quote": "# ''[[The Rules of the Game]]'' (100 mentions)",
+        "semantics": "Numbered list item; rank is its ordinal in the uninterrupted ten-item # list under Critics' poll. Context at lines 5 and 7 identifies first place and the top ten."
+      }
+    },
+    {
+      "title": "Sunrise: A Song of Two Humans",
+      "position": 5,
+      "rank": 5,
+      "tie": false,
+      "category": "Critics' poll",
+      "subcategory": "Top 10",
+      "evidence": {
+        "source_file": "corpus/poll-0.wikitext.json",
+        "line_start": 15,
+        "line_end": 15,
+        "quote": "# ''[[Sunrise: A Song of Two Humans]]'' (93 mentions) ",
+        "semantics": "Numbered list item; rank is its ordinal in the uninterrupted ten-item # list under Critics' poll. Context at lines 5 and 7 identifies first place and the top ten."
+      }
+    },
+    {
+      "title": "2001: A Space Odyssey",
+      "position": 6,
+      "rank": 6,
+      "tie": false,
+      "category": "Critics' poll",
+      "subcategory": "Top 10",
+      "evidence": {
+        "source_file": "corpus/poll-0.wikitext.json",
+        "line_start": 16,
+        "line_end": 16,
+        "quote": "# ''[[2001: A Space Odyssey (film)|2001: A Space Odyssey]]'' (90 mentions)",
+        "semantics": "Numbered list item; rank is its ordinal in the uninterrupted ten-item # list under Critics' poll. Context at lines 5 and 7 identifies first place and the top ten."
+      }
+    },
+    {
+      "title": "The Searchers",
+      "position": 7,
+      "rank": 7,
+      "tie": false,
+      "category": "Critics' poll",
+      "subcategory": "Top 10",
+      "evidence": {
+        "source_file": "corpus/poll-0.wikitext.json",
+        "line_start": 17,
+        "line_end": 17,
+        "quote": "# ''[[The Searchers (film)|The Searchers]]'' (78 mentions)",
+        "semantics": "Numbered list item; rank is its ordinal in the uninterrupted ten-item # list under Critics' poll. Context at lines 5 and 7 identifies first place and the top ten."
+      }
+    },
+    {
+      "title": "Man with a Movie Camera",
+      "position": 8,
+      "rank": 8,
+      "tie": false,
+      "category": "Critics' poll",
+      "subcategory": "Top 10",
+      "evidence": {
+        "source_file": "corpus/poll-0.wikitext.json",
+        "line_start": 18,
+        "line_end": 18,
+        "quote": "# ''[[Man with a Movie Camera]]'' (68 mentions)",
+        "semantics": "Numbered list item; rank is its ordinal in the uninterrupted ten-item # list under Critics' poll. Context at lines 5 and 7 identifies first place and the top ten."
+      }
+    },
+    {
+      "title": "The Passion of Joan of Arc",
+      "position": 9,
+      "rank": 9,
+      "tie": false,
+      "category": "Critics' poll",
+      "subcategory": "Top 10",
+      "evidence": {
+        "source_file": "corpus/poll-0.wikitext.json",
+        "line_start": 19,
+        "line_end": 19,
+        "quote": "# ''[[The Passion of Joan of Arc]]'' (65 mentions)",
+        "semantics": "Numbered list item; rank is its ordinal in the uninterrupted ten-item # list under Critics' poll. Context at lines 5 and 7 identifies first place and the top ten."
+      }
+    },
+    {
+      "title": "8½",
+      "position": 10,
+      "rank": 10,
+      "tie": false,
+      "category": "Critics' poll",
+      "subcategory": "Top 10",
+      "evidence": {
+        "source_file": "corpus/poll-0.wikitext.json",
+        "line_start": 20,
+        "line_end": 20,
+        "quote": "# ''[[8½]]'' (64 mentions)",
+        "semantics": "Numbered list item; rank is its ordinal in the uninterrupted ten-item # list under Critics' poll. Context at lines 5 and 7 identifies first place and the top ten."
+      }
+    },
+    {
+      "title": "Battleship Potemkin",
+      "position": 11,
+      "rank": null,
+      "tie": false,
+      "category": "Critics' poll",
+      "subcategory": "Closest runner-up",
+      "evidence": {
+        "source_file": "corpus/poll-0.wikitext.json",
+        "line_start": 21,
+        "line_end": 21,
+        "quote": "Closest runner-up: ''[[Battleship Potemkin]]''. (63 mentions)",
+        "semantics": "Explicit closest runner-up selection immediately after the top ten; no numeric rank is printed."
+      }
+    },
+    {
+      "title": "Tokyo Story",
+      "position": 1,
+      "rank": 1,
+      "tie": false,
+      "category": "Directors' poll",
+      "subcategory": "Head of list (prose assertion)",
+      "evidence": {
+        "source_file": "corpus/poll-0.wikitext.json",
+        "line_start": 2,
+        "line_end": 2,
+        "quote": "They published the critics' list of \"[[List of films considered the best|greatest films]]\" based on 846 critics, programmers, academics, and distributors,<ref name=\"bfi\">{{cite web |title=The 100 Greatest Films of All Time |url=https://www.bfi.org.uk/sight-and-sound/greatest-films-all-time |website=Sight & Sound |publisher=BFI |access-date=23 March 2020}}</ref> as well as a directors' list based on 358 directors and filmmakers.<ref name=\"director2012\">{{cite web |url=https://www.bfi.org.uk/sight-and-sound/polls/greatest-films-all-time/directors-100-best |title=Directors' 10 Greatest Films of All Time |work=Sight & Sound |publisher=British Film Institute |date=December 4, 2014}}</ref> The two lists were headed by 1958's ''[[Vertigo (film)|Vertigo]]'' and 1953's ''[[Tokyo Story]]'' respectively.",
+        "semantics": "The two lists were headed by Vertigo and Tokyo Story respectively: directors' list is the second list, so Tokyo Story is its explicitly asserted leader."
+      }
+    }
+  ],
+  "assumptions": [
+    "Scope is every film selection explicitly asserted in the captured Critics' poll section, including the directors' leader in its introductory prose. Tokyo Story therefore has two distinct memberships. A critics-only consumer should filter category rather than erase this second assertion.",
+    "Position is within category, preserving critics' source list order (1–10) and following runner-up (11). Directors' position 1 follows its prose assertion of leadership. Position is not a separately printed source rank.",
+    "Top-ten ranks follow the uninterrupted ordered-list numbering. No ties are stated and vote counts differ; tie false represents no tie asserted in this captured selection.",
+    "Battleship Potemkin is retained as explicitly named closest runner-up. Its numeric rank is left null because not printed; rank 11 would be a derived inference from its relationship to the top ten.",
+    "Vertigo's prose/caption mentions and Man with a Movie Camera's prose mention duplicate their critics' memberships, so no duplicate records are added. Citizen Kane's previous-five-polls first-place history is contextual, not five separately identifiable current list selections. Reference titles and image names do not add selections.",
+    "The section reports 2,045 films received mentions but names only the ten ranked critics' selections plus their closest runner-up and the directors' leader. This is an incomplete published subset of the broader polls, not evidence that unnamed entries were extracted or that all 2,045 memberships are recoverable.",
+    "This extraction covers the named explicit selections in the supplied section only. It does not assert original BFI accuracy, source independence, complete underlying poll coverage, or human audit quality."
+  ],
+  "completeness": {
+    "captured_named_selection_records": 12,
+    "unique_film_titles": 11,
+    "source_scope": "Captured section only",
+    "underlying_poll_complete": false,
+    "extraction_completeness_claim": "All explicit named current-poll selections observed in this captured section retained under the stated scope; not independently audited."
+  },
+  "protocol_deviations": [
+    "Initial read displayed the entire selection.json metadata instead of only the poll-0 entry. No other source captures, expected outputs, gold, audits, parser/evaluator code or tests were read. Other source metadata exposure means the requested input restriction was not followed exactly."
+  ],
+  "cost": {
+    "status": "not measured"
+  },
+  "manual_labor": {
+    "status": "not measured",
+    "human_audit_performed": false
+  },
+  "attribution": {
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "contributors": "Wikipedia contributors; pinned revision URL and linked history supply attribution",
+    "notice": "corpus/NOTICE.md",
+    "lineage": "Wikipedia derivative of BFI / Sight and Sound; original-source accuracy and rights not established by this capture"
+  }
+}

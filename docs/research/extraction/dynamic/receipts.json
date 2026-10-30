@@ -1,0 +1,31 @@
+{
+  "query": "SELECT ?film ?filmLabel WHERE { VALUES ?film { wd:Q553901 wd:Q640561 } SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\". } } ORDER BY ?film",
+  "receipts": [
+    {
+      "kind": "html",
+      "url": "https://query.wikidata.org/",
+      "response_url": "https://query.wikidata.org/",
+      "observed_at": "2026-10-30T03:56:32.149893+00:00",
+      "http_status": 200,
+      "content_type": "text/html",
+      "bytes": 17940,
+      "sha256": "c08d8b554051466c1f8373b162673443bf9c7894b6ebc619796d536a496a1546",
+      "request_seconds": 0.2856701319105923,
+      "result_labels_present": {
+        "Uncle Boonmee Who Can Recall His Past Lives": false,
+        "A Separation": false
+      }
+    },
+    {
+      "kind": "json",
+      "url": "https://query.wikidata.org/sparql?query=SELECT+%3Ffilm+%3FfilmLabel+WHERE+%7B+VALUES+%3Ffilm+%7B+wd%3AQ553901+wd%3AQ640561+%7D+SERVICE+wikibase%3Alabel+%7B+bd%3AserviceParam+wikibase%3Alanguage+%22en%22.+%7D+%7D+ORDER+BY+%3Ffilm",
+      "response_url": "https://query.wikidata.org/sparql?query=SELECT+%3Ffilm+%3FfilmLabel+WHERE+%7B+VALUES+%3Ffilm+%7B+wd%3AQ553901+wd%3AQ640561+%7D+SERVICE+wikibase%3Alabel+%7B+bd%3AserviceParam+wikibase%3Alanguage+%22en%22.+%7D+%7D+ORDER+BY+%3Ffilm",
+      "observed_at": "2026-10-30T03:56:32.435590+00:00",
+      "http_status": 200,
+      "content_type": "application/sparql-results+json;charset=utf-8",
+      "bytes": 601,
+      "sha256": "b54210b58f5a6b5a371807ba841e18bc04dfaad86d0045cdcc5b33ced3dfaa57",
+      "request_seconds": 0.22169613605365157
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "head" : {
+    "vars" : [ "film", "filmLabel" ]
+  },
+  "results" : {
+    "bindings" : [ {
+      "film" : {
+        "type" : "uri",
+        "value" : "http://www.wikidata.org/entity/Q553901"
+      },
+      "filmLabel" : {
+        "xml:lang" : "en",
+        "type" : "literal",
+        "value" : "Uncle Boonmee Who Can Recall His Past Lives"
+      }
+    }, {
+      "film" : {
+        "type" : "uri",
+        "value" : "http://www.wikidata.org/entity/Q640561"
+      },
+      "filmLabel" : {
+        "xml:lang" : "en",
+        "type" : "literal",
+        "value" : "A Separation"
+      }
+    } ]
+  }
+}

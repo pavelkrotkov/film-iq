@@ -1,0 +1,27 @@
+{
+  "method": "single automated Brave browser UI observation; no account or provider call",
+  "observed_at": "2026-10-30T03:55:05.414Z",
+  "interface": "https://query.wikidata.org/",
+  "query": "SELECT ?film ?filmLabel WHERE { VALUES ?film { wd:Q553901 wd:Q640561 } SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\". } } ORDER BY ?film",
+  "reported_result_count": 2,
+  "service_reported_query_ms": 1336,
+  "elapsed_since_submit_ms_at_inspection": 41632,
+  "elapsed_scope": "Includes model/tool/inspection delay; not query runtime or total browser setup cost.",
+  "rows": [
+    {
+      "qid": "Q553901",
+      "label": "Uncle Boonmee Who Can Recall His Past Lives"
+    },
+    {
+      "qid": "Q640561",
+      "label": "A Separation"
+    }
+  ],
+  "audit_kind": "automated cross-surface comparison; not an independent primary-source or human audit",
+  "rights": "Wikidata structured data CC0; https://www.wikidata.org/wiki/Wikidata:Licensing",
+  "limitations": [
+    "User-defined two-entity query, not a publisher critic list or an unseen-layout holdout.",
+    "No browser network request count, billed model cost or human correction time measured.",
+    "No current TMDB/IMDb catalog presence or film-match precision is established."
+  ]
+}

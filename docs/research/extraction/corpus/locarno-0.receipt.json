@@ -1,0 +1,38 @@
+{
+  "key": "locarno-0",
+  "title": "72nd Locarno Film Festival",
+  "section": "9",
+  "heading": "International Competition (<i>Concorso internazionale</i>)",
+  "split": "holdout",
+  "lineage": "Wikipedia derivative of Locarno Film Festival; original-source accuracy and rights not established by this capture",
+  "revision": "1357148463",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=72nd+Locarno+Film+Festival&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=72nd+Locarno+Film+Festival&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:45.035821+00:00",
+    "bytes": 207,
+    "sha256": "a0ebcb1968610de7d68603dea329bfae04cb488e3bf84136f8da507ac34f4ad3",
+    "file": "locarno-0.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1357148463&section=9&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1357148463&section=9&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:46.024365+00:00",
+    "bytes": 1875,
+    "sha256": "17b6635ae9a92a52fc719888460d092cf19885d2367673ca6d941ce7dacbc12f",
+    "file": "locarno-0.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1357148463&section=9&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1357148463&section=9&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:47.096590+00:00",
+    "bytes": 5240,
+    "sha256": "bb5c6dc77718695ddf31dddce6f7cb9bf0b1c91c8bee76287b5fbe5b2727a19d",
+    "file": "locarno-0.text.json"
+  },
+  "corpus_stratum": "locarno",
+  "original_source_family": "Locarno Film Festival"
+}

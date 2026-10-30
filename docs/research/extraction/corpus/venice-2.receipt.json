@@ -1,0 +1,38 @@
+{
+  "key": "venice-2",
+  "title": "78th Venice International Film Festival",
+  "section": "7",
+  "heading": "In Competition",
+  "split": "development",
+  "lineage": "Wikipedia derivative of Venice International Film Festival; original-source accuracy and rights not established by this capture",
+  "revision": "1373556517",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=78th+Venice+International+Film+Festival&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=78th+Venice+International+Film+Festival&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:13.853710+00:00",
+    "bytes": 220,
+    "sha256": "cc9736aec0fc7016f599540f271948a879072b17d3b61f58ceb926c5b63dd100",
+    "file": "venice-2.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373556517&section=7&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373556517&section=7&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:15.135881+00:00",
+    "bytes": 4091,
+    "sha256": "cf459b3a737958e08afa08160e56707d75e5dcb7f2d64f1945002382d7a74e5d",
+    "file": "venice-2.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373556517&section=7&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373556517&section=7&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:16.299525+00:00",
+    "bytes": 12587,
+    "sha256": "798614e57add17347a86738af23dcc8460ed5a2672dc1d33b14dfb5fd42c7797",
+    "file": "venice-2.text.json"
+  },
+  "corpus_stratum": "venice",
+  "original_source_family": "Venice International Film Festival"
+}

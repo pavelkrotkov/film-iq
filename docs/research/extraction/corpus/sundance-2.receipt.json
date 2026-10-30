@@ -1,0 +1,38 @@
+{
+  "key": "sundance-2",
+  "title": "2022 Sundance Film Festival",
+  "section": "6",
+  "heading": "World Cinema Documentary Competition",
+  "split": "development",
+  "lineage": "Wikipedia derivative of Sundance Film Festival; original-source accuracy and rights not established by this capture",
+  "revision": "1373127123",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=2022+Sundance+Film+Festival&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=2022+Sundance+Film+Festival&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:26.446448+00:00",
+    "bytes": 208,
+    "sha256": "f0224af6da63f4096d155eeb3c930562ac8955a0437f2cd507f3eb4f12fe8fb1",
+    "file": "sundance-2.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373127123&section=6&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373127123&section=6&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:27.515791+00:00",
+    "bytes": 752,
+    "sha256": "b53580b8a1907d4fa5a3b725bbc5223fe1e950819233a43b3d385eeca45a8406",
+    "file": "sundance-2.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373127123&section=6&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373127123&section=6&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:28.519574+00:00",
+    "bytes": 2786,
+    "sha256": "421e14a0e292d5b61f918263961d1feda9f05cb8ac68f39b779ae4fdbc9adf53",
+    "file": "sundance-2.text.json"
+  },
+  "corpus_stratum": "sundance",
+  "original_source_family": "Sundance Film Festival"
+}

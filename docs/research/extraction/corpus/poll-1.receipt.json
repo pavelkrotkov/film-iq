@@ -1,0 +1,38 @@
+{
+  "key": "poll-1",
+  "title": "The Sight and Sound Greatest Films of All Time 2022",
+  "section": "2",
+  "heading": "Directors' poll",
+  "split": "development",
+  "lineage": "Wikipedia derivative of BFI / Sight and Sound; original-source accuracy and rights not established by this capture",
+  "revision": "1332699136",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=The+Sight+and+Sound+Greatest+Films+of+All+Time+2022&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=The+Sight+and+Sound+Greatest+Films+of+All+Time+2022&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:58.350151+00:00",
+    "bytes": 232,
+    "sha256": "27197629e96004c29f2a94ab6441102fe901400acb069e0c5e0b18578f83072b",
+    "file": "poll-1.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1332699136&section=2&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1332699136&section=2&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:59.390712+00:00",
+    "bytes": 1680,
+    "sha256": "664b739c737878b6fc5221faa25c93626765a8ddb6a9ff62433b956d478f936b",
+    "file": "poll-1.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1332699136&section=2&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1332699136&section=2&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:00.553813+00:00",
+    "bytes": 9576,
+    "sha256": "62394f13f5e2d537c1dd3728c09e785492b997bc73ef1a7d610761b718125ad4",
+    "file": "poll-1.text.json"
+  },
+  "corpus_stratum": "poll",
+  "original_source_family": "BFI / Sight and Sound"
+}

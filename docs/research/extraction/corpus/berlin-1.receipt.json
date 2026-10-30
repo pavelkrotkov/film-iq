@@ -1,0 +1,38 @@
+{
+  "key": "berlin-1",
+  "title": "70th Berlin International Film Festival",
+  "section": "8",
+  "heading": "Main Competition",
+  "split": "development",
+  "lineage": "Wikipedia derivative of Berlin International Film Festival; original-source accuracy and rights not established by this capture",
+  "revision": "1381492283",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=70th+Berlin+International+Film+Festival&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=70th+Berlin+International+Film+Festival&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:45.039626+00:00",
+    "bytes": 220,
+    "sha256": "4b36b33f71f84c79713b4985a907dc69e186ee023bb7adb62ebf94f552d71ae7",
+    "file": "berlin-1.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381492283&section=8&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381492283&section=8&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:46.280073+00:00",
+    "bytes": 3518,
+    "sha256": "b11c2553d3f3945d33803e19c6f98d980cb92211d5472177d07a1640da2aad6c",
+    "file": "berlin-1.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381492283&section=8&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381492283&section=8&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:47.409633+00:00",
+    "bytes": 12541,
+    "sha256": "057878819fd17f6c15f403f32c47797c19296033533d1765f2c09722715898cc",
+    "file": "berlin-1.text.json"
+  },
+  "corpus_stratum": "berlin",
+  "original_source_family": "Berlin International Film Festival"
+}
