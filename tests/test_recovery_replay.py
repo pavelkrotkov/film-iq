@@ -16,7 +16,9 @@ def test_restore_active_revision_replays_without_duplicate_votes(evidence_db, tm
         "INSERT INTO match_decision VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
         ("m", "entry", "rev", 42, "[]", "synthetic", "1", None, None, "accepted", "now", None),
     )
-    db.execute("INSERT INTO current_match(entry_id,revision_id,decision_id,film_id) VALUES('entry','rev','m',42)")
+    db.execute(
+        "INSERT INTO current_match(entry_id,revision_id,decision_id,film_id) VALUES('entry','rev','m',42)"
+    )
     db.commit()
     expected = score(load_evidence(db))
     backup(db, tmp_path / "accepted-backup.db")

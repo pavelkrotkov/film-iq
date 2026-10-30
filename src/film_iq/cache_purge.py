@@ -10,8 +10,8 @@ def purge(
     root: Path, names: list[str], policy: CachePolicy, now: datetime, *, execute: bool = False
 ) -> tuple[str, ...]:
     """Preview named disposable cache files; explicit execution never scans source data."""
-    paths = [(root / name).resolve() for name in names]
-    if any(not path.is_relative_to(root.resolve()) for path in paths):
+    paths = [root / name for name in names]
+    if any(not path.resolve().is_relative_to(root.resolve()) for path in paths):
         raise ValueError("cache names must stay inside the supplied cache root")
     if status(policy, now) != "purge_due":
         return ()

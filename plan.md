@@ -1339,3 +1339,9 @@ Ruff/format/ty pass; 346 tests pass, one opt-in skips. Python metric gates remai
 CC<=8 and MI>=50. C8 remains open for actual provider-specific enforcement/quotas,
 full separately authorized Movary restoration, selected runtime integration and
 production failed-job acceptance. Disposable fixture recovery is not live recovery.
+
+C8 combined Standards/Spec review reproduced a named-cache symlink error: the
+preview named the alias but execution unlinked its resolved target. The correction
+validates resolved containment and unlinks the selected lexical path, preserving
+the unselected target. A disposable symlink regression covers that exact defect;
+no live cache/source data is touched. Follow-up review precedes merge.
