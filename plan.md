@@ -883,3 +883,34 @@ They supersede the unknown cache duration, not every unresolved applicability or
 third-party-rights question. The conservative TMDB study-cache deadline is
 2027-04-30. No new API requests, terms acceptance or data deletion occurred in
 that terms check.
+
+### B8 prepared choices and explicit finish boundary (2026-10-30)
+
+The [Gate B dossier](docs/research/gate-b.md#prepared-initial-choices-and-final-gate-boundary--2026-10-30)
+now makes the initial choices concrete: distinct critic/festival/retrospective
+strata with source rights and eligibility intact; native API/HTTP and
+source-specific deterministic parsing with transactional SQLite; the existing
+TMDB/JustWatch baseline plus native Movie of the Night as a provisional
+comparison/discovery candidate; distinct public-scoring components without
+selected calibrated weights; and no unsupported larger OSS stack adoption.
+ADRs 0005/0006/0008/0012 gain evidence appendices preserving their existing
+statuses and required validation. This does not alter production interfaces.
+
+Exact issue reconciliation removes a stale B7 task: #17 is closed after its
+performed period/format extension, even though scoring benefit is inconclusive.
+B2/B3 effort supplements can proceed now. B4 is genuinely time-blocked on two
+later observations: all retained captures are Oct 30 UTC date one. The allowance
+for an inconclusive research outcome does not turn missing dates into completed
+measurements. No recorded scope deferral exists. B4 #14, B8 #18 and Epic #2
+remain open; no consumer-account sign-in or Epic A dependency blocks them.
+
+The dossier names concrete remaining questions for C2 #20, C3 #21, C4 #22 and
+C8 #26. It preserves required B4 work rather than silently moving it out of the
+epic. If later captures contain no observed changes, report the no-change
+interval and unknown change-detection latency without inventing removals,
+expiry events, entitlement or a preferred poll interval.
+
+Validation for this docs-only synthesis: Ruff check/format and ty pass;
+340 tests pass and one opt-in integration test skips. Radon over all 159
+tracked Python files reports maximum CC 8 and minimum MI 50.025032. No code,
+dependency, source payload or credential is added by this supplement.

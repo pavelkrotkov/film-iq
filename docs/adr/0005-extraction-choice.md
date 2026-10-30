@@ -15,3 +15,19 @@ No blanket crawler/LLM dependency; difficult one-off pages may be reviewed manua
 ## Validation / reconsideration
 Gate: held-out correctness/completeness, correction minutes, restart behavior, license and runtime costs.
 
+## Epic B evidence and recommendation — 2026-10-30
+
+The [B3 benchmark](../research/extraction/README.md) independently audits 32
+static derivative sections (24 development/eight held out, 539 expected rows).
+The frozen parser is complete on 23/24 and 3/8 documents respectively; a valid
+LLM span does not establish category membership or complete extraction. The
+PDF/CSV and native-API supplements are bounded cases, not new held-out wins.
+The incremental replay supports idempotent SQLite and successful retry after a
+source failure/reopen, not killed-process recovery or production throughput.
+
+Keep the current HTTP/source-specific parser and transactional SQLite baseline;
+use a native API before rendering where it supplies the required records. No
+general crawler, grounded-extraction framework or dlt adoption is justified by
+these measurements. Correction effort is being measured separately; original
+timings retain their documented import/warm-up limitations. This is a scoped
+recommendation: the provisional status and validation gate are unchanged.

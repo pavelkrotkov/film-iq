@@ -1,6 +1,6 @@
-# Gate B — working evidence matrix
+# Gate B — evidence and decision dossier
 
-**Status:** In progress, not a gate decision. Updated 2026-10-30.
+**Status:** Prepared decisions; final Gate B remains open. Updated 2026-10-30.
 
 **Scope:** [Epic B](https://github.com/pavelkrotkov/film-iq/issues/2) and [issue #18](https://github.com/pavelkrotkov/film-iq/issues/18); [plan](../../plan.md#epic-b--explore-source-universe-and-provider-quality); ADRs [0005](../adr/0005-extraction-choice.md), [0006](../adr/0006-scoring-separation.md), [0008](../adr/0008-availability-providers.md) and [0012](../adr/0012-empirical-gates.md).
 
@@ -14,7 +14,7 @@ The table distinguishes completed bounded research from open experiments; comple
 | [B4](https://github.com/pavelkrotkov/film-iq/issues/14) | Provider coverage, offer correctness, rights, cost and change timeliness | [Paired date-one findings](availability/comparison-20261030.md): all sixty work lookups separately audited; TMDB 53 complete/seven unknown, native Movie of the Night 49 complete/eleven unknown. Partial mapped comparison across 49 jointly complete works: 180 common nominal tuples, 51 TMDB-only, 46 native-only; mapping asymmetry prevents accuracy/absence claims. Public spot checks, Apple SKU prices and separate Peacock pre-subscription discovery are recorded. Two later dates, timeliness and unresolved retention/plan evidence remain. |
 | [B5](https://github.com/pavelkrotkov/film-iq/issues/15) | Authorized long-tail leads and library eligibility | **Closed, completed bounded inconclusive research** ([acceptance](https://github.com/pavelkrotkov/film-iq/issues/15#issuecomment-6522322222)). [Merged access research](https://github.com/pavelkrotkov/film-iq/pull/37): six investigations and explicit acceptance accounting; manual checks recommended, no adapter justified. One player request returned HTTP 401. US playback and individual eligibility remain unknown, as the issue permits where testing is infeasible. |
 | [B6](https://github.com/pavelkrotkov/film-iq/issues/16) | Reuse candidates, licenses and maintenance cost | **Closed, completed qualitative research** ([acceptance](https://github.com/pavelkrotkov/film-iq/issues/16#issuecomment-6522323392)). [Merged reuse dossier](https://github.com/pavelkrotkov/film-iq/pull/38): pinned module/license inspection and qualitative adoption comparison; the issue does not require measured integration hours. |
-| [B7](https://github.com/pavelkrotkov/film-iq/issues/17) | Public-score baselines, independent holdouts and sparse-film behavior | [2008 pilot](https://github.com/pavelkrotkov/film-iq/pull/42) and [period extension](https://github.com/pavelkrotkov/film-iq/pull/47): the 2008 ten-film pilot retains 61 selections and typed reception/award baselines. A frozen twelve-film 2023–2024 period/format extension now has nine independently automated-audited original-source critic/film selections across five works, including two animated features. New Yorker is held out by family; inclusive/main-only views have three/one conditional overlaps, with tied training counts and no training ordinals. Four shorts remain unknown. Full weighted scoring and predictive/format stability remain inconclusive; no weights are selected. |
+| [B7](https://github.com/pavelkrotkov/film-iq/issues/17) | Public-score baselines, independent holdouts and sparse-film behavior | **Closed, completed bounded inconclusive research.** [2008 pilot](https://github.com/pavelkrotkov/film-iq/pull/42) and [period extension](https://github.com/pavelkrotkov/film-iq/pull/47): the 2008 ten-film pilot retains 61 selections and typed reception/award baselines. A frozen twelve-film 2023–2024 period/format extension now has nine independently automated-audited original-source critic/film selections across five works, including two animated features. New Yorker is held out by family; inclusive/main-only views have three/one conditional overlaps, with tied training counts and no training ordinals. Four shorts remain unknown. Full weighted scoring and predictive/format stability remain inconclusive; no weights are selected. |
 
 ## Preliminary constraints
 
@@ -62,7 +62,7 @@ These are bounded research recommendations, not acceptance of Gate B or changes 
 | Availability providers | [Same-date paired observations](availability/comparison-20261030.md) support bounded positive assertions and explicit missing-country unknowns, not provider superiority or exact-tier accuracy. Partial nominal overlap preserves channels, free/ads distinctions and unmapped units. Peacock API/public-plan discovery needs no consumer login. | Reuse the accepted both-ID manifest on two genuinely later dates; resolve TMDB historical-retention basis, measure change timeliness and investigate plan-specific classifications. Personal entitlement stays unknown in pre-subscription discovery; optional account-specific validation is not a prerequisite. |
 | Public scoring | Keep weights illustrative. Real observed count/rank disagreement with a tiny held-out sample does not validate a calibrated score or discovery benefit. | Wider independent source/period holds, reception measures, sparse-film and geography/format stability. |
 
-Next work is to complete the prepared identity/provider experiments when their external inputs are available, measure the missing extraction formats and correction effort, and expand the scoring cohort without turning missing selections into negative judgments. No new paid service, crawler platform or production dependency is justified by the current results alone.
+Finish the B2/B3 effort supplements and B4's two later observations before final adjudication. Further scoring expansion is an Epic C question, not an extra closure requirement for the completed B7 study. No new paid service, crawler platform or production dependency is justified by the current results alone.
 
 The remaining issue-specific experiments are concrete:
 
@@ -71,7 +71,7 @@ The remaining issue-specific experiments are concrete:
 | B2 #12 | Time actual manual adjudication/correction by the existing source strata, preserving unresolved decisions and undefined automatic precision; no human-only identity oracle is added as a requirement. |
 | B3 #13 | Time correction of observed extraction failures in a separately labeled supplement, preserving the frozen baseline and stating method/model-cost boundaries. Clarify or complete withheld-layout evidence without relabeling development supplements as holdouts. |
 | B4 #14 | Reuse the accepted both-ID manifest on two later dates, measure changes/expiry, resolve retention/use questions and investigate public plan-specific classifications. Native access and bounded public spot checks are performed; consumer login is not required for discovery. |
-| B7 #17 | Add a frozen period/diversity holdout with independently sourced critic selections, or obtain an explicit scoped deferral. The existing New Yorker source-family holdout is a valid performed experiment; missing numeric audience inputs are a legitimate inconclusive full-formula result. |
+| B7 #17 | No remaining B7 closure work: the period/format extension is executed and the issue is closed. Broader calibration remains an explicitly inconclusive implementation question for C3 #21. |
 | B8 #18 / Epic #2 | Consolidate those outcomes and any explicitly accepted deferrals before a final gate decision; the current synthesis does not close either item. |
 
 ## Tracked implementation handoff
@@ -92,8 +92,7 @@ require Epic A completion or authorize implementation before its specific gate.
 Current insufficient-evidence outcomes remain explicit proposals for gate
 review. The unresolved empirical work stays tracked under #12–#14 and the Gate B
 synthesis under #18. The formerly missing #17 period/format experiment is now
-executed in PR #47; its acceptance is adjudicated separately against the exact
-issue criteria. This handoff does not itself accept Gate B or silently defer work.
+executed in PR #47 and #17 is closed after issue-specific acceptance. This handoff does not itself accept Gate B or silently defer work.
 
 
 ## Authenticated continuation — 2026-10-30
@@ -165,3 +164,58 @@ classifications, and final Gate B adjudication remain outstanding. Native access
 and bounded public offer checks are now performed; consumer-account checks remain
 optional and are not prerequisites for discovery. Automated audit intervals are labeled as such and do not
 stand in for human effort.
+
+
+## Prepared initial choices and final gate boundary — 2026-10-30
+
+These choices are proposals for the B8 review, grounded in the measurements
+above. They select a narrow starting scope, not new production integrations or
+an accepted whole-epic gate. No additional benchmark is imposed on closed
+B1/B5/B6/B7 issues merely because its result is inconclusive.
+
+| Area | Initial choice supported now | Scope and implementation condition |
+| --- | --- | --- |
+| Source strata | Investigate edition-bounded individual critic selections, international festival selections/awards, and historical retrospective entries separately. Start diversity research with the registry's Cahiers and La Internacional Cinéfila perspectives alongside BFI/Film Comment; use Annecy/Cannes sections to retain short/animation and festival context. | This selects strata for C2, not collection permission or complete ballots. Preserve critic/source family, eligibility year, rank/tie and partialness. Resolve the particular source/method retention basis before ingestion; no restricted publisher text or paywalled copy is acquired by this choice. |
+| Extraction stack | Keep API/feed/HTTP with source-specific deterministic parsing and transactional SQLite. Use a documented native JSON endpoint before browser rendering when it supplies the required records. | The frozen static result remains 23/24 development and 3/8 holdout complete documents. A failed completeness check requires correction/review. Browser use remains source-specific; no general crawler, LangExtract or dlt dependency is selected by these results. |
+| Availability feeds | Retain the existing TMDB/JustWatch baseline provisionally and native Movie of the Night as the measured comparison/discovery candidate. Use native offer fields directly for pre-subscription discovery; public pages are bounded validation checks. | Do not select an exclusive winner, poll interval or complete catalog claim from date one. Keep missing/failed responses unknown, channel subscriptions separate and plan-specific eligibility explicit. Consumer sign-in is not an acquisition prerequisite. |
+| Public scoring | Keep distinct endorsement counts, rank-aware and award/reception views with source lineage and unknown exposure visible. No calibrated weighted blend is selected. | B7's source-family and period/format tests are completed but inconclusive for predictive benefit. RT positivity, Metascore, RT mean and categorical audience grades remain distinct; missing numeric audience data cannot be imputed as zero. Personal fit remains separate. |
+| OSS adoption | Reuse documented ideas and narrow interfaces from the B6 dossier; retain existing small Python equivalents rather than adopt a larger product stack. | No copied module with unknown/incompatible licensing, no Letterboxd access inferred from a scraper license, and no source-content rights inferred from an OSS code license. |
+
+### Exact closure assessment
+
+[B8 #18](https://github.com/pavelkrotkov/film-iq/issues/18) allows an explicitly
+documented **inconclusive outcome**. For example, B7 performed its specified
+holdouts and found insufficient evidence for selected weights. That provision
+does not make an **unperformed required observation** a completed experiment.
+[The epic](https://github.com/pavelkrotkov/film-iq/issues/2) explicitly requires
+sixty stratified films across three dates; [B4 #14](https://github.com/pavelkrotkov/film-iq/issues/14)
+requires three genuinely time-separated observations for final coverage/change
+claims. All retained B4 observations are still **2026-10-30 UTC, date one**.
+There is no recorded deferral of the other two dates.
+
+Accordingly, finish the independently running B2 review-effort and B3
+correction-effort supplements now; then finish the two later B4 captures using
+the same accepted local both-ID manifest. Compare per-film provider assertions,
+source errors/unknowns, offered expiry fields and bounded first-party evidence.
+If no relevant change occurs, report the observed no-change interval and
+**inconclusive change-detection latency**; do not invent an expiry/removal or a
+positive timeliness result. Unresolved rights and exact-plan information may be
+reported as no-go/unknown outcomes after the investigation; they do not grant
+permission or justify a purchase-driving coverage assertion.
+
+B8, B4 and Epic B remain open pending those measurements and final review.
+No Epic A dependency or consumer-account login blocks this work. The linked ADR evidence
+appendices leave the original status and final gates intact.
+
+### Remaining questions for Epic C
+
+| Destination | Concrete question / backlog delta | Safe interim behavior |
+| --- | --- | --- |
+| [C2 #20](https://github.com/pavelkrotkov/film-iq/issues/20) | Which permitted original source editions and layouts reduce correction effort after the measured supplements, while improving specialty/translated-title coverage? | Keep unresolved source rows and candidate IDs; expand only source-specific proven extraction. |
+| [C3 #21](https://github.com/pavelkrotkov/film-iq/issues/21) | Can broader original-source holds and adequately sampled audience data establish calibration or sparse-film discovery benefit? | Publish transparent component views and unknown exposure; no selected optimal weights or inferred negative judgments. |
+| [C4 #22](https://github.com/pavelkrotkov/film-iq/issues/22) | After the two later dates, do coverage, observed changes and public plan rules justify native Movie of the Night beside or instead of the baseline? | Preserve both provider lineages and unknown plan/account status; no complete-catalog, exclusivity or entitlement guarantee. |
+| [C8 #26](https://github.com/pavelkrotkov/film-iq/issues/26) | Which actual plan allowances, historical-retention terms and ongoing costs support operation? | Enforce verified provider-specific storage/attribution rules; unknown allowance/cost is not unlimited or free. |
+
+These are existing tracked destinations, not silently deferred B4 measurements.
+Publish the handoff with the B8 PR; final gate acceptance must still record what
+was actually performed and which decisions remain inconclusive.

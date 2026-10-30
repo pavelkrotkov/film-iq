@@ -26,3 +26,20 @@ baseline integration, not provider coverage, commercial retention rights,
 first-party playback or plan-tier verification. The 60-film/three-date benchmark
 and this ADR's provisional status remain unchanged.
 
+## Epic B paired evidence and discovery scope — 2026-10-30
+
+The [paired date-one report](../research/availability/comparison-20261030.md)
+records sixty TMDB and sixty native Movie of the Night HTTP-200 requests.
+Usable US responses number 53 and 49; missing-country responses stay unknown.
+Asymmetric partial service mapping prevents superiority/absence claims. Public
+Apple SKU metadata agrees with three native prices; exact-cut/runtime and
+plan-specific uncertainties are retained. A separate native Peacock query
+returns twenty first-page movies with more pages available.
+
+Native API fields support discovery before subscription. Consumer login is not
+a prerequisite; public title/plan pages are bounded accuracy/qualification
+checks and personal entitlement stays unknown where untested. Keep the baseline
+and native comparison candidate provisional: all observations are one UTC date,
+so two later captures, change/expiry comparisons and unresolved rights/plan
+questions remain. No exclusive provider or polling cadence is selected, and
+this appendix does not waive the three-date gate.
