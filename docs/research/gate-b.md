@@ -191,9 +191,9 @@ requires three genuinely time-separated observations for final coverage/change
 claims. All retained B4 observations are still **2026-10-30 UTC, date one**.
 There is no recorded deferral of the other two dates.
 
-Accordingly, consolidate the separately performed B2 review-effort and B3
-correction-effort supplements, then finish the two later B4 captures using
-the same accepted local both-ID manifest. Compare per-film provider assertions,
+B2 review-effort and B3 correction-effort supplements are now merged and
+accepted. Finish the two later B4 captures using the same accepted local both-ID
+manifest. Compare per-film provider assertions,
 source errors/unknowns, offered expiry fields and bounded first-party evidence.
 If no relevant change occurs, report the observed no-change interval and
 **inconclusive change-detection latency**; do not invent an expiry/removal or a
@@ -232,3 +232,17 @@ deterministic provider comparison is automatically a model-training/evaluation
 experiment, but possession of a key does not establish an AI-product exception.
 This is a bounded published-terms finding, not a legal conclusion or a new
 consumer-login prerequisite. No indefinite historical-retention right follows.
+
+
+### Verified local observation registration
+
+[PR #53](https://github.com/pavelkrotkov/film-iq/pull/53) is merged after
+independent Standards/Spec review and green CI. Both native local calendar jobs
+were registered and re-read in `gui/502`, with zero runs and a not-running state.
+The [dated-run protocol](availability/dated-observations.md) schedules Oct 31 and
+Nov 1 at 10:00 New York time (14:00/15:00 UTC). Project-local receipts record
+registration, valid configurations and the earlier zero-request date-guard
+checks. Credentials and results stay local. No future observation is claimed;
+the Mac/network must be available and resulting timestamps/counts must be
+verified. After date three, compare changes and perform final B4/B8 adjudication,
+then unload the two jobs. Until then #14, #18 and Epic #2 remain open.

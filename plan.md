@@ -938,3 +938,29 @@ claiming universal unfamiliar-layout coverage. Human active minutes and billing
 remain unknown. B2/B3 supplements are now merged as #51/#54 and issues #12/#13 are closed
 after independent review and controller acceptance. B8 consolidates these
 results without inventing broader accuracy or cost outcomes.
+
+
+### Verified Epic B progress and remaining time blocker (2026-10-30)
+
+B2 #12 and B3 #13 are closed after supplements #51/#54 merged at independently
+reviewed heads with green PR and merge CI. All six completed B1–B3/B5–B7
+research issues retain bounded outcomes and explicit unknowns. The three-date
+B4 benchmark remains mandatory; its two unperformed dates are not a deferral.
+
+PR #53 is now merged. Both local Oct 31/Nov 1 observation jobs are registered
+in `gui/502` and re-observed with zero runs; no immediate provider calls occurred.
+Configurations, logs, receipts and future observations stay inside the approved
+project's ignored cache, and no credentials were uploaded. The initial REST
+merge response was empty; SHA-guarded native PR merge succeeded and merged state
+was re-read. Registration occurred after review/CI, before that fallback merge
+confirmation; neither future job ran in that interval. The final dossier
+records concrete choices and Epic C questions without accepting Gate B early.
+
+The remaining external/time blocker is actual later-date evidence on Oct 31 and
+Nov 1, followed by comparison and final reviewed gate decision. Mac/network
+availability is required; missed dates need genuinely later replacements.
+No streaming sign-in, purchase or extra credential is requested from the user.
+
+Final consolidated validation before B8 PR review: Ruff check/format and ty pass;
+341 tests pass with one opt-in integration skip. All 161 tracked Python files
+have maximum CC 8 and minimum MI 50.025032. This synthesis adds no Python code.
