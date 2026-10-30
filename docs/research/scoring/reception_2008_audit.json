@@ -1,0 +1,626 @@
+{
+  "auditor_kind": "automated",
+  "human_audit": false,
+  "audit_utc": "2026-10-30T04:35:37.275396+00:00",
+  "dataset_path": "docs/research/scoring/reception_2008.json",
+  "dataset_sha256_at_comparison": "0725e89d28d2fc2990b629a102f8b9f1799f3294accd169812f259ebc7549636",
+  "scope": "Independent reception/context transcription comparison. AGENTS.md and REAL_DATA_NOTICE.md read first; evaluator, computed results and study were not read. Three earlier independent exact rendered captures inspected; remaining seven exact wikitext API response bodies subsequently captured by authorized acquisition agent and independently inspected here. All ten observed revision IDs and retained-response hashes verified.",
+  "verified_films": 10,
+  "unverified_films": 0,
+  "transcription_mismatches": [],
+  "primary_provider_verified": false,
+  "live_provider_verified": false,
+  "historical_2008_values_verified": false,
+  "measurement_semantics": [
+    "RT positive-review percentage, average out of10 and denominator are distinct observations; Metacritic score out of100 and its denominator remain distinct. No interchange or numeric CinemaScore conversion performed.",
+    "Cited access dates are citation metadata and do not establish when reported numerical values applied. Dataset retrieval timestamps are API acquisition claims; they were not independently reproduced.",
+    "CinemaScore letters remain categorical; all sample sizes unknown. Null audience scores and denominators remain unknown.",
+    "Kung Fu Panda RT average is a dynamic template and stays unknown; Bolt and WALL-E RT access dates are dynamic templates and stay unknown. All three dynamic unknowns independently confirmed in retained exact wikitext. No dynamic expansion accepted as pinned article-revision evidence.",
+    "The Visitor title denotes2007 while cohort is2008; release eligibility was not independently audited.",
+    "Countries are reported source context rather than verified national identity. Last three intros identify animation and their pages state Best Animated Feature nomination/win; remaining format labels are feature-length classification inferences."
+  ],
+  "network_limitations": [
+    "Sandbox DNS failed for initial API request. Authorized escalated Milk API returned403; no API retries.",
+    "Each exact w/index.php?oldid rendered URL returned403; web exact oldid attempts also all cache miss. No provider scraping or bypass retries.",
+    "Cached bodies for three pages were made available by parent; independent inspection here confirms their embedded wgRevisionId and response SHA256. These three checks use earlier captures, not fresh acquisition.",
+    "After initial403/cache-miss attempts, root authorized one ordinary source capture pass using the previously configured identified research User-Agent and API endpoints. Its seven successful response receipts and bytes were independently audited here; success is not a live RT/Metacritic/CinemaScore-provider check."
+  ],
+  "sources": [
+    {
+      "film": "Milk (2008 American film)",
+      "requested_revision": 1379683314,
+      "requested_rendered_url": "https://en.wikipedia.org/w/index.php?oldid=1379683314",
+      "fresh_network_status": "inaccessible: HTTP403; web tool cache miss",
+      "observed_revision": 1379683314,
+      "source_response_sha256": "da9a0fee1f2ebb426a037a20dfc3e3a13deb4c0b85c66c01038f4059cea5059b",
+      "fresh_attempt_note": "Milk API and rendered requests returned HTTP403 before attempt logging; response body/hash and exact retrieval time were not retained. Sandbox first request failed DNS.",
+      "status": "verified_against_cached_exact_rendered_revision",
+      "source_url": "https://en.wikipedia.org/wiki/Milk_(2008_American_film)?oldid=1379683314",
+      "source_cache": ".cache/audit/1379683314.html",
+      "source_acquisition_time": "Exact time not recorded per response; earlier audit receipt audit_utc=2026-10-30T02:14:31.293605+00:00. This audit made no successful fresh retrieval.",
+      "observed": {
+        "rt_positivity_pct": 93,
+        "rt_critic_count": 245,
+        "rt_average_10": 8,
+        "metascore_100": 83,
+        "mc_critic_count": 39,
+        "runtime_minutes": 128,
+        "countries": [
+          "United States"
+        ],
+        "cited_access_dates": {
+          "rt": "2021-03-06",
+          "mc": "2009-05-04",
+          "cinemascore": null
+        }
+      },
+      "field_checks": {
+        "rt_positivity_pct": true,
+        "rt_critic_count": true,
+        "rt_average_10": true,
+        "metascore_100": true,
+        "mc_critic_count": true,
+        "runtime_minutes": true,
+        "countries": true,
+        "cited_access_dates": true
+      },
+      "cinemascore_letter": "Not observed in retained page; dataset null is consistent with unknown, not proof of no survey.",
+      "numeric_audience": "No score/vote denominator observed in inspected page; null remains unknown.",
+      "format_context": "Intro identifies 2008 drama; feature-length runtime agrees. Animation status and Oscar nomination context not independently audited."
+    },
+    {
+      "film": "The Wrestler (2008 film)",
+      "requested_revision": 1381358616,
+      "requested_rendered_url": "https://en.wikipedia.org/w/index.php?oldid=1381358616",
+      "fresh_network_status": "inaccessible: HTTP403; web tool cache miss",
+      "observed_revision": 1381358616,
+      "source_response_sha256": "071c6225f8657fbf71c7afb528b0d17ba1818344efa7dcc29a03a2de9ad02551",
+      "fresh_attempt": {
+        "film": "The Wrestler (2008 film)",
+        "requested_revision": 1381358616,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1381358616",
+        "attempted_at": "2026-10-30T04:31:57.255196+00:00",
+        "status": 403,
+        "error": "HTTP Error 403: Forbidden",
+        "error_response_sha256": "165da4d5af47d0a2008597750d184a3cef870aff9d0a5005b71d6bd17a75672e"
+      },
+      "status": "verified_against_cached_exact_rendered_revision",
+      "source_url": "https://en.wikipedia.org/wiki/The_Wrestler_(2008_film)?oldid=1381358616",
+      "source_cache": ".cache/audit/1381358616.html",
+      "source_acquisition_time": "Exact time not recorded per response; earlier audit receipt audit_utc=2026-10-30T02:14:31.293605+00:00. This audit made no successful fresh retrieval.",
+      "observed": {
+        "rt_positivity_pct": 99,
+        "rt_critic_count": 229,
+        "rt_average_10": 8.5,
+        "metascore_100": 80,
+        "mc_critic_count": 36,
+        "runtime_minutes": 109,
+        "countries": [
+          "United States"
+        ],
+        "cited_access_dates": {
+          "rt": "2025-01-31",
+          "mc": "2008-12-24",
+          "cinemascore": null
+        }
+      },
+      "field_checks": {
+        "rt_positivity_pct": true,
+        "rt_critic_count": true,
+        "rt_average_10": true,
+        "metascore_100": true,
+        "mc_critic_count": true,
+        "runtime_minutes": true,
+        "countries": true,
+        "cited_access_dates": true
+      },
+      "cinemascore_letter": "Not observed in retained page; dataset null is consistent with unknown, not proof of no survey.",
+      "numeric_audience": "No score/vote denominator observed in inspected page; null remains unknown.",
+      "format_context": "Intro identifies 2008 drama; feature-length runtime agrees. Animation status and Oscar nomination context not independently audited."
+    },
+    {
+      "film": "The Reader (2008 film)",
+      "requested_revision": 1378967681,
+      "requested_rendered_url": "https://en.wikipedia.org/w/index.php?oldid=1378967681",
+      "fresh_network_status": "inaccessible: HTTP403; web tool cache miss",
+      "observed_revision": 1378967681,
+      "source_response_sha256": "2a6088e5b8c27478e1d455684b7965bc6fe088133d751af28470851c5ec6fe7d",
+      "fresh_attempt": {
+        "film": "The Reader (2008 film)",
+        "requested_revision": 1378967681,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1378967681",
+        "attempted_at": "2026-10-30T04:31:57.449829+00:00",
+        "status": 403,
+        "error": "HTTP Error 403: Forbidden",
+        "error_response_sha256": "165da4d5af47d0a2008597750d184a3cef870aff9d0a5005b71d6bd17a75672e"
+      },
+      "status": "verified_against_cached_exact_rendered_revision",
+      "source_url": "https://en.wikipedia.org/wiki/The_Reader_(2008_film)?oldid=1378967681",
+      "source_cache": ".cache/audit/1378967681.html",
+      "source_acquisition_time": "Exact time not recorded per response; earlier audit receipt audit_utc=2026-10-30T02:14:31.293605+00:00. This audit made no successful fresh retrieval.",
+      "observed": {
+        "rt_positivity_pct": 63,
+        "rt_critic_count": 202,
+        "rt_average_10": 6.4,
+        "metascore_100": 58,
+        "mc_critic_count": 38,
+        "runtime_minutes": 124,
+        "countries": [
+          "Germany",
+          "United States"
+        ],
+        "cited_access_dates": {
+          "rt": "2021-03-10",
+          "mc": "2021-03-10",
+          "cinemascore": null
+        }
+      },
+      "field_checks": {
+        "rt_positivity_pct": true,
+        "rt_critic_count": true,
+        "rt_average_10": true,
+        "metascore_100": true,
+        "mc_critic_count": true,
+        "runtime_minutes": true,
+        "countries": true,
+        "cited_access_dates": true
+      },
+      "cinemascore_letter": "Not observed in retained page; dataset null is consistent with unknown, not proof of no survey.",
+      "numeric_audience": "No score/vote denominator observed in inspected page; null remains unknown.",
+      "format_context": "Intro identifies 2008 drama; feature-length runtime agrees. Animation status and Oscar nomination context not independently audited."
+    },
+    {
+      "film": "The Curious Case of Benjamin Button (film)",
+      "requested_revision": 1379730511,
+      "requested_rendered_url": "https://en.wikipedia.org/w/index.php?oldid=1379730511",
+      "fresh_network_status": "inaccessible: HTTP403; web tool cache miss",
+      "observed_revision": 1379730511,
+      "source_response_sha256": "beab2cd56dda398d3253e2a17282b9cd47d71867da8e6fd458f00644c51275f6",
+      "fresh_attempt": {
+        "film": "The Curious Case of Benjamin Button (film)",
+        "requested_revision": 1379730511,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1379730511",
+        "attempted_at": "2026-10-30T04:31:57.612700+00:00",
+        "status": 403,
+        "error": "HTTP Error 403: Forbidden",
+        "error_response_sha256": "165da4d5af47d0a2008597750d184a3cef870aff9d0a5005b71d6bd17a75672e"
+      },
+      "status": "verified_against_retained_exact_wikitext_response",
+      "source_acquisition_time": "2026-10-30T04:34:21.046289+00:00",
+      "source_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1379730511&prop=wikitext%7Crevid&format=json",
+      "source_cache": ".cache/reception/original/1379730511.json",
+      "source_acquisition_receipt": {
+        "film": "The Curious Case of Benjamin Button (film)",
+        "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1379730511&prop=wikitext%7Crevid&format=json",
+        "http_status": 200,
+        "retrieved_at": "2026-10-30T04:34:21.046289+00:00",
+        "sha256": "beab2cd56dda398d3253e2a17282b9cd47d71867da8e6fd458f00644c51275f6",
+        "same_as_original_acquisition": true,
+        "observed_revision": 1379730511,
+        "file": ".cache/reception/original/1379730511.json"
+      },
+      "original_dataset_response_sha256_matches": true,
+      "observed": {
+        "rt_positivity_pct": 72,
+        "rt_critic_count": 254,
+        "rt_average_10": 7.5,
+        "metascore_100": 70,
+        "mc_critic_count": 37,
+        "cited_access_dates": {
+          "rt": "2021-06-01",
+          "mc": "2009-12-14",
+          "cinemascore": null
+        },
+        "cinemascore_letter": "A−",
+        "runtime_minutes": 166,
+        "countries": [
+          "United States"
+        ]
+      },
+      "field_checks": {
+        "rt_positivity_pct": true,
+        "rt_critic_count": true,
+        "rt_average_10": true,
+        "metascore_100": true,
+        "mc_critic_count": true,
+        "cited_access_dates": true,
+        "cinemascore_letter": true,
+        "runtime_minutes": true,
+        "countries": true
+      },
+      "cinemascore_sample_n": null,
+      "numeric_audience": "No numeric audience score/vote denominator observed in inspected reception text; dataset null remains unknown.",
+      "format_context": "Intro identifies drama film and feature-length runtime agrees. Non-animation remains classification inference."
+    },
+    {
+      "film": "Frost/Nixon (film)",
+      "requested_revision": 1380568022,
+      "requested_rendered_url": "https://en.wikipedia.org/w/index.php?oldid=1380568022",
+      "fresh_network_status": "inaccessible: HTTP403; web tool cache miss",
+      "observed_revision": 1380568022,
+      "source_response_sha256": "2da7f9a30a2092bb7e5c31828e79b936311bd628aaf26967602116dfe4b3f551",
+      "fresh_attempt": {
+        "film": "Frost/Nixon (film)",
+        "requested_revision": 1380568022,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1380568022",
+        "attempted_at": "2026-10-30T04:31:57.781786+00:00",
+        "status": 403,
+        "error": "HTTP Error 403: Forbidden",
+        "error_response_sha256": "165da4d5af47d0a2008597750d184a3cef870aff9d0a5005b71d6bd17a75672e"
+      },
+      "status": "verified_against_retained_exact_wikitext_response",
+      "source_acquisition_time": "2026-10-30T04:34:22.389762+00:00",
+      "source_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1380568022&prop=wikitext%7Crevid&format=json",
+      "source_cache": ".cache/reception/original/1380568022.json",
+      "source_acquisition_receipt": {
+        "film": "Frost/Nixon (film)",
+        "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1380568022&prop=wikitext%7Crevid&format=json",
+        "http_status": 200,
+        "retrieved_at": "2026-10-30T04:34:22.389762+00:00",
+        "sha256": "2da7f9a30a2092bb7e5c31828e79b936311bd628aaf26967602116dfe4b3f551",
+        "same_as_original_acquisition": true,
+        "observed_revision": 1380568022,
+        "file": ".cache/reception/original/1380568022.json"
+      },
+      "original_dataset_response_sha256_matches": true,
+      "observed": {
+        "rt_positivity_pct": 93,
+        "rt_critic_count": 258,
+        "rt_average_10": 8,
+        "metascore_100": 80,
+        "mc_critic_count": 38,
+        "cited_access_dates": {
+          "rt": "2021-06-05",
+          "mc": "2009-04-21",
+          "cinemascore": null
+        },
+        "cinemascore_letter": null,
+        "runtime_minutes": 122,
+        "countries": [
+          "United States",
+          "United Kingdom",
+          "France"
+        ]
+      },
+      "field_checks": {
+        "rt_positivity_pct": true,
+        "rt_critic_count": true,
+        "rt_average_10": true,
+        "metascore_100": true,
+        "mc_critic_count": true,
+        "cited_access_dates": true,
+        "cinemascore_letter": true,
+        "runtime_minutes": true,
+        "countries": true
+      },
+      "cinemascore_sample_n": null,
+      "numeric_audience": "No numeric audience score/vote denominator observed in inspected reception text; dataset null remains unknown.",
+      "format_context": "Intro identifies drama film and feature-length runtime agrees. Non-animation remains classification inference."
+    },
+    {
+      "film": "Slumdog Millionaire",
+      "requested_revision": 1379601586,
+      "requested_rendered_url": "https://en.wikipedia.org/w/index.php?oldid=1379601586",
+      "fresh_network_status": "inaccessible: HTTP403; web tool cache miss",
+      "observed_revision": 1379601586,
+      "source_response_sha256": "1a4b8a3262b1e9278a79c2bcd9a38f6890ee97474f9d23a04ad4ae0b0337e39a",
+      "fresh_attempt": {
+        "film": "Slumdog Millionaire",
+        "requested_revision": 1379601586,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1379601586",
+        "attempted_at": "2026-10-30T04:31:57.949954+00:00",
+        "status": 403,
+        "error": "HTTP Error 403: Forbidden",
+        "error_response_sha256": "165da4d5af47d0a2008597750d184a3cef870aff9d0a5005b71d6bd17a75672e"
+      },
+      "status": "verified_against_retained_exact_wikitext_response",
+      "source_acquisition_time": "2026-10-30T04:34:23.798769+00:00",
+      "source_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1379601586&prop=wikitext%7Crevid&format=json",
+      "source_cache": ".cache/reception/original/1379601586.json",
+      "source_acquisition_receipt": {
+        "film": "Slumdog Millionaire",
+        "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1379601586&prop=wikitext%7Crevid&format=json",
+        "http_status": 200,
+        "retrieved_at": "2026-10-30T04:34:23.798769+00:00",
+        "sha256": "1a4b8a3262b1e9278a79c2bcd9a38f6890ee97474f9d23a04ad4ae0b0337e39a",
+        "same_as_original_acquisition": true,
+        "observed_revision": 1379601586,
+        "file": ".cache/reception/original/1379601586.json"
+      },
+      "original_dataset_response_sha256_matches": true,
+      "observed": {
+        "rt_positivity_pct": 91,
+        "rt_critic_count": 290,
+        "rt_average_10": 8.4,
+        "metascore_100": 86,
+        "mc_critic_count": 36,
+        "cited_access_dates": {
+          "rt": "2023-08-21",
+          "mc": "2018-02-27",
+          "cinemascore": null
+        },
+        "cinemascore_letter": null,
+        "runtime_minutes": 120,
+        "countries": [
+          "United Kingdom"
+        ]
+      },
+      "field_checks": {
+        "rt_positivity_pct": true,
+        "rt_critic_count": true,
+        "rt_average_10": true,
+        "metascore_100": true,
+        "mc_critic_count": true,
+        "cited_access_dates": true,
+        "cinemascore_letter": true,
+        "runtime_minutes": true,
+        "countries": true
+      },
+      "cinemascore_sample_n": null,
+      "numeric_audience": "No numeric audience score/vote denominator observed in inspected reception text; dataset null remains unknown.",
+      "format_context": "Intro identifies drama film and feature-length runtime agrees. Non-animation remains classification inference."
+    },
+    {
+      "film": "The Visitor (2007 feature film)",
+      "requested_revision": 1370281508,
+      "requested_rendered_url": "https://en.wikipedia.org/w/index.php?oldid=1370281508",
+      "fresh_network_status": "inaccessible: HTTP403; web tool cache miss",
+      "observed_revision": 1370281508,
+      "source_response_sha256": "6a0c88ce61b9b1cd2a3cb978b59f40868a901c3d672a069ff5e89552d48509c5",
+      "fresh_attempt": {
+        "film": "The Visitor (2007 feature film)",
+        "requested_revision": 1370281508,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1370281508",
+        "attempted_at": "2026-10-30T04:31:58.116832+00:00",
+        "status": 403,
+        "error": "HTTP Error 403: Forbidden",
+        "error_response_sha256": "165da4d5af47d0a2008597750d184a3cef870aff9d0a5005b71d6bd17a75672e"
+      },
+      "status": "verified_against_retained_exact_wikitext_response",
+      "source_acquisition_time": "2026-10-30T04:34:25.132660+00:00",
+      "source_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1370281508&prop=wikitext%7Crevid&format=json",
+      "source_cache": ".cache/reception/original/1370281508.json",
+      "source_acquisition_receipt": {
+        "film": "The Visitor (2007 feature film)",
+        "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1370281508&prop=wikitext%7Crevid&format=json",
+        "http_status": 200,
+        "retrieved_at": "2026-10-30T04:34:25.132660+00:00",
+        "sha256": "6a0c88ce61b9b1cd2a3cb978b59f40868a901c3d672a069ff5e89552d48509c5",
+        "same_as_original_acquisition": true,
+        "observed_revision": 1370281508,
+        "file": ".cache/reception/original/1370281508.json"
+      },
+      "original_dataset_response_sha256_matches": true,
+      "observed": {
+        "rt_positivity_pct": 89,
+        "rt_critic_count": 120,
+        "rt_average_10": 7.62,
+        "metascore_100": 79,
+        "mc_critic_count": 29,
+        "cited_access_dates": {
+          "rt": "2015-02-02",
+          "mc": "2015-02-02",
+          "cinemascore": null
+        },
+        "cinemascore_letter": null,
+        "runtime_minutes": 103,
+        "countries": [
+          "United States"
+        ]
+      },
+      "field_checks": {
+        "rt_positivity_pct": true,
+        "rt_critic_count": true,
+        "rt_average_10": true,
+        "metascore_100": true,
+        "mc_critic_count": true,
+        "cited_access_dates": true,
+        "cinemascore_letter": true,
+        "runtime_minutes": true,
+        "countries": true
+      },
+      "cinemascore_sample_n": null,
+      "numeric_audience": "No numeric audience score/vote denominator observed in inspected reception text; dataset null remains unknown.",
+      "format_context": "Intro identifies drama film and feature-length runtime agrees. Non-animation remains classification inference."
+    },
+    {
+      "film": "Bolt (2008 film)",
+      "requested_revision": 1380813477,
+      "requested_rendered_url": "https://en.wikipedia.org/w/index.php?oldid=1380813477",
+      "fresh_network_status": "inaccessible: HTTP403; web tool cache miss",
+      "observed_revision": 1380813477,
+      "source_response_sha256": "167663427fdfb5795f61df7758b6f7a9e20987db8445da7e38356f14f1a22057",
+      "fresh_attempt": {
+        "film": "Bolt (2008 film)",
+        "requested_revision": 1380813477,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1380813477",
+        "attempted_at": "2026-10-30T04:31:58.296087+00:00",
+        "status": 403,
+        "error": "HTTP Error 403: Forbidden",
+        "error_response_sha256": "165da4d5af47d0a2008597750d184a3cef870aff9d0a5005b71d6bd17a75672e"
+      },
+      "status": "verified_against_retained_exact_wikitext_response",
+      "source_acquisition_time": "2026-10-30T04:34:26.514020+00:00",
+      "source_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1380813477&prop=wikitext%7Crevid&format=json",
+      "source_cache": ".cache/reception/original/1380813477.json",
+      "source_acquisition_receipt": {
+        "film": "Bolt (2008 film)",
+        "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1380813477&prop=wikitext%7Crevid&format=json",
+        "http_status": 200,
+        "retrieved_at": "2026-10-30T04:34:26.514020+00:00",
+        "sha256": "167663427fdfb5795f61df7758b6f7a9e20987db8445da7e38356f14f1a22057",
+        "same_as_original_acquisition": true,
+        "observed_revision": 1380813477,
+        "file": ".cache/reception/original/1380813477.json"
+      },
+      "original_dataset_response_sha256_matches": true,
+      "observed": {
+        "rt_positivity_pct": 90,
+        "rt_critic_count": 191,
+        "rt_average_10": 7.2,
+        "metascore_100": 67,
+        "mc_critic_count": 29,
+        "cited_access_dates": {
+          "rt": null,
+          "mc": "2024-03-08",
+          "cinemascore": "2022-02-05"
+        },
+        "cinemascore_letter": "A−",
+        "runtime_minutes": 96,
+        "countries": [
+          "United States"
+        ]
+      },
+      "field_checks": {
+        "rt_positivity_pct": true,
+        "rt_critic_count": true,
+        "rt_average_10": true,
+        "metascore_100": true,
+        "mc_critic_count": true,
+        "cited_access_dates": true,
+        "cinemascore_letter": true,
+        "runtime_minutes": true,
+        "countries": true
+      },
+      "cinemascore_sample_n": null,
+      "numeric_audience": "No numeric audience score/vote denominator observed in inspected reception text; dataset null remains unknown.",
+      "format_context": "Intro identifies animated feature and page states Best Animated Feature nomination/win; source-attributed context agrees.",
+      "dynamic_unknown": "RT cited access date is {{RT data|access date}}: explicit calendar date unknown; template not expanded or independently pinned.",
+      "rt_evidence_note": "RT prose positional literals inspected: positivity, average and count. Template implementation/expansion not separately audited."
+    },
+    {
+      "film": "Kung Fu Panda (film)",
+      "requested_revision": 1381957478,
+      "requested_rendered_url": "https://en.wikipedia.org/w/index.php?oldid=1381957478",
+      "fresh_network_status": "inaccessible: HTTP403; web tool cache miss",
+      "observed_revision": 1381957478,
+      "source_response_sha256": "f25dfb977b45f1ad90e1c247bbcb7c4ab7c31781cd2c06ffaa90bd2082c5a866",
+      "fresh_attempt": {
+        "film": "Kung Fu Panda (film)",
+        "requested_revision": 1381957478,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1381957478",
+        "attempted_at": "2026-10-30T04:31:58.460399+00:00",
+        "status": 403,
+        "error": "HTTP Error 403: Forbidden",
+        "error_response_sha256": "165da4d5af47d0a2008597750d184a3cef870aff9d0a5005b71d6bd17a75672e"
+      },
+      "status": "verified_against_retained_exact_wikitext_response",
+      "source_acquisition_time": "2026-10-30T04:34:27.910160+00:00",
+      "source_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381957478&prop=wikitext%7Crevid&format=json",
+      "source_cache": ".cache/reception/original/1381957478.json",
+      "source_acquisition_receipt": {
+        "film": "Kung Fu Panda (film)",
+        "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1381957478&prop=wikitext%7Crevid&format=json",
+        "http_status": 200,
+        "retrieved_at": "2026-10-30T04:34:27.910160+00:00",
+        "sha256": "f25dfb977b45f1ad90e1c247bbcb7c4ab7c31781cd2c06ffaa90bd2082c5a866",
+        "same_as_original_acquisition": true,
+        "observed_revision": 1381957478,
+        "file": ".cache/reception/original/1381957478.json"
+      },
+      "original_dataset_response_sha256_matches": true,
+      "observed": {
+        "rt_positivity_pct": 87,
+        "rt_critic_count": 191,
+        "rt_average_10": null,
+        "metascore_100": 74,
+        "mc_critic_count": 36,
+        "cited_access_dates": {
+          "rt": "2025-06-18",
+          "mc": "2021-07-23",
+          "cinemascore": "2022-05-01"
+        },
+        "cinemascore_letter": "A−",
+        "runtime_minutes": 92,
+        "countries": [
+          "United States"
+        ]
+      },
+      "field_checks": {
+        "rt_positivity_pct": true,
+        "rt_critic_count": true,
+        "rt_average_10": true,
+        "metascore_100": true,
+        "mc_critic_count": true,
+        "cited_access_dates": true,
+        "cinemascore_letter": true,
+        "runtime_minutes": true,
+        "countries": true
+      },
+      "cinemascore_sample_n": null,
+      "numeric_audience": "No numeric audience score/vote denominator observed in inspected reception text; dataset null remains unknown.",
+      "format_context": "Intro identifies animated feature and page states Best Animated Feature nomination/win; source-attributed context agrees.",
+      "dynamic_unknown": "RT average is {{RT data|average}} in article revision: numeric average intentionally unknown; template not expanded or independently pinned."
+    },
+    {
+      "film": "WALL-E",
+      "requested_revision": 1380240647,
+      "requested_rendered_url": "https://en.wikipedia.org/w/index.php?oldid=1380240647",
+      "fresh_network_status": "inaccessible: HTTP403; web tool cache miss",
+      "observed_revision": 1380240647,
+      "source_response_sha256": "2acadbbcc3b1ae1e79cb86e67875e860cb6b30dd48c3e3b014df45b8f9b20988",
+      "fresh_attempt": {
+        "film": "WALL-E",
+        "requested_revision": 1380240647,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1380240647",
+        "attempted_at": "2026-10-30T04:31:58.638699+00:00",
+        "status": 403,
+        "error": "HTTP Error 403: Forbidden",
+        "error_response_sha256": "165da4d5af47d0a2008597750d184a3cef870aff9d0a5005b71d6bd17a75672e"
+      },
+      "status": "verified_against_retained_exact_wikitext_response",
+      "source_acquisition_time": "2026-10-30T04:34:29.347654+00:00",
+      "source_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1380240647&prop=wikitext%7Crevid&format=json",
+      "source_cache": ".cache/reception/original/1380240647.json",
+      "source_acquisition_receipt": {
+        "film": "WALL-E",
+        "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1380240647&prop=wikitext%7Crevid&format=json",
+        "http_status": 200,
+        "retrieved_at": "2026-10-30T04:34:29.347654+00:00",
+        "sha256": "2acadbbcc3b1ae1e79cb86e67875e860cb6b30dd48c3e3b014df45b8f9b20988",
+        "same_as_original_acquisition": true,
+        "observed_revision": 1380240647,
+        "file": ".cache/reception/original/1380240647.json"
+      },
+      "original_dataset_response_sha256_matches": true,
+      "observed": {
+        "rt_positivity_pct": 95,
+        "rt_critic_count": 258,
+        "rt_average_10": 8.9,
+        "metascore_100": 95,
+        "mc_critic_count": 39,
+        "cited_access_dates": {
+          "rt": null,
+          "mc": "2017-07-28",
+          "cinemascore": "2022-06-14"
+        },
+        "cinemascore_letter": "A",
+        "runtime_minutes": 98,
+        "countries": [
+          "United States"
+        ]
+      },
+      "field_checks": {
+        "rt_positivity_pct": true,
+        "rt_critic_count": true,
+        "rt_average_10": true,
+        "metascore_100": true,
+        "mc_critic_count": true,
+        "cited_access_dates": true,
+        "cinemascore_letter": true,
+        "runtime_minutes": true,
+        "countries": true
+      },
+      "cinemascore_sample_n": null,
+      "numeric_audience": "No numeric audience score/vote denominator observed in inspected reception text; dataset null remains unknown.",
+      "format_context": "Intro identifies animated feature and page states Best Animated Feature nomination/win; source-attributed context agrees.",
+      "dynamic_unknown": "RT cited access date is {{RT data|access date}}: explicit calendar date unknown; template not expanded or independently pinned.",
+      "rt_evidence_note": "RT prose positional literals inspected: positivity, average and count. Template implementation/expansion not separately audited."
+    }
+  ],
+  "license": "Wikipedia contributors, CC BY-SA4.0; see REAL_DATA_NOTICE.md. No added source excerpts or original-provider bodies retained.",
+  "audit_source_modes": {
+    "cached_rendered": 3,
+    "retained_exact_wikitext_api": 7
+  }
+}

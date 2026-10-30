@@ -209,14 +209,15 @@ Picture**, won by *Slumdog Millionaire*, with coefficient 0.25. None of the
 three films with observed list data won that event, so their values and order
 are unchanged. The winner's list data remain unknown; its award cannot fill
 in a missing list score. This is not a count of all awards or a claim that
-the other films won no prizes. Reception and 45/30/15/10 comparisons remain
-inconclusive: no complete, contemporaneous, rights-reviewed critic/audience
-score sample was acquired. No missing component is replaced by zero.
+the other films won no prizes. The reception supplement below adds separate
+descriptive variants; a full 45/30/15/10 comparison remains unavailable without
+numeric audience evidence. No missing component is replaced by zero.
 
 The no-weights output retains all ten candidates and their unknown fields.
 The three observed pages concern live-action features; the three animation
 nominees have unknown list observations here. Shorts and documentaries were
-not sampled. Production geography/language were not audited. These gaps
+not sampled. Production-country context is reported below; language remains
+unaudited. These gaps
 preclude format/geography stability or sparse-film discovery conclusions.
 
 Run `uv run --no-sync python docs/research/scoring/real_evaluation.py` with
@@ -225,6 +226,100 @@ is exercised in project pytest; its assertions check the frozen denominators,
 unknown rows and duplicate-insensitive identified-person arithmetic. It does
 not assert that either ranking is correct. Broader original-source, identity
 and period validation remain open; no production weight is chosen.
+
+## Revision-reported reception and descriptive ablations
+
+The same ten revisions were inspected on 2026-10-30 UTC. The source snapshots
+report RT professional-review positivity and critic count for 10/10 films,
+an explicit RT mean critic rating for 9/10, and Metascore plus critic count
+for 10/10. These are **Wikipedia's derivative assertions**, with no original
+provider request or verification. They are not contemporaneous 2008 inputs:
+the cited RT/Metacritic access dates span 2008–2025 and do not establish when
+the displayed numbers were measured. Acquisition dates, pinned revisions,
+factual spans, reference access dates and response hashes remain separate in
+`reception_2008.json`. Dynamic Kung Fu Panda average and Bolt/WALL-E RT access
+dates remain unknown rather than being filled from today's templates.
+
+| Film | RT positivity % (critics) | RT critic mean /10 | Metascore /100 (critics) | CinemaScore letter (sample size) |
+|---|---:|---:|---:|---|
+| Milk | 93 (245) | 8.00 | 83 (39) | unknown |
+| The Wrestler | 99 (229) | 8.50 | 80 (36) | unknown |
+| The Reader | 63 (202) | 6.40 | 58 (38) | unknown |
+| Benjamin Button | 72 (254) | 7.50 | 70 (37) | A− (unknown) |
+| Frost/Nixon | 93 (258) | 8.00 | 80 (38) | unknown |
+| Slumdog Millionaire | 91 (290) | 8.40 | 86 (36) | unknown |
+| The Visitor | 89 (120) | 7.62 | 79 (29) | unknown |
+| Bolt | 90 (191) | 7.20 | 67 (29) | A− (unknown) |
+| Kung Fu Panda | 87 (191) | unknown | 74 (36) | A− (unknown) |
+| WALL-E | 95 (258) | 8.90 | 95 (39) | A (unknown) |
+
+RT positivity leads with The Wrestler (99%), while RT critic average and
+Metascore lead with WALL-E (8.9/10 and 95/100). Milk and Frost/Nixon tie on RT
+positivity and mean; Frost/Nixon and The Wrestler tie on Metascore. The machine
+output uses explicit tied score groups, with alphabetical labels inside each
+group carrying no ranking significance. The single named-award baseline ranks
+Slumdog Millionaire first and ties the other nine as non-winners of that event.
+Count, reciprocal rank and rank-plus-event continue to have only three scored
+films. Different orders describe different measures and coverage, not quality
+improvement or independent validation.
+
+No numeric audience score with vote denominator was observed. CinemaScore
+letters are categorical observations; they are not converted to a 1–10
+audience scale, substituted for votes or inserted into the full weighted
+formula. That formula therefore has **0/10** fully observed films.
+
+An explicitly **audience-omitted ablation**, rather than the original formula,
+renormalizes the remaining 45/30/15 weights by 90. Its list component is
+identified training count divided by the observed training-only maximum 31;
+its critic component is the reported Metascore divided by 100, and its award
+component is the named event's 0/1 indicator. It is descriptive on mixed-date
+facts, not a temporal backtest. A second ablation drops both audience and award,
+renormalizing 45/30 by 75. Neither imputes a missing list observation.
+The underlying RT/Metacritic critic membership is unknown and may include the
+held-out New Yorker people. Reception and these ablations are therefore not
+independent holdout features or validation of predictive performance.
+
+| Film | Audience-omitted ablation | List/critic-only ablation |
+|---|---:|---:|
+| Milk | 0.776667 | 0.932000 |
+| The Wrestler | 0.621505 | 0.745806 |
+| The Reader | 0.257849 | 0.309419 |
+| Seven other cohort films | unknown | unknown |
+
+Both ablations preserve the three-film training order and its disagreement
+with the two-film observed held-out rank order. That is neither calibration
+nor evidence for these weights. The no-weights output preserves every
+candidate's source scores, counts, categorical audience data and missingness.
+
+Source runtimes are 92–166 minutes, supporting an explicit greater-than-40
+minute feature-length rule. The three animated-feature nominees have 3/3
+reception records, 0/3 known list records and 0/3 complete weighted records;
+the other seven feature-length films have 7/7, 3/7 and 0/7 respectively.
+The source's reported country memberships are United States 9, United Kingdom
+2, Germany 1 and France 1. These overlap (13 memberships across 10 films):
+The Reader is Germany/US and Frost/Nixon US/UK/France. UK membership has 0/2
+known lists; US 3/9; Germany 1/1; France 0/1. Country means production-country
+metadata, so Slumdog's Indian story setting is not silently relabeled as its
+production geography. There is no non-feature cohort, no audited language
+comparison and no basis for geographic/format stability or discovery claims.
+
+Two acquisition passes made 20 successful Wikipedia requests; recorded
+request/body-read durations sum to 14.344 seconds, excluding deliberate
+inter-request gaps, transcription, audit, later raw-byte capture and tool
+overhead. Seven further successful pinned requests retained raw bytes for
+audit; each matched its earlier response hash. No API/model bill or human
+correction minutes were measured. Audit verification and its access limits
+are recorded separately in `reception_2008_audit.json`. A separate automated
+auditor found no transcription mismatches across all ten: three were checked
+against previously captured exact rendered revisions, seven against actual
+retained API bytes with matching revision IDs and original response hashes.
+Earlier 403/cache-miss attempts are preserved. This verifies the Wikipedia
+transcriptions, not their original-provider accuracy or historical as-of dates.
+
+Run `uv run --no-sync python -m docs.research.scoring.reception_evaluation`
+with the local cache environment above. Project pytest exercises this output,
+missing-component exclusion, ablation normalization and explicit award ties.
+None of these descriptive variants chooses production weights.
 
 ## Protocol for real evaluation
 

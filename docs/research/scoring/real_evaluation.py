@@ -33,9 +33,28 @@ def summarize(source: dict) -> dict:
     }
 
 
+def ranking(rows: list[dict], key: str) -> dict:
+    """Equal observed scores share a group; alphabetical order only labels the group."""
+    groups: dict[float, list[str]] = {}
+    unknown = []
+    for row in rows:
+        value = row[key]
+        if value is None:
+            unknown.append(row["film"])
+        else:
+            groups.setdefault(value, []).append(row["film"])
+    return {
+        "groups": [
+            {"score": score, "films": sorted(groups[score])}
+            for score in sorted(groups, reverse=True)
+        ],
+        "unknown": sorted(unknown),
+    }
+
+
 def conditional_orders(comparable: list[dict]) -> dict:
     return {
-        key: [row["film"] for row in sorted(comparable, key=lambda row: -row[key])]
+        key: ranking(comparable, key)
         for key in (
             "training_count",
             "training_rank_sum",
