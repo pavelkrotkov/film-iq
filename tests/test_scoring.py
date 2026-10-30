@@ -31,10 +31,10 @@ def test_independence_lineage_rank_and_reproducibility() -> None:
         "a",
         VERSION,
         2,
-        Fraction(1, 2),
+        Fraction(1, 5),
         1,
     )
-    assert set(a.contributing) == {first, unranked}
-    assert set(a.excluded) == {repeat, derivative}
+    assert set(a.contributing) == {repeat, unranked}
+    assert set(a.excluded) == {first, derivative}
     assert first.published == date(2024, 12, 1) and first.eligibility == "2024 releases"
     assert b.rank_score == Fraction(1, 2)

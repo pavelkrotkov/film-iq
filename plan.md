@@ -1270,3 +1270,55 @@ truncated records cannot persist. No source acquisition or live personal-data
 mutation accompanies these corrections. Ruff/format/ty pass; 367 tests pass
 with one opt-in skip. All thirteen new Python modules/tests have maximum CC 8
 and minimum MI 50.394527. Review conversations await independent follow-up.
+
+### C3 versioned repeat-ballot rank policy (2026-10-30)
+
+The [C3 scorer contract](docs/c3-scoring.md) replaces per-film best-rank choice
+with a predeclared source/window policy and version
+`independent-priority-rank-v2`. Original ranks, excluded observations, source
+family and separate uncertainty states remain available. Source and family
+exclusions support reproducible holdouts. Conflicting ranks at an identical
+ballot priority require review; neither rank quality nor missing exposure
+selects the preferred source.
+
+Only an explicitly reviewed `person_id` identifies a known contributor across
+publications. Author text and publisher names do not identify people. Existing
+`independent_count` counts reviewed evidence support groups; new known-person
+and unknown-contributor support counts prevent treating that as a critic
+headcount. No personal score, predicted enjoyment, weighted blend or inferred
+award/reception score is introduced. Snapshot IDs include the declared policy;
+v1 snapshots retain the historical best-rank numeric rule and old version.
+
+Initial isolated validation passes Ruff check/format, ty and 347 tests with one
+opt-in skip. All 166 tracked/new Python files meet maximum CC 8 and minimum MI
+50.025032. This fixture result does not certify calibrated significance, source
+permissions or live identity accuracy. After rebasing onto C1, the A1 reader
+uses explicit contributor and original-ballot links without author inference.
+Typed award/reception ingestion and C7 rendering remain issue #21 acceptance
+work rather than silently accepted production outcomes.
+
+C3's post-C1 integration validation passes 361 tests with one opt-in skip, Ruff
+check/format and ty. The reader uses explicit `source_ballot.contributor_id`
+and derivative `original_ballot_id` through entry links; it never infers an
+identity from author text. All 177 tracked/new Python files have maximum CC 8
+and minimum MI 50.025032; the eleven changed/new Python files have minimum MI
+50.613109. Both original and derivative ballot-link paths have deterministic
+regression checks. Temporary test files remain under this project worktree.
+
+C3 combined review found that partially populated contributor links split a
+reviewed independence group into separate known/unknown buckets, manufacturing
+another endorsement. The correction retains reviewed group dependence and
+cross-publication person overlap without filling in unknown row identities.
+Conflicting known-person mappings within one group require visible review
+before scoring or snapshot insertion. Regression examples cover mixed actor
+coverage, overlap across publications, unchanged raw rows and rejected
+conflicting snapshots. Native review findings are accepted; exact-head
+follow-up review remains required before merge.
+
+C3's corrected-head validation after the personal snapshot/planner merges passes
+391 tests with one opt-in skip, Ruff check/format and ty. All 195 tracked Python
+files meet maximum CC 8 and minimum MI 50.025032; the twelve C3 Python files
+have minimum MI 50.613109. Mixed known/unknown actor coverage retains one
+support unit and its original selected rank; contradictory mappings fail
+before a snapshot is written. Both independent review findings receive native
+replies; thread resolution awaits the controller's exact-head follow-up.

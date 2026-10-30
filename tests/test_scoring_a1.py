@@ -1,5 +1,5 @@
 import json
-from dataclasses import asdict
+from dataclasses import asdict, replace
 from datetime import date
 
 from film_iq.scoring import Evidence, score
@@ -45,6 +45,7 @@ def test_current_verified_evidence_and_snapshot(evidence_db):
         author="Critic",
         completeness="partial",
         rank_semantics="ranked",
+        source_family="poll",
     )
     assert load_evidence(db) == [expected]
     initialize(db)
@@ -110,7 +111,7 @@ def test_uncertainty_is_explicit_for_accepted_evidence_and_v1_replay(evidence_db
         Evidence("42", "list", "https://example.test/list", None, "critic", "eligible", 1)
     ]
     legacy_result = replay(db, legacy_id)[0]
-    assert legacy_result == score(legacy_evidence)[0]
+    assert replace(legacy_result, version=result.version) == score(legacy_evidence)[0]
     assert {key: asdict(legacy_result)[key] for key in expected} == expected
     assert (legacy_result.independent_count, legacy_result.rank_score) == (1, 1)
-    assert save(db, legacy_evidence, "later") == legacy_id
+    assert save(db, legacy_evidence, "later") != legacy_id
