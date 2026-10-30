@@ -1,0 +1,74 @@
+[
+  {
+    "key": "period-01",
+    "film": "Anora",
+    "source_film_year": 2024,
+    "assigned_format": "live-action feature"
+  },
+  {
+    "key": "period-02",
+    "film": "The Brutalist",
+    "source_film_year": 2024,
+    "assigned_format": "live-action feature"
+  },
+  {
+    "key": "period-03",
+    "film": "Conclave",
+    "source_film_year": 2024,
+    "assigned_format": "live-action feature"
+  },
+  {
+    "key": "period-04",
+    "film": "Nickel Boys",
+    "source_film_year": 2024,
+    "assigned_format": "live-action feature"
+  },
+  {
+    "key": "period-05",
+    "film": "Flow",
+    "source_film_year": 2024,
+    "assigned_format": "animated feature"
+  },
+  {
+    "key": "period-06",
+    "film": "The Wild Robot",
+    "source_film_year": 2024,
+    "assigned_format": "animated feature"
+  },
+  {
+    "key": "period-07",
+    "film": "Memoir of a Snail",
+    "source_film_year": 2024,
+    "assigned_format": "animated feature"
+  },
+  {
+    "key": "period-08",
+    "film": "Inside Out 2",
+    "source_film_year": 2024,
+    "assigned_format": "animated feature"
+  },
+  {
+    "key": "period-09",
+    "film": "The Man Who Could Not Remain Silent",
+    "source_film_year": 2024,
+    "assigned_format": "live-action short"
+  },
+  {
+    "key": "period-10",
+    "film": "Percebes",
+    "source_film_year": 2024,
+    "assigned_format": "animated short"
+  },
+  {
+    "key": "period-11",
+    "film": "War Is Over!",
+    "source_film_year": 2023,
+    "assigned_format": "animated short"
+  },
+  {
+    "key": "period-12",
+    "film": "The Only Girl in the Orchestra",
+    "source_film_year": 2023,
+    "assigned_format": "documentary short"
+  }
+]
