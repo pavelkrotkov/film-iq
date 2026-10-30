@@ -964,3 +964,11 @@ No streaming sign-in, purchase or extra credential is requested from the user.
 Final consolidated validation before B8 PR review: Ruff check/format and ty pass;
 341 tests pass with one opt-in integration skip. All 161 tracked Python files
 have maximum CC 8 and minimum MI 50.025032. This synthesis adds no Python code.
+
+
+B8 combined review: Standards found one stale footprint-scope label; Spec found
+no issue with the partial dossier or its preserved finish gate. The 692-LLOC
+figure is now explicitly historical/source-version scoped, with a link to the
+later named-module counts and correction replay. No new footprint measurement
+or runtime change is claimed; the factual documentation correction is checked
+against its source report and sent for exact-head follow-up review.
