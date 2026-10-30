@@ -679,3 +679,41 @@ applicable permitted basis. TMDB archival rights and actual account terms remain
 unverified. This closes part of the public terms investigation, not B4: two later
 dates, Movie of the Night access, first-party offers and intended account/ad-tier
 checks remain. ADR 0008 remains provisional and Gate B is not accepted.
+
+
+### B7 period/format continuation and merged follow-ups (2026-10-30)
+
+All eight original Epic B PRs are now merged; the Gate B report merged as
+[PR #35](https://github.com/pavelkrotkov/film-iq/pull/35) at
+`cee6b3b4c48bad19e94bd415001a24c3f9305cc0`. The reviewed provider-terms follow-up
+[PR #48](https://github.com/pavelkrotkov/film-iq/pull/48) merged at
+`3d486140ad7744cae118f386af24781c6236e8ff`, documenting current native storage,
+attribution and quota terms separately from older repository terms and actual
+account state. Issues #11/#15/#16 are closed against their exact research criteria.
+
+[PR #47](https://github.com/pavelkrotkov/film-iq/pull/47) executes the formerly
+missing B7 period/diversity holdout. Its twelve 2023–2024 works were frozen before
+source acquisition. Fifteen Wikipedia requests preserve failures and a wrong
+article before correction; the Wiki-only pass supplies one named-critic selection.
+An explicitly exploratory original-list backfill, frozen after that missingness,
+adds independently audited NPR/New Yorker selections without replacing films or
+tuning weights. Nine distinct critic/film selections cover five works, including
+two animated features; a derivative duplicate is counted once. The optional
+unverified rank is excluded after the independent source check returned 403.
+
+New Yorker is globally held out by family, including newer writers. Inclusive
+typed categories yield three supported overlaps; main-only yields one. Training
+counts tie and no training ordinal is observed, so the comparison is inconclusive
+for predictive quality. The four shorts remain unknown rather than negative
+judgments. Format/country/period denominators are explicit; broad stability and
+discovery benefit are not established. This executes the required bounded
+experiment, without treating a positive validation result as an invented closure
+condition. Acceptance is mapped against #17 separately from Gate B.
+
+The extension adds no dependency or production behavior and preserves the 2008
+results. Validation passes 336 tests with one opt-in skip, Ruff/format/ty and
+157 tracked Python files with maximum CC 8 and minimum MI 50.025032. The new
+research modules/tests alone have maximum CC 7 and minimum MI 51.50. B2's timed
+review metric, B3's correction minutes, B4's remaining provider/date/account
+measurements and final Gate B synthesis remain open; automated audit wall time
+is not represented as human labor.
