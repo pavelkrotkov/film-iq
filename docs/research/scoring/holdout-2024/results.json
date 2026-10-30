@@ -1,0 +1,640 @@
+{
+  "inclusive": {
+    "scope": "all_typed_yearend_selections",
+    "observations": [
+      {
+        "film": "Anora",
+        "countries": [
+          "United States"
+        ],
+        "formats": [
+          "live-action feature"
+        ],
+        "training_count": 1,
+        "training_rank_sum": null,
+        "heldout_count": 1,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "The Brutalist",
+        "countries": [
+          "United States",
+          "Canada",
+          "Hungary",
+          "United Kingdom"
+        ],
+        "formats": [
+          "live-action feature"
+        ],
+        "training_count": 1,
+        "training_rank_sum": null,
+        "heldout_count": 1,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "Conclave",
+        "countries": [
+          "United Kingdom",
+          "United States"
+        ],
+        "formats": [
+          "live-action feature"
+        ],
+        "training_count": null,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "Nickel Boys",
+        "countries": [
+          "United States"
+        ],
+        "formats": [
+          "live-action feature"
+        ],
+        "training_count": 1,
+        "training_rank_sum": null,
+        "heldout_count": 2,
+        "heldout_rank_sum": 1.25
+      },
+      {
+        "film": "Flow",
+        "countries": [
+          "Latvia",
+          "France",
+          "Belgium"
+        ],
+        "formats": [
+          "animated feature"
+        ],
+        "training_count": 1,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "The Wild Robot",
+        "countries": [
+          "United States"
+        ],
+        "formats": [
+          "animated feature"
+        ],
+        "training_count": null,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "Memoir of a Snail",
+        "countries": [
+          "Australia"
+        ],
+        "formats": [
+          "animated feature"
+        ],
+        "training_count": null,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "Inside Out 2",
+        "countries": [
+          "United States"
+        ],
+        "formats": [
+          "animated feature"
+        ],
+        "training_count": 1,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "The Man Who Could Not Remain Silent",
+        "countries": [
+          "France",
+          "Croatia",
+          "Slovenia",
+          "Bulgaria"
+        ],
+        "formats": [
+          "short"
+        ],
+        "training_count": null,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "Percebes",
+        "countries": [
+          "Portugal",
+          "France"
+        ],
+        "formats": [
+          "short"
+        ],
+        "training_count": null,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "War Is Over!",
+        "countries": [
+          "United States"
+        ],
+        "formats": [
+          "short"
+        ],
+        "training_count": null,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "The Only Girl in the Orchestra",
+        "countries": [
+          "United States"
+        ],
+        "formats": [
+          "short"
+        ],
+        "training_count": null,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      }
+    ],
+    "coverage": {
+      "films": 12,
+      "known_training": 5,
+      "known_heldout": 3,
+      "paired": 3
+    },
+    "formats": {
+      "animated feature": {
+        "films": 4,
+        "known_training": 2,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "live-action feature": {
+        "films": 4,
+        "known_training": 3,
+        "known_heldout": 3,
+        "paired": 3
+      },
+      "short": {
+        "films": 4,
+        "known_training": 0,
+        "known_heldout": 0,
+        "paired": 0
+      }
+    },
+    "countries_nonadditive": {
+      "Australia": {
+        "films": 1,
+        "known_training": 0,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "Belgium": {
+        "films": 1,
+        "known_training": 1,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "Bulgaria": {
+        "films": 1,
+        "known_training": 0,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "Canada": {
+        "films": 1,
+        "known_training": 1,
+        "known_heldout": 1,
+        "paired": 1
+      },
+      "Croatia": {
+        "films": 1,
+        "known_training": 0,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "France": {
+        "films": 3,
+        "known_training": 1,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "Hungary": {
+        "films": 1,
+        "known_training": 1,
+        "known_heldout": 1,
+        "paired": 1
+      },
+      "Latvia": {
+        "films": 1,
+        "known_training": 1,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "Portugal": {
+        "films": 1,
+        "known_training": 0,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "Slovenia": {
+        "films": 1,
+        "known_training": 0,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "United Kingdom": {
+        "films": 2,
+        "known_training": 1,
+        "known_heldout": 1,
+        "paired": 1
+      },
+      "United States": {
+        "films": 8,
+        "known_training": 4,
+        "known_heldout": 3,
+        "paired": 3
+      }
+    },
+    "conditional_orders": {
+      "training_count": {
+        "groups": [
+          {
+            "score": 1,
+            "films": [
+              "Anora",
+              "Nickel Boys",
+              "The Brutalist"
+            ]
+          }
+        ],
+        "unknown": []
+      },
+      "training_rank_sum": {
+        "groups": [],
+        "unknown": [
+          "Anora",
+          "Nickel Boys",
+          "The Brutalist"
+        ]
+      },
+      "heldout_count": {
+        "groups": [
+          {
+            "score": 2,
+            "films": [
+              "Nickel Boys"
+            ]
+          },
+          {
+            "score": 1,
+            "films": [
+              "Anora",
+              "The Brutalist"
+            ]
+          }
+        ],
+        "unknown": []
+      },
+      "heldout_rank_sum": {
+        "groups": [
+          {
+            "score": 1.25,
+            "films": [
+              "Nickel Boys"
+            ]
+          }
+        ],
+        "unknown": [
+          "Anora",
+          "The Brutalist"
+        ]
+      }
+    }
+  },
+  "main_only": {
+    "scope": "main_lists_only",
+    "observations": [
+      {
+        "film": "Anora",
+        "countries": [
+          "United States"
+        ],
+        "formats": [
+          "live-action feature"
+        ],
+        "training_count": 1,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "The Brutalist",
+        "countries": [
+          "United States",
+          "Canada",
+          "Hungary",
+          "United Kingdom"
+        ],
+        "formats": [
+          "live-action feature"
+        ],
+        "training_count": 1,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "Conclave",
+        "countries": [
+          "United Kingdom",
+          "United States"
+        ],
+        "formats": [
+          "live-action feature"
+        ],
+        "training_count": null,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "Nickel Boys",
+        "countries": [
+          "United States"
+        ],
+        "formats": [
+          "live-action feature"
+        ],
+        "training_count": 1,
+        "training_rank_sum": null,
+        "heldout_count": 2,
+        "heldout_rank_sum": 1.25
+      },
+      {
+        "film": "Flow",
+        "countries": [
+          "Latvia",
+          "France",
+          "Belgium"
+        ],
+        "formats": [
+          "animated feature"
+        ],
+        "training_count": 1,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "The Wild Robot",
+        "countries": [
+          "United States"
+        ],
+        "formats": [
+          "animated feature"
+        ],
+        "training_count": null,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "Memoir of a Snail",
+        "countries": [
+          "Australia"
+        ],
+        "formats": [
+          "animated feature"
+        ],
+        "training_count": null,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "Inside Out 2",
+        "countries": [
+          "United States"
+        ],
+        "formats": [
+          "animated feature"
+        ],
+        "training_count": null,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "The Man Who Could Not Remain Silent",
+        "countries": [
+          "France",
+          "Croatia",
+          "Slovenia",
+          "Bulgaria"
+        ],
+        "formats": [
+          "short"
+        ],
+        "training_count": null,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "Percebes",
+        "countries": [
+          "Portugal",
+          "France"
+        ],
+        "formats": [
+          "short"
+        ],
+        "training_count": null,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "War Is Over!",
+        "countries": [
+          "United States"
+        ],
+        "formats": [
+          "short"
+        ],
+        "training_count": null,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      },
+      {
+        "film": "The Only Girl in the Orchestra",
+        "countries": [
+          "United States"
+        ],
+        "formats": [
+          "short"
+        ],
+        "training_count": null,
+        "training_rank_sum": null,
+        "heldout_count": null,
+        "heldout_rank_sum": null
+      }
+    ],
+    "coverage": {
+      "films": 12,
+      "known_training": 4,
+      "known_heldout": 1,
+      "paired": 1
+    },
+    "formats": {
+      "animated feature": {
+        "films": 4,
+        "known_training": 1,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "live-action feature": {
+        "films": 4,
+        "known_training": 3,
+        "known_heldout": 1,
+        "paired": 1
+      },
+      "short": {
+        "films": 4,
+        "known_training": 0,
+        "known_heldout": 0,
+        "paired": 0
+      }
+    },
+    "countries_nonadditive": {
+      "Australia": {
+        "films": 1,
+        "known_training": 0,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "Belgium": {
+        "films": 1,
+        "known_training": 1,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "Bulgaria": {
+        "films": 1,
+        "known_training": 0,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "Canada": {
+        "films": 1,
+        "known_training": 1,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "Croatia": {
+        "films": 1,
+        "known_training": 0,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "France": {
+        "films": 3,
+        "known_training": 1,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "Hungary": {
+        "films": 1,
+        "known_training": 1,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "Latvia": {
+        "films": 1,
+        "known_training": 1,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "Portugal": {
+        "films": 1,
+        "known_training": 0,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "Slovenia": {
+        "films": 1,
+        "known_training": 0,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "United Kingdom": {
+        "films": 2,
+        "known_training": 1,
+        "known_heldout": 0,
+        "paired": 0
+      },
+      "United States": {
+        "films": 8,
+        "known_training": 3,
+        "known_heldout": 1,
+        "paired": 1
+      }
+    },
+    "conditional_orders": {
+      "training_count": {
+        "groups": [
+          {
+            "score": 1,
+            "films": [
+              "Nickel Boys"
+            ]
+          }
+        ],
+        "unknown": []
+      },
+      "training_rank_sum": {
+        "groups": [],
+        "unknown": [
+          "Nickel Boys"
+        ]
+      },
+      "heldout_count": {
+        "groups": [
+          {
+            "score": 2,
+            "films": [
+              "Nickel Boys"
+            ]
+          }
+        ],
+        "unknown": []
+      },
+      "heldout_rank_sum": {
+        "groups": [
+          {
+            "score": 1.25,
+            "films": [
+              "Nickel Boys"
+            ]
+          }
+        ],
+        "unknown": []
+      }
+    }
+  }
+}

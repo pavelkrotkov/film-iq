@@ -352,3 +352,15 @@ None of these descriptive variants chooses production weights.
 **Not yet run:** broad independently corroborated real-ballot holdout, provider data access and rights review,
 calibration, error rates, human relevance judgments, stability by format or
 geography, and any claim of improved discovery or personal satisfaction.
+
+
+## 2023–2024 period and format extension
+
+A frozen twelve-film extension now executes the missing period/diversity probe
+without altering the 2008 results. The [dated report](holdout-2024/README.md)
+separates its one Wiki-carried individual selection from exploratory, independently
+audited original-source backfill. Nine distinct selections cover five works,
+including two animated features; all four shorts remain unknown. Three inclusive
+family overlaps produce tied training counts and no observed training ordinals.
+The optional inaccessible source stays unverified. This is a measured inconclusive
+period/format outcome, not predictive validation or an accepted gate.
