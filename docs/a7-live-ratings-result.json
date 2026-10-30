@@ -1,0 +1,14 @@
+{
+  "implementation": "film_iq.movary.export_ratings and read_ratings",
+  "installed_exporter": "Movary 0.82.1 user:export:ratings",
+  "transport": "supported CLI php://stdout --silent over SSH; no remote export copy",
+  "validated_rows": 0,
+  "csv_bytes": 36,
+  "sha256": "a1cc2008257fe222fb8217436ab0da1ee271d2343b7010bb565e57b78dbf1df3",
+  "repeated_export_content_unchanged": true,
+  "atomic_replacement": "existing export_ratings implementation; temporary output stays in selected project cache",
+  "snapshot_mode": "0o600",
+  "two_exports_elapsed_seconds": 2.017,
+  "live_rated_only_or_deleted_rating_case": "not exercised; no ratings exist; deterministic fixtures cover these semantics",
+  "personal_values": "not retained in committed evidence"
+}

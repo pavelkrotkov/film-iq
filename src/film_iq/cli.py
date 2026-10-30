@@ -26,7 +26,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     sync.add_argument("--approve", action="store_true", help="Approve this selected preview")
     args = parser.parse_args(argv)
     if args.command == "status":
-        print("film-iq POC modules available; Gate A remains unverified")
+        print("film-iq POC modules available; see plan.md for validation status")
         return 0
     if args.command == "sync":
         from film_iq.sync_cli import sync_watchlist

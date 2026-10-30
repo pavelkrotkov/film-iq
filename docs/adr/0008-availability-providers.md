@@ -15,3 +15,14 @@ May need two providers or targeted first-party verification; terms/retention and
 ## Validation / reconsideration
 Gate: measured coverage, false classifications, timeliness, account entitlement, quota and legally retainable observations.
 
+## POC evidence — 2026-10-30
+
+Direct TMDB metadata/credits and US watch-provider requests supported one real
+report for Bicycle Thieves (5156). The selected scenario used an advertised Tubi
+`ads` offer with zero incremental purchase cost and explicit unconfirmed
+entitlement/playback. JustWatch attribution and the returned provider-information
+link are retained. [The live POC](../a7-live-validation.md) establishes this narrow
+baseline integration, not provider coverage, commercial retention rights,
+first-party playback or plan-tier verification. The 60-film/three-date benchmark
+and this ADR's provisional status remain unchanged.
+

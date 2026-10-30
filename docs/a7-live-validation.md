@@ -9,9 +9,9 @@ Browser automation was not used for these integration checks.
 | `GET /api/v1/authentication/token` | HTTP 200 |
 | Implemented paginated played reader | Complete, 0 records |
 | Implemented paginated history reader | Complete, 0 records |
-| Implemented paginated watchlist reader | Complete, 0 records |
-| Supported ratings CLI export, previous run | Valid header-only CSV, 0 ratings |
-| Implemented movie-search read for the candidate | HTTP 500, reproduced with a direct authenticated GET |
+| Implemented paginated watchlist reader | Complete: 0 before approval, 1 after the selected addition |
+| Supported ratings CLI and atomic snapshot adapter | Two validated identical header-only exports, 0 ratings |
+| Implemented movie-search read for the candidate | Initial HTTP 500; complete after the approved configuration fix |
 
 The installed application log reports `TMDB API key is probably not set or
 invalid.` Its `TmdbClient.php` maps an upstream HTTP 401 to that exception.
@@ -19,9 +19,13 @@ This distinguishes a TMDB authorization failure from a Movary-token failure or
 network timeout. Raw application logs and credential-bearing requests were not
 retained. The user subsequently supplied a valid TMDB v3 key: direct TMDB
 authentication, film details/credits and US watch-provider requests succeeded.
-The configured Movary search is still unverified after correction: automatic
-approval review rejected transferring the key to Hermes and recreating the
-service without explicit authorization. No remote configuration was changed.
+Automatic approval review initially rejected transferring the key to Hermes and
+recreating the service without explicit authorization. The user then explicitly
+approved both proposed actions. The saved key was applied to the existing
+deployment and only the existing service was recreated, with image pulls disabled.
+[The configuration result](a7-live-configuration-result.json) records a healthy,
+running `leepeuker/movary:0.82.1` service and mode-0600 secret file. Both the
+selected-film search and original failed NBR search now complete through Movary.
 
 The [independent primary-selection audit](a7-primary-selection.json) verifies
 one original NBR 2023 Best Film award. It is a categorical award with no numeric
@@ -88,7 +92,9 @@ planner with the same scored film and the observed provider 73 `ads` offer,
 one slot, 90 minutes, one film, zero budget and no assumed current subscriptions.
 It is not a filtered response passed off as a complete API capture.
 
-## Exact pending approvals
+## Approved live operations and observed result
+
+The user explicitly approved both of the following operations before execution:
 
 1. Configure the documented Hermes Movary deployment with the existing saved
    TMDB key: set `TMDB_API_KEY` in its existing `.env`, reference it in the
@@ -104,7 +110,55 @@ It is not a filtered response passed off as a complete API capture.
    Add the Movary catalog movie first only if absent, then add its watchlist
    entry if absent, read back the result, and retry to check idempotence.
 
-Gate A remains open until the approved configuration/search and selected-write
-round trip pass. No movie/watchlist POST was attempted. An empty
-personal account cannot demonstrate a live rated-only example; deterministic
-fixtures cover that case. No personal rating or watchlist was changed.
+[The actual CLI/API trace](a7-live-write-result.json) completed at
+2026-10-30T11:59:59.939518+00:00. The initial lookup found no catalog movie or
+watchlist entry. The real CLI, with `--execute --approve`, issued:
+
+1. Complete movie search: HTTP 200.
+2. `POST /api/v1/movies/add`: HTTP 200.
+3. Complete watchlist read: HTTP 200.
+4. `POST /api/v1/users/{username}/watchlist/movies`: HTTP 204.
+
+The CLI returned `added to watchlist` in **0.459 seconds**. API readback found
+TMDB **5156** exactly once, mapped to distinct Movary ID **1**. The existing
+watchlist was preserved. Repeating the exact CLI returned `already on watchlist`
+in **0.175 seconds**, with **two GET requests, zero POST requests**, and an
+unchanged watchlist. These are single-run observations, not latency benchmarks.
+Afterward, complete reads returned played 0, history 0 and watchlist 1. No direct
+Movary database writes or personal rating changes were performed. No production
+code, dependency or Movary fork was needed for this configuration fix.
+
+[The live ratings result](a7-live-ratings-result.json) also exercises the actual
+`export_ratings`/`read_ratings` adapter: two supported CLI streams pass validation
+and atomic local replacement, producing identical 36-byte header-only CSVs in
+2.017 seconds total. The mode-0600 snapshot and temporary output stay in the
+ignored project cache; no remote export copy or personal CSV is committed.
+
+## Gate A decision
+
+Accept the narrow POC: original critical fact → explicit audited observation →
+reviewed TMDB identity → sourced public score → classified US offer → configured
+feasible/no-purchase report → preview → user-approved API write → authoritative
+readback and idempotent retry. The integrated credential-free fixtures exercise
+rank/tie/unranked/partial semantics, rated-only/deleted-rating replacement,
+ambiguous/reversible identity, failure/unknown behavior and full synthetic replay.
+The actual empty ratings export verifies the installed exporter/schema, not a
+nonempty live rated-only or deleted-rating example; those remain fixture-backed.
+No personal test rating was invented to manufacture that evidence.
+
+| Gate A requirement | Acceptance evidence |
+| --- | --- |
+| Source semantics and completeness | Four licensed page captures, 42 independently audited records, contrasting adapters and partial/ambiguous fixtures; one separately scoped original BFI fact in the live trace |
+| Movary reads including rated-only semantics | Complete real API reads and installed ratings export; nonempty rated-only and deleted-rating replacement exercised by deterministic fixtures |
+| Idempotence and failed-request safety | Ingestion/automatic replay adds zero changes; actual CLI retry makes zero POSTs; failure fixtures preserve unknown instead of inferring absence; initial failed search caused no personal write |
+| Explicit selected approval | User approved the displayed TMDB 5156 preview; catalog creation preceded watchlist insertion; authoritative readback contains the target exactly once |
+| Sourced report and no-purchase option | Original =20, reviewed identity, real US ads offer, configured 89-minute/zero-purchase scenario; unknown entitlement/playback and prices stay explicit |
+| Measured findings and dependency discipline | Recorded HTTP statuses, failure/fix, single-run CLI timings, preserved source/identity evidence, quality checks and ADR notes; no new runtime dependency or provider-choice promotion |
+
+This is a POC acceptance, not release readiness. Playback, personal entitlement,
+recommendation satisfaction, population identity precision, calibration, broad
+source/provider coverage, commercial rights/retention and deployment restore
+remain unverified. The four-case held-out identity run still has zero automatic
+accepts and undefined precision. The provider benchmark and provisional choices
+remain with Epic B; no uncertain dependency or weight is promoted here. Final
+delivery still requires the outcome PR's CI/review and issue reconciliation.

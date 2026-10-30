@@ -525,6 +525,62 @@ claim is made. The NBR award fact remains a separate unused candidate, without
 an invented numeric rank or an assumed film release year.
 
 
+### Gate A accepted: approved live round trip completed (2026-10-30)
+
+The user explicitly approved both pending actions. The existing saved TMDB key
+was installed in the documented Hermes Movary environment/Compose reference,
+Compose validation passed and only the same locally installed 0.82.1 service was
+recreated with image pulls disabled. It is running/healthy; the secret file is
+mode 0600. Both the selected search and original failed NBR search now complete
+through Movary, resolving the previously observed upstream TMDB 401. No runtime
+code, upstream fork or dependency change was needed.
+
+The real CLI executed the exact approved Bicycle Thieves (TMDB 5156) preview.
+Its observed request order was search GET 200, catalog POST 200, watchlist GET
+200, watchlist POST 204. It returned `added to watchlist` in 0.459 seconds.
+Authoritative API readback contains TMDB 5156 exactly once, with distinct Movary
+ID 1. Repeating the same CLI returned `already on watchlist` in 0.175 seconds;
+the retry performed two GETs and zero POSTs and left the watchlist unchanged.
+Played/history remain zero and watchlist is one. These are single-run timings,
+not benchmarks. No direct Movary database edits or personal rating changes occurred.
+
+[The completed live validation](docs/a7-live-validation.md),
+[request/result record](docs/a7-live-write-result.json), and
+[healthy configuration evidence](docs/a7-live-configuration-result.json) complete
+the original-source → audited observation → reviewed identity → public score →
+US offer → configured feasible plan → preview → user-approved API write → readback
+trace. The initial read-only/pre-approval artifacts remain explicitly historical;
+the selected source, identity and offer snapshot was not rewritten after approval.
+Local evidence ingestion/automatic replay and read-only report checks remain
+idempotent. Relevant ADRs record measured findings without promoting provisional
+provider selection or utility calibration.
+
+**Gate A decision: accept the narrow POC.** Delivery is subject to the final
+outcome PR's required CI/review and issue reconciliation. The actual empty ratings
+export validates the installed exporter/schema; rated-only and deleted-rating
+nonempty cases are fixture-backed, not claimed live-tested. No artificial personal
+ratings were written. The held-out four-case precision remains undefined with
+zero automatic accepts. Playback, actual preference satisfaction, broad source
+and provider accuracy, full commercial/retention rights and restore remain
+unverified. Epic B and later release gates remain independent and open; no
+uncertain dependency or architecture decision is converted into a final choice.
+
+After the outcome PR passes review/CI and merges, close A7/#10 and Epic A/#1;
+all other Epic A children are already closed against their own acceptance criteria.
+The user's root configuration/skill edits and Epic B worktrees/PRs are preserved.
+
+
+Final outcome validation: 294 tests passed, one opt-in live test skipped (2.71
+seconds locally); uv-run Ruff/format/ty and diff checks passed. All 109 source/test
+Python files retain maximum CC 8 and minimum MI 50.025. The only production Python adjustment is a neutral status message pointing to
+plan.md; its existing smoke assertion and operator/README guidance were updated.
+No data-read/write implementation or runtime dependency changed. The actual `export_ratings` atomic replacement path
+was also exercised twice against the installed supported CLI: identical validated
+36-byte/zero-rating snapshots, mode 0600, 2.017 seconds total. Private CSVs and
+all temporary files remain in the selected project cache; no remote export file
+or personal CSV was committed. This strengthens live adapter/export evidence
+without claiming a nonempty live rated-only/deleted-rating test.
+
 ### Epic B authenticated TMDB continuation (2026-10-30)
 
 The user configured a project-local, ignored `TMDB_API_KEY`. A read-only
@@ -657,6 +713,14 @@ and Epic #2 stay open while these non-deferred experiments remain outstanding.
 The [working matrix](docs/research/gate-b.md) records concrete next measurements;
 no architecture change or additional paid dependency is needed for them.
 
+
+Final integration against the independently merged Epic B main passed 333 tests
+with one opt-in live skip (2.54 seconds locally), plus Ruff, formatting, ty and
+diff checks. All 154 tracked Python files, including the merged research code,
+have CC at most 8 and MI at least 50.025. Both controllers' plan findings were
+preserved; the merge removed no main-branch plan content. The actual approved
+live trace still used the previously recorded implementation base; only the
+CLI status guidance changed in this outcome PR, not its read/write behavior.
 
 ### B4 published rights and public quota supplement (2026-10-30)
 
