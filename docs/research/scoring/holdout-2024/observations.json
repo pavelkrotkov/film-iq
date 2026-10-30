@@ -1,0 +1,469 @@
+{
+  "frozen_protocol_commit": "ae3d23b127794acb5537379117ca9d50ea0e4dd7",
+  "exploratory_amendment_commit": "d552987",
+  "cohort_sha256": "5b4482ea675e236825488ec5fecdb549363fe44521e887d0ed2f39858d043c6d",
+  "rows": [
+    {
+      "key": "period-01",
+      "film": "Anora",
+      "source_film_year": 2024,
+      "assigned_format": "live-action feature",
+      "country_labels": [
+        "United States"
+      ],
+      "runtime_minutes": 139,
+      "directors": [
+        "Sean Baker"
+      ],
+      "wikipedia": {
+        "title": "Anora",
+        "revision_id": 1382053116,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1382053116",
+        "request_url": "https://en.wikipedia.org/w/api.php?action=parse&page=Anora&prop=wikitext%7Ctext%7Crevid&format=json&redirects=1",
+        "response_sha256": "fec758b1388d9746ef1005bcec7b3ac53af1b631a6ba19f945296417791b3257",
+        "observed_at": "2026-10-30T12:11:22.708353+00:00",
+        "history_url": "https://en.wikipedia.org/w/index.php?title=Anora&action=history"
+      },
+      "wiki_note": "Institutional/aggregate selections only; no named individual year-end ballot transcribed.",
+      "records": [
+        {
+          "critic": "Bob Mondello",
+          "family": "npr",
+          "rank": null,
+          "category": "main",
+          "source_url": "https://www.kgou.org/2024-12-30/the-top-10-movies-of-the-year-according-to-npr-film-critic-bob-mondello",
+          "locator": "Mondello Anora segment before first-ten close",
+          "carrier": "original",
+          "status": "verified_automated",
+          "web_reader_lines": [
+            310,
+            368
+          ],
+          "list_year": 2024
+        },
+        {
+          "critic": "Justin Chang",
+          "family": "new_yorker",
+          "rank": null,
+          "category": "honorable_mention",
+          "source_url": "https://www.newyorker.com/culture/2024-in-review/the-best-films-of-2024",
+          "locator": "Honorable mentions after eleven numbered films; alphabetical heading",
+          "carrier": "original",
+          "status": "verified_automated",
+          "web_reader_lines": [
+            105,
+            106
+          ],
+          "list_year": 2024
+        }
+      ]
+    },
+    {
+      "key": "period-02",
+      "film": "The Brutalist",
+      "source_film_year": 2024,
+      "assigned_format": "live-action feature",
+      "country_labels": [
+        "United States",
+        "Canada",
+        "Hungary",
+        "United Kingdom"
+      ],
+      "runtime_minutes": 215,
+      "directors": [
+        "Brady Corbet"
+      ],
+      "wikipedia": {
+        "title": "The Brutalist",
+        "revision_id": 1382125976,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1382125976",
+        "request_url": "https://en.wikipedia.org/w/api.php?action=parse&page=The+Brutalist&prop=wikitext%7Ctext%7Crevid&format=json&redirects=1",
+        "response_sha256": "3596a2be5ddf4c368985f7726a18166083c350a44f6afb417ed6568c51651685",
+        "observed_at": "2026-10-30T12:11:24.074977+00:00",
+        "history_url": "https://en.wikipedia.org/w/index.php?title=The+Brutalist&action=history"
+      },
+      "wiki_note": "NPR collective best-of list names Bob Mondello capsule; tentative personal-selection attribution requires audit. Filmmaker favorites are separate; staff Borda result is aggregate.",
+      "records": [
+        {
+          "critic": "Bob Mondello",
+          "family": "npr",
+          "rank": null,
+          "category": "main",
+          "source_url": "https://en.wikipedia.org/w/index.php?oldid=1382125976",
+          "locator": "wikitext line194; names capsule author; selection attribution tentative",
+          "carrier": "Wikipedia",
+          "status": "verified_automated"
+        },
+        {
+          "critic": "Bob Mondello",
+          "family": "npr",
+          "rank": null,
+          "category": "main",
+          "source_url": "https://www.kgou.org/2024-12-30/the-top-10-movies-of-the-year-according-to-npr-film-critic-bob-mondello",
+          "locator": "Mondello The Brutalist segment before first-ten close",
+          "carrier": "original",
+          "status": "verified_automated",
+          "web_reader_lines": [
+            274,
+            368
+          ],
+          "list_year": 2024
+        },
+        {
+          "critic": "Justin Chang",
+          "family": "new_yorker",
+          "rank": null,
+          "category": "honorable_mention",
+          "source_url": "https://www.newyorker.com/culture/2024-in-review/the-best-films-of-2024",
+          "locator": "Honorable mentions after eleven numbered films; alphabetical heading",
+          "carrier": "original",
+          "status": "verified_automated",
+          "web_reader_lines": [
+            105,
+            118
+          ],
+          "list_year": 2024
+        }
+      ]
+    },
+    {
+      "key": "period-03",
+      "film": "Conclave",
+      "source_film_year": 2024,
+      "assigned_format": "live-action feature",
+      "country_labels": [
+        "United Kingdom",
+        "United States"
+      ],
+      "runtime_minutes": 120,
+      "directors": [
+        "Edward Berger"
+      ],
+      "wikipedia": {
+        "title": "Conclave (film)",
+        "revision_id": 1382539503,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1382539503",
+        "request_url": "https://en.wikipedia.org/w/api.php?action=parse&page=Conclave+%28film%29&prop=wikitext%7Ctext%7Crevid&format=json&redirects=1",
+        "response_sha256": "318e1bd3036b0bb018c923b8cd7df06d7ff483860ae8351b3c2e4b67ca121acb",
+        "observed_at": "2026-10-30T12:11:25.336196+00:00",
+        "history_url": "https://en.wikipedia.org/w/index.php?title=Conclave+%28film%29&action=history"
+      },
+      "wiki_note": "Institutional selections, not individual ballots.",
+      "records": []
+    },
+    {
+      "key": "period-04",
+      "film": "Nickel Boys",
+      "source_film_year": 2024,
+      "assigned_format": "live-action feature",
+      "country_labels": [
+        "United States"
+      ],
+      "runtime_minutes": 140,
+      "directors": [
+        "RaMell Ross"
+      ],
+      "wikipedia": {
+        "title": "Nickel Boys",
+        "revision_id": 1382128224,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1382128224",
+        "request_url": "https://en.wikipedia.org/w/api.php?action=parse&page=Nickel+Boys&prop=wikitext%7Ctext%7Crevid&format=json&redirects=1",
+        "response_sha256": "b9d63a1fadfe85161bde30170866bf0578c658ecfcce2890338ecae1ed081358",
+        "observed_at": "2026-10-30T12:12:01.399724+00:00",
+        "history_url": "https://en.wikipedia.org/w/index.php?title=Nickel+Boys&action=history"
+      },
+      "wiki_note": "Aggregate/other-period lists, not named annual personal ballots.",
+      "records": [
+        {
+          "critic": "Bob Mondello",
+          "family": "npr",
+          "rank": null,
+          "category": "main",
+          "source_url": "https://www.kgou.org/2024-12-30/the-top-10-movies-of-the-year-according-to-npr-film-critic-bob-mondello",
+          "locator": "Mondello Nickel Boys segment before first-ten close",
+          "carrier": "original",
+          "status": "verified_automated",
+          "web_reader_lines": [
+            368,
+            373,
+            394,
+            405
+          ],
+          "list_year": 2024
+        },
+        {
+          "critic": "Richard Brody",
+          "family": "new_yorker",
+          "rank": 1,
+          "category": "main",
+          "source_url": "https://www.newyorker.com/culture/2024-in-review/the-best-movies-of-2024",
+          "locator": "Numbered heading1",
+          "carrier": "original",
+          "status": "verified_automated",
+          "web_reader_lines": [
+            62
+          ],
+          "list_year": 2024
+        },
+        {
+          "critic": "Justin Chang",
+          "family": "new_yorker",
+          "rank": 4,
+          "category": "main",
+          "source_url": "https://www.newyorker.com/culture/2024-in-review/the-best-films-of-2024",
+          "locator": "Numbered heading4; paired presentation keeps published ordinal",
+          "carrier": "original",
+          "status": "verified_automated",
+          "web_reader_lines": [
+            71
+          ],
+          "list_year": 2024
+        },
+        {
+          "critic": "Matt Zoller Seitz",
+          "family": "rogerebert",
+          "rank": 9,
+          "category": "main",
+          "source_url": "https://www.rogerebert.com/features/the-top-tens-of-2024",
+          "locator": "MATT ZOLLER SEITZ individual ballot; ordinal9 shown by primary-site search reader",
+          "carrier": "original",
+          "status": "unverified_source_access"
+        }
+      ]
+    },
+    {
+      "key": "period-05",
+      "film": "Flow",
+      "source_film_year": 2024,
+      "assigned_format": "animated feature",
+      "country_labels": [
+        "Latvia",
+        "France",
+        "Belgium"
+      ],
+      "runtime_minutes": 85,
+      "directors": [
+        "Gints Zilbalodis"
+      ],
+      "wikipedia": {
+        "title": "Flow (2024 film)",
+        "revision_id": 1381278890,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1381278890",
+        "request_url": "https://en.wikipedia.org/w/api.php?action=parse&page=Flow+%282024+film%29&prop=wikitext%7Ctext%7Crevid&format=json&redirects=1",
+        "response_sha256": "117de13d76ed403eea7243e016b0d1114c4ff42f548bde42c4be65ef2f916e32",
+        "observed_at": "2026-10-30T12:11:27.613631+00:00",
+        "history_url": "https://en.wikipedia.org/w/index.php?title=Flow+%282024+film%29&action=history"
+      },
+      "wiki_note": "AP best-animated statement is a review; Bill Hader favorite is filmmaker-role evidence, excluded from critic baseline.",
+      "records": [
+        {
+          "critic": "Bob Mondello",
+          "family": "npr",
+          "rank": null,
+          "category": "main",
+          "source_url": "https://www.kgou.org/2024-12-30/the-top-10-movies-of-the-year-according-to-npr-film-critic-bob-mondello",
+          "locator": "Mondello Flow segment followed by five-of-ten marker",
+          "carrier": "original",
+          "status": "verified_automated",
+          "web_reader_lines": [
+            366,
+            368
+          ],
+          "list_year": 2024
+        }
+      ]
+    },
+    {
+      "key": "period-06",
+      "film": "The Wild Robot",
+      "source_film_year": 2024,
+      "assigned_format": "animated feature",
+      "country_labels": [
+        "United States"
+      ],
+      "runtime_minutes": 102,
+      "directors": [
+        "Chris Sanders"
+      ],
+      "wikipedia": {
+        "title": "The Wild Robot",
+        "revision_id": 1382061656,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1382061656",
+        "request_url": "https://en.wikipedia.org/w/api.php?action=parse&page=The+Wild+Robot&prop=wikitext%7Ctext%7Crevid&format=json&redirects=1",
+        "response_sha256": "6acc26ab5fe503a3ae900aca3ba5d85eaf719150892d2a662f2ea41822ea6013",
+        "observed_at": "2026-10-30T12:11:29.030101+00:00",
+        "history_url": "https://en.wikipedia.org/w/index.php?title=The+Wild+Robot&action=history"
+      },
+      "wiki_note": "Best-animated review and filmmaker favorites, excluded from individual critic-ballot baseline.",
+      "records": []
+    },
+    {
+      "key": "period-07",
+      "film": "Memoir of a Snail",
+      "source_film_year": 2024,
+      "assigned_format": "animated feature",
+      "country_labels": [
+        "Australia"
+      ],
+      "runtime_minutes": 95,
+      "directors": [
+        "Adam Elliot"
+      ],
+      "wikipedia": {
+        "title": "Memoir of a Snail",
+        "revision_id": 1382083192,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1382083192",
+        "request_url": "https://en.wikipedia.org/w/api.php?action=parse&page=Memoir+of+a+Snail&prop=wikitext%7Ctext%7Crevid&format=json&redirects=1",
+        "response_sha256": "bbd8c412d8498feba0b5e1d1101a9427cce2e40bd80fb632c1adef728403983e",
+        "observed_at": "2026-10-30T12:11:30.325196+00:00",
+        "history_url": "https://en.wikipedia.org/w/index.php?title=Memoir+of+a+Snail&action=history"
+      },
+      "wiki_note": "No named individual year-end ballot found.",
+      "records": []
+    },
+    {
+      "key": "period-08",
+      "film": "Inside Out 2",
+      "source_film_year": 2024,
+      "assigned_format": "animated feature",
+      "country_labels": [
+        "United States"
+      ],
+      "runtime_minutes": 96,
+      "directors": [
+        "Kelsey Mann"
+      ],
+      "wikipedia": {
+        "title": "Inside Out 2",
+        "revision_id": 1379327515,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1379327515",
+        "request_url": "https://en.wikipedia.org/w/api.php?action=parse&page=Inside+Out+2&prop=wikitext%7Ctext%7Crevid&format=json&redirects=1",
+        "response_sha256": "b9398f02ec3f31ff9ce235d996b7f0ed47840bfb0013bd74353ae856caa39343",
+        "observed_at": "2026-10-30T12:11:31.483630+00:00",
+        "history_url": "https://en.wikipedia.org/w/index.php?title=Inside+Out+2&action=history"
+      },
+      "wiki_note": "Review/box-office/marketing references are not year-end selections.",
+      "records": [
+        {
+          "critic": "Bob Mondello",
+          "family": "npr",
+          "rank": null,
+          "category": "supplement",
+          "source_url": "https://www.kgou.org/2024-12-30/the-top-10-movies-of-the-year-according-to-npr-film-critic-bob-mondello",
+          "locator": "Mondello Inside Out 2 segment after first-ten close; not host intro",
+          "carrier": "original",
+          "status": "verified_automated",
+          "web_reader_lines": [
+            405,
+            472,
+            482
+          ],
+          "list_year": 2024
+        }
+      ]
+    },
+    {
+      "key": "period-09",
+      "film": "The Man Who Could Not Remain Silent",
+      "source_film_year": 2024,
+      "assigned_format": "live-action short",
+      "country_labels": [
+        "France",
+        "Croatia",
+        "Slovenia",
+        "Bulgaria"
+      ],
+      "runtime_minutes": 13,
+      "directors": [
+        "Nebojša Slijepčević"
+      ],
+      "wikipedia": {
+        "title": "The Man Who Could Not Remain Silent",
+        "revision_id": 1369646085,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1369646085",
+        "request_url": "https://en.wikipedia.org/w/api.php?action=parse&page=The+Man+Who+Could+Not+Remain+Silent&prop=wikitext%7Ctext%7Crevid&format=json&redirects=1",
+        "response_sha256": "7466940d1d3ce456e3b997c2225d6ae4b4e08f312324f71cf6b31bba1f91c9f5",
+        "observed_at": "2026-10-30T12:11:32.822645+00:00",
+        "history_url": "https://en.wikipedia.org/w/index.php?title=The+Man+Who+Could+Not+Remain+Silent&action=history"
+      },
+      "wiki_note": "No named individual year-end ballot found.",
+      "records": []
+    },
+    {
+      "key": "period-10",
+      "film": "Percebes",
+      "source_film_year": 2024,
+      "assigned_format": "animated short",
+      "country_labels": [
+        "Portugal",
+        "France"
+      ],
+      "runtime_minutes": 11,
+      "directors": [
+        "Alexandra Ramires",
+        "Laura Gonçalves"
+      ],
+      "wikipedia": {
+        "title": "Percebes (film)",
+        "revision_id": 1329494034,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1329494034",
+        "request_url": "https://en.wikipedia.org/w/api.php?action=parse&page=Percebes+%28film%29&prop=wikitext%7Ctext%7Crevid&format=json&redirects=1",
+        "response_sha256": "02db0187f4b9315de372c3337eba8d2c5dbd956c8649330b331ee0458dd3ef55",
+        "observed_at": "2026-10-30T12:12:02.645282+00:00",
+        "history_url": "https://en.wikipedia.org/w/index.php?title=Percebes+%28film%29&action=history"
+      },
+      "wiki_note": "No named individual year-end ballot found.",
+      "records": []
+    },
+    {
+      "key": "period-11",
+      "film": "War Is Over!",
+      "source_film_year": 2023,
+      "assigned_format": "animated short",
+      "country_labels": [
+        "United States"
+      ],
+      "runtime_minutes": 11,
+      "directors": [
+        "Dave Mullins"
+      ],
+      "wikipedia": {
+        "title": "War Is Over!",
+        "revision_id": 1381537509,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1381537509",
+        "request_url": "https://en.wikipedia.org/w/api.php?action=parse&page=War+Is+Over%21&prop=wikitext%7Ctext%7Crevid&format=json&redirects=1",
+        "response_sha256": "8abdfdf0e70faf5d35b8462de145cc464cbd69fa4d3dc75272f9392d97d49a5f",
+        "observed_at": "2026-10-30T12:12:04.086289+00:00",
+        "history_url": "https://en.wikipedia.org/w/index.php?title=War+Is+Over%21&action=history"
+      },
+      "wiki_note": "Review and awards, not year-end ballot.",
+      "records": []
+    },
+    {
+      "key": "period-12",
+      "film": "The Only Girl in the Orchestra",
+      "source_film_year": 2023,
+      "assigned_format": "documentary short",
+      "country_labels": [
+        "United States"
+      ],
+      "runtime_minutes": 35,
+      "directors": [
+        "Molly O'Brien"
+      ],
+      "wikipedia": {
+        "title": "The Only Girl in the Orchestra",
+        "revision_id": 1368455589,
+        "url": "https://en.wikipedia.org/w/index.php?oldid=1368455589",
+        "request_url": "https://en.wikipedia.org/w/api.php?action=parse&page=The+Only+Girl+in+the+Orchestra&prop=wikitext%7Ctext%7Crevid&format=json&redirects=1",
+        "response_sha256": "1cb19cb63398e618d8379aeb1f220733e0d0bd20f3f956ee1ac2008d820a06a2",
+        "observed_at": "2026-10-30T12:11:36.017282+00:00",
+        "history_url": "https://en.wikipedia.org/w/index.php?title=The+Only+Girl+in+the+Orchestra&action=history"
+      },
+      "wiki_note": "Awards, not year-end ballot.",
+      "records": []
+    }
+  ],
+  "license_notice": "Wikipedia-derived metadata adapted under CC BY-SA 4.0 with revision attribution per row. Original publisher observations retain factual title/selector/rank/category metadata only; no body, criticism or image copied and no source reuse license inferred.",
+  "rows_field": "All twelve frozen candidates retained; missing rows mean unknown list/exposure, never negative relevance."
+}
