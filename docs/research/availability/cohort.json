@@ -1,0 +1,542 @@
+[
+  {
+    "key": "b4-01",
+    "title": "Avengers: Endgame",
+    "stratum": "Mainstream",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-02",
+    "title": "The Lion King (2019)",
+    "stratum": "Mainstream",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-03",
+    "title": "Toy Story 4",
+    "stratum": "Mainstream",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-04",
+    "title": "Frozen II",
+    "stratum": "Mainstream",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-05",
+    "title": "Captain Marvel",
+    "stratum": "Mainstream",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-06",
+    "title": "Star Wars: The Rise of Skywalker",
+    "stratum": "Mainstream",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-07",
+    "title": "Spider-Man: Far From Home",
+    "stratum": "Mainstream",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-08",
+    "title": "Aladdin (2019)",
+    "stratum": "Mainstream",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-09",
+    "title": "Joker",
+    "stratum": "Mainstream",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-10",
+    "title": "It: Chapter Two",
+    "stratum": "Mainstream",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-11",
+    "title": "Grand Tour",
+    "stratum": "International arthouse",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-12",
+    "title": "All We Imagine as Light",
+    "stratum": "International arthouse",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-13",
+    "title": "The Seed of the Sacred Fig",
+    "stratum": "International arthouse",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-14",
+    "title": "Wild Diamond",
+    "stratum": "International arthouse",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-15",
+    "title": "The Girl with the Needle",
+    "stratum": "International arthouse",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-16",
+    "title": "The Village Next to Paradise",
+    "stratum": "International arthouse",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-17",
+    "title": "On Becoming a Guinea Fowl",
+    "stratum": "International arthouse",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-18",
+    "title": "Black Dog",
+    "stratum": "International arthouse",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-19",
+    "title": "Viet and Nam",
+    "stratum": "International arthouse",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-20",
+    "title": "My Sunshine",
+    "stratum": "International arthouse",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-21",
+    "title": "Tokyo Story",
+    "stratum": "Older",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-22",
+    "title": "Citizen Kane",
+    "stratum": "Older",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-23",
+    "title": "Vertigo",
+    "stratum": "Older",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-24",
+    "title": "2001: A Space Odyssey",
+    "stratum": "Older",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-25",
+    "title": "Jeanne Dielman, 23 quai du Commerce, 1080 Bruxelles",
+    "stratum": "Older",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-26",
+    "title": "Seven Samurai",
+    "stratum": "Older",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-27",
+    "title": "Meshes of the Afternoon",
+    "stratum": "Older",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-28",
+    "title": "Pyaasa",
+    "stratum": "Older",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-29",
+    "title": "Hiroshima mon amour",
+    "stratum": "Older",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-30",
+    "title": "The River (1951)",
+    "stratum": "Older",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part1.json"
+  },
+  {
+    "key": "b4-31",
+    "title": "20 Days in Mariupol",
+    "stratum": "Documentary features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-32",
+    "title": "Bobi Wine: The People's President",
+    "stratum": "Documentary features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-33",
+    "title": "The Eternal Memory",
+    "stratum": "Documentary features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-34",
+    "title": "Four Daughters",
+    "stratum": "Documentary features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-35",
+    "title": "To Kill a Tiger",
+    "stratum": "Documentary features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-36",
+    "title": "No Other Land",
+    "stratum": "Documentary features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-37",
+    "title": "Black Box Diaries",
+    "stratum": "Documentary features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-38",
+    "title": "Porcelain War",
+    "stratum": "Documentary features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-39",
+    "title": "Soundtrack to a Coup d'Etat",
+    "stratum": "Documentary features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-40",
+    "title": "Sugarcane",
+    "stratum": "Documentary features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-41",
+    "title": "The Boy and the Heron",
+    "stratum": "Animated features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-42",
+    "title": "Elemental",
+    "stratum": "Animated features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-43",
+    "title": "Nimona",
+    "stratum": "Animated features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-44",
+    "title": "Robot Dreams",
+    "stratum": "Animated features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-45",
+    "title": "Spider-Man: Across the Spider-Verse",
+    "stratum": "Animated features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-46",
+    "title": "Flow",
+    "stratum": "Animated features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-47",
+    "title": "Inside Out 2",
+    "stratum": "Animated features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-48",
+    "title": "Memoir of a Snail",
+    "stratum": "Animated features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-49",
+    "title": "Wallace & Gromit: Vengeance Most Fowl",
+    "stratum": "Animated features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-50",
+    "title": "The Wild Robot",
+    "stratum": "Animated features",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-51",
+    "title": "Volcelest",
+    "stratum": "Shorts / experimental",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-52",
+    "title": "Ootidė",
+    "stratum": "Shorts / experimental",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-53",
+    "title": "Sanki Yoxsan",
+    "stratum": "Shorts / experimental",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-54",
+    "title": "Les Belles Cicatrices",
+    "stratum": "Shorts / experimental",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-55",
+    "title": "Rrugës",
+    "stratum": "Shorts / experimental",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-56",
+    "title": "Across the Waters",
+    "stratum": "Shorts / experimental",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-57",
+    "title": "Perfectly a Strangeness",
+    "stratum": "Shorts / experimental",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-58",
+    "title": "Tea",
+    "stratum": "Shorts / experimental",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-59",
+    "title": "Amarela",
+    "stratum": "Shorts / experimental",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  },
+  {
+    "key": "b4-60",
+    "title": "The Man Who Could Not Remain Silent",
+    "stratum": "Shorts / experimental",
+    "tmdb_id": null,
+    "imdb_id": null,
+    "identity_evidence": null,
+    "work_audit": "cohort-audit/part2.json"
+  }
+]
