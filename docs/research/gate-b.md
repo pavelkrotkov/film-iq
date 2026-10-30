@@ -23,6 +23,27 @@ The table is a working index, not evidence that any issue is complete. Link each
 - [Watchmode's current terms](https://api.watchmode.com/tc) limit free-plan non-image caching to 30 days and require deletion when the account ends. Apply the actual provider and plan terms before retaining observations.
 - [Letterboxd's API policy](https://letterboxd.com/api-beta/) currently excludes several categories relevant to this project, including personal and recommendation projects. An open-source scraper license does not supply source-data permissions.
 
+## Consolidated measurements and unknown costs
+
+These are bounded experiment measurements, not a total cost or quality estimate
+for Epic B. Source discovery, agent work, repeat runs and browser asset requests
+were not comprehensively metered. Automated audit is not human review labor.
+
+| Evidence | Recorded measurements | Labor, quota and cost limits |
+| --- | --- | --- |
+| B1 source registry / B6 reuse | Eleven registry entries and a pinned module/license dossier; unresolved rights lead to no-copy decisions. | Source discovery and adoption labor/cost were not timed; qualitative maintenance assessments are not integration benchmarks. |
+| B2 identity search | Fourteen dry-run cases, zero provider requests; bounded pagination budget defaults to five pages per query. | No live quota consumption, coverage or precision measurement. Monetary cost and human adjudication minutes remain unknown. |
+| B3 static cohort | 97 retained HTTP 200 responses, 359,741 bytes; capture interval 03:06:16–03:07:56 UTC includes pacing. Baseline parsing: 0.0453 s development, 0.0206 s holdout; complete documents 23/24 and 3/8. Code footprint: 645 logical Python lines including tests. | Discovery/repeat requests were not fully metered; no independently measured total labor or human correction time. CC BY-SA source text/audits require attribution and share-alike; derivative facts are not independent critical votes. |
+| B3 grounded extraction | One blinded agent output, 12 valid spans, 11 scoped memberships; completeness failed. | Full elapsed extraction time, tokens, billing and repeatability unavailable. A valid span does not establish category membership. |
+| B3 loader replay / PDF | Replay: ten initial plus eleven new records, source failure/reopen/retry to 21, zero unchanged SQLite writes; one run 0.005 s SQLite and 1.454 s dlt. Separate PDF first page: 36/36 exact rows; native extraction 0.305462 s, saved-text check 0.000943 s. | Loader timings exclude dependency installation/import. Neither experiment measures production throughput, killed-process recovery or maintenance effort. PDF snapshot validation is not a second extraction engine. |
+| B3 dynamic interface | Two bounded HTTP 200 requests: 17,940-byte HTML and 601-byte JSON. Browser and JSON agreed on two IDs/labels; UI reported 1,336 ms. | Browser/model/asset costs unmetered; sequential HTTP timings and UI service time have different boundaries and caches. CC0 output is a defined query, not an original critic list. |
+| B4 offers | Sixty published-work source audits, 64 checked raw/metadata receipt references; provider dry run makes zero requests. | No live provider quota, plan retention, monetary cost, current catalog-ID acceptance or three-date changes measured. Some receipt references share a source response; 64 is not an HTTP request count. |
+| B5 access | Six bounded work investigations; two named anonymous metadata probes returned 200 and the player probe returned 401. | Broader discovery requests and labor not fully counted; no playback/account entitlement or comparative coverage result. |
+| B7 scoring | Ten film-page acquisitions, 61 observed selections from three pages; two with known held-out selections; an independent automated audit corrected one omission. | Seven pages yield no supported ordinal observations, not negative relevance judgments. Total acquisition/maintenance and human correction costs unmeasured; tiny retrospective/intermediary sample limits inference. |
+
+Unknown costs remain explicit insufficient-evidence outcomes for this report.
+They must not become a zero-cost assumption or a completed empirical gate.
+
 ## Decision record
 
 These are bounded research recommendations, not acceptance of Gate B or changes to production contracts. Cross-cutting ADR decisions remain provisional.
