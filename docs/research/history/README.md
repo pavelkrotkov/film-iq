@@ -59,3 +59,60 @@ Two further leads below come from indexed Wikidata pages, inspected on 2026-10-2
 3. Against an authorized, version-recorded TMDB API, record every attempt, response outcome and candidate set. A timeout, 403, partial or failed search is **unknown**, never a missing-catalog film. Log optional IMDb evidence only where independently accessible and permitted.
 4. Have a reviewer time actual independent adjudication and resolve candidate identities without seeing automatic acceptance decisions. For each stratum report denominators, automated acceptance coverage, precision among independently reviewed accepted matches, unresolved rate, and only **confirmed** absent-catalog rate. Report elapsed human review time and its sample size; none has yet been measured.
 5. Do not advance a source-expansion or identity-accuracy claim from this preliminary list. Real current catalog measurements, reviewed decisions, permissions and reproducible error handling remain open.
+
+## Runnable candidate-search experiment
+
+`sample.json` freezes the fourteen source-linked cases above as factual query
+inputs, including aliases, directors, source edition and unresolved year or
+eligibility conflicts. Every accepted ID remains null. It contains no captured
+publisher page bodies and does not establish catalog matches.
+
+From this worktree root, a credential-free dry run makes zero requests:
+
+```sh
+UV_CACHE_DIR="$PWD/.cache/uv" TMPDIR="$PWD/.cache/tmp" \
+  uv run --no-sync python -m docs.research.history.run \
+  --output .cache/history-dry-run.json
+```
+
+For an authorized live run, configure `TMDB_READ_ACCESS_TOKEN` locally, review
+the applicable provider terms and retention period, and supply an explicit
+retention note. Use a new observation filename each time:
+
+```sh
+UV_CACHE_DIR="$PWD/.cache/uv" TMPDIR="$PWD/.cache/tmp" \
+  uv run --no-sync python -m docs.research.history.run --live \
+  --retention-note 'Record the verified provider plan, use and retention basis here' \
+  --output .cache/history-observation-01.json
+```
+
+The [official movie-search endpoint](https://developer.themoviedb.org/reference/search-movie)
+searches original, translated and alternative titles. The runner uses one
+recorded query per film, English response language and `include_adult=false`;
+it deliberately applies no disputed release-year filter. Search results do not
+include director verification. Additional alias queries and film/credits
+adjudication are separate reviewed work, not automatic acceptance. Authentication
+uses the documented [Bearer header](https://developer.themoviedb.org/docs/authentication-application);
+tokens are neither written into URLs nor observation files.
+
+Each observation records exact query parameters, per-page UTC attempt time,
+HTTP status, exposed rate-limit headers, response hash, request count and selected
+candidate metadata. No raw payloads or credentials are retained. Monetary cost
+and human review minutes remain unmeasured. `--max-pages` defaults to five per
+query (at most 70 requests for fourteen cases); an exceeded budget, changed page
+counts, duplicate IDs, truncated JSON, incomplete total or failed page leaves
+the search unknown. Partial candidates remain only in their page-attempt
+evidence. No retries are made. An empty successful search still cannot establish
+catalog absence or a film match. All identities require independent review.
+
+Outputs are restricted to this worktree's ignored `.cache` directory, and an
+existing file is never overwritten. Local storage is not an exemption from
+provider expiry/deletion rules: the operator must apply the verified retention
+basis to these bounded observations. The runner does not claim that a free-text
+note grants rights. Optional IMDb verification remains outside this experiment.
+
+Offline tests cover successful pagination, missing credentials, empty results,
+request failure, malformed/truncated data, changing totals, duplicate IDs,
+page-budget exhaustion and partial later-page failures. This enables a future
+reproducible measurement; no live TMDB requests, current precision or coverage
+results have been obtained here.
