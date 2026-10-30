@@ -2,7 +2,7 @@
 
 **Version:** 0.1 · **Prepared:** 2026-10-29 · [Issue #14](https://github.com/pavelkrotkov/film-iq/issues/14) · [Epic B](https://github.com/pavelkrotkov/film-iq/issues/2)
 
-**Status:** Cohort candidates and protocol only. No provider observation, account entitlement check, coverage estimate, or three-date comparison has been completed.
+**Status:** Cohort candidates, an opt-in runnable observer and offline checks. No live provider observation, account entitlement check, coverage estimate, or three-date comparison has been completed.
 
 This convenience cohort deliberately assigns ten candidates to each of six strata. Assignments are for reporting and may overlap in reality; for example, an older film can also be a short. The samples are not a random or representative estimate of all cinema. Confirm each title against a source, director and an unambiguous provider identifier before freezing the cohort; a year of festival selection or award eligibility is not automatically the production or premiere year. Replace an ambiguous candidate only with a recorded reason and source. Follow [plan §7](../../../plan.md), [ADR 0008](../../adr/0008-availability-providers.md) and [ADR 0011](../../adr/0011-cost-rights.md).
 
@@ -45,3 +45,30 @@ One preliminary first-party lead was checked through search-indexed page text on
 - [Watchmode's terms](https://api.watchmode.com/tc), updated 2026-10-24, limit free-plan non-image data caching to 30 days and require deletion when an account ends. Check the actual plan and terms before storing or redistributing results.
 
 No provider has been selected as superior. Keep actual provider data, credentials and personal account details out of Git; record only rights-permitted aggregate evidence and an explicit inconclusive result when the comparison cannot be run.
+
+## Runnable observation experiment
+
+`cohort.json` preserves all 60 candidates and assigned strata. Every catalog ID and identity-evidence field is initially null. These are unresolved candidates, not audited matches. Before querying a film, fill its numeric `tmdb_id` and/or `imdb_id` (`tt…`) and `identity_evidence` with the dated independent review and sources establishing those particular IDs. Freeze and retain that reviewed manifest across all three dates; the output records its SHA-256. Unsupported or unresolved IDs remain in the denominator as unknown and cause zero requests. Do not copy a search suggestion into an audited ID field.
+
+The standard-library observer makes at most one request per resolved film, with a 30-second timeout and no automatic retry. TMDB uses `TMDB_READ_ACCESS_TOKEN`; Movie of the Night uses a **developer-platform** `MOVIE_OF_THE_NIGHT_API_KEY`, not a RapidAPI key. Expected credential names were checked again on 2026-10-29 and were unset; other local secret locations were not inspected. Credential values and failed-response bodies are never written to observation files.
+
+From the worktree root, first run without network access:
+
+```sh
+mkdir -p .cache/tmp .cache/uv
+UV_CACHE_DIR="$PWD/.cache/uv" TMPDIR="$PWD/.cache/tmp" UV_PYTHON_DOWNLOADS=never \
+  uv run --no-sync python -m docs.research.availability.run \
+  --provider tmdb --output .cache/availability/plan-tmdb.json
+```
+
+This initial manifest produces **60 unknown candidates, zero requests**. A live observation adds `--live` and `--retention-note 'provider plan; terms URL/date; allowed retention and deletion deadline'`, after checking that the actual plan permits retaining these derived observations. Use a new dated output filename for each provider/date. Existing evidence is never overwritten; output is restricted to this worktree's ignored `.cache` tree. Track and apply the applicable retention deadline manually; this experiment has no retention scheduler. Keep provider outputs and personal first-party/account evidence out of Git.
+
+The observer uses the [TMDB movie-provider endpoint](https://developer.themoviedb.org/reference/movie-watch-providers) and [Movie of the Night v4 shows endpoint](https://docs.movieofthenight.com/guide/shows), checked against the publisher's [OpenAPI specification](https://github.com/movieofthenight/streaming-availability-api/blob/main/openapi.yaml) (4.1.0). The latter documents developer-platform `X-API-Key` authentication and `country=us`. It queries an explicitly audited IMDb ID and checks the response's IMDb identity and movie type; TMDB responses must match the requested numeric movie ID.
+
+Each observation records UTC time, US region, endpoint, attempted-request count, HTTP status, returned quota headers (when supplied), and either unknown/error or normalized offers plus a response hash. Full API responses are not retained. Offer types remain distinct: TMDB subscription/free/ads/rent/buy, and Movie of the Night subscription/free/rent/buy/add-on. All account entitlements stay unknown. TMDB's link is a TMDB watch page with JustWatch attribution, not a provider deep link. Movie of the Night's optional expiry, first-detected timestamp and price fields remain provider-asserted under `source_details`; unknown exact expiry is not manufactured from `expiresSoon`.
+
+`complete_response` means only that this single, non-paginated endpoint returned an identity-consistent, structurally usable US object/list. It does not establish catalog completeness, current first-party playback, freshness, an ad-tier entitlement, or verified absence. An absent country, malformed row, mismatched identity, HTTP error or failed request yields unknown with no offers, even if an earlier row was valid. Only an explicit empty US result can produce an empty offer list. The experiment emits **no removal events** and performs no negative inference across dates.
+
+Offline tests use fictional IDs/services and exercise all 60 unresolved entries, credential/live opt-in, distinct ad/rent/buy/add-on types, unknown entitlement and expiry, explicit empty versus missing country data, mismatched IDs, a partial response, rate-limit failure and transport failure. They are run by the normal pytest suite; no fixture is a real provider-quality measurement. Subsequent analysis still needs audited identities, live observations on three dates, actual quota/cost accounting, first-party offer checks and intended account/plan evidence.
+
+Validation on 2026-10-29: Ruff check, format check, ty and pytest passed (44 passed, one credential-dependent integration test skipped). Radon 6.0.1 over every new Python module and test reported maximum CC 8 and minimum MI 50.38. The dry-run CLI preserved all 60 unresolved candidates and made zero requests. No live provider-performance result is implied by these checks.
