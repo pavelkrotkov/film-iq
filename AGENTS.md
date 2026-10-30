@@ -43,3 +43,10 @@ Adapted from the general-purpose engineering practices in [pavelkrotkov/utils](h
 
 The initial repository seed is a one-time bootstrap exception to the normal PR workflow.
 
+## Agent skills
+
+### Issue tracker
+
+Issues and specifications live in `pavelkrotkov/film-iq` GitHub Issues.
+See `docs/agents/issue-tracker.md`.
+
