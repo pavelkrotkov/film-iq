@@ -1,6 +1,6 @@
-# Gate B — working evidence matrix
+# Gate B — evidence and decision dossier
 
-**Status:** In progress, not a gate decision. Updated 2026-10-30.
+**Status:** Prepared decisions; final Gate B remains open. Updated 2026-10-30.
 
 **Scope:** [Epic B](https://github.com/pavelkrotkov/film-iq/issues/2) and [issue #18](https://github.com/pavelkrotkov/film-iq/issues/18); [plan](../../plan.md#epic-b--explore-source-universe-and-provider-quality); ADRs [0005](../adr/0005-extraction-choice.md), [0006](../adr/0006-scoring-separation.md), [0008](../adr/0008-availability-providers.md) and [0012](../adr/0012-empirical-gates.md).
 
@@ -9,12 +9,12 @@ The table distinguishes completed bounded research from open experiments; comple
 | Issue | Decision or evidence needed | Current status |
 |---|---|---|
 | [B1](https://github.com/pavelkrotkov/film-iq/issues/11) | Source priorities, eligibility, independence and rights | **Closed, completed bounded research** ([acceptance](https://github.com/pavelkrotkov/film-iq/issues/11#issuecomment-6522320655)). [Merged registry](https://github.com/pavelkrotkov/film-iq/pull/36): 11 source entries; unknown permissions and eligibility are documented audit outcomes, not acquired grants. |
-| [B2](https://github.com/pavelkrotkov/film-iq/issues/12) | Historical and specialty-title identity coverage | [Runnable lookup study](https://github.com/pavelkrotkov/film-iq/pull/39): 14 frozen cases now have live paginated TMDB searches and details/credits: 35 benchmark requests (21 search, 14 detail), all HTTP 200. Separate automated evidence review supports 12 identities and leaves two date-conflicted cases ambiguous. Six paired source-alias queries retrieve the reviewed candidate in five cases; one empty alias search remains unknown despite a successful English query. No automatic acceptance, human truth or precision estimate. |
-| [B3](https://github.com/pavelkrotkov/film-iq/issues/13) | Audited extraction cohort, held-out methods and recovery | [Benchmark](https://github.com/pavelkrotkov/film-iq/pull/40): 32 static derivative sections, 539 independently automated-audited expected records. Frozen baseline complete on 23/24 development and 3/8 held-out documents. Grounded-LLM failed completeness despite 12 valid spans (11 scoped memberships). Real-source edition replay preserved ten rows on source failure and retried to 21 after reopening persistent state. Historical government PDF matched 36/36 first-page rows; original CNC CSV matched 25/25 bounded administrative records. Dynamic query interface and native JSON API agreed on two rows. Separate NFB acquisition failed DNS. No retroactive held-out, film-match, process-crash or broad method-quality claim. |
+| [B2](https://github.com/pavelkrotkov/film-iq/issues/12) | Historical and specialty-title identity coverage | **Closed, completed bounded research** ([acceptance](https://github.com/pavelkrotkov/film-iq/issues/12#issuecomment-6524971499), merged #51). [Runnable lookup study](https://github.com/pavelkrotkov/film-iq/pull/39): 14 frozen cases now have live paginated TMDB searches and details/credits: 35 benchmark requests (21 search, 14 detail), all HTTP 200. Separate automated evidence review supports 12 identities and leaves two date-conflicted cases ambiguous. Six paired source-alias queries retrieve the reviewed candidate in five cases; one empty alias search remains unknown despite a successful English query. [Timed source-frame review](history/review-effort-20261030.md) covers all fourteen cases in 59.235865 seconds across five source frames, with unchanged twelve accepted/two ambiguous outcomes. This is agent-task wall time, not human labor or independent precision. |
+| [B3](https://github.com/pavelkrotkov/film-iq/issues/13) | Audited extraction cohort, held-out methods and recovery | **Closed, completed bounded research** ([acceptance](https://github.com/pavelkrotkov/film-iq/issues/13#issuecomment-6525050893), merged #54). [Benchmark](https://github.com/pavelkrotkov/film-iq/pull/40): 32 static derivative sections, 539 independently automated-audited expected records. Frozen baseline complete on 23/24 development and 3/8 held-out documents. Grounded-LLM failed completeness despite 12 valid spans (11 scoped memberships). Real-source edition replay preserved ten rows on source failure and retried to 21 after reopening persistent state. Historical government PDF matched 36/36 first-page rows; original CNC CSV matched 25/25 bounded administrative records. Dynamic query interface and native JSON API agreed on two rows. Separate NFB acquisition failed DNS. The [timed correction supplement](extraction/correction-20261030.md) reviews all six frozen failures in 97.345139154 seconds of agent-assisted wall time, repairing 120 category fields, one title field and one missing row to 151/151 exact reviewed records. The original 26/32 complete-document baseline is unchanged. No retroactive held-out, film-match, process-crash or broad method-quality claim. |
 | [B4](https://github.com/pavelkrotkov/film-iq/issues/14) | Provider coverage, offer correctness, rights, cost and change timeliness | [Paired date-one findings](availability/comparison-20261030.md): all sixty work lookups separately audited; TMDB 53 complete/seven unknown, native Movie of the Night 49 complete/eleven unknown. Partial mapped comparison across 49 jointly complete works: 180 common nominal tuples, 51 TMDB-only, 46 native-only; mapping asymmetry prevents accuracy/absence claims. Public spot checks, Apple SKU prices and separate Peacock pre-subscription discovery are recorded. Two later dates, timeliness and unresolved retention/plan evidence remain. |
 | [B5](https://github.com/pavelkrotkov/film-iq/issues/15) | Authorized long-tail leads and library eligibility | **Closed, completed bounded inconclusive research** ([acceptance](https://github.com/pavelkrotkov/film-iq/issues/15#issuecomment-6522322222)). [Merged access research](https://github.com/pavelkrotkov/film-iq/pull/37): six investigations and explicit acceptance accounting; manual checks recommended, no adapter justified. One player request returned HTTP 401. US playback and individual eligibility remain unknown, as the issue permits where testing is infeasible. |
 | [B6](https://github.com/pavelkrotkov/film-iq/issues/16) | Reuse candidates, licenses and maintenance cost | **Closed, completed qualitative research** ([acceptance](https://github.com/pavelkrotkov/film-iq/issues/16#issuecomment-6522323392)). [Merged reuse dossier](https://github.com/pavelkrotkov/film-iq/pull/38): pinned module/license inspection and qualitative adoption comparison; the issue does not require measured integration hours. |
-| [B7](https://github.com/pavelkrotkov/film-iq/issues/17) | Public-score baselines, independent holdouts and sparse-film behavior | [2008 pilot](https://github.com/pavelkrotkov/film-iq/pull/42) and [period extension](https://github.com/pavelkrotkov/film-iq/pull/47): the 2008 ten-film pilot retains 61 selections and typed reception/award baselines. A frozen twelve-film 2023–2024 period/format extension now has nine independently automated-audited original-source critic/film selections across five works, including two animated features. New Yorker is held out by family; inclusive/main-only views have three/one conditional overlaps, with tied training counts and no training ordinals. Four shorts remain unknown. Full weighted scoring and predictive/format stability remain inconclusive; no weights are selected. |
+| [B7](https://github.com/pavelkrotkov/film-iq/issues/17) | Public-score baselines, independent holdouts and sparse-film behavior | **Closed, completed bounded inconclusive research.** [2008 pilot](https://github.com/pavelkrotkov/film-iq/pull/42) and [period extension](https://github.com/pavelkrotkov/film-iq/pull/47): the 2008 ten-film pilot retains 61 selections and typed reception/award baselines. A frozen twelve-film 2023–2024 period/format extension now has nine independently automated-audited original-source critic/film selections across five works, including two animated features. New Yorker is held out by family; inclusive/main-only views have three/one conditional overlaps, with tied training counts and no training ordinals. Four shorts remain unknown. Full weighted scoring and predictive/format stability remain inconclusive; no weights are selected. |
 
 ## Preliminary constraints
 
@@ -24,7 +24,7 @@ The table distinguishes completed bounded research from open experiments; comple
 - [Watchmode's current terms](https://api.watchmode.com/tc) limit free-plan non-image caching to 30 days and require deletion when the account ends. Apply the actual provider and plan terms before retaining observations.
 - [Letterboxd's API policy](https://letterboxd.com/api-beta/) currently excludes several categories relevant to this project, including personal and recommendation projects. An open-source scraper license does not supply source-data permissions.
 
-- [The current native Movie of the Night terms audit](availability/rights-20261030.md) distinguishes conditional retained storage, attribution and the specific AI-model-training/evaluation restriction from older repository terms. Its published Free quota is 1,000 requests/month; native API access is now demonstrated by the paired continuation; actual account balance/plan and TMDB historical retention remain unverified.
+- [The current native Movie of the Night terms audit](availability/rights-20261030.md) distinguishes conditional retained storage, attribution and the specific AI-model-training/evaluation restriction from older repository terms. Its published Free quota is 1,000 requests/month; native API access is now demonstrated by the paired continuation; actual account balance/plan remain unverified. The [public TMDB terms follow-up](availability/rights-20261030.md#public-browser-follow-up-tmdb-terms-now-readable) establishes a six-month cache cap and termination deletion, with AI-application/commercial conditions still requiring project-specific assessment.
 
 ## Consolidated measurements and unknown costs
 
@@ -35,8 +35,8 @@ were not comprehensively metered. Automated audit is not human review labor.
 | Evidence | Recorded measurements | Labor, quota and cost limits |
 | --- | --- | --- |
 | B1 source registry / B6 reuse | Eleven registry entries and a pinned module/license dossier; unresolved rights lead to no-copy decisions. | Source discovery and adoption labor/cost were not timed; qualitative maintenance assessments are not integration benchmarks. |
-| B2 identity search | Fourteen primary searches (15 requests, 70 candidate occurrences), fourteen selected detail requests and six alias requests: 35 benchmark requests. All complete/HTTP 200; independent automated audit supports 12 identities, leaves two ambiguous. | No quota headers returned; quota capacity is unknown. Detail requests total 1.2903 s; primary search durations unmeasured. Audit wall interval 103.617 s is automated, not human labor. Automatic-acceptance coverage is zero; precision undefined. Monetary cost and human adjudication minutes remain unknown; the separate authentication probe is outside benchmark totals. |
-| B3 static cohort | 97 retained HTTP 200 responses, 359,741 bytes; capture interval 03:06:16–03:07:56 UTC includes pacing. Baseline parsing: 0.0453 s development, 0.0206 s holdout; complete documents 23/24 and 3/8. Current B3 code footprint across experiments: 692 logical Python lines including tests. | Discovery/repeat requests were not fully metered; no independently measured total labor or human correction time. CC BY-SA source text/audits require attribution and share-alike; derivative facts are not independent critical votes. |
+| B2 identity search | Fourteen primary searches (15 requests, 70 candidate occurrences), fourteen selected detail requests and six alias requests: 35 benchmark requests. All complete/HTTP 200; independent automated audit supports 12 identities, leaves two ambiguous. | No quota headers returned; quota capacity is unknown. Detail requests total 1.2903 s; primary search durations unmeasured. Audit wall interval 103.617 s is automated, not human labor. Automatic-acceptance coverage is zero; precision undefined. A separate unblinded agent review covers all fourteen cases across five primary source frames in 59.235865 s (0.987264 min), with no status/source-field changes. Human sample size is zero/minutes null; period timing cannot be isolated. Monetary cost and human adjudication effort remain unknown; the separate authentication probe is outside benchmark totals. |
+| B3 static cohort | 97 retained HTTP 200 responses, 359,741 bytes; capture interval 03:06:16–03:07:56 UTC includes pacing. Baseline parsing: 0.0453 s development, 0.0206 s holdout; complete documents 23/24 and 3/8. Historical source-version footprint: 692 logical Python lines including tests across the then-changed research modules and wrapper. This differs from the later [named-module footprint scope](extraction/correction-20261030.md#footprint-runtime-and-maintenance-decision), which includes the new correction replay. | A separate oracle-assisted correction task covers all six failed documents in 97.345139154 s (1.6224 min), including inference/tool latency. It is not active human minutes or model billing. Discovery/repeat requests and total labor remain unmetered; post-hoc markup inventory finds 24 year-rowspan headers in four Academy holdouts and none in development. CC BY-SA source text/audits require attribution and share-alike; derivative facts are not independent critical votes. |
 | B3 grounded extraction | One blinded agent output, 12 valid spans, 11 scoped memberships; completeness failed. | Full elapsed extraction time, tokens, billing and repeatability unavailable. A valid span does not establish category membership. |
 | B3 loader replay / PDF | Replay: ten initial plus eleven new records, source failure/reopen/retry to 21, zero unchanged SQLite writes; one run 0.005 s SQLite and 1.454 s dlt. Separate PDF first page: 36/36 exact rows; native extraction 0.305462 s, saved-text check 0.000943 s. | Installation is outside the timers. SQLite imports precede its timer; the dlt timer can include lazy imports. Historical warm-up state is unknown, so these are not controlled startup or steady-state comparisons. Neither experiment measures production throughput, killed-process recovery or maintenance effort. PDF snapshot validation is not a second extraction engine. |
 | B3 dynamic interface | Two bounded HTTP 200 requests: 17,940-byte HTML and 601-byte JSON. Browser and JSON agreed on two IDs/labels; UI reported 1,336 ms. | Browser/model/asset costs unmetered; sequential HTTP timings and UI service time have different boundaries and caches. CC0 output is a defined query, not an original critic list. |
@@ -55,23 +55,20 @@ These are bounded research recommendations, not acceptance of Gate B or changes 
 | Component | Outcome supported by current evidence | Remaining evidence |
 | --- | --- | --- |
 | Source priorities | Prioritize permitted, edition-bounded factual selections and preserve original source families. Restricted criticism/ballots need an appropriate reuse basis before fixture acquisition. Wikipedia copies remain derivative evidence. | Audited original-source eligibility and broader geography/format coverage. |
-| Deterministic HTTP extraction | Retain the small HTTP/parser baseline for source-specific experiments, with exact completeness checks and review on failure. The measured 3/8 held-out complete-document rate does not support general unattended extraction. | Additional original publishers and source formats; correction labor. |
+| Deterministic HTTP extraction | Retain the small HTTP/parser baseline for source-specific experiments, with exact completeness checks and review on failure. The measured 3/8 held-out complete-document rate does not support general unattended extraction. | Further source/format coverage is a C2 question. The six-failure agent correction supplement is measured; human/lifetime costs remain unknown. |
 | Browser rendering | Static corpus needs no browser. A separate real JavaScript query interface rendered two film rows absent from initial HTML, while its native HTTP JSON API supplied the same rows. Prefer that API for this bounded case. | Original-publisher browser-only inputs, broader layout coverage and any framework benefit. |
 | Grounded LLM | No production adoption from the one-case comparison. Valid spans did not prevent an out-of-scope selection or a failed complete-document result. | Independently audited multi-case evaluation, costs and correction effort. |
 | SQLite versus dlt | Keep transactional SQLite as the experiment baseline. The edition replay demonstrates retry and persistent-state reopening for both; it does not establish enough incremental benefit to add dlt to production. | Representative job sizes, maintenance/labor costs and process-crash recovery. |
-| Availability providers | [Same-date paired observations](availability/comparison-20261030.md) support bounded positive assertions and explicit missing-country unknowns, not provider superiority or exact-tier accuracy. Partial nominal overlap preserves channels, free/ads distinctions and unmapped units. Peacock API/public-plan discovery needs no consumer login. | Reuse the accepted both-ID manifest on two genuinely later dates; resolve TMDB historical-retention basis, measure change timeliness and investigate plan-specific classifications. Personal entitlement stays unknown in pre-subscription discovery; optional account-specific validation is not a prerequisite. |
+| Availability providers | [Same-date paired observations](availability/comparison-20261030.md) support bounded positive assertions and explicit missing-country unknowns, not provider superiority or exact-tier accuracy. Partial nominal overlap preserves channels, free/ads distinctions and unmapped units. Peacock API/public-plan discovery needs no consumer login. | Reuse the accepted both-ID manifest on two genuinely later dates; apply TMDB’s documented six-month cache cap and assess proposed historical/AI-related use, measure change timeliness and investigate plan-specific classifications. Personal entitlement stays unknown in pre-subscription discovery; optional account-specific validation is not a prerequisite. |
 | Public scoring | Keep weights illustrative. Real observed count/rank disagreement with a tiny held-out sample does not validate a calibrated score or discovery benefit. | Wider independent source/period holds, reception measures, sparse-film and geography/format stability. |
 
-Next work is to complete the prepared identity/provider experiments when their external inputs are available, measure the missing extraction formats and correction effort, and expand the scoring cohort without turning missing selections into negative judgments. No new paid service, crawler platform or production dependency is justified by the current results alone.
+B2/B3 effort supplements are merged and accepted. Finish B4's two later observations before final adjudication. Further scoring expansion is an Epic C question, not an extra closure requirement for the completed B7 study. No new paid service, crawler platform or production dependency is justified by the current results alone.
 
 The remaining issue-specific experiments are concrete:
 
 | Open issue | Next bounded measurement |
 | --- | --- |
-| B2 #12 | Time actual manual adjudication/correction by the existing source strata, preserving unresolved decisions and undefined automatic precision; no human-only identity oracle is added as a requirement. |
-| B3 #13 | Time correction of observed extraction failures in a separately labeled supplement, preserving the frozen baseline and stating method/model-cost boundaries. Clarify or complete withheld-layout evidence without relabeling development supplements as holdouts. |
 | B4 #14 | Reuse the accepted both-ID manifest on two later dates, measure changes/expiry, resolve retention/use questions and investigate public plan-specific classifications. Native access and bounded public spot checks are performed; consumer login is not required for discovery. |
-| B7 #17 | Add a frozen period/diversity holdout with independently sourced critic selections, or obtain an explicit scoped deferral. The existing New Yorker source-family holdout is a valid performed experiment; missing numeric audience inputs are a legitimate inconclusive full-formula result. |
 | B8 #18 / Epic #2 | Consolidate those outcomes and any explicitly accepted deferrals before a final gate decision; the current synthesis does not close either item. |
 
 ## Tracked implementation handoff
@@ -90,10 +87,9 @@ require Epic A completion or authorize implementation before its specific gate.
 | [C8 #26 — operations and rights](https://github.com/pavelkrotkov/film-iq/issues/26) | Apply B1/B6 licensing/no-copy decisions and verified provider retention. Instrument remaining acquisition, correction and model costs before operational budget or maintenance conclusions. |
 
 Current insufficient-evidence outcomes remain explicit proposals for gate
-review. The unresolved empirical work stays tracked under #12–#14 and the Gate B
-synthesis under #18. The formerly missing #17 period/format experiment is now
-executed in PR #47; its acceptance is adjudicated separately against the exact
-issue criteria. This handoff does not itself accept Gate B or silently defer work.
+review. The remaining required dated experiment stays tracked under #14 and the Gate B
+synthesis under #18; #12 and #13 are closed after reviewed controller acceptance. The formerly missing #17 period/format experiment is now
+executed in PR #47 and #17 is closed after issue-specific acceptance. This handoff does not itself accept Gate B or silently defer work.
 
 
 ## Authenticated continuation — 2026-10-30
@@ -159,9 +155,94 @@ and discovery benefit are not inferred from these sparse outcomes. The original
 2008 results, production scorer and illustrative weights remain unchanged.
 
 This supplies the required bounded period/diversity experiment without requiring
-a positive quality result. Manual review/correction metrics for B2/B3, B4's two
-later observation dates, change timeliness and unresolved rights/plan-specific
+a positive quality result. The separately labeled B2/B3 effort supplements now
+perform their agent-assisted tasks, with human effort unknown. B4's two later
+observation dates, change timeliness and unresolved rights/plan-specific
 classifications, and final Gate B adjudication remain outstanding. Native access
 and bounded public offer checks are now performed; consumer-account checks remain
 optional and are not prerequisites for discovery. Automated audit intervals are labeled as such and do not
 stand in for human effort.
+
+
+## Prepared initial choices and final gate boundary — 2026-10-30
+
+These choices are proposals for the B8 review, grounded in the measurements
+above. They select a narrow starting scope, not new production integrations or
+an accepted whole-epic gate. No additional benchmark is imposed on closed
+B1/B5/B6/B7 issues merely because its result is inconclusive.
+
+| Area | Initial choice supported now | Scope and implementation condition |
+| --- | --- | --- |
+| Source strata | Investigate edition-bounded individual critic selections, international festival selections/awards, and historical retrospective entries separately. Start diversity research with the registry's Cahiers and La Internacional Cinéfila perspectives alongside BFI/Film Comment; use Annecy/Cannes sections to retain short/animation and festival context. | This selects strata for C2, not collection permission or complete ballots. Preserve critic/source family, eligibility year, rank/tie and partialness. Resolve the particular source/method retention basis before ingestion; no restricted publisher text or paywalled copy is acquired by this choice. |
+| Extraction stack | Keep API/feed/HTTP with source-specific deterministic parsing and transactional SQLite. Use a documented native JSON endpoint before browser rendering when it supplies the required records. | The frozen static result remains 23/24 development and 3/8 holdout complete documents. A failed completeness check requires correction/review. Browser use remains source-specific; no general crawler, LangExtract or dlt dependency is selected by these results. |
+| Availability feeds | Retain the existing TMDB/JustWatch baseline provisionally and native Movie of the Night as the measured comparison/discovery candidate. Use native offer fields directly for pre-subscription discovery; public pages are bounded validation checks. | Do not select an exclusive winner, poll interval or complete catalog claim from date one. Keep missing/failed responses unknown, channel subscriptions separate and plan-specific eligibility explicit. Consumer sign-in is not an acquisition prerequisite. |
+| Public scoring | Keep distinct endorsement counts, rank-aware and award/reception views with source lineage and unknown exposure visible. No calibrated weighted blend is selected. | B7's source-family and period/format tests are completed but inconclusive for predictive benefit. RT positivity, Metascore, RT mean and categorical audience grades remain distinct; missing numeric audience data cannot be imputed as zero. Personal fit remains separate. |
+| OSS adoption | Reuse documented ideas and narrow interfaces from the B6 dossier; retain existing small Python equivalents rather than adopt a larger product stack. | No copied module with unknown/incompatible licensing, no Letterboxd access inferred from a scraper license, and no source-content rights inferred from an OSS code license. |
+
+### Exact closure assessment
+
+[B8 #18](https://github.com/pavelkrotkov/film-iq/issues/18) allows an explicitly
+documented **inconclusive outcome**. For example, B7 performed its specified
+holdouts and found insufficient evidence for selected weights. That provision
+does not make an **unperformed required observation** a completed experiment.
+[The epic](https://github.com/pavelkrotkov/film-iq/issues/2) explicitly requires
+sixty stratified films across three dates; [B4 #14](https://github.com/pavelkrotkov/film-iq/issues/14)
+requires three genuinely time-separated observations for final coverage/change
+claims. All retained B4 observations are still **2026-10-30 UTC, date one**.
+There is no recorded deferral of the other two dates.
+
+B2 review-effort and B3 correction-effort supplements are now merged and
+accepted. Finish the two later B4 captures using the same accepted local both-ID
+manifest. Compare per-film provider assertions,
+source errors/unknowns, offered expiry fields and bounded first-party evidence.
+If no relevant change occurs, report the observed no-change interval and
+**inconclusive change-detection latency**; do not invent an expiry/removal or a
+positive timeliness result. Unresolved rights and exact-plan information may be
+reported as no-go/unknown outcomes after the investigation; they do not grant
+permission or justify a purchase-driving coverage assertion.
+
+B8, B4 and Epic B remain open pending those measurements and final review.
+No Epic A dependency or consumer-account login blocks this work. The linked ADR evidence
+appendices leave the original status and final gates intact.
+
+### Remaining questions for Epic C
+
+| Destination | Concrete question / backlog delta | Safe interim behavior |
+| --- | --- | --- |
+| [C2 #20](https://github.com/pavelkrotkov/film-iq/issues/20) | Which permitted original source editions and layouts reduce correction effort after the measured supplements, while improving specialty/translated-title coverage? | Keep unresolved source rows and candidate IDs; expand only source-specific proven extraction. |
+| [C3 #21](https://github.com/pavelkrotkov/film-iq/issues/21) | Can broader original-source holds and adequately sampled audience data establish calibration or sparse-film discovery benefit? | Publish transparent component views and unknown exposure; no selected optimal weights or inferred negative judgments. |
+| [C4 #22](https://github.com/pavelkrotkov/film-iq/issues/22) | After the two later dates, do coverage, observed changes and public plan rules justify native Movie of the Night beside or instead of the baseline? | Preserve both provider lineages and unknown plan/account status; no complete-catalog, exclusivity or entitlement guarantee. |
+| [C8 #26](https://github.com/pavelkrotkov/film-iq/issues/26) | Which actual plan allowances, proposed history/AI-application uses and ongoing costs support operation under the documented storage restrictions? | Apply TMDB’s six-month cache cap/termination purge and native conditional storage/attribution rules. Assess broader AI-use and commercial conditions; unknown allowance/cost is not unlimited or free. |
+
+These are existing tracked destinations, not silently deferred B4 measurements.
+Publish the handoff with the B8 PR; final gate acceptance must still record what
+was actually performed and which decisions remain inconclusive.
+
+
+### Public TMDB rights finding
+
+The [B4 public-browser terms follow-up](availability/rights-20261030.md#public-browser-follow-up-tmdb-terms-now-readable)
+supersedes the earlier robots-denied reader result: the public API terms were
+read without consumer sign-in. Section 1.C caps caching at six months; section
+1.D requires purge on termination. The broader section 1.C ML/AI-application
+restriction and section 2.A commercial-use/written-agreement provisions,
+including listed chatbot/training/validation uses, must be assessed against the
+actual proposed application. Neither ordinary coding-agent assistance nor a
+deterministic provider comparison is automatically a model-training/evaluation
+experiment, but possession of a key does not establish an AI-product exception.
+This is a bounded published-terms finding, not a legal conclusion or a new
+consumer-login prerequisite. No indefinite historical-retention right follows.
+
+
+### Verified local observation registration
+
+[PR #53](https://github.com/pavelkrotkov/film-iq/pull/53) is merged after
+independent Standards/Spec review and green CI. Both native local calendar jobs
+were registered and re-read in `gui/502`, with zero runs and a not-running state.
+The [dated-run protocol](availability/dated-observations.md) schedules Oct 31 and
+Nov 1 at 10:00 New York time (14:00/15:00 UTC). Project-local receipts record
+registration, valid configurations and the earlier zero-request date-guard
+checks. Credentials and results stay local. No future observation is claimed;
+the Mac/network must be available and resulting timestamps/counts must be
+verified. After date three, compare changes and perform final B4/B8 adjudication,
+then unload the two jobs. Until then #14, #18 and Epic #2 remain open.

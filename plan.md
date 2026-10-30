@@ -883,3 +883,92 @@ They supersede the unknown cache duration, not every unresolved applicability or
 third-party-rights question. The conservative TMDB study-cache deadline is
 2027-04-30. No new API requests, terms acceptance or data deletion occurred in
 that terms check.
+
+### B8 prepared choices and explicit finish boundary (2026-10-30)
+
+The [Gate B dossier](docs/research/gate-b.md#prepared-initial-choices-and-final-gate-boundary--2026-10-30)
+now makes the initial choices concrete: distinct critic/festival/retrospective
+strata with source rights and eligibility intact; native API/HTTP and
+source-specific deterministic parsing with transactional SQLite; the existing
+TMDB/JustWatch baseline plus native Movie of the Night as a provisional
+comparison/discovery candidate; distinct public-scoring components without
+selected calibrated weights; and no unsupported larger OSS stack adoption.
+ADRs 0005/0006/0008/0012 gain evidence appendices preserving their existing
+statuses and required validation. This does not alter production interfaces.
+
+Exact issue reconciliation removes a stale B7 task: #17 is closed after its
+performed period/format extension, even though scoring benefit is inconclusive.
+B2/B3 effort supplements can proceed now. B4 is genuinely time-blocked on two
+later observations: all retained captures are Oct 30 UTC date one. The allowance
+for an inconclusive research outcome does not turn missing dates into completed
+measurements. No recorded scope deferral exists. B4 #14, B8 #18 and Epic #2
+remain open; no consumer-account sign-in or Epic A dependency blocks them.
+
+The dossier names concrete remaining questions for C2 #20, C3 #21, C4 #22 and
+C8 #26. It preserves required B4 work rather than silently moving it out of the
+epic. If later captures contain no observed changes, report the no-change
+interval and unknown change-detection latency without inventing removals,
+expiry events, entitlement or a preferred poll interval.
+
+Validation for this docs-only synthesis: Ruff check/format and ty pass;
+340 tests pass and one opt-in integration test skips. Radon over all 159
+tracked Python files reports maximum CC 8 and minimum MI 50.025032. No code,
+dependency, source payload or credential is added by this supplement.
+
+
+B8 consolidation now includes the fourteen-case, five-primary-source-frame B2
+review: 59.235865 seconds of unblinded agent-task wall time, twelve accepted/two
+ambiguous unchanged decisions, zero source-field corrections. Human sample size
+is zero and human minutes remain null; automatic precision and missing-catalog
+rate remain inconclusive. The public TMDB terms follow-up supersedes the prior
+unreadable/unknown-cache status with a six-month cap and termination purge.
+Broader AI-application and commercial-use conditions need proposed-use
+assessment; no coding-agent ban or AI-product permission is inferred.
+
+
+B3's [separately timed correction supplement](docs/research/extraction/correction-20261030.md)
+now covers all six recorded failures in 97.345139154 seconds (1.6224 minutes)
+of oracle-assisted agent wall time, including inference/tool latency. It changes
+120 category fields, one title field and inserts the missing runner-up, yielding
+151/151 exact reviewed records. The original frozen 539-observation benchmark
+remains 23/24 development and 3/8 holdout complete documents. A post-hoc inventory
+finds twenty-four year-rowspan headers only in the four failed Academy holdouts,
+none in development; this explains a real withheld-feature failure without
+claiming universal unfamiliar-layout coverage. Human active minutes and billing
+remain unknown. B2/B3 supplements are now merged as #51/#54 and issues #12/#13 are closed
+after independent review and controller acceptance. B8 consolidates these
+results without inventing broader accuracy or cost outcomes.
+
+
+### Verified Epic B progress and remaining time blocker (2026-10-30)
+
+B2 #12 and B3 #13 are closed after supplements #51/#54 merged at independently
+reviewed heads with green PR and merge CI. All six completed B1–B3/B5–B7
+research issues retain bounded outcomes and explicit unknowns. The three-date
+B4 benchmark remains mandatory; its two unperformed dates are not a deferral.
+
+PR #53 is now merged. Both local Oct 31/Nov 1 observation jobs are registered
+in `gui/502` and re-observed with zero runs; no immediate provider calls occurred.
+Configurations, logs, receipts and future observations stay inside the approved
+project's ignored cache, and no credentials were uploaded. The initial REST
+merge response was empty; SHA-guarded native PR merge succeeded and merged state
+was re-read. Registration occurred after review/CI, before that fallback merge
+confirmation; neither future job ran in that interval. The final dossier
+records concrete choices and Epic C questions without accepting Gate B early.
+
+The remaining external/time blocker is actual later-date evidence on Oct 31 and
+Nov 1, followed by comparison and final reviewed gate decision. Mac/network
+availability is required; missed dates need genuinely later replacements.
+No streaming sign-in, purchase or extra credential is requested from the user.
+
+Final consolidated validation before B8 PR review: Ruff check/format and ty pass;
+341 tests pass with one opt-in integration skip. All 161 tracked Python files
+have maximum CC 8 and minimum MI 50.025032. This synthesis adds no Python code.
+
+
+B8 combined review: Standards found one stale footprint-scope label; Spec found
+no issue with the partial dossier or its preserved finish gate. The 692-LLOC
+figure is now explicitly historical/source-version scoped, with a link to the
+later named-module counts and correction replay. No new footprint measurement
+or runtime change is claimed; the factual documentation correction is checked
+against its source report and sent for exact-head follow-up review.
