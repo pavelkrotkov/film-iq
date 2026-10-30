@@ -1,0 +1,675 @@
+{
+  "protocol_commit": "14cb7beceba8cb9cce87114d99a71b7c2c7c814d",
+  "actor": "automated:/root/b13_effort",
+  "timing_kind": "Agent-assisted review/correction wall time including inference and tool latency; not active human minutes",
+  "oracle_assisted": true,
+  "cases": [
+    {
+      "key": "poll-0",
+      "split": "development",
+      "source_revision": "1196879962",
+      "source_sha256": "085d702c67d412ed9065bad1806f2baab7de179b565ca77c90f52d67e2e5522e",
+      "source_locator": "Paragraph immediately following the ten-entry critics ordered list",
+      "source_evidence": "Closest runner-up: Battleship Potemkin. (63 mentions)",
+      "diagnosis": "The selector visited only the ordered list, omitting the separately stated critics runner-up. This is a positive in-scope selection but has no displayed ordinal rank. Prose leaders and directors-poll mentions remain excluded.",
+      "before_metrics": {
+        "expected": 11,
+        "extracted": 10,
+        "matched_titles": 10,
+        "entry_precision": 1.0,
+        "entry_recall": 0.9090909090909091,
+        "exact_records": 10,
+        "fields": {
+          "title": 0.9090909090909091,
+          "position": 0.9090909090909091,
+          "rank": 0.9090909090909091,
+          "tie": 0.9090909090909091,
+          "category": 0.9090909090909091
+        },
+        "complete": false
+      },
+      "after_metrics": {
+        "expected": 11,
+        "extracted": 11,
+        "matched_titles": 11,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 11,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "unresolved": [],
+      "timing": {
+        "started_at": "2026-10-30T14:05:23.338000+00:00",
+        "started_monotonic_ns": 1252088778799199,
+        "finished_at": "2026-10-30T14:05:40.964573+00:00",
+        "finished_monotonic_ns": 1252106404841401,
+        "elapsed_seconds": 17.626042202
+      },
+      "field_edits": [],
+      "inserted_rows": [
+        {
+          "title": "Battleship Potemkin",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Closest runner-up"
+        }
+      ]
+    },
+    {
+      "key": "shorts-0",
+      "split": "holdout",
+      "source_revision": "1381717375",
+      "source_sha256": "03dd2a59068573fb7a9ec6d8cbd83a0381986a77a812393923620e9aa1fa928b",
+      "source_locator": "Year column of the Academy animated-short 2020s table: six rowspan=5 groups",
+      "source_evidence": [
+        "2020/21 (93rd)",
+        "2021 (94th)",
+        "2022 (95th)",
+        "2023 (96th)",
+        "2024 (97th)",
+        "2025 (98th)"
+      ],
+      "diagnosis": "Table rows contain an English film title and a year/award-edition header spanning five nominee rows. The baseline preserved all thirty titles, positions and unranked status but lost every subgroup. Carry each year header across its five rows; award-table year is not a film release year, and winner shading is not rank.",
+      "field_edits": [
+        {
+          "positions": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "positions": [
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2021 (94th)"
+        },
+        {
+          "positions": [
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2022 (95th)"
+        },
+        {
+          "positions": [
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2023 (96th)"
+        },
+        {
+          "positions": [
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2024 (97th)"
+        },
+        {
+          "positions": [
+            26,
+            27,
+            28,
+            29,
+            30
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2025 (98th)"
+        }
+      ],
+      "inserted_rows": [],
+      "before_metrics": {
+        "expected": 30,
+        "extracted": 30,
+        "matched_titles": 30,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 0,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 0.0
+        },
+        "complete": false
+      },
+      "after_metrics": {
+        "expected": 30,
+        "extracted": 30,
+        "matched_titles": 30,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 30,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "unresolved": [],
+      "timing": {
+        "started_at": "2026-10-30T14:05:49.591766+00:00",
+        "started_monotonic_ns": 1252115031790658,
+        "finished_at": "2026-10-30T14:06:15.841170+00:00",
+        "finished_monotonic_ns": 1252141280406384,
+        "elapsed_seconds": 26.248615726
+      }
+    },
+    {
+      "key": "shorts-1",
+      "split": "holdout",
+      "source_revision": "1378335253",
+      "source_sha256": "32910d18b391176e01cb6ede1fb12a3d162da71c32a24b48c971ef1f975cf30a",
+      "source_locator": "Year column: first row rowspan=5, then standalone rowspan=6 headers preceding five film rows each",
+      "source_evidence": [
+        "2020/21 (93rd)",
+        "2021 (94th)",
+        "2022 (95th)",
+        "2023 (96th)",
+        "2024 (97th)",
+        "2025 (98th)"
+      ],
+      "diagnosis": "All thirty English titles, positions and unranked fields match. Carry each award-year/edition label across the following five films, accounting for standalone header rows. Explicit tied-winner annotations on The Singers and Two People Exchanging Saliva describe award outcome, not an ordinal list rank/tie. No award outcome is inferred by this correction.",
+      "field_edits": [
+        {
+          "positions": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "positions": [
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2021 (94th)"
+        },
+        {
+          "positions": [
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2022 (95th)"
+        },
+        {
+          "positions": [
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2023 (96th)"
+        },
+        {
+          "positions": [
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2024 (97th)"
+        },
+        {
+          "positions": [
+            26,
+            27,
+            28,
+            29,
+            30
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2025 (98th)"
+        }
+      ],
+      "inserted_rows": [],
+      "before_metrics": {
+        "expected": 30,
+        "extracted": 30,
+        "matched_titles": 30,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 0,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 0.0
+        },
+        "complete": false
+      },
+      "after_metrics": {
+        "expected": 30,
+        "extracted": 30,
+        "matched_titles": 30,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 30,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "unresolved": [
+        "The source footer contains a missing note-reference definition; all thirty film rows remain readable. Award-outcome semantics are outside this entry/rank benchmark."
+      ],
+      "timing": {
+        "started_at": "2026-10-30T14:06:24.912842+00:00",
+        "started_monotonic_ns": 1252150351791665,
+        "finished_at": "2026-10-30T14:06:43.570808+00:00",
+        "finished_monotonic_ns": 1252169009208205,
+        "elapsed_seconds": 18.65741654
+      }
+    },
+    {
+      "key": "shorts-2",
+      "split": "holdout",
+      "source_revision": "1381329372",
+      "source_sha256": "5f23afe685b47ebea84a21429e47e1aa5173ec062e62e3f5fce0934b0498234c",
+      "source_locator": "Year column: first rowspan=5 film row and five standalone rowspan=6 headers",
+      "source_evidence": [
+        "2020/21 (93rd)",
+        "2021 (94th)",
+        "2022 (95th)",
+        "2023 (96th)",
+        "2024 (97th)",
+        "2025 (98th)"
+      ],
+      "diagnosis": "All thirty documentary-short titles and unranked positions agree with source/audit. Carry six award-year/edition headers across their five films, including standalone header rows. Preserve the displayed Nǎi Nai & Wài Pó title and quoted Children No More title; do not replace award years with inferred release years.",
+      "field_edits": [
+        {
+          "positions": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "positions": [
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2021 (94th)"
+        },
+        {
+          "positions": [
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2022 (95th)"
+        },
+        {
+          "positions": [
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2023 (96th)"
+        },
+        {
+          "positions": [
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2024 (97th)"
+        },
+        {
+          "positions": [
+            26,
+            27,
+            28,
+            29,
+            30
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2025 (98th)"
+        }
+      ],
+      "inserted_rows": [],
+      "before_metrics": {
+        "expected": 30,
+        "extracted": 30,
+        "matched_titles": 30,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 0,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 0.0
+        },
+        "complete": false
+      },
+      "after_metrics": {
+        "expected": 30,
+        "extracted": 30,
+        "matched_titles": 30,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 30,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "unresolved": [],
+      "timing": {
+        "started_at": "2026-10-30T14:06:53.340023+00:00",
+        "started_monotonic_ns": 1252178778122396,
+        "finished_at": "2026-10-30T14:07:02.996791+00:00",
+        "finished_monotonic_ns": 1252188434613130,
+        "elapsed_seconds": 9.656490734
+      }
+    },
+    {
+      "key": "shorts-3",
+      "split": "holdout",
+      "source_revision": "1381214933",
+      "source_sha256": "c24b85e65dfe2203a7a5b07659ec817fb9ddf8478ff230d3e76d12d21c27826b",
+      "source_locator": "Year column: six rowspan=5 groups in the Academy documentary-feature 2020s section",
+      "source_evidence": [
+        "2020/21 (93rd)",
+        "2021 (94th)",
+        "2022 (95th)",
+        "2023 (96th)",
+        "2024 (97th)",
+        "2025 (98th)"
+      ],
+      "diagnosis": "All thirty documentary-feature titles and unranked positions match source/audit. Copy each displayed award-year/edition subgroup across five films; source stratum shorts is a frozen sampling label, not a claim these feature nominees are shorts. No inferred film release year or winner rank.",
+      "field_edits": [
+        {
+          "positions": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2020/21 (93rd)"
+        },
+        {
+          "positions": [
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2021 (94th)"
+        },
+        {
+          "positions": [
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2022 (95th)"
+        },
+        {
+          "positions": [
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2023 (96th)"
+        },
+        {
+          "positions": [
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2024 (97th)"
+        },
+        {
+          "positions": [
+            26,
+            27,
+            28,
+            29,
+            30
+          ],
+          "field": "category",
+          "before": "2020s",
+          "after": "2020s / 2025 (98th)"
+        }
+      ],
+      "inserted_rows": [],
+      "before_metrics": {
+        "expected": 30,
+        "extracted": 30,
+        "matched_titles": 30,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 0,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 0.0
+        },
+        "complete": false
+      },
+      "after_metrics": {
+        "expected": 30,
+        "extracted": 30,
+        "matched_titles": 30,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 30,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "unresolved": [],
+      "timing": {
+        "started_at": "2026-10-30T14:07:03.134506+00:00",
+        "started_monotonic_ns": 1252188572305976,
+        "finished_at": "2026-10-30T14:07:12.489492+00:00",
+        "finished_monotonic_ns": 1252197927019095,
+        "elapsed_seconds": 9.354713119
+      }
+    },
+    {
+      "key": "locarno-2",
+      "split": "holdout",
+      "source_revision": "1381832392",
+      "source_sha256": "ee5e8482ec89d3122734a862985b4fe5306e390bfd5409592af18ca12f3bebd7",
+      "source_locator": "First film row under English title / Original title column headers",
+      "source_evidence": [
+        "English title: The Infernal Machine",
+        "Original title: A Máquina Infernal",
+        "Director: Francis Vogner Dos Reis",
+        "Country: Brazil"
+      ],
+      "diagnosis": "The English title cell is not italicized, so selecting the first italic element chose the original-title alias from the next cell. Preserve the original alias in the before value and select the English cell as the evaluation convention requires. All twenty rows and other fields were reviewed; the local International competition heading is retained without inferring main-feature competition or catalog identity.",
+      "field_edits": [
+        {
+          "positions": [
+            1
+          ],
+          "field": "title",
+          "before": "A Máquina Infernal",
+          "after": "The Infernal Machine"
+        }
+      ],
+      "inserted_rows": [],
+      "before_metrics": {
+        "expected": 20,
+        "extracted": 20,
+        "matched_titles": 19,
+        "entry_precision": 0.95,
+        "entry_recall": 0.95,
+        "exact_records": 19,
+        "fields": {
+          "title": 0.95,
+          "position": 0.95,
+          "rank": 0.95,
+          "tie": 0.95,
+          "category": 0.95
+        },
+        "complete": false
+      },
+      "after_metrics": {
+        "expected": 20,
+        "extracted": 20,
+        "matched_titles": 20,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 20,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "unresolved": [
+        "The captured local heading does not establish parent programme/format context; no feature-competition classification or catalog identity is inferred."
+      ],
+      "timing": {
+        "started_at": "2026-10-30T14:07:12.619663+00:00",
+        "started_monotonic_ns": 1252198057174670,
+        "finished_at": "2026-10-30T14:07:28.421984+00:00",
+        "finished_monotonic_ns": 1252213859035503,
+        "elapsed_seconds": 15.801860833
+      }
+    }
+  ],
+  "summary": {
+    "documents_reviewed": 6,
+    "original_expected_rows": 151,
+    "original_extracted_rows": 150,
+    "category_field_corrections": 120,
+    "title_field_corrections": 1,
+    "inserted_rows": 1,
+    "corrected_complete_documents": 6,
+    "agent_review_correction_seconds": 97.345139154,
+    "human_active_minutes": null,
+    "billed_model_cost": null,
+    "new_network_requests": 0,
+    "parser_changes": 0,
+    "agent_review_correction_minutes": 1.6224189859
+  }
+}
