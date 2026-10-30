@@ -249,6 +249,26 @@ An additional uncounted development lead is NEH's [Created Equal page](https://w
 
 Before running, freeze manually audited entries, ranks/ties, membership, source family/lineage and locators, with publisher, document revision, audit date and rights. Keep holdout layouts out of development. Distinguish a publisher's partial selection of ballots, an author's intentionally unranked or partial ballot, and an incomplete extraction. A cited span alone does not validate list membership, rank, identity or category.
 
+## Original native CSV supplement
+
+The [CNC administrative film-visa CSV](tabular/README.md) is an original
+publisher resource declared under Licence Ouverte 2.0, rather than converted
+HTML or a synthetic spreadsheet. Its retained, byte-exact header and first 25
+logical data records matched an independent source-row audit on every extracted
+field; dropping the final record fails. The stdlib parser preserves UTF-8 BOM,
+semicolon delimiters, nonbreaking/trailing spaces and raw administrative dates.
+Visa identifiers are not film catalog IDs, and missing director information
+does not become an invented match.
+
+The full 12,821,667-byte source remains only in the ignored cache; its 95,764
+logical records are not a full extraction/identity-quality benchmark. The
+retained window is 3,522 bytes. [Recorded subset results](tabular/results.json)
+describe one 0.001307-second local check; acquisition took 39.72 seconds and is
+outside that timer. This is a development supplement, not a retroactive
+held-out test or Excel-workbook evaluation. [Source attribution and rights](tabular/source_receipt.json)
+and [independent automated audit](tabular/independent_audit.json) preserve scope
+and the unverified meaning of the raw Date field.
+
 ## Supplemental dynamic interface
 
 A separate [Wikidata Query Service experiment](dynamic/README.md) exercised a
@@ -263,7 +283,7 @@ holdout or an original critic-list sample.
 
 ## Remaining measurements and decision
 
-Radon 6.0.1 measures **645 logical Python lines including tests** across the
+Radon 6.0.1 measures **692 logical Python lines including tests** across the
 changed research modules and pytest wrapper. This is a code-footprint measure,
 not an estimate of engineering labor, JavaScript/native-engine size or total
 maintenance cost. Human correction minutes and full model billing remain

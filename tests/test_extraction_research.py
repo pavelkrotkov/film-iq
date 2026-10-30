@@ -16,6 +16,7 @@ def test_research_checks() -> None:
         ],
         ["-m", "docs.research.extraction.formats.pdf_baseline", "--snapshot"],
         ["-m", "docs.research.extraction.dynamic.check"],
+        ["-m", "docs.research.extraction.tabular.csv_baseline"],
     ):
         subprocess.run(
             [sys.executable, *args],
