@@ -98,7 +98,11 @@ tokens are neither written into URLs nor observation files.
 Each observation records exact query parameters, per-page UTC attempt time,
 HTTP status, exposed rate-limit headers, response hash, request count and selected
 candidate metadata. No raw payloads or credentials are retained. Monetary cost
-and human review minutes remain unmeasured. `--max-pages` defaults to five per
+is unknown. Failed observations retain a bounded processing phase and exception
+class, without exception messages; validated page/result totals distinguish
+budget and pagination failures from transport, HTTP, decoding or schema failures.
+Human review time
+remains unmeasured. `--max-pages` defaults to five per
 query (at most 70 requests for fourteen cases); an exceeded budget, changed page
 counts, duplicate IDs, truncated JSON, incomplete total or failed page leaves
 the search unknown. Partial candidates remain only in their page-attempt
