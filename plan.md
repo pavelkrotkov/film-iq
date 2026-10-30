@@ -1314,3 +1314,11 @@ before scoring or snapshot insertion. Regression examples cover mixed actor
 coverage, overlap across publications, unchanged raw rows and rejected
 conflicting snapshots. Native review findings are accepted; exact-head
 follow-up review remains required before merge.
+
+C3's corrected-head validation after the personal snapshot/planner merges passes
+391 tests with one opt-in skip, Ruff check/format and ty. All 195 tracked Python
+files meet maximum CC 8 and minimum MI 50.025032; the twelve C3 Python files
+have minimum MI 50.613109. Mixed known/unknown actor coverage retains one
+support unit and its original selected rank; contradictory mappings fail
+before a snapshot is written. Both independent review findings receive native
+replies; thread resolution awaits the controller's exact-head follow-up.
