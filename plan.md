@@ -1198,3 +1198,22 @@ original Film and both personal scores. A regression asserts unchanged Film
 identity/fields alongside transformed utility. All 345 tests still pass (one
 opt-in skip); Ruff/format/ty and CC/MI gates pass. Follow-up review is required
 at the corrected head before merging.
+
+### C0a private personal snapshot implementation (2026-10-30)
+
+C0a #58 adds a read-only refresh entry point and a single atomically published
+private snapshot combining complete played/history/watchlist API reads with
+validated complete ratings and History CLI CSVs. Enjoyment and explicit per-date
+artistic-merit tags remain separate; repeated plays deduplicate assertions,
+conflicts stay visible, rated-only films remain unwatched and unknown dates/IDs
+are preserved. Failed or malformed reads retain the last successful snapshot
+and mark it stale. [Usage and validation boundary](docs/usage/personal-refresh.md)
+describes private provenance and the manual complete-export fallback.
+
+Fixture checks cover replacements/deletions and failure safety. Pinned source
+and installed CLI help confirm the exporter schema/path, but genuine personal
+exports were not run: automatic approval review requires explicit authorization
+to read and retain live personal ratings/comments. Nonempty live readback and
+real-user acceptance remain pending, so this implementation does not close #58
+or accept the C7 populated-report milestone. No Movary data or scheduled B4 jobs
+were changed, and no personal source data is committed.
