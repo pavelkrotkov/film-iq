@@ -29,6 +29,7 @@ def test_motn_addon_is_not_included_and_dates_remain_asserted(monkeypatch, addon
         "addon": {"id": addon_id},
         "link": "https://example.org/watch",
         "expiresSoon": True,
+        "quality": "hd",
     }
     data = {
         "imdbId": "tt123",
@@ -46,4 +47,5 @@ def test_motn_addon_is_not_included_and_dates_remain_asserted(monkeypatch, addon
         offer["addon"],
         offer["entitlement"],
         offer["source_details"]["expiresSoon"],
-    ) == ("addon", "extra", "unknown", True)
+        offer["source_details"]["quality"],
+    ) == ("addon", "extra", "unknown", True, "hd")

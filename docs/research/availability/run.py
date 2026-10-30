@@ -10,10 +10,15 @@ from .observe import PROVIDERS, observe
 ROOT = Path(__file__).resolve().parents[3]
 
 
+def observe_cohort(cohort: list[dict], provider: str, live: bool) -> list[dict]:
+    providers = ("tmdb", "motn") if provider == "both" else (provider,)
+    return [observe(film, name, live) for film in cohort for name in providers]
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cohort", type=Path, default=Path(__file__).with_name("cohort.json"))
-    parser.add_argument("--provider", choices=PROVIDERS, required=True)
+    parser.add_argument("--provider", choices=(*PROVIDERS, "both"), required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--live", action="store_true")
     parser.add_argument("--retention-note", default="")
@@ -25,7 +30,7 @@ def main() -> None:
     if args.output.exists():
         parser.error("choose a new observation filename; existing evidence is preserved")
     cohort = json.loads(args.cohort.read_text())
-    records = [observe(film, args.provider, args.live) for film in cohort]
+    records = observe_cohort(cohort, args.provider, args.live)
     report = {
         "retention_note": args.retention_note,
         "cohort_sha256": hashlib.sha256(args.cohort.read_bytes()).hexdigest(),
@@ -34,7 +39,10 @@ def main() -> None:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("x") as output:
         json.dump(report, output, indent=2)
-    print(f"{len(records)} candidates; {sum(row['requests'] for row in records)} requests")
+    print(
+        f"{len(cohort)} candidates; {len(records)} observations; "
+        f"{sum(row['requests'] for row in records)} requests"
+    )
 
 
 if __name__ == "__main__":

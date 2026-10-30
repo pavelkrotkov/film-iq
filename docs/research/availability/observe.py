@@ -30,17 +30,22 @@ def observe(film: dict[str, Any], provider: str, live: bool, get=fetch) -> dict[
     if request is None:
         return result | {"reason": reason}
     result.update(endpoint=endpoint(provider, film_id), requests=1)
+    phase = "transport"
     try:
         status, body, headers = get(request)
+        phase = "http_status"
         result.update(http_status=status, quota=quota(headers))
         if status != 200:
             return result | {"reason": "http_error"}
-        rows = normalize(json.loads(body), film_id)
+        result["response_sha256"] = hashlib.sha256(body).hexdigest()
+        phase = "json_decode"
+        data = json.loads(body)
+        phase = "schema"
+        rows = normalize(data, film_id)
         return result | {
             "state": "complete_response",
             "reason": None,
             "offers": rows,
-            "response_sha256": hashlib.sha256(body).hexdigest(),
         }
     except (
         HTTPException,
@@ -51,5 +56,8 @@ def observe(film: dict[str, Any], provider: str, live: bool, get=fetch) -> dict[
         KeyError,
         TypeError,
         AttributeError,
-    ):
-        return result | {"reason": "transport_or_schema_error"}
+    ) as error:
+        return result | {
+            "reason": "transport_or_schema_error",
+            "failure": {"phase": phase, "type": type(error).__name__},
+        }

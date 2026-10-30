@@ -18,7 +18,8 @@ def motn_offer(row: dict[str, Any]) -> dict[str, Any]:
         row["link"],
         addon=addon,
         source_details={
-            key: row.get(key) for key in ("expiresOn", "availableSince", "expiresSoon", "price")
+            key: row.get(key)
+            for key in ("expiresOn", "availableSince", "expiresSoon", "price", "quality")
         },
     )
 
