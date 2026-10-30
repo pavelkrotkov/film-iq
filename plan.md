@@ -262,6 +262,24 @@ Runs in parallel with POC under its own controller; B1–B7 may all begin indepe
 
 **Gate B:** explicit evidence supporting initial source adapters, providers, extraction techniques and scoring approach; publish open questions when evidence is insufficient. This epic is *research work*, not a mandate to integrate every candidate service.
 
+**B preliminary findings (updated 2026-10-30):** Original-source terms can restrict automated collection or reuse. The same critic can appear in multiple publications, so preserve each source and rank while counting independent people once. The fourteen-film historical sample began with cached, derivative or inaccessible catalog results. Its authenticated continuation now records 35 bounded TMDB requests, twelve automated-review acceptances and two ambiguous date-conflicted cases; five of six alternate queries retrieve the reviewed work. These convenience observations cannot establish general coverage or precision. The credential-free dry run still processes all fourteen cases with zero requests. Failed, incomplete and budget-limited searches remain unknown, and no candidate is automatically accepted or declared absent.
+
+The extraction smoke test rejects a 47-of-50 result. One unranked Library of Congress page returned 18 of 18 agent-transcribed titles; its expected observations have not received independent audit. A separate candidate returned HTTP 403 and remains unknown. A supplemental A3 rerun matched 42 records from four derivative Wikipedia sections against an independently automated oracle. A new 32-section Wikipedia corpus has frozen revisions, attribution and a 24-development/8-holdout split. Three independent rendered-source audits enumerated 539 expected records and verified capture metadata. The frozen deterministic baseline passed complete-document checks on 23/24 development sections and 3/8 held-out sections; missing runner-up membership, translated-title disagreement and lost award-year categories remain failures. These are static derivative lists and tables, not coverage of every required source format. Auditors must be identified accurately as automated or human; no human audit or human correction-time measurement is claimed.
+
+A grounded-LLM comparison on one failed development section supplied 12 valid source spans but only 11 scoped memberships; it recovered the missing runner-up and added an out-of-scope directors-poll leader. Scoped precision was 11/12, recall 1, and completeness failed. One case cannot establish comparative method quality. A permitted real-source edition replay loaded ten NBR 2021 selections, attempted eleven 2022 additions, preserved the original ten after an injected source failure, reopened persistent SQLite/dlt state and accepted retry to 21 rows. SQLite made zero writes on an unchanged rerun. One documented run took 0.005 seconds for SQLite and 1.454 seconds for dlt; these tiny replay timings do not establish live incremental performance or process-crash recovery.
+
+A separate Library of Congress PDF first-page supplement matched all 36 independently visually audited factual rows with native PDFKit and a small parser, including a release-year range. It is a bounded historical 1989–2017 registry selection, not a complete or current catalog or a held-out publisher test. A cross-platform retained-text check validates the snapshot but does not exercise PDF extraction. The examined NFB CSV resource could not be acquired because its resource hostname failed DNS resolution; no NFB extraction or availability result is claimed. A separate original CNC CSV under declared Licence Ouverte 2.0 matched all 25 independently audited records in a frozen first-record window, preserving whitespace, unknown director labels and raw administrative dates. The full source stays in ignored cache; the bounded 3,522-byte fixture is not a full-dataset or film-identity accuracy claim. A supplemental two-entity Wikidata query showed a real JavaScript interface rendering rows whose labels were absent from its initial HTML; the interface's documented HTTP JSON API returned the same two rows without rendering. This user-defined query is not an original critic-list or unseen-layout test. Original-publisher browser-only inputs, partial individual-ballot coverage and other untested layouts remain open.
+
+The availability experiment now has a runnable, opt-in TMDB/Movie of the Night observer and 60 machine-readable candidates in six strata. Two automated source audits checked all 60 published work identities and selection context, with pinned encyclopedia revisions and authoritative-source receipts; 64 raw/metadata receipt hashes were checked. Film-year, award edition, premiere and production assertions remain distinct. Duration and country conflicts for shorts are preserved. The public frozen cohort keeps null activation fields. A separate automated audit now supports 60 TMDB work IDs in a local reviewed manifest; date/cut conflicts remain. The first US observation yields 53 usable responses and seven unknown responses in 60 HTTP 200 requests. Movie of the Night, account checks and two further genuinely separate dates remain pending. The dry run still makes zero requests. Offline fixtures exercise failed, partial and truncated responses as unknown. Six long-tail investigations support manual first-party checks and an explicitly inconclusive access outcome; no US playback or personal entitlement was verified. One anonymous player request returned HTTP 401 and remains unknown. OSS reuse findings are qualitative.
+
+Independent PR review found that malformed provider identifiers could be accepted as complete offers. The correction validates TMDB IDs before conversion and requires a nonempty add-on ID; regressions retain the whole response as unknown when a malformed row follows a valid one. The [review and disposition](https://github.com/pavelkrotkov/film-iq/pull/41#discussion_r4420172819) record the evidence. Passing code checks does not complete the outstanding live provider acceptance criteria.
+
+Identity-search review also identified lost diagnostic causes. Failed searches now retain a bounded processing phase, exception class and validated pagination totals without exception messages or credentials. The [diagnostic review and correction](https://github.com/pavelkrotkov/film-iq/pull/39#discussion_r4420208093) include regression evidence. Both correction conversations were resolved after independent re-review and green CI; acceptance gaps remain separate from code correctness.
+
+The scoring study now includes a real ten-film 2008 convenience cohort: three pages yield 61 observed critic selections, while seven have unknown list observations. Independent automated audit found and corrected one omitted unranked selection. Training counts and reciprocal-rank sums favor Milk, while the observed New Yorker held-out rank sum favors The Wrestler. The held-out evidence comprises three critic/film selections across two films. A second independent audit verified reception/context transcriptions for all ten films: RT positivity and critic counts, Metacritic scores and counts, nine RT averages, and four categorical CinemaScore grades without sample sizes. No numeric audience evidence was observed, so the full weighted formula remains unknown for all ten; explicitly renormalized audience-omitted ablations run only on the three list-observed films. Rankings preserve ties. Format and overlapping country missingness are reported, without stability claims. Mixed citation dates and unknown overlap with reception critics prevent temporal-backtest or independent reception-validation claims. The [Gate B working matrix](docs/research/gate-b.md) records evidence and open decisions as the research progresses.
+
+Timing review corrected an import-boundary claim in the loader comparison. Installation is outside both function timers, but SQLite imports precede its timer while dlt can import dependencies inside its timed pipeline construction. The recorded warm-up state is unknown; the original measured values remain unchanged and do not support controlled startup or steady-state comparisons. The [timing finding and disposition](https://github.com/pavelkrotkov/film-iq/pull/35#discussion_r4420403127) distinguish this runner from the historical synthetic implementation that imported dlt before timing.
+
 ### Epic C — Final implementation, conditional on gates
 
 Epic C components may start as their **specific** POC or research prerequisites become available; do not force every component to wait for both whole epics to close. Final release still requires accepted relevant Gate A/Gate B evidence and production acceptance criteria.
@@ -505,3 +523,136 @@ idempotence. No personal movie/watchlist POST was attempted. Gate A remains open
 no population precision, playback, full paid-plan entitlement or release-readiness
 claim is made. The NBR award fact remains a separate unused candidate, without
 an invented numeric rank or an assumed film release year.
+
+
+### Epic B authenticated TMDB continuation (2026-10-30)
+
+The user configured a project-local, ignored `TMDB_API_KEY`. A read-only
+authentication probe returned HTTP 200 / success; no secret value was printed or
+committed. The research runners now support TMDB's documented v3 query-key
+authentication as a fallback to Bearer authentication, while keeping credentials
+out of recorded endpoints and failure diagnostics. The earlier credential
+blocker is superseded for TMDB only; Movie of the Night access remains pending.
+
+The frozen fourteen-film historical cohort completed all fourteen searches in
+fifteen API requests, including the second page for A Separation. These are
+current candidate observations, not accepted identities or an accuracy result.
+The completed details/director checks and independent automated adjudication are reported below.
+Only selected factual metadata is retained in ignored worktree-local caches;
+raw responses/images are not published. The TMDB FAQ supports attributed
+noncommercial use; historical retention/redistribution rights are not inferred
+from that statement. No provider superiority, account entitlement or Gate B
+acceptance is established by successful authentication.
+
+The historical run now includes 14 successful detail/credit requests and six
+paired source-alias searches, for 35 benchmark requests in total (21 search,
+14 detail). All returned HTTP 200. A separate automated audit supports twelve
+identities and leaves two date-conflicted cases ambiguous; this is not human
+ground truth or a precision estimate. Five of six source-alias queries retrieve
+the reviewed candidate. The romanized Uncle Boonmee alias yields no candidates
+even though the English query finds the work, demonstrating why an empty search
+cannot establish catalog absence. Automatic acceptance remains zero; human
+review minutes and monetary cost remain unknown. The recorded 103.617-second
+audit interval is automated elapsed wall time, not human labor.
+
+The availability cohort now has 60 independently automated, evidence-supported
+TMDB work identities for offer lookup, with date/cut conflicts retained. Four
+broad searches exceeded the five-page budget and remain incomplete despite
+positive identity evidence. The local reviewed manifest preserves the original
+cohort and audit hashes; it activates TMDB only, with IMDb IDs still null because
+they have not been independently verified. B2's conservative date-conflicted
+statuses remain separate; neither audit is human precision truth.
+
+B4 made 225 successful TMDB requests: 91 search, 66 detail, 60 first US offers,
+seven diagnostic rechecks and one service-label mapping. The earlier 60
+restricted-network attempts returned URLError with no confirmed upstream request;
+they are preserved separately rather than counted as HTTP failures. All 60
+offer requests returned HTTP 200: 53 contain an explicit usable US object and
+offers; seven shorts fail schema processing and remain unknown. Seven later
+diagnostic rechecks lack an explicit US object. The original failed payloads and
+hashes were not retained, so the later rechecks do not prove the original cause. No complete empty-US
+response or removal event was observed. The five other assigned strata each
+have ten usable responses; shorts/experimental has three usable and seven
+unknown. These are assigned reporting strata, not a feature/short partition.
+The 529 normalized offer rows are 81 subscription, 218 rent, 204 buy, eight ads
+and eighteen free; all account entitlements remain unknown. The catalog sum
+13.9719 seconds includes processing, whereas the offer-fetch sum 5.1723 seconds
+excludes normalization and pacing. Neither is a total labor/cost measurement.
+
+Three bounded public first-party page checks support title presence at Netflix,
+Disney+ and Apple. Web-reader snapshots, generic plan advertisements and a title
+page without a transaction/price do not verify US account/ad-tier access or
+rent/buy correctness. Duration discrepancies are retained. Movie of the Night
+access, historical-retention permission, two further dates, actual account and
+transaction checks, and comparative change/expiry measurements remain open.
+The updated [B2 review](https://github.com/pavelkrotkov/film-iq/pull/39#pullrequestreview-5711278183)
+found no actionable Standards or Spec defects at 8317a76; its empirical gaps remain
+explicit. Gate B is not accepted.
+
+
+### Epic B implementation merge ledger (2026-10-30)
+
+Seven reviewed research/implementation PRs were merged into main. Each merge
+commit below is verified in main history; these merges do not accept Gate B or
+close an issue by themselves. PR #35 remains the separately reviewed evidence
+consolidation. All source worktrees and branches were preserved.
+
+| PR | Merge commit | Merged UTC |
+| --- | --- | --- |
+| [#36](https://github.com/pavelkrotkov/film-iq/pull/36) | `530051d4ab351e17c456d4e7142e9814b7bd2c1a` | 2026-10-30T12:00:55Z |
+| [#38](https://github.com/pavelkrotkov/film-iq/pull/38) | `ff0c7cb43662804d50f765937e7114a3ebd7a4c1` | 2026-10-30T12:00:59Z |
+| [#37](https://github.com/pavelkrotkov/film-iq/pull/37) | `49e944bdf50eb268c9641149eae97899d92030c3` | 2026-10-30T12:01:03Z |
+| [#39](https://github.com/pavelkrotkov/film-iq/pull/39) | `fa9caa61252811547f0c61065c7687c63aa5f5ff` | 2026-10-30T12:01:06Z |
+| [#40](https://github.com/pavelkrotkov/film-iq/pull/40) | `fa441797326cd5b1a511f1f9efac5d080d8191eb` | 2026-10-30T12:01:10Z |
+| [#41](https://github.com/pavelkrotkov/film-iq/pull/41) | `af0b41c9df4e56828f1a396a16ad9a1ed7c733cb` | 2026-10-30T12:01:13Z |
+| [#42](https://github.com/pavelkrotkov/film-iq/pull/42) | `a6c1416c2d2d30a1a15e215ebc46712d33f481a3` | 2026-10-30T12:01:17Z |
+
+The independent single-PR branches could not be merged by `gh stack merge`: the
+first attempt reported that the PR was not stacked, and `gh stack link` requires
+at least two branches. The controller therefore used native GitHub squash
+merges guarded by each reviewed head SHA and re-read the merged results. This
+consolidation was synchronized through gh-stack; its additive plan conflict
+retains all A7 and Epic B evidence. Research acceptance remains a separate
+issue-by-issue and gate decision.
+
+After synchronization onto main `a6c1416c2d2d30a1a15e215ebc46712d33f481a3`,
+the integrated tree passes Ruff, formatting, ty and 333 tests with one opt-in
+live test skipped. Radon over all 154 tracked Python files reports maximum
+CC 8 and minimum MI 50.025032. No additional runtime dependency or unrelated
+code change was needed. The source CSV retains its intentional CRLF bytes; the
+diff check permits CR-at-EOL rather than normalizing source evidence.
+
+[TMDB's published rate guidance](https://developer.themoviedb.org/docs/rate-limiting),
+checked 2026-10-30, describes an approximate 40-request/second anti-bulk ceiling
+that may change and requires respecting HTTP 429. Its old 40-per-ten-seconds
+limit was retired in 2019. This guidance is distinct from the account/monthly
+quota, cost and retention questions above; no observed quota headers does not
+mean unlimited access or zero charges.
+
+### Epic B issue acceptance reconciliation (2026-10-30)
+
+After independent review against the actual issue criteria, the controller closed
+[B1 #11](https://github.com/pavelkrotkov/film-iq/issues/11#issuecomment-6522320655),
+[B5 #15](https://github.com/pavelkrotkov/film-iq/issues/15#issuecomment-6522322222)
+and [B6 #16](https://github.com/pavelkrotkov/film-iq/issues/16#issuecomment-6522323392)
+as completed bounded research, with their source PRs merged. Unresolved source
+permissions are valid B1 audit findings; unknown playback/library eligibility is
+an accepted B5 outcome where testing is infeasible; qualitative adoption cost
+satisfies B6 without measured integration hours. None of these closures accepts
+Gate B, grants source rights or verifies personal entitlement. Epic #2 remains
+open and its three corresponding child checkboxes are updated.
+
+The remaining experiments follow their exact criteria: B2 needs timed manual
+review/correction by source stratum; B3 needs measured correction minutes and an
+honest boundary for withheld-layout evidence. Preserve the frozen extraction
+baseline and record corrections as a separate supplement. B7's New Yorker
+source-family holdout was performed and remains valid as a bounded experiment;
+its explicit period/diversity holdout still needs an informative extension or an
+accepted deferral. Missing numeric audience evidence legitimately leaves the full
+weighted formula inconclusive. No human-only identity oracle, mandatory
+primary-publisher fetching or broad statistical stability requirement is added.
+B4 still requires Movie of the Night access, genuinely separate observation
+dates, applicable rights and authorized first-party/account comparisons. B8 #18
+and Epic #2 stay open while these non-deferred experiments remain outstanding.
+The [working matrix](docs/research/gate-b.md) records concrete next measurements;
+no architecture change or additional paid dependency is needed for them.
