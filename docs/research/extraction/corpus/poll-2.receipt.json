@@ -1,0 +1,38 @@
+{
+  "key": "poll-2",
+  "title": "BBC's 100 Greatest Films of the 21st Century",
+  "section": "2",
+  "heading": "Partial list",
+  "split": "development",
+  "lineage": "Wikipedia derivative of BBC; original-source accuracy and rights not established by this capture",
+  "revision": "1364662999",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=BBC%27s+100+Greatest+Films+of+the+21st+Century&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=BBC%27s+100+Greatest+Films+of+the+21st+Century&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:01.498072+00:00",
+    "bytes": 225,
+    "sha256": "89dfae6578b296116c05e7cf24ebffad8bfdf4b4482fa53b1b30987574811196",
+    "file": "poll-2.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1364662999&section=2&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1364662999&section=2&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:02.492463+00:00",
+    "bytes": 1334,
+    "sha256": "6193cc65edfd187edace80422b33e9b8d7b371cbccf89533457b0404d0659bcf",
+    "file": "poll-2.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1364662999&section=2&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1364662999&section=2&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:03.462903+00:00",
+    "bytes": 4805,
+    "sha256": "1f985c08fce9fe19b9d638d3b6c7a6d7db9da03adc72bfe8d95d080170c14106",
+    "file": "poll-2.text.json"
+  },
+  "corpus_stratum": "poll",
+  "original_source_family": "BBC"
+}

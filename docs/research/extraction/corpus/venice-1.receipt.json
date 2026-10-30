@@ -1,0 +1,38 @@
+{
+  "key": "venice-1",
+  "title": "77th Venice International Film Festival",
+  "section": "12",
+  "heading": "Short Films Competition",
+  "split": "development",
+  "lineage": "Wikipedia derivative of Venice International Film Festival; original-source accuracy and rights not established by this capture",
+  "revision": "1373100899",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=77th+Venice+International+Film+Festival&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=77th+Venice+International+Film+Festival&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:10.903254+00:00",
+    "bytes": 220,
+    "sha256": "0f32007dd602c732ffc8dd6f26f9e51e7be2110ef0da38b612e5a4d029b967c4",
+    "file": "venice-1.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373100899&section=12&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373100899&section=12&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:11.849065+00:00",
+    "bytes": 1897,
+    "sha256": "9254a34d2e541972895af4853b30cd41026f87ec322a56775da2b88b3ffb23d0",
+    "file": "venice-1.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373100899&section=12&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373100899&section=12&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:12.843511+00:00",
+    "bytes": 4155,
+    "sha256": "70d584fcfbf55f52e9821f146ba3c026beafd141c238869aa7d271d1a9bb0be4",
+    "file": "venice-1.text.json"
+  },
+  "corpus_stratum": "venice",
+  "original_source_family": "Venice International Film Festival"
+}

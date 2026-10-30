@@ -2,6 +2,7 @@
 
 import sqlite3
 from collections.abc import Iterator
+from contextlib import closing
 from pathlib import Path
 from time import perf_counter
 
@@ -11,33 +12,35 @@ INITIAL = [("1", "Film A"), ("2", "Film B")]
 CORRECTED = [("1", "Changed"), ("2", "Film B")]
 
 
-def broken_rows() -> Iterator[tuple[str, str]]:
-    yield CORRECTED[0]
+def broken_rows(rows: list[tuple[str, str]] = CORRECTED) -> Iterator[tuple[str, str]]:
+    yield rows[0]
     raise RuntimeError("injected source failure")
 
 
 def snapshot(path: Path) -> list[tuple[str, str]]:
-    with sqlite3.connect(path) as db:
+    with closing(sqlite3.connect(path)) as db:
         return db.execute("SELECT id, title FROM observation ORDER BY id").fetchall()
 
 
-def run_sqlite(root: Path) -> None:
+def run_sqlite(root: Path, initial=INITIAL, corrected=CORRECTED) -> None:
     path = root / "stdlib.sqlite3"
     started = perf_counter()
-    with sqlite3.connect(path) as db:
+    with closing(sqlite3.connect(path)) as db:
         db.execute("CREATE TABLE observation (id TEXT PRIMARY KEY, title TEXT NOT NULL)")
-        load_batch(db, INITIAL)
+        load_batch(db, initial)
+    with closing(sqlite3.connect(path)) as db:
         before = db.total_changes
-        load_batch(db, INITIAL)
+        load_batch(db, initial)
         unchanged_writes = db.total_changes - before
         assert unchanged_writes == 0
         try:
-            load_batch(db, broken_rows())
+            load_batch(db, broken_rows(corrected))
         except RuntimeError as error:
             assert str(error) == "injected source failure"
-        assert snapshot(path) == INITIAL
-        load_batch(db, CORRECTED)
-    assert snapshot(path) == CORRECTED
+        assert snapshot(path) == sorted(initial)
+    with closing(sqlite3.connect(path)) as db:
+        load_batch(db, corrected)
+    assert snapshot(path) == sorted(corrected)
     print(
         "sqlite",
         "unchanged_writes",

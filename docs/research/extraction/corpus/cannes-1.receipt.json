@@ -1,0 +1,38 @@
+{
+  "key": "cannes-1",
+  "title": "2021 Cannes Film Festival",
+  "section": "14",
+  "heading": "Short Films Competition",
+  "split": "development",
+  "lineage": "Wikipedia derivative of Cannes Film Festival; original-source accuracy and rights not established by this capture",
+  "revision": "1375928611",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=2021+Cannes+Film+Festival&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=2021+Cannes+Film+Festival&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:31.970366+00:00",
+    "bytes": 206,
+    "sha256": "8d363e83fc0b37c596209acaa3c1652a1b263ac2d597bf88b25e31cdf39d3b19",
+    "file": "cannes-1.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1375928611&section=14&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1375928611&section=14&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:33.189711+00:00",
+    "bytes": 1486,
+    "sha256": "7c27ff754630cb7c4a699ed81d23502302dc6c5390d69c354b2a2bed228672c9",
+    "file": "cannes-1.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1375928611&section=14&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1375928611&section=14&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:06:34.211442+00:00",
+    "bytes": 4103,
+    "sha256": "7ccff544a8cec8b5765f628f91dfe2973ed915402d98e869cba2cd3aedde9d88",
+    "file": "cannes-1.text.json"
+  },
+  "corpus_stratum": "cannes",
+  "original_source_family": "Cannes Film Festival"
+}

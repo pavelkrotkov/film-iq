@@ -1,0 +1,14 @@
+{
+  "frozen_at": "2026-10-30T03:10:41.322317+00:00",
+  "files": {
+    "corpus_parser.py": "7c1288777db725de0427ddc3c743f50b43320e585825d3a8b67f17d79ff19a5a",
+    "corpus_rows.py": "b6bdbcdb53ad49fd891b0f80a9ad7a89b0eac05a2ace2f5000baaaf1412128af",
+    "html_element.py": "8348f9b0eb429729f9dbc45490771c88899a10a84fb9a1f26601755a4158c827",
+    "html_tree.py": "d570ee3b578011f9366a083258105bdbecd5cbf421d5a17d519c4ed1863e859f"
+  },
+  "development_cases": 24,
+  "heldout_cases": 8,
+  "holdout_content_inspected": false,
+  "gold_inspected": false,
+  "scope": "Static HTML film-membership, displayed position/rank/ties and group labels; no upstream identity, award-winner classification or source-data quality inference"
+}

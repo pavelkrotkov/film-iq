@@ -1,0 +1,1606 @@
+{
+  "auditor": "automated:/root/audit_corpus_1",
+  "auditor_kind": "independent_automated_agent",
+  "human_audit": false,
+  "audited_at": "2026-10-30T03:10:09.753814+00:00",
+  "method": {
+    "allowed_inputs": "AGENTS.md, selection.json, NOTICE.md, rights JSON/receipt, assigned rendered *.text.json, revision metadata and request receipts only. No wikitext captures, adapter/evaluator code, tests, other audit reports or gold were read.",
+    "enumeration": "Auditor inspected a text rendering of all 12 captured HTML sections, preserving table rows and list entries, then manually transcribed title sequences into this report. The HTML-to-text inspection preserved row/cell boundaries.",
+    "normalization": "Use displayed English titles. Exclude parenthetical eligibility/award/opening/closing annotations; retain title punctuation/case. Categories preserve source section headings and explicit within-table subgroup. Positions are one-based across the captured section.",
+    "hash_validation": "For each assigned rendered source and revision metadata file, checked exact byte count and SHA-256 against HTTP 200 receipts, then checked embedded revision, title/page ID, selection section and receipt metadata. Wikitext files were not read or hash-verified.",
+    "excluded_content": "Source prose, legends, original-title cells, directors, countries, references, edit links, captions and eligibility symbols are not additional selections.",
+    "independence_limit": "Independent audit agent and alternate rendered representation; not a human audit, independent critical vote, original-publisher corroboration, API acquisition audit or film-identity verification."
+  },
+  "rights": {
+    "declared_license": {
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
+      "text": "Creative Commons Attribution-Share Alike 4.0"
+    },
+    "verified_capture": {
+      "file": "rights.json",
+      "bytes": 162,
+      "sha256": "8a7345e12679082632295a2c2889b16f3c288f0fbc71082bc0fdf5929a518bb7",
+      "http_status": 200,
+      "verified": true
+    },
+    "attribution": "Preserve corpus NOTICE.md and revision-specific Wikipedia contributor attribution. Derived expected records remain CC BY-SA 4.0. No rights inferred for original NBR/Cannes/Berlin publications or images."
+  },
+  "per_case": [
+    {
+      "key": "nbr-0",
+      "title": "National Board of Review Awards 2021",
+      "revision": 1360506026,
+      "section": "1",
+      "expected_count": 10,
+      "records": [
+        {
+          "title": "Licorice Pizza",
+          "position": 1,
+          "rank": 1,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Belfast",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Don't Look Up",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Dune",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "King Richard",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "The Last Duel",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Nightmare Alley",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Red Rocket",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "The Tragedy of Macbeth",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "West Side Story",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        }
+      ],
+      "verified_captures": [
+        {
+          "file": "nbr-0.text.json",
+          "bytes": 2783,
+          "sha256": "82a8a22dcb38874644223b6a148b3a8ff076fe47079077a5f22c88e9babe0a95",
+          "http_status": 200,
+          "verified": true
+        },
+        {
+          "file": "nbr-0.revision.json",
+          "bytes": 217,
+          "sha256": "796bbf8a2a2b215acce5bd7332ce74ffe344c188c92c50800a4fe685bdd5c870",
+          "http_status": 200,
+          "verified": true
+        }
+      ],
+      "source_and_receipt_consistency": "passed",
+      "scope_notes": [
+        "Complete captured selection section; not the whole article or independent original-source verification.",
+        "Displayed English title retained; original-title, director and country cells are not additional films. No identity matching was performed.",
+        "Rendered source explicitly says top film is ranked Best Film of the Year; only first entry has rank 1. The remaining alphabetically displayed selections are unranked and are not tied. Heading Top 10 is not an extraction limit: preserve all displayed entries."
+      ],
+      "errors": []
+    },
+    {
+      "key": "nbr-1",
+      "title": "National Board of Review Awards 2022",
+      "revision": 1269459635,
+      "section": "1",
+      "expected_count": 11,
+      "records": [
+        {
+          "title": "Top Gun: Maverick",
+          "position": 1,
+          "rank": 1,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Aftersun",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Avatar: The Way of Water",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "The Banshees of Inisherin",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Everything Everywhere All at Once",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "The Fabelmans",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Glass Onion: A Knives Out Mystery",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "RRR",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Till",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "The Woman King",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Women Talking",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        }
+      ],
+      "verified_captures": [
+        {
+          "file": "nbr-1.text.json",
+          "bytes": 2881,
+          "sha256": "c3302156eb3bdd69aa2f8aa0b8f005a4607b97e1d427d2aa37800d164cc12af6",
+          "http_status": 200,
+          "verified": true
+        },
+        {
+          "file": "nbr-1.revision.json",
+          "bytes": 217,
+          "sha256": "b152f70545d12261d9509238938e296090aa0c8002a0fdf72ac44bad81929fba",
+          "http_status": 200,
+          "verified": true
+        }
+      ],
+      "source_and_receipt_consistency": "passed",
+      "scope_notes": [
+        "Complete captured selection section; not the whole article or independent original-source verification.",
+        "Displayed English title retained; original-title, director and country cells are not additional films. No identity matching was performed.",
+        "Rendered source explicitly says top film is ranked Best Film of the Year; only first entry has rank 1. The remaining alphabetically displayed selections are unranked and are not tied. Heading Top 10 is not an extraction limit: preserve all displayed entries."
+      ],
+      "errors": []
+    },
+    {
+      "key": "nbr-2",
+      "title": "National Board of Review Awards 2023",
+      "revision": 1370562803,
+      "section": "1",
+      "expected_count": 10,
+      "records": [
+        {
+          "title": "Killers of the Flower Moon",
+          "position": 1,
+          "rank": 1,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Barbie",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "The Boy and the Heron",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Ferrari",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "The Holdovers",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "The Iron Claw",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Maestro",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Oppenheimer",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Past Lives",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Poor Things",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        }
+      ],
+      "verified_captures": [
+        {
+          "file": "nbr-2.text.json",
+          "bytes": 2733,
+          "sha256": "fe56a499362db69d5df9e80301504da582be0e015db03687185d20ec50f23e82",
+          "http_status": 200,
+          "verified": true
+        },
+        {
+          "file": "nbr-2.revision.json",
+          "bytes": 217,
+          "sha256": "0f5655a2a33a025bec9c9fc931aa11d67211f066cae4634fffc79f903df6dc11",
+          "http_status": 200,
+          "verified": true
+        }
+      ],
+      "source_and_receipt_consistency": "passed",
+      "scope_notes": [
+        "Complete captured selection section; not the whole article or independent original-source verification.",
+        "Displayed English title retained; original-title, director and country cells are not additional films. No identity matching was performed.",
+        "Rendered source explicitly says top film is ranked Best Film of the Year; only first entry has rank 1. The remaining alphabetically displayed selections are unranked and are not tied. Heading Top 10 is not an extraction limit: preserve all displayed entries."
+      ],
+      "errors": []
+    },
+    {
+      "key": "nbr-3",
+      "title": "National Board of Review Awards 2024",
+      "revision": 1363089390,
+      "section": "1",
+      "expected_count": 11,
+      "records": [
+        {
+          "title": "Wicked",
+          "position": 1,
+          "rank": 1,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Anora",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Babygirl",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "A Complete Unknown",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Conclave",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Furiosa: A Mad Max Saga",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Gladiator II",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Juror #2",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Queer",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "A Real Pain",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Sing Sing",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        }
+      ],
+      "verified_captures": [
+        {
+          "file": "nbr-3.text.json",
+          "bytes": 2713,
+          "sha256": "93f9037917ead805f30d06383b57dd8b82e906dcabd2a59f8988fd350383622b",
+          "http_status": 200,
+          "verified": true
+        },
+        {
+          "file": "nbr-3.revision.json",
+          "bytes": 217,
+          "sha256": "e9b439519abf7a756cd1287e90d81f3e6cd5bc323e2f24c91302a58099704d55",
+          "http_status": 200,
+          "verified": true
+        }
+      ],
+      "source_and_receipt_consistency": "passed",
+      "scope_notes": [
+        "Complete captured selection section; not the whole article or independent original-source verification.",
+        "Displayed English title retained; original-title, director and country cells are not additional films. No identity matching was performed.",
+        "Rendered source explicitly says top film is ranked Best Film of the Year; only first entry has rank 1. The remaining alphabetically displayed selections are unranked and are not tied. Heading Top 10 is not an extraction limit: preserve all displayed entries."
+      ],
+      "errors": []
+    },
+    {
+      "key": "cannes-0",
+      "title": "2019 Cannes Film Festival",
+      "revision": 1375929673,
+      "section": "10",
+      "expected_count": 21,
+      "records": [
+        {
+          "title": "Atlantics",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Bacurau",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Dead Don't Die",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Frankie",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "A Hidden Life",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "It Must Be Heaven",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Little Joe",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Matthias & Maxime",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Les Misérables",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Mektoub, My Love: Intermezzo",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Oh Mercy!",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Once Upon a Time in Hollywood",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Pain and Glory",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Parasite",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Portrait of a Lady on Fire",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Sibyl",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Sorry We Missed You",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Traitor",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Whistlers",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Wild Goose Lake",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Young Ahmed",
+          "position": 21,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        }
+      ],
+      "verified_captures": [
+        {
+          "file": "cannes-0.text.json",
+          "bytes": 14397,
+          "sha256": "5f4363ea9c83a36868ab2ff4aaa53b8de18911ecf916d88024e7bcc5cc3a346f",
+          "http_status": 200,
+          "verified": true
+        },
+        {
+          "file": "cannes-0.revision.json",
+          "bytes": 206,
+          "sha256": "3dc58ac6725267f7f7d3b79f05e606ab625d894e499fc2c889c3be2d31748dbb",
+          "http_status": 200,
+          "verified": true
+        }
+      ],
+      "source_and_receipt_consistency": "passed",
+      "scope_notes": [
+        "Complete captured selection section; not the whole article or independent original-source verification.",
+        "Displayed English title retained; original-title, director and country cells are not additional films. No identity matching was performed.",
+        "All selected films are unranked; order is display position, not ordinal merit or a tie. Award/eligibility symbols and opening/closing-film labels are annotations rather than title or rank."
+      ],
+      "errors": []
+    },
+    {
+      "key": "cannes-1",
+      "title": "2021 Cannes Film Festival",
+      "revision": 1375928611,
+      "section": "14",
+      "expected_count": 10,
+      "records": [
+        {
+          "title": "North Pole",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Displaced",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "In the Soil",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Orthodontics",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "The Right Words",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Through the Haze",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Sideral",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "All the Crows in the World",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "August Sky",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Absence",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        }
+      ],
+      "verified_captures": [
+        {
+          "file": "cannes-1.text.json",
+          "bytes": 4103,
+          "sha256": "7ccff544a8cec8b5765f628f91dfe2973ed915402d98e869cba2cd3aedde9d88",
+          "http_status": 200,
+          "verified": true
+        },
+        {
+          "file": "cannes-1.revision.json",
+          "bytes": 206,
+          "sha256": "8d363e83fc0b37c596209acaa3c1652a1b263ac2d597bf88b25e31cdf39d3b19",
+          "http_status": 200,
+          "verified": true
+        }
+      ],
+      "source_and_receipt_consistency": "passed",
+      "scope_notes": [
+        "Complete captured selection section; not the whole article or independent original-source verification.",
+        "Displayed English title retained; original-title, director and country cells are not additional films. No identity matching was performed.",
+        "All selected films are unranked; order is display position, not ordinal merit or a tie. Award/eligibility symbols and opening/closing-film labels are annotations rather than title or rank."
+      ],
+      "errors": []
+    },
+    {
+      "key": "cannes-2",
+      "title": "2022 Cannes Film Festival",
+      "revision": 1375928252,
+      "section": "13",
+      "expected_count": 9,
+      "records": [
+        {
+          "title": "A Short Story",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Cherries",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Fire at the Lake",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Melancholy of my Mother's Lullabies",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Night Light",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Persona",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Same Old",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Tsutsuɛ",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "The Water Murmurs",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        }
+      ],
+      "verified_captures": [
+        {
+          "file": "cannes-2.text.json",
+          "bytes": 4133,
+          "sha256": "3a70085e154d20609ed8155780b1ea2288ae42db26e71806dc6765a09da67092",
+          "http_status": 200,
+          "verified": true
+        },
+        {
+          "file": "cannes-2.revision.json",
+          "bytes": 206,
+          "sha256": "a91fc8b64a4a810247f1b645e4a29c9d67e932dc538239c6e13b73d76b01acef",
+          "http_status": 200,
+          "verified": true
+        }
+      ],
+      "source_and_receipt_consistency": "passed",
+      "scope_notes": [
+        "Complete captured selection section; not the whole article or independent original-source verification.",
+        "Displayed English title retained; original-title, director and country cells are not additional films. No identity matching was performed.",
+        "All selected films are unranked; order is display position, not ordinal merit or a tie. Award/eligibility symbols and opening/closing-film labels are annotations rather than title or rank."
+      ],
+      "errors": []
+    },
+    {
+      "key": "cannes-3",
+      "title": "2023 Cannes Film Festival",
+      "revision": 1381922752,
+      "section": "11",
+      "expected_count": 20,
+      "records": [
+        {
+          "title": "All to Play For",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "The Animal Kingdom",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "The Breaking Ice",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "The Buriti Flower",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "The Delinquents",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "Goodbye Julia",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "Hopeless",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "Hounds",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "How to Have Sex",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "If Only I Could Hibernate",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "The Mother of All Lies",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "The Nature of Love",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "The New Boy",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "Omen",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "Only the River Flows",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "Rosalie",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "Salem",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "The Settlers",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "Terrestrial Verses",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "Strangers by Night",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "Out of Competition"
+        }
+      ],
+      "verified_captures": [
+        {
+          "file": "cannes-3.text.json",
+          "bytes": 14789,
+          "sha256": "cfd17599ef09e37393ee716a61c922b9f0946d53b4f73d25c869983c16fd6167",
+          "http_status": 200,
+          "verified": true
+        },
+        {
+          "file": "cannes-3.revision.json",
+          "bytes": 206,
+          "sha256": "a66c78ff810be54b638a7180193cd1cdb2c15b71b92ffbca389072f8498f9079",
+          "http_status": 200,
+          "verified": true
+        }
+      ],
+      "source_and_receipt_consistency": "passed",
+      "scope_notes": [
+        "Complete captured selection section; not the whole article or independent original-source verification.",
+        "Displayed English title retained; original-title, director and country cells are not additional films. No identity matching was performed.",
+        "All selected films are unranked; order is display position, not ordinal merit or a tie. Award/eligibility symbols and opening/closing-film labels are annotations rather than title or rank.",
+        "Includes 19 Un Certain Regard entries plus Strangers by Night under a separate Out of Competition table subgroup. This closing film must not inherit competition membership. Undefined reference errors are not film selections."
+      ],
+      "errors": []
+    },
+    {
+      "key": "berlin-0",
+      "title": "69th Berlin International Film Festival",
+      "revision": 1382312981,
+      "section": "7",
+      "expected_count": 16,
+      "records": [
+        {
+          "title": "By the Grace of God",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Elisa & Marcela",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Ghost Town Anthology",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "God Exists, Her Name Is Petrunija",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Golden Glove",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Ground Beneath My Feet",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Kindness of Strangers",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "I Was at Home, But",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Mr Jones",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Öndög",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Out Stealing Horses",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Piranhas",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "So Long, My Son",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Synonyms",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "System Crasher",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "A Tale of Three Sisters",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        }
+      ],
+      "verified_captures": [
+        {
+          "file": "berlin-0.text.json",
+          "bytes": 14484,
+          "sha256": "2a13fd06f9405d73b01f6b328b1a68c0b672992716d0700304c921573a230015",
+          "http_status": 200,
+          "verified": true
+        },
+        {
+          "file": "berlin-0.revision.json",
+          "bytes": 220,
+          "sha256": "0ddf600838d41af9933cb9ec3afaaf7e1d9d6e99d7696d47926e1b4e9aecc2cb",
+          "http_status": 200,
+          "verified": true
+        }
+      ],
+      "source_and_receipt_consistency": "passed",
+      "scope_notes": [
+        "Complete captured selection section; not the whole article or independent original-source verification.",
+        "Displayed English title retained; original-title, director and country cells are not additional films. No identity matching was performed.",
+        "All selected films are unranked; order is display position, not ordinal merit or a tie. Award/eligibility symbols and opening/closing-film labels are annotations rather than title or rank."
+      ],
+      "errors": []
+    },
+    {
+      "key": "berlin-1",
+      "title": "70th Berlin International Film Festival",
+      "revision": 1381492283,
+      "section": "8",
+      "expected_count": 18,
+      "records": [
+        {
+          "title": "All the Dead Ones",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Bad Tales",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Berlin Alexanderplatz",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "DAU. Natasha",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Days",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Delete History",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "First Cow",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Hidden Away",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Intruder",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Irradiated",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "My Little Sister",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Never Rarely Sometimes Always",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Roads Not Taken",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Salt of Tears",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Siberia",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "There Is No Evil",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Undine",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Woman Who Ran",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        }
+      ],
+      "verified_captures": [
+        {
+          "file": "berlin-1.text.json",
+          "bytes": 12541,
+          "sha256": "057878819fd17f6c15f403f32c47797c19296033533d1765f2c09722715898cc",
+          "http_status": 200,
+          "verified": true
+        },
+        {
+          "file": "berlin-1.revision.json",
+          "bytes": 220,
+          "sha256": "4b36b33f71f84c79713b4985a907dc69e186ee023bb7adb62ebf94f552d71ae7",
+          "http_status": 200,
+          "verified": true
+        }
+      ],
+      "source_and_receipt_consistency": "passed",
+      "scope_notes": [
+        "Complete captured selection section; not the whole article or independent original-source verification.",
+        "Displayed English title retained; original-title, director and country cells are not additional films. No identity matching was performed.",
+        "All selected films are unranked; order is display position, not ordinal merit or a tie. Award/eligibility symbols and opening/closing-film labels are annotations rather than title or rank."
+      ],
+      "errors": []
+    },
+    {
+      "key": "berlin-2",
+      "title": "71st Berlin International Film Festival",
+      "revision": 1373119642,
+      "section": "6",
+      "expected_count": 15,
+      "records": [
+        {
+          "title": "Bad Luck Banging or Loony Porn",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Ballad of a White Cow",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "A Cop Movie",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Drift Away",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Fabian – Going to the Dogs",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Forest - I See You Everywhere",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "I'm Your Man",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Introduction",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Memory Box",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Mr. Bachmann and His Class",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Natural Light",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Next Door",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Petite Maman",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "What Do We See When We Look at the Sky?",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Wheel of Fortune and Fantasy",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        }
+      ],
+      "verified_captures": [
+        {
+          "file": "berlin-2.text.json",
+          "bytes": 10639,
+          "sha256": "f5a31046d759243fc849597732e085d7414b177cf58826ab937caf260529bd95",
+          "http_status": 200,
+          "verified": true
+        },
+        {
+          "file": "berlin-2.revision.json",
+          "bytes": 220,
+          "sha256": "88193b65d43476eb94cd7709c155eab3c800210e1a75ce59dbddfac91c381f9d",
+          "http_status": 200,
+          "verified": true
+        }
+      ],
+      "source_and_receipt_consistency": "passed",
+      "scope_notes": [
+        "Complete captured selection section; not the whole article or independent original-source verification.",
+        "Displayed English title retained; original-title, director and country cells are not additional films. No identity matching was performed.",
+        "All selected films are unranked; order is display position, not ordinal merit or a tie. Award/eligibility symbols and opening/closing-film labels are annotations rather than title or rank."
+      ],
+      "errors": []
+    },
+    {
+      "key": "berlin-3",
+      "title": "72nd Berlin International Film Festival",
+      "revision": 1375216101,
+      "section": "6",
+      "expected_count": 18,
+      "records": [
+        {
+          "title": "A E I O U - A Quick Alphabet of Love",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Alcarràs",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Before, Now & Then",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Both Sides of the Blade",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Call Jane",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Everything Will Be Ok",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Leonora addio",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Line",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Novelist's Film",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "One Year, One Night",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Passengers of the Night",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Peter von Kant",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "A Piece of Sky",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Rabiye Kurnaz vs. George W. Bush",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Return to Dust",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Rimini",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Robe of Gems",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "That Kind of Summer",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        }
+      ],
+      "verified_captures": [
+        {
+          "file": "berlin-3.text.json",
+          "bytes": 12428,
+          "sha256": "b6f3149a19a0789b71084b73dba6275e02e19d20c476dbc70bbc1f8a580267e9",
+          "http_status": 200,
+          "verified": true
+        },
+        {
+          "file": "berlin-3.revision.json",
+          "bytes": 220,
+          "sha256": "6701f1e73abe60fefaa83c266df356006b6ea0eed48cf28bffc0100a3ac263f2",
+          "http_status": 200,
+          "verified": true
+        }
+      ],
+      "source_and_receipt_consistency": "passed",
+      "scope_notes": [
+        "Complete captured selection section; not the whole article or independent original-source verification.",
+        "Displayed English title retained; original-title, director and country cells are not additional films. No identity matching was performed.",
+        "All selected films are unranked; order is display position, not ordinal merit or a tie. Award/eligibility symbols and opening/closing-film labels are annotations rather than title or rank."
+      ],
+      "errors": []
+    }
+  ],
+  "total_cases": 12,
+  "total_records": 169,
+  "unresolved_semantics": [
+    "Festival award/eligibility markers are excluded from this membership/rank oracle rather than normalized into award-result fields; no award semantics benchmark is claimed."
+  ],
+  "limitations": [
+    "Static rendered Wikipedia sections only. This audit does not establish source-layout representativeness, source spreadsheets/PDF/browser performance, human labor, or complete original lists beyond each captured section."
+  ]
+}

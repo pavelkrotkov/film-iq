@@ -1,0 +1,16 @@
+{
+  "url": "https://www.loc.gov/static/programs/national-film-preservation-board/documents/Registry-Titles-alphabetically.pdf",
+  "attempted_at": "2026-10-30T03:19:25.107792+00:00",
+  "status": 200,
+  "bytes": 207602,
+  "sha256": "a3029ab9dbe880e5f904e48b263eb5d42c53c204cb137269d3a95f5584dd37c8",
+  "source_document_pages": 20,
+  "selected_pages": [
+    1
+  ],
+  "retained_page_sha256": "79724d994e78e64abf5303c077133925dd2bd180a7e42bd1055838b1e5222e8a",
+  "retained_page_bytes": 94979,
+  "transformation": "PDFKit copied first source page only into standalone PDF, without text editing; full source remains uncommitted in .cache/formats.",
+  "original_last_modified": "Wed, 28 Oct 2026 12:15:33 GMT",
+  "rights_url": "https://www.loc.gov/legal/security-copyright-and-privacy/understanding-copyright/"
+}

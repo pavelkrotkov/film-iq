@@ -1,0 +1,20 @@
+{
+  "recorded_at": "2026-10-30T03:18:47.844022+00:00",
+  "source_cases": [
+    "nbr-0",
+    "nbr-1"
+  ],
+  "initial_records": 10,
+  "incremental_records": 11,
+  "final_records": 21,
+  "sqlite_unchanged_writes": 0,
+  "sqlite_seconds": 0.005,
+  "dlt_seconds": 1.454,
+  "restart_kind": "explicitly closed/reopened SQLite connections and recreated dlt pipeline instances at same persisted paths; not a process crash",
+  "failure_kind": "source iterator yields one actual new-edition record then raises before batch completion",
+  "source_replay": "2021 then 2022 NBR published editions replayed from captured Wikipedia sections, not live polling or observed correction",
+  "dlt_version": "1.31.0",
+  "sqlalchemy_version": "2.1.6",
+  "python_version": "3.12.15",
+  "sqlite_version": "3.54.1"
+}

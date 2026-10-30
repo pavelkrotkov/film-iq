@@ -1,0 +1,38 @@
+{
+  "key": "sundance-3",
+  "title": "2023 Sundance Film Festival",
+  "section": "3",
+  "heading": "U.S. Documentary Competition",
+  "split": "development",
+  "lineage": "Wikipedia derivative of Sundance Film Festival; original-source accuracy and rights not established by this capture",
+  "revision": "1373127051",
+  "revision_receipt": {
+    "url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=2023+Sundance+Film+Festival&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp&titles=2023+Sundance+Film+Festival&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:29.435754+00:00",
+    "bytes": 208,
+    "sha256": "29fd279da556de8a3bffbc9801d340ab9894a6e15cc2062122fd189cf37f5e1b",
+    "file": "sundance-3.revision.json"
+  },
+  "wikitext": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373127051&section=3&prop=wikitext&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373127051&section=3&prop=wikitext&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:30.390950+00:00",
+    "bytes": 1062,
+    "sha256": "5e0c34883917d6129f3dc787f9a0bbf45324548beaedd47b5d0df76e28919d21",
+    "file": "sundance-3.wikitext.json"
+  },
+  "text": {
+    "url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373127051&section=3&prop=text&format=json",
+    "response_url": "https://en.wikipedia.org/w/api.php?action=parse&oldid=1373127051&section=3&prop=text&format=json",
+    "status": 200,
+    "accessed_at": "2026-10-30T03:07:31.381783+00:00",
+    "bytes": 3782,
+    "sha256": "eba2647164b44b3f7f627c798aa867ea6d00efbf08748b2b1216370b54ff1286",
+    "file": "sundance-3.text.json"
+  },
+  "corpus_stratum": "sundance",
+  "original_source_family": "Sundance Film Festival"
+}

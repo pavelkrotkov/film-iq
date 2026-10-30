@@ -22,37 +22,43 @@ def records(rows: Iterable[tuple[str, str]]) -> Iterator[dict[str, str]]:
         yield {"id": identifier, "title": title}
 
 
-def run_dlt(root: Path) -> None:
+def make_pipeline(root: Path):
     dlt = import_module("dlt")
     # dlt 1.31 probes HOME for global settings; keep this experiment in the worktree.
     import_module("dlt.common.runtime.run_context").global_dir = lambda: str(root / "global")  # ty: ignore[unresolved-attribute]
     path = root / "dlt.sqlite3"
-    started = perf_counter()
-    pipeline = dlt.pipeline(
+    return dlt.pipeline(
         pipeline_name="film_iq_b3",
         pipelines_dir=str(root / "pipelines"),
         dataset_name="main",
         destination=dlt.destinations.sqlalchemy(credentials=f"sqlite:///{path}"),
     )
+
+
+def run_dlt(root: Path, initial=INITIAL, corrected=CORRECTED) -> None:
+    path = root / "dlt.sqlite3"
+    started = perf_counter()
+    pipeline = make_pipeline(root)
     options = {"table_name": "observation", "write_disposition": "merge", "primary_key": "id"}
-    pipeline.run(list(records(INITIAL)), **options)
-    pipeline.run(list(records(INITIAL)), **options)
-    assert snapshot(path) == INITIAL
+    pipeline.run(list(records(initial)), **options)
+    pipeline = make_pipeline(root)
+    pipeline.run(list(records(initial)), **options)
+    assert snapshot(path) == sorted(initial)
     try:
-        pipeline.run(records(broken_rows()), **options)
+        pipeline.run(records(broken_rows(corrected)), **options)
     except import_module("dlt.pipeline.exceptions").PipelineStepFailed as error:
         if "injected source failure" not in str(error):
             raise
     else:
         raise AssertionError("dlt did not report the injected source failure")
-    assert snapshot(path) == INITIAL
-    pipeline.run(list(records(CORRECTED)), **options)
-    assert snapshot(path) == CORRECTED
+    assert snapshot(path) == sorted(initial)
+    pipeline = make_pipeline(root)
+    pipeline.run(list(records(corrected)), **options)
+    assert snapshot(path) == sorted(corrected)
     print("dlt", "seconds", round(perf_counter() - started, 3))
 
 
-def main() -> None:
-    root = Path(__file__).resolve().parents[3] / ".cache" / "dlt-comparison" / uuid4().hex
+def prepare(root: Path) -> None:
     for directory in ("tmp", "data", "project", "local", "cache"):
         (root / directory).mkdir(parents=True, exist_ok=True)
     os.environ.update(
@@ -65,6 +71,11 @@ def main() -> None:
         RUNTIME__DLTHUB_TELEMETRY="false",
     )
     tempfile.tempdir = str(root / "tmp")
+
+
+def main() -> None:
+    root = Path(__file__).resolve().parents[3] / ".cache" / "dlt-comparison" / uuid4().hex
+    prepare(root)
     run_sqlite(root)
     run_dlt(root)
 

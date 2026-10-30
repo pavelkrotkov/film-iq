@@ -1,0 +1,4527 @@
+{
+  "baseline": {
+    "frozen_at": "2026-10-30T03:10:41.322317+00:00",
+    "files": {
+      "corpus_parser.py": "7c1288777db725de0427ddc3c743f50b43320e585825d3a8b67f17d79ff19a5a",
+      "corpus_rows.py": "b6bdbcdb53ad49fd891b0f80a9ad7a89b0eac05a2ace2f5000baaaf1412128af",
+      "html_element.py": "8348f9b0eb429729f9dbc45490771c88899a10a84fb9a1f26601755a4158c827",
+      "html_tree.py": "d570ee3b578011f9366a083258105bdbecd5cbf421d5a17d519c4ed1863e859f"
+    },
+    "development_cases": 24,
+    "heldout_cases": 8,
+    "holdout_content_inspected": false,
+    "gold_inspected": false,
+    "scope": "Static HTML film-membership, displayed position/rank/ties and group labels; no upstream identity, award-winner classification or source-data quality inference"
+  },
+  "cases": [
+    {
+      "key": "nbr-0",
+      "split": "development",
+      "seconds": 0.0007837498560547829,
+      "metrics": {
+        "expected": 10,
+        "extracted": 10,
+        "matched_titles": 10,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 10,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "Licorice Pizza",
+          "position": 1,
+          "rank": 1,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Belfast",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Don't Look Up",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Dune",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "King Richard",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "The Last Duel",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Nightmare Alley",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Red Rocket",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "The Tragedy of Macbeth",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "West Side Story",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        }
+      ]
+    },
+    {
+      "key": "nbr-1",
+      "split": "development",
+      "seconds": 0.000669489149004221,
+      "metrics": {
+        "expected": 11,
+        "extracted": 11,
+        "matched_titles": 11,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 11,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "Top Gun: Maverick",
+          "position": 1,
+          "rank": 1,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Aftersun",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Avatar: The Way of Water",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "The Banshees of Inisherin",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Everything Everywhere All at Once",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "The Fabelmans",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Glass Onion: A Knives Out Mystery",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "RRR",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Till",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "The Woman King",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Women Talking",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        }
+      ]
+    },
+    {
+      "key": "nbr-2",
+      "split": "development",
+      "seconds": 0.0006315500941127539,
+      "metrics": {
+        "expected": 10,
+        "extracted": 10,
+        "matched_titles": 10,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 10,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "Killers of the Flower Moon",
+          "position": 1,
+          "rank": 1,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Barbie",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "The Boy and the Heron",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Ferrari",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "The Holdovers",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "The Iron Claw",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Maestro",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Oppenheimer",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Past Lives",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Poor Things",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        }
+      ]
+    },
+    {
+      "key": "nbr-3",
+      "split": "development",
+      "seconds": 0.0006406579632312059,
+      "metrics": {
+        "expected": 11,
+        "extracted": 11,
+        "matched_titles": 11,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 11,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "Wicked",
+          "position": 1,
+          "rank": 1,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Anora",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Babygirl",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "A Complete Unknown",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Conclave",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Furiosa: A Mad Max Saga",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Gladiator II",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Juror #2",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Queer",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "A Real Pain",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        },
+        {
+          "title": "Sing Sing",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Top 10 Films"
+        }
+      ]
+    },
+    {
+      "key": "cannes-0",
+      "split": "development",
+      "seconds": 0.0036121560260653496,
+      "metrics": {
+        "expected": 21,
+        "extracted": 21,
+        "matched_titles": 21,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 21,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "Atlantics",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Bacurau",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Dead Don't Die",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Frankie",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "A Hidden Life",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "It Must Be Heaven",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Little Joe",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Matthias & Maxime",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Les Misérables",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Mektoub, My Love: Intermezzo",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Oh Mercy!",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Once Upon a Time in Hollywood",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Pain and Glory",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Parasite",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Portrait of a Lady on Fire",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Sibyl",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Sorry We Missed You",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Traitor",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Whistlers",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Wild Goose Lake",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Young Ahmed",
+          "position": 21,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        }
+      ]
+    },
+    {
+      "key": "cannes-1",
+      "split": "development",
+      "seconds": 0.0012164551299065351,
+      "metrics": {
+        "expected": 10,
+        "extracted": 10,
+        "matched_titles": 10,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 10,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "North Pole",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Displaced",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "In the Soil",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Orthodontics",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "The Right Words",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Through the Haze",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Sideral",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "All the Crows in the World",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "August Sky",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Absence",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        }
+      ]
+    },
+    {
+      "key": "cannes-2",
+      "split": "development",
+      "seconds": 0.0011440699454396963,
+      "metrics": {
+        "expected": 9,
+        "extracted": 9,
+        "matched_titles": 9,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 9,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "A Short Story",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Cherries",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Fire at the Lake",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Melancholy of my Mother's Lullabies",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Night Light",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Persona",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Same Old",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Tsutsuɛ",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "The Water Murmurs",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        }
+      ]
+    },
+    {
+      "key": "cannes-3",
+      "split": "development",
+      "seconds": 0.00356935802847147,
+      "metrics": {
+        "expected": 20,
+        "extracted": 20,
+        "matched_titles": 20,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 20,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "All to Play For",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "The Animal Kingdom",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "The Breaking Ice",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "The Buriti Flower",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "The Delinquents",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "Goodbye Julia",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "Hopeless",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "Hounds",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "How to Have Sex",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "If Only I Could Hibernate",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "The Mother of All Lies",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "The Nature of Love",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "The New Boy",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "Omen",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "Only the River Flows",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "Rosalie",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "Salem",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "The Settlers",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "Terrestrial Verses",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "Un Certain Regard"
+        },
+        {
+          "title": "Strangers by Night",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "Out of Competition"
+        }
+      ]
+    },
+    {
+      "key": "berlin-0",
+      "split": "development",
+      "seconds": 0.0030743249226361513,
+      "metrics": {
+        "expected": 16,
+        "extracted": 16,
+        "matched_titles": 16,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 16,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "By the Grace of God",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Elisa & Marcela",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Ghost Town Anthology",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "God Exists, Her Name Is Petrunija",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Golden Glove",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Ground Beneath My Feet",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Kindness of Strangers",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "I Was at Home, But",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Mr Jones",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Öndög",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Out Stealing Horses",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Piranhas",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "So Long, My Son",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Synonyms",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "System Crasher",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "A Tale of Three Sisters",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        }
+      ]
+    },
+    {
+      "key": "berlin-1",
+      "split": "development",
+      "seconds": 0.0026073239278048277,
+      "metrics": {
+        "expected": 18,
+        "extracted": 18,
+        "matched_titles": 18,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 18,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "All the Dead Ones",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Bad Tales",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Berlin Alexanderplatz",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "DAU. Natasha",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Days",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Delete History",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "First Cow",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Hidden Away",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Intruder",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Irradiated",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "My Little Sister",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Never Rarely Sometimes Always",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Roads Not Taken",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Salt of Tears",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Siberia",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "There Is No Evil",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Undine",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Woman Who Ran",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        }
+      ]
+    },
+    {
+      "key": "berlin-2",
+      "split": "development",
+      "seconds": 0.0021758999209851027,
+      "metrics": {
+        "expected": 15,
+        "extracted": 15,
+        "matched_titles": 15,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 15,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "Bad Luck Banging or Loony Porn",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Ballad of a White Cow",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "A Cop Movie",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Drift Away",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Fabian – Going to the Dogs",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Forest - I See You Everywhere",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "I'm Your Man",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Introduction",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Memory Box",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Mr. Bachmann and His Class",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Natural Light",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Next Door",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Petite Maman",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "What Do We See When We Look at the Sky?",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Wheel of Fortune and Fantasy",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        }
+      ]
+    },
+    {
+      "key": "berlin-3",
+      "split": "development",
+      "seconds": 0.003173902863636613,
+      "metrics": {
+        "expected": 18,
+        "extracted": 18,
+        "matched_titles": 18,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 18,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "A E I O U - A Quick Alphabet of Love",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Alcarràs",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Before, Now & Then",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Both Sides of the Blade",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Call Jane",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Everything Will Be Ok",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Leonora addio",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Line",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Novelist's Film",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "One Year, One Night",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "The Passengers of the Night",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Peter von Kant",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "A Piece of Sky",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Rabiye Kurnaz vs. George W. Bush",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Return to Dust",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Rimini",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "Robe of Gems",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        },
+        {
+          "title": "That Kind of Summer",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "Main Competition"
+        }
+      ]
+    },
+    {
+      "key": "poll-0",
+      "split": "development",
+      "seconds": 0.0035312960390001535,
+      "metrics": {
+        "expected": 11,
+        "extracted": 10,
+        "matched_titles": 10,
+        "entry_precision": 1.0,
+        "entry_recall": 0.9090909090909091,
+        "exact_records": 10,
+        "fields": {
+          "title": 0.9090909090909091,
+          "position": 0.9090909090909091,
+          "rank": 0.9090909090909091,
+          "tie": 0.9090909090909091,
+          "category": 0.9090909090909091
+        },
+        "complete": false
+      },
+      "actual": [
+        {
+          "title": "Vertigo",
+          "position": 1,
+          "rank": 1,
+          "tie": null,
+          "category": "Critics' poll"
+        },
+        {
+          "title": "Citizen Kane",
+          "position": 2,
+          "rank": 2,
+          "tie": null,
+          "category": "Critics' poll"
+        },
+        {
+          "title": "Tokyo Story",
+          "position": 3,
+          "rank": 3,
+          "tie": null,
+          "category": "Critics' poll"
+        },
+        {
+          "title": "The Rules of the Game",
+          "position": 4,
+          "rank": 4,
+          "tie": null,
+          "category": "Critics' poll"
+        },
+        {
+          "title": "Sunrise: A Song of Two Humans",
+          "position": 5,
+          "rank": 5,
+          "tie": null,
+          "category": "Critics' poll"
+        },
+        {
+          "title": "2001: A Space Odyssey",
+          "position": 6,
+          "rank": 6,
+          "tie": null,
+          "category": "Critics' poll"
+        },
+        {
+          "title": "The Searchers",
+          "position": 7,
+          "rank": 7,
+          "tie": null,
+          "category": "Critics' poll"
+        },
+        {
+          "title": "Man with a Movie Camera",
+          "position": 8,
+          "rank": 8,
+          "tie": null,
+          "category": "Critics' poll"
+        },
+        {
+          "title": "The Passion of Joan of Arc",
+          "position": 9,
+          "rank": 9,
+          "tie": null,
+          "category": "Critics' poll"
+        },
+        {
+          "title": "8½",
+          "position": 10,
+          "rank": 10,
+          "tie": null,
+          "category": "Critics' poll"
+        }
+      ]
+    },
+    {
+      "key": "poll-1",
+      "split": "development",
+      "seconds": 0.0014569670893251896,
+      "metrics": {
+        "expected": 11,
+        "extracted": 11,
+        "matched_titles": 11,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 11,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "2001: A Space Odyssey",
+          "position": 1,
+          "rank": 1,
+          "tie": null,
+          "category": "Directors' poll"
+        },
+        {
+          "title": "Citizen Kane",
+          "position": 2,
+          "rank": 2,
+          "tie": null,
+          "category": "Directors' poll"
+        },
+        {
+          "title": "The Godfather",
+          "position": 3,
+          "rank": 3,
+          "tie": null,
+          "category": "Directors' poll"
+        },
+        {
+          "title": "Jeanne Dielman, 23 quai du Commerce, 1080 Bruxelles",
+          "position": 4,
+          "rank": 4,
+          "tie": "rank-4",
+          "category": "Directors' poll"
+        },
+        {
+          "title": "Tokyo Story",
+          "position": 5,
+          "rank": 4,
+          "tie": "rank-4",
+          "category": "Directors' poll"
+        },
+        {
+          "title": "Vertigo",
+          "position": 6,
+          "rank": 6,
+          "tie": "rank-6",
+          "category": "Directors' poll"
+        },
+        {
+          "title": "8½",
+          "position": 7,
+          "rank": 6,
+          "tie": "rank-6",
+          "category": "Directors' poll"
+        },
+        {
+          "title": "Mirror",
+          "position": 8,
+          "rank": 8,
+          "tie": null,
+          "category": "Directors' poll"
+        },
+        {
+          "title": "Close-up",
+          "position": 9,
+          "rank": 9,
+          "tie": "rank-9",
+          "category": "Directors' poll"
+        },
+        {
+          "title": "In the Mood for Love",
+          "position": 10,
+          "rank": 9,
+          "tie": "rank-9",
+          "category": "Directors' poll"
+        },
+        {
+          "title": "Persona",
+          "position": 11,
+          "rank": 9,
+          "tie": "rank-9",
+          "category": "Directors' poll"
+        }
+      ]
+    },
+    {
+      "key": "poll-2",
+      "split": "development",
+      "seconds": 0.0014175730757415295,
+      "metrics": {
+        "expected": 10,
+        "extracted": 10,
+        "matched_titles": 10,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 10,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "Mulholland Drive",
+          "position": 1,
+          "rank": 1,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "In the Mood for Love",
+          "position": 2,
+          "rank": 2,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "There Will Be Blood",
+          "position": 3,
+          "rank": 3,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "Spirited Away",
+          "position": 4,
+          "rank": 4,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "Boyhood",
+          "position": 5,
+          "rank": 5,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "Eternal Sunshine of the Spotless Mind",
+          "position": 6,
+          "rank": 6,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "The Tree of Life",
+          "position": 7,
+          "rank": 7,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "Yi Yi",
+          "position": 8,
+          "rank": 8,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "A Separation",
+          "position": 9,
+          "rank": 9,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "No Country for Old Men",
+          "position": 10,
+          "rank": 10,
+          "tie": null,
+          "category": "Partial list"
+        }
+      ]
+    },
+    {
+      "key": "foreign-0",
+      "split": "development",
+      "seconds": 0.002601773012429476,
+      "metrics": {
+        "expected": 10,
+        "extracted": 10,
+        "matched_titles": 10,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 10,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "Seven Samurai",
+          "position": 1,
+          "rank": 1,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "Bicycle Thieves",
+          "position": 2,
+          "rank": 2,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "Tokyo Story",
+          "position": 3,
+          "rank": 3,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "Rashomon",
+          "position": 4,
+          "rank": 4,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "The Rules of the Game",
+          "position": 5,
+          "rank": 5,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "Persona",
+          "position": 6,
+          "rank": 6,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "8½",
+          "position": 7,
+          "rank": 7,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "The 400 Blows",
+          "position": 8,
+          "rank": 8,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "In the Mood for Love",
+          "position": 9,
+          "rank": 9,
+          "tie": null,
+          "category": "Partial list"
+        },
+        {
+          "title": "La Dolce Vita",
+          "position": 10,
+          "rank": 10,
+          "tie": null,
+          "category": "Partial list"
+        }
+      ]
+    },
+    {
+      "key": "venice-0",
+      "split": "development",
+      "seconds": 0.003050156868994236,
+      "metrics": {
+        "expected": 21,
+        "extracted": 21,
+        "matched_titles": 21,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 21,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "About Endlessness",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Ad Astra",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Babyteeth",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Domain",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Ema",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Gloria Mundi",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Guest of Honour",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Joker",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Laundromat",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Mafia Is No Longer What It Used to Be",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Marriage Story",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Martin Eden",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Mayor of Rione Sanità",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "No.7 Cherry Lane",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "An Officer and a Spy",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Painted Bird",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Perfect Candidate",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Saturday Fiction",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Truth",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Waiting for the Barbarians",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Wasp Network",
+          "position": 21,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        }
+      ]
+    },
+    {
+      "key": "venice-1",
+      "split": "development",
+      "seconds": 0.001270222943276167,
+      "metrics": {
+        "expected": 14,
+        "extracted": 14,
+        "matched_titles": 14,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 14,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "Anita",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "BMM – Being My Mom",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Entre tú y milagros",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "À fleur de peau",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "The Game",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Live in a Cloud Cuckoo Land",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "The Night Train",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Places",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "The Shift",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Sogni al campo",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Was Wahrscheinlich Passiert Wäre, Wäre Ich Nicht Zuhause",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "Workshop",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "Short Films Competition"
+        },
+        {
+          "title": "The Return Of Tragedy",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "Out of Competition"
+        },
+        {
+          "title": "Sì",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "Out of Competition"
+        }
+      ]
+    },
+    {
+      "key": "venice-2",
+      "split": "development",
+      "seconds": 0.0028761988505721092,
+      "metrics": {
+        "expected": 21,
+        "extracted": 21,
+        "matched_titles": 21,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 21,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "America Latina",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Another World",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Box",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Captain Volkonogov Escaped",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Card Counter",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Freaks Out",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Hand of God",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Happening",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Il buco",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Leave No Traces",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Lost Daughter",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Lost Illusions",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Mona Lisa and the Blood Moon",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Official Competition",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "On the Job: The Missing 8",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Parallel Mothers",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The Power of the Dog",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "The King of Laughter",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Reflection",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Spencer",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        },
+        {
+          "title": "Sundown",
+          "position": 21,
+          "rank": null,
+          "tie": null,
+          "category": "In Competition"
+        }
+      ]
+    },
+    {
+      "key": "venice-3",
+      "split": "development",
+      "seconds": 0.002981326077133417,
+      "metrics": {
+        "expected": 23,
+        "extracted": 23,
+        "matched_titles": 23,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 23,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "All the Beauty and the Bloodshed",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Argentina, 1985",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Athena",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "The Banshees of Inisherin",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Bardo, False Chronicle of a Handful of Truths",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Beyond the Wall",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Blonde",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Bones and All",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Chiara",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "A Couple",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "The Eternal Daughter",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "L'immensità",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Lord of the Ants",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Love Life",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Monica",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "No Bears",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Other People's Children",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Our Ties",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Saint Omer",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "The Son",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "Tár",
+          "position": 21,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "The Whale",
+          "position": 22,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        },
+        {
+          "title": "White Noise",
+          "position": 23,
+          "rank": null,
+          "tie": null,
+          "category": "In competition"
+        }
+      ]
+    },
+    {
+      "key": "sundance-0",
+      "split": "development",
+      "seconds": 0.0010241311974823475,
+      "metrics": {
+        "expected": 12,
+        "extracted": 12,
+        "matched_titles": 12,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 12,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "Acasă, My Home",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "The Earth Is Blue as an Orange",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Epicentro",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Influence",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Into the Deep",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "The Mole Agent",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Once Upon a Time in Venezuela",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "The Painter and the Thief",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "The Reason I Jump",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Saudi Runaway",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Softie",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "The Truffle Hunters",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        }
+      ]
+    },
+    {
+      "key": "sundance-1",
+      "split": "development",
+      "seconds": 0.000495546031743288,
+      "metrics": {
+        "expected": 10,
+        "extracted": 10,
+        "matched_titles": 10,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 10,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "The Fire Next Time",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        },
+        {
+          "title": "Forever",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        },
+        {
+          "title": "The Fourfold",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        },
+        {
+          "title": "Ghost Dogs",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        },
+        {
+          "title": "GNT",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        },
+        {
+          "title": "KKUM",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        },
+        {
+          "title": "Little Miss Fate",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        },
+        {
+          "title": "Misery Loves Company",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        },
+        {
+          "title": "Souvenir Souvenir",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        },
+        {
+          "title": "Trepanation",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Animation"
+        }
+      ]
+    },
+    {
+      "key": "sundance-2",
+      "split": "development",
+      "seconds": 0.0005475799553096294,
+      "metrics": {
+        "expected": 10,
+        "extracted": 10,
+        "matched_titles": 10,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 10,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "All That Breathes",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Calendar Girls",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "A House Made of Splinters",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Midwives",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "The Mission",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Nothing Compares",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Sirens",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "Tantura",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "The Territory",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        },
+        {
+          "title": "We Met in Virtual Reality",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "World Cinema Documentary Competition"
+        }
+      ]
+    },
+    {
+      "key": "sundance-3",
+      "split": "development",
+      "seconds": 0.0007489260751754045,
+      "metrics": {
+        "expected": 12,
+        "extracted": 12,
+        "matched_titles": 12,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 12,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "AUM: The Cult at the End of the World",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "Bad Press",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "Beyond Utopia",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "The Disappearance of Shere Hite",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "Going to Mars: The Nikki Giovanni Project",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "Going Varsity in Mariachi",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "Joonam",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "Little Richard: I Am Everything",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "Nam June Paik: Moon Is the Oldest TV",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "A Still Small Voice",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "The Stroll",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        },
+        {
+          "title": "Victim/Suspect",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "U.S. Documentary Competition"
+        }
+      ]
+    },
+    {
+      "key": "shorts-0",
+      "split": "holdout",
+      "seconds": 0.0031667069997638464,
+      "metrics": {
+        "expected": 30,
+        "extracted": 30,
+        "matched_titles": 30,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 0,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 0.0
+        },
+        "complete": false
+      },
+      "actual": [
+        {
+          "title": "If Anything Happens I Love You",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Burrow",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Genius Loci",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Opera",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Yes-People",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Windshield Wiper",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Affairs of the Art",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Bestia",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Boxballet",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Robin Robin",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Boy, the Mole, the Fox and the Horse",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Flying Sailor",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Ice Merchants",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "My Year of Dicks",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "An Ostrich Told Me the World Is Fake and I Think I Believe It",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "War Is Over! Inspired by the Music of John & Yoko",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Letter to a Pig",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Ninety-Five Senses",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Our Uniform",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Pachyderme",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "In the Shadow of the Cypress",
+          "position": 21,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Beautiful Men",
+          "position": 22,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Magic Candies",
+          "position": 23,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Wander to Wonder",
+          "position": 24,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Yuck!",
+          "position": 25,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Girl Who Cried Pearls",
+          "position": 26,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Butterfly",
+          "position": 27,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Forevergreen",
+          "position": 28,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Retirement Plan",
+          "position": 29,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Three Sisters",
+          "position": 30,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        }
+      ]
+    },
+    {
+      "key": "shorts-1",
+      "split": "holdout",
+      "seconds": 0.0032202480360865593,
+      "metrics": {
+        "expected": 30,
+        "extracted": 30,
+        "matched_titles": 30,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 0,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 0.0
+        },
+        "complete": false
+      },
+      "actual": [
+        {
+          "title": "Two Distant Strangers",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Feeling Through",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Letter Room",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Present",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "White Eye",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Long Goodbye",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Ala Kachuu – Take and Run",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Dress",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "On My Mind",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Please Hold",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "An Irish Goodbye",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Ivalu",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Le pupille",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Night Ride",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Red Suitcase",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Wonderful Story of Henry Sugar",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The After",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Invincible",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Knight of Fortune",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Red, White and Blue",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "I'm Not a Robot",
+          "position": 21,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "A Lien",
+          "position": 22,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Anuja",
+          "position": 23,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Last Ranger",
+          "position": 24,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Man Who Could Not Remain Silent",
+          "position": 25,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Singers",
+          "position": 26,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Two People Exchanging Saliva",
+          "position": 27,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Butcher's Stain",
+          "position": 28,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "A Friend of Dorothy",
+          "position": 29,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Jane Austen's Period Drama",
+          "position": 30,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        }
+      ]
+    },
+    {
+      "key": "shorts-2",
+      "split": "holdout",
+      "seconds": 0.003084505908191204,
+      "metrics": {
+        "expected": 30,
+        "extracted": 30,
+        "matched_titles": 30,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 0,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 0.0
+        },
+        "complete": false
+      },
+      "actual": [
+        {
+          "title": "Colette",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "A Concerto Is a Conversation",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Do Not Split",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Hunger Ward",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "A Love Song for Latasha",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Queen of Basketball",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Audible",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Lead Me Home",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Three Songs for Benazir",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "When We Were Bullies",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Elephant Whisperers",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Haulout",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "How Do You Measure a Year?",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Martha Mitchell Effect",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Stranger at the Gate",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Last Repair Shop",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The ABCs of Book Banning",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Barber of Little Rock",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Island in Between",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Nǎi Nai & Wài Pó",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Only Girl in the Orchestra",
+          "position": 21,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Death by Numbers",
+          "position": 22,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "I Am Ready, Warden",
+          "position": 23,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Incident",
+          "position": 24,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Instruments of a Beating Heart",
+          "position": 25,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "All the Empty Rooms",
+          "position": 26,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Armed Only with a Camera: The Life and Death of Brent Renaud",
+          "position": 27,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Children No More: \"Were and Are Gone\"",
+          "position": 28,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Devil Is Busy",
+          "position": 29,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Perfectly a Strangeness",
+          "position": 30,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        }
+      ]
+    },
+    {
+      "key": "shorts-3",
+      "split": "holdout",
+      "seconds": 0.0037467367947101593,
+      "metrics": {
+        "expected": 30,
+        "extracted": 30,
+        "matched_titles": 30,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 0,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 0.0
+        },
+        "complete": false
+      },
+      "actual": [
+        {
+          "title": "My Octopus Teacher",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Collective",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Crip Camp",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Mole Agent",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Time",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Summer of Soul",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Ascension",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Attica",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Flee",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Writing with Fire",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Navalny",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "All That Breathes",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "All the Beauty and the Bloodshed",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Fire of Love",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "A House Made of Splinters",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "20 Days in Mariupol",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Bobi Wine: The People's President",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Eternal Memory",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Four Daughters",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "To Kill a Tiger",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "No Other Land",
+          "position": 21,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Black Box Diaries",
+          "position": 22,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Porcelain War",
+          "position": 23,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Soundtrack to a Coup d'Etat",
+          "position": 24,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Sugarcane",
+          "position": 25,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Mr Nobody Against Putin",
+          "position": 26,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Alabama Solution",
+          "position": 27,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Come See Me in the Good Light",
+          "position": 28,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "Cutting Through Rocks",
+          "position": 29,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        },
+        {
+          "title": "The Perfect Neighbor",
+          "position": 30,
+          "rank": null,
+          "tie": null,
+          "category": "2020s"
+        }
+      ]
+    },
+    {
+      "key": "locarno-0",
+      "split": "holdout",
+      "seconds": 0.0016476619057357311,
+      "metrics": {
+        "expected": 17,
+        "extracted": 17,
+        "matched_titles": 17,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 17,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "The Fever",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "Echo",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "Cat in the Wall",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "A Voluntary Year",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "Douze Mille",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "During Revolution",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "The Science of Fictions",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "Maternal",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "Isadora's Children",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "Endless Night",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "O Fim do Mundo",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "Height of the Wave",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "Technoboss",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "South Terminal",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "The Last Black Man in San Francisco",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "Vitalina Varela",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        },
+        {
+          "title": "A Girl Missing",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "International Competition (Concorso internazionale)"
+        }
+      ]
+    },
+    {
+      "key": "locarno-2",
+      "split": "holdout",
+      "seconds": 0.001712081953883171,
+      "metrics": {
+        "expected": 20,
+        "extracted": 20,
+        "matched_titles": 19,
+        "entry_precision": 0.95,
+        "entry_recall": 0.95,
+        "exact_records": 19,
+        "fields": {
+          "title": 0.95,
+          "position": 0.95,
+          "rank": 0.95,
+          "tie": 0.95,
+          "category": 0.95
+        },
+        "complete": false
+      },
+      "actual": [
+        {
+          "title": "A Máquina Infernal",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "And Then They Burn the Sea",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Suncatcher",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Christmas",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "FIRST TIME [The Time for All but Sunset - VIOLET]",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Neon Phantom",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Playtime",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Home",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "In Flow of Words",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Night",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "The Demons of Dorothy",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Love, Dad",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Mask",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Dad's Sneakers",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Sound of the Night",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Squish!",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Steakhouse",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "The Sunset Special",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Strawberry Cheesecake",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        },
+        {
+          "title": "Time Flows in Strange Ways on Sundays",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "International competition (Concorso internazionale)"
+        }
+      ]
+    },
+    {
+      "key": "locarno-3",
+      "split": "holdout",
+      "seconds": 0.0016963128000497818,
+      "metrics": {
+        "expected": 17,
+        "extracted": 17,
+        "matched_titles": 17,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 17,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "The Adventures of Gigi the Law",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "At Night the Cats Are Brown",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Declaration",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Fairytale",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Human Flowers of Flesh",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "I Have Electric Dreams",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Il Pataffio",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Matter Out of Place",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Piaffe",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Rule 34",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Sermon to the Fish",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Saturn Bowling",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Serviam – I Will Serve",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Stella in Love",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Stone Turtle",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Tales of the Purple House",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        },
+        {
+          "title": "Tommy Guns",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "Main competition"
+        }
+      ]
+    },
+    {
+      "key": "annecy-0",
+      "split": "holdout",
+      "seconds": 0.0023538030218333006,
+      "metrics": {
+        "expected": 31,
+        "extracted": 31,
+        "matched_titles": 31,
+        "entry_precision": 1.0,
+        "entry_recall": 1.0,
+        "exact_records": 31,
+        "fields": {
+          "title": 1.0,
+          "position": 1.0,
+          "rank": 1.0,
+          "tie": 1.0,
+          "category": 1.0
+        },
+        "complete": true
+      },
+      "actual": [
+        {
+          "title": "[S]",
+          "position": 1,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Aquatic",
+          "position": 2,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Beautiful Men",
+          "position": 3,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Circle",
+          "position": 4,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "In the Shadow of the Cypress",
+          "position": 5,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Drizzle in Johnson",
+          "position": 6,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "When It Comes (It Will Have Your Eyes)",
+          "position": 7,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Flower Show",
+          "position": 8,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Free the Chickens",
+          "position": 9,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Gina Kamentsky's Pinocchio in 70MM",
+          "position": 10,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Hurikán",
+          "position": 11,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "In Perpetuum",
+          "position": 12,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Joko",
+          "position": 13,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Kaminhu",
+          "position": 14,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Maybe Elephants",
+          "position": 15,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Kawauso",
+          "position": 16,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "La Voix des Sirènes",
+          "position": 17,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "The Painting",
+          "position": 18,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Margarethe 89",
+          "position": 19,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Miserable Miracle",
+          "position": 20,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Mont Noir",
+          "position": 21,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Moral Support",
+          "position": 22,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Butterfly",
+          "position": 23,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Percebes",
+          "position": 24,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Plus douce est la nuit",
+          "position": 25,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Horse Portrait",
+          "position": 26,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Preoperational Model",
+          "position": 27,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Return to Hairy Hill",
+          "position": 28,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Shoes and Hooves",
+          "position": 29,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "Tennis, Oranges",
+          "position": 30,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        },
+        {
+          "title": "The Car That Came Back from the Sea",
+          "position": 31,
+          "rank": null,
+          "tie": null,
+          "category": "Short films"
+        }
+      ]
+    }
+  ],
+  "recorded_at": "2026-10-30T03:12:55.957575+00:00",
+  "audit_sha256": {
+    "audit_group1.json": "e23c6dcd12105983b214529fde6192a6517ef76f4d7d21b85b23690962e633d7",
+    "audit_group2.json": "56c4fb6fb730af518c4bd6373af6552674096187de83893e38782448e02d2974",
+    "audit_holdout.json": "206f8fc0b6e0bf7193228b15c7fa0f09f8110d2694ae68ad4e673dbf2a5687b6"
+  },
+  "selection_sha256": "c4c0556e8e2b46026bbc3117915ff48aa6692720300beb893de73c359e30ccfb"
+}
