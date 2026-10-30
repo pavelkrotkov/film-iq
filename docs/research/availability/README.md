@@ -111,7 +111,7 @@ For example, after checking credentials and the applicable retention basis:
 UV_CACHE_DIR="$PWD/.cache/uv" TMPDIR="$PWD/.cache/tmp" UV_PYTHON_DOWNLOADS=never \
   uv run --env-file /Users/pavel/dev/film-iq/.env --no-sync \
   python -m docs.research.availability.run \
-  --provider both --cohort .cache/motn/accepted-paired-manifest-20261030.json --live \
+  --provider both --cohort .cache/research-evidence/b14-live-comparison/.cache/motn/accepted-paired-manifest-20261030.json --live \
   --retention-note 'Record the verified provider plans, terms and retention basis here' \
   --output .cache/availability/paired-YYYYMMDD.json
 ```

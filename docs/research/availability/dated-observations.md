@@ -16,14 +16,26 @@ This avoids annual calendar recurrence or an early manual trigger becoming an
 extra study pass. No retries, new service, dependency or credential upload is
 needed. Existing unknown/error handling and no-removal behavior are unchanged.
 
-Two local macOS launchd calendar configurations are prepared under this
-worktree's ignored `.cache/dated-runs/`. They call the installed `uv` with the
-existing project `.env`, current source path and existing Python interpreter.
-The frozen local manifest stays in the earlier observation worktree. Logs and
-normalized observations stay under `.cache/dated-runs/`; no catalog dump, token
-or actual offer fixture enters Git. The jobs will be loaded and their native
-registration verified only after the PR's review and CI pass. Preparation is
-not registration or execution; the issue comment records verified installation.
+The two native macOS calendar jobs now run from the project root on `main`,
+using installed Python 3.12 and the existing local `.env`. They have no worktree
+or worktree-virtual-environment dependency. Their dates, provider order, request
+bound and UTC guard are unchanged. Both replacement commands passed early-date
+checks, and a full non-live run produced 120 observations with zero requests.
+
+Private evidence was consolidated with user approval under
+`.cache/research-evidence/<worktree-name>/<original-relative-path>`. The local
+`index.json` maps original paths to verified SHA-256 copies. Current input and
+outputs are relative to the project root:
+
+- Accepted cohort: `.cache/research-evidence/b14-live-comparison/.cache/motn/accepted-paired-manifest-20261030.json`.
+- Job configurations, logs and dated results: `.cache/research-evidence/b14-dated-runs/.cache/dated-runs/`.
+
+The active configurations have `main-` filename prefixes; copied original
+configurations/receipts remain historical evidence. Both native registrations
+were re-read with zero runs and no worktree paths. GitHub issues, `plan.md` and
+the linked reports carry the public findings; no private provider output or
+credential enters Git. Old worktrees can be removed while preserving their
+branches and the copied evidence. Registration is not future measurement.
 
 Each job attempts at most 120 requests (60 per provider), with no extra discovery
 queries. Two planned passes add at most 240 requests. Missing credentials, failed
