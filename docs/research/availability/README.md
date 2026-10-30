@@ -2,7 +2,7 @@
 
 **Version:** 0.1 · **Prepared:** 2026-10-29 · [Issue #14](https://github.com/pavelkrotkov/film-iq/issues/14) · [Epic B](https://github.com/pavelkrotkov/film-iq/issues/2)
 
-**Status (2026-10-30):** The [first live TMDB/JustWatch US observation](live-20261030.md) returned 53 complete explicit US responses and seven unknowns across all 60 candidates after a separate automated work-identity audit. All account entitlements remain unknown. Movie of the Night comparison, two later observation dates, transaction checks and retention rights remain open; no provider superiority or Gate B acceptance is claimed.
+**Status (2026-10-30):** The [first live TMDB/JustWatch US observation](live-20261030.md) returned 53 complete explicit US responses and seven unknowns across all 60 candidates after a separate automated work-identity audit. All account entitlements remain unknown. Movie of the Night comparison, two later observation dates, transaction checks and applicable-use/retention assessment remain open; no provider superiority or Gate B acceptance is claimed.
 
 This convenience cohort deliberately assigns ten candidates to each of six strata. Assignments are for reporting and may overlap in reality; for example, an older film can also be a short. The samples are not a random or representative estimate of all cinema. Confirm each title against a source, director and an unambiguous provider identifier before freezing the cohort; a year of festival selection or award eligibility is not automatically the production or premiere year. Replace an ambiguous candidate only with a recorded reason and source. Follow [plan §7](../../../plan.md), [ADR 0008](../../adr/0008-availability-providers.md) and [ADR 0011](../../adr/0011-cost-rights.md).
 
@@ -72,8 +72,14 @@ One preliminary first-party lead was checked through search-indexed page text on
 
 ## Rights and operating constraints
 
+The [dated rights/quota ledger](rights-20261030.md) now establishes published
+native Movie of the Night storage permission and its 1,000-request/month Free
+plan, distinguishes the older repository terms, and records its specific
+AI-training/evaluation restriction. Public pricing is not an actual account
+balance or license certification; TMDB historical-retention rights remain open.
+
 - [TMDB's movie-provider API](https://developer.themoviedb.org/reference/movie-watch-providers) uses JustWatch data, requires JustWatch attribution and does not return full provider deep links. Its [FAQ](https://developer.themoviedb.org/docs/faq) describes TMDB attribution and noncommercial API access.
-- [Movie of the Night](https://docs.movieofthenight.com/guide/authentication) requires an API key. Its [show documentation](https://docs.movieofthenight.com/guide/shows) describes offer types; a provider's category is not account-level proof.
+- [Movie of the Night](https://docs.movieofthenight.com/guide/authentication) requires a native-platform API key for this observer. Its currently linked [native terms](https://developers.movieofthenight.com/terms-and-conditions) permit retained storage subject to use, attribution and third-party-content constraints; see the ledger above. Its [show documentation](https://docs.movieofthenight.com/guide/shows) describes offer types; a provider's category is not account-level proof.
 - [MDBList](https://docs.mdblist.com/docs/api) publishes a free request quota and account-wide short-window limits; permission to retain historical API observations remains unverified.
 - [Watchmode's terms](https://api.watchmode.com/tc), updated 2026-10-24, limit free-plan non-image data caching to 30 days and require deletion when an account ends. Check the actual plan and terms before storing or redistributing results.
 

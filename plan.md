@@ -656,3 +656,26 @@ dates, applicable rights and authorized first-party/account comparisons. B8 #18
 and Epic #2 stay open while these non-deferred experiments remain outstanding.
 The [working matrix](docs/research/gate-b.md) records concrete next measurements;
 no architecture change or additional paid dependency is needed for them.
+
+
+### B4 published rights and public quota supplement (2026-10-30)
+
+The [provider ledger](docs/research/availability/rights-20261030.md) traces the
+official repository's current terms link to Movie of the Night's native
+Developers Platform. The rendered current terms permit local retained data under
+use/attribution/third-party-content conditions; the older pinned GitHub TERMS.md
+has materially different image and plan provisions and is not applied as the
+current native contract. Public native Free pricing is $0 for 1,000 requests per
+month, with a hard limit and no overage fees. Three 60-title offer passes budget
+180 requests before identity/auxiliary calls and other account usage; the actual
+account's plan, remaining quota and charges were not inspected. No API requests,
+registration, paid subscription or provider messages were made by this audit.
+
+Native terms specifically prohibit using API data to train, fine-tune, evaluate
+or improve ML models or AI systems. The planned availability-provider comparison
+is not an AI-model evaluation, and this clause is not treated as a prohibition
+on all AI-agent assistance. Future model-training/evaluation data uses need an
+applicable permitted basis. TMDB archival rights and actual account terms remain
+unverified. This closes part of the public terms investigation, not B4: two later
+dates, Movie of the Night access, first-party offers and intended account/ad-tier
+checks remain. ADR 0008 remains provisional and Gate B is not accepted.
