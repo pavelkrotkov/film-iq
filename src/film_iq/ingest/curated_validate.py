@@ -24,5 +24,6 @@ def _validate_identity(row: CuratedRow) -> None:
     """An ID is an explicit reviewed assertion; a numeric value alone is insufficient."""
     if row.tie and row.rank is None:
         raise ValueError("tie requires a published rank")
-    if row.tmdb_id and not (row.identity_reviewer and row.identity_evidence):
+    assertions = (row.identity_reviewer, row.identity_evidence)
+    if row.tmdb_id and not all(value and value.strip() for value in assertions):
         raise ValueError("TMDB ID requires explicit identity reviewer and evidence")

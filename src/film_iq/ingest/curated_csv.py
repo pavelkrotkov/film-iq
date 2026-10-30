@@ -13,7 +13,7 @@ COLUMNS = tuple(field.name for field in fields(CuratedRow))
 
 def read_csv(body: str) -> tuple[CuratedRow, ...]:
     """Reject schema errors, extra cells, missing cells and duplicate positions."""
-    reader = csv.DictReader(io.StringIO(body))
+    reader = csv.DictReader(io.StringIO(body), strict=True)
     if reader.fieldnames != list(COLUMNS):
         raise ValueError("CSV header must match the documented curated-list schema")
     rows = []

@@ -1256,3 +1256,17 @@ minimum maintainability index 51.289236. Tests cover rank/tie/unranked and scope
 selection, malformed schema/facts, missing identity review, re-import and
 accepted-revision preservation. They do not establish real source permissions,
 identity precision or recommendation quality.
+
+C0b combined review found four concrete defects across Standards and Spec:
+pending ballot corrections could overwrite accepted edition author attribution;
+null/nonstring rights assertions bypassed required-string checks; whitespace
+identity-review assertions were treated as evidence; and non-strict CSV parsing
+accepted an unterminated final quote. The correction rejects conflicting ballot
+identity for an existing edition, validates every required policy/manifest text,
+requires nonblank identity assertions and enables strict CSV parsing. Synthetic
+regressions verify accepted provenance and semantic revision count survive a
+rejected correction, malformed rights fail before database creation, and
+truncated records cannot persist. No source acquisition or live personal-data
+mutation accompanies these corrections. Ruff/format/ty pass; 367 tests pass
+with one opt-in skip. All thirteen new Python modules/tests have maximum CC 8
+and minimum MI 50.394527. Review conversations await independent follow-up.
