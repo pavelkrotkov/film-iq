@@ -262,7 +262,7 @@ Runs in parallel with POC under its own controller; B1–B7 may all begin indepe
 
 **Gate B:** explicit evidence supporting initial source adapters, providers, extraction techniques and scoring approach; publish open questions when evidence is insufficient. This epic is *research work*, not a mandate to integrate every candidate service.
 
-**B preliminary findings (updated 2026-10-30):** Original-source terms can restrict automated collection or reuse. The same critic can appear in multiple publications, so preserve each source and rank while counting independent people once. A fourteen-film historical identity sample uses cached, derivative or inaccessible catalog results and cannot establish current coverage or precision. Its opt-in paginated TMDB lookup is now runnable; the credential-free dry run processes all fourteen cases with zero requests. Failed, incomplete and budget-limited searches remain unknown, and no candidate is automatically accepted or declared absent.
+**B preliminary findings (updated 2026-10-30):** Original-source terms can restrict automated collection or reuse. The same critic can appear in multiple publications, so preserve each source and rank while counting independent people once. The fourteen-film historical sample began with cached, derivative or inaccessible catalog results. Its authenticated continuation now records 35 bounded TMDB requests, twelve automated-review acceptances and two ambiguous date-conflicted cases; five of six alternate queries retrieve the reviewed work. These convenience observations cannot establish general coverage or precision. The credential-free dry run still processes all fourteen cases with zero requests. Failed, incomplete and budget-limited searches remain unknown, and no candidate is automatically accepted or declared absent.
 
 The extraction smoke test rejects a 47-of-50 result. One unranked Library of Congress page returned 18 of 18 agent-transcribed titles; its expected observations have not received independent audit. A separate candidate returned HTTP 403 and remains unknown. A supplemental A3 rerun matched 42 records from four derivative Wikipedia sections against an independently automated oracle. A new 32-section Wikipedia corpus has frozen revisions, attribution and a 24-development/8-holdout split. Three independent rendered-source audits enumerated 539 expected records and verified capture metadata. The frozen deterministic baseline passed complete-document checks on 23/24 development sections and 3/8 held-out sections; missing runner-up membership, translated-title disagreement and lost award-year categories remain failures. These are static derivative lists and tables, not coverage of every required source format. Auditors must be identified accurately as automated or human; no human audit or human correction-time measurement is claimed.
 
@@ -270,7 +270,7 @@ A grounded-LLM comparison on one failed development section supplied 12 valid so
 
 A separate Library of Congress PDF first-page supplement matched all 36 independently visually audited factual rows with native PDFKit and a small parser, including a release-year range. It is a bounded historical 1989–2017 registry selection, not a complete or current catalog or a held-out publisher test. A cross-platform retained-text check validates the snapshot but does not exercise PDF extraction. The examined NFB CSV resource could not be acquired because its resource hostname failed DNS resolution; no NFB extraction or availability result is claimed. A separate original CNC CSV under declared Licence Ouverte 2.0 matched all 25 independently audited records in a frozen first-record window, preserving whitespace, unknown director labels and raw administrative dates. The full source stays in ignored cache; the bounded 3,522-byte fixture is not a full-dataset or film-identity accuracy claim. A supplemental two-entity Wikidata query showed a real JavaScript interface rendering rows whose labels were absent from its initial HTML; the interface's documented HTTP JSON API returned the same two rows without rendering. This user-defined query is not an original critic-list or unseen-layout test. Original-publisher browser-only inputs, partial individual-ballot coverage and other untested layouts remain open.
 
-The availability experiment now has a runnable, opt-in TMDB/Movie of the Night observer and 60 machine-readable candidates in six strata. Two automated source audits checked all 60 published work identities and selection context, with pinned encyclopedia revisions and authoritative-source receipts; 64 raw/metadata receipt hashes were checked. Film-year, award edition, premiere and production assertions remain distinct. Duration and country conflicts for shorts are preserved. Provider-catalog identities remain unverified and activation fields remain null. The dry run makes zero requests; credentials, account checks and three dated provider observations remain pending. Offline fixtures exercise failed, partial and truncated responses as unknown. Six long-tail investigations support manual first-party checks and an explicitly inconclusive access outcome; no US playback or personal entitlement was verified. One anonymous player request returned HTTP 401 and remains unknown. OSS reuse findings are qualitative.
+The availability experiment now has a runnable, opt-in TMDB/Movie of the Night observer and 60 machine-readable candidates in six strata. Two automated source audits checked all 60 published work identities and selection context, with pinned encyclopedia revisions and authoritative-source receipts; 64 raw/metadata receipt hashes were checked. Film-year, award edition, premiere and production assertions remain distinct. Duration and country conflicts for shorts are preserved. The public frozen cohort keeps null activation fields. A separate automated audit now supports 60 TMDB work IDs in a local reviewed manifest; date/cut conflicts remain. The first US observation yields 53 usable responses and seven unknown responses in 60 HTTP 200 requests. Movie of the Night, account checks and two further genuinely separate dates remain pending. The dry run still makes zero requests. Offline fixtures exercise failed, partial and truncated responses as unknown. Six long-tail investigations support manual first-party checks and an explicitly inconclusive access outcome; no US playback or personal entitlement was verified. One anonymous player request returned HTTP 401 and remains unknown. OSS reuse findings are qualitative.
 
 Independent PR review found that malformed provider identifiers could be accepted as complete offers. The correction validates TMDB IDs before conversion and requires a nonempty add-on ID; regressions retain the whole response as unknown when a malformed row follows a valid one. The [review and disposition](https://github.com/pavelkrotkov/film-iq/pull/41#discussion_r4420172819) record the evidence. Passing code checks does not complete the outstanding live provider acceptance criteria.
 
@@ -523,3 +523,66 @@ idempotence. No personal movie/watchlist POST was attempted. Gate A remains open
 no population precision, playback, full paid-plan entitlement or release-readiness
 claim is made. The NBR award fact remains a separate unused candidate, without
 an invented numeric rank or an assumed film release year.
+
+
+### Epic B authenticated TMDB continuation (2026-10-30)
+
+The user configured a project-local, ignored `TMDB_API_KEY`. A read-only
+authentication probe returned HTTP 200 / success; no secret value was printed or
+committed. The research runners now support TMDB's documented v3 query-key
+authentication as a fallback to Bearer authentication, while keeping credentials
+out of recorded endpoints and failure diagnostics. The earlier credential
+blocker is superseded for TMDB only; Movie of the Night access remains pending.
+
+The frozen fourteen-film historical cohort completed all fourteen searches in
+fifteen API requests, including the second page for A Separation. These are
+current candidate observations, not accepted identities or an accuracy result.
+The completed details/director checks and independent automated adjudication are reported below.
+Only selected factual metadata is retained in ignored worktree-local caches;
+raw responses/images are not published. The TMDB FAQ supports attributed
+noncommercial use; historical retention/redistribution rights are not inferred
+from that statement. No provider superiority, account entitlement or Gate B
+acceptance is established by successful authentication.
+
+The historical run now includes 14 successful detail/credit requests and six
+paired source-alias searches, for 35 benchmark requests in total (21 search,
+14 detail). All returned HTTP 200. A separate automated audit supports twelve
+identities and leaves two date-conflicted cases ambiguous; this is not human
+ground truth or a precision estimate. Five of six source-alias queries retrieve
+the reviewed candidate. The romanized Uncle Boonmee alias yields no candidates
+even though the English query finds the work, demonstrating why an empty search
+cannot establish catalog absence. Automatic acceptance remains zero; human
+review minutes and monetary cost remain unknown. The recorded 103.617-second
+audit interval is automated elapsed wall time, not human labor.
+
+The availability cohort now has 60 independently automated, evidence-supported
+TMDB work identities for offer lookup, with date/cut conflicts retained. Four
+broad searches exceeded the five-page budget and remain incomplete despite
+positive identity evidence. The local reviewed manifest preserves the original
+cohort and audit hashes; it activates TMDB only, with IMDb IDs still null because
+they have not been independently verified. B2's conservative date-conflicted
+statuses remain separate; neither audit is human precision truth.
+
+B4 made 225 successful TMDB requests: 91 search, 66 detail, 60 first US offers,
+seven diagnostic rechecks and one service-label mapping. The earlier 60
+restricted-network attempts returned URLError with no confirmed upstream request;
+they are preserved separately rather than counted as HTTP failures. All 60
+offer requests returned HTTP 200: 53 contain an explicit usable US object and
+offers; seven shorts lack that object and remain unknown. No complete empty-US
+response or removal event was observed. The five other assigned strata each
+have ten usable responses; shorts/experimental has three usable and seven
+unknown. These are assigned reporting strata, not a feature/short partition.
+The 529 normalized offer rows are 81 subscription, 218 rent, 204 buy, eight ads
+and eighteen free; all account entitlements remain unknown. The catalog sum
+13.9719 seconds includes processing, whereas the offer-fetch sum 5.1723 seconds
+excludes normalization and pacing. Neither is a total labor/cost measurement.
+
+Three bounded public first-party page checks support title presence at Netflix,
+Disney+ and Apple. Web-reader snapshots, generic plan advertisements and a title
+page without a transaction/price do not verify US account/ad-tier access or
+rent/buy correctness. Duration discrepancies are retained. Movie of the Night
+access, historical-retention permission, two further dates, actual account and
+transaction checks, and comparative change/expiry measurements remain open.
+The updated [B2 review](https://github.com/pavelkrotkov/film-iq/pull/39#pullrequestreview-5711278183)
+found no actionable Standards or Spec defects at 8317a76; its empirical gaps remain
+explicit. Gate B is not accepted.
