@@ -7,6 +7,8 @@ supersedes the historical no-live-request status below. It preserves the origina
 fourteen-case sample and its unresolved source contexts; a successful catalog
 response alone does not establish a correct film match.
 
+**Timed supplement:** [The source-stratified review-effort report](review-effort-20261030.md) records an actual unblinded agent-assisted review of all fourteen cases. Its 59.235865-second wall time is separate from still-unmeasured human labor; the earlier sample and outcomes are unchanged.
+
 This is an exploratory, convenience-selected sample, not a representative catalog benchmark or a completed acceptance test. It spans the target periods and older retrospectives, with translated titles, documentaries, animation and shorts. The source pages were inspected using a web search/reader; their displayed records can change and are not permission to copy or redistribute the underlying source text. Only concise identifiers, links and findings are recorded here. [Plan §4](../../../plan.md) and [ADR 0003](../../adr/0003-film-identifiers.md) require keeping original evidence and unresolved matches rather than forcing an ID.
 
 Cannes URLs are recorded as identifiers rather than active links because its `https://www.festival-cannes.com/mentions-legales/` states conditions on links; this records the stated condition, not a legal opinion.
