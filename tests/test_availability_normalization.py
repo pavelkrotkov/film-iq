@@ -50,13 +50,17 @@ def test_motn_addon_is_not_included_and_dates_remain_asserted(monkeypatch, addon
         "link": "https://example.org/watch",
         "expiresSoon": True,
     }
-    data = {"imdbId": "tt123", "showType": "movie", "streamingOptions": {"us": [row]}}
+    data = {
+        "imdbId": "tt123",
+        "showType": "movie",
+        "streamingOptions": {"us": [row | {"type": "subscription"}, row]},
+    }
     result = observe(FILM, "motn", True, response(data))
     if not addon_id:
         assert result["state"] == "unknown" and "offers" not in result
         return
     assert result["state"] == "complete_response"
-    assert result["offers"][0] == {
+    assert result["offers"][-1] == {
         "type": "addon",
         "service": "fictional",
         "link": "https://example.org/watch",
