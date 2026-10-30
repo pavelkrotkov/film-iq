@@ -36,6 +36,6 @@ def test_wal_backup_and_restore(tmp_path):
         backup.backup(restored)
     restored = connect(tmp_path / "restored.db")
     assert restored.execute("PRAGMA integrity_check").fetchone() == ("ok",)
-    assert restored.execute("PRAGMA user_version").fetchone() == (8,)
+    assert restored.execute("PRAGMA user_version").fetchone() == (9,)
     assert restored.execute("SELECT id FROM source").fetchall() == [("s",)]
     restored.close()

@@ -11,7 +11,7 @@ def evidence_db(tmp_path):
     db = connect(tmp_path / "evidence.db")
     migrate(db)
     migrate(db)
-    assert db.execute("PRAGMA user_version").fetchone() == (8,)
+    assert db.execute("PRAGMA user_version").fetchone() == (9,)
     assert db.execute("PRAGMA foreign_keys").fetchone() == (1,)
     assert db.execute("PRAGMA journal_mode").fetchone() == ("wal",)
     db.execute(

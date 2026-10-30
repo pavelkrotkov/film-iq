@@ -1140,3 +1140,28 @@ Cleanup review found a manual-command working-directory ambiguity: the paired
 example now explicitly enters the main project folder before reading the
 consolidated cohort. The native jobs already used that folder; no runtime
 behavior or observation result changed.
+
+### C1 durable acquisition slice (2026-10-30)
+
+Issue #19 now has [version-9 operational bookkeeping](docs/acquisition-jobs.md)
+independent of the semantic extraction/run IDs. Each committed fetch attempt
+records its own identity, previous successful cursor and reviewed rights snapshot.
+Failed/partial/unknown attempts cannot advance the successful cursor or promote
+an extraction. Abrupt subprocess exit leaves a visible running attempt while
+SQLite rolls back uncommitted evidence; an explicit unknown/interrupted outcome
+and fresh attempt resume safely. Accepted revision replacement and reversible
+identity review retain the existing contracts. Stable edition/ballot/entry links
+preserve explicit person keys, null unknown contributors and derivative origins;
+no publisher grouping is inferred to identify independent critics.
+
+The status API exposes latest attempt and last success separately for CLI/report
+integration. Permission metadata blocks unknown/expired methods; it records an
+explicit reviewed decision rather than certifying source rights. C8 still owns
+actual expiry/deletion, deployment, complete restore and live recovery acceptance.
+No scheduler, live publisher request, provider adoption, Movary mutation or B4
+job change is introduced. Full production integration and live acceptance remain
+open rather than being inferred from the fixture results.
+
+Validation: Ruff check/format and ty pass; 353 tests pass with one opt-in skip.
+All fifteen changed/new Python files have maximum cyclomatic complexity 8 and
+minimum maintainability index 51.10 (Radon 6.0.1). No runtime dependency is added.
