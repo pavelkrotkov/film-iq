@@ -31,6 +31,6 @@ def test_declared_sensitivity_can_prefer_exceptional_over_many_good():
     exceptional = plans(films, offers, utility_power=2)[-1]
     assert [choice.film.id for choice in additive.choices] == [2, 3]
     choice = exceptional.choices[0]
-    assert choice.film.id == 1 and exceptional.utility == 100
+    assert choice.film == films[0] and exceptional.utility == 100
     assert (choice.film.personal_enjoyment, choice.film.personal_artistic_merit) == (4, 9)
     assert "recognition-power-v1 power=2" in exceptional.assumptions

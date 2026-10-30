@@ -5,7 +5,7 @@ from datetime import date
 
 from .models import Access, Film, Plan
 from .search import _best
-from .utility import known_inputs, options, utility
+from .utility import known_inputs, options, validate_utility
 
 
 def _eligible(offer: Access, current: set[int], service: int | None, rentals: bool) -> bool:
@@ -64,9 +64,10 @@ def compare(
     """
     offers, prices = known_inputs(offers, services, verified_only)
     _validate(films, offers, [max_minutes, max_films, budget_cents, *prices])
-    films = utility(films, utility_power)
+    validate_utility(films, utility_power)
     slots = tuple(sorted(set(dates)))
     assumptions = sorted({film.utility_assumption for film in films if film.utility_assumption})
+    assumptions.append(f"recognition-power-v1 power={utility_power}; personal scores not blended")
     assumptions.append("Unknown prices are excluded; existing subscriptions are sunk costs")
     plans = tuple(
         _best(
@@ -77,6 +78,7 @@ def compare(
             max_minutes,
             max_films,
             budget_cents,
+            utility_power,
         )
         for label, service, rentals, fee in options(current, services)
         if fee <= budget_cents

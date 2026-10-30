@@ -1190,3 +1190,11 @@ All 164 tracked/new Python files meet maximum CC 8 and minimum MI 50.025032.
 These are offline deterministic results, not production provider/tier, live
 personal-state or user-satisfaction validation. C5's final input integration
 remains pending C3/C4/#58; the implementation PR does not close #23.
+
+C5 combined review found the sensitivity transform overwrote the returned
+film's independent source score. Both GPT-6.1 Sol high axes reproduced it. The
+correction applies the exponent only to bundle utility, preserving the entire
+original Film and both personal scores. A regression asserts unchanged Film
+identity/fields alongside transformed utility. All 345 tests still pass (one
+opt-in skip); Ruff/format/ty and CC/MI gates pass. Follow-up review is required
+at the corrected head before merging.
