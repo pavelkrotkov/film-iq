@@ -27,6 +27,7 @@ def summarize(source: dict, main_only: bool = False) -> dict:
     return {
         "film": source["film"],
         "countries": source["country_labels"],
+        "periods": [str(source["source_film_year"])],
         "formats": ["short" if "short" in source["assigned_format"] else source["assigned_format"]],
         "training_count": count,
         "training_rank_sum": rank_sum,
@@ -48,6 +49,7 @@ def evaluate(data: dict, main_only: bool = False) -> dict:
         "observations": rows,
         "coverage": coverage(rows),
         "formats": groups(rows, "formats"),
+        "periods": groups(rows, "periods"),
         "countries_nonadditive": groups(rows, "countries"),
         "conditional_orders": {
             key: ranking(paired, key)

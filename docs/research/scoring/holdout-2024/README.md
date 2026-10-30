@@ -44,6 +44,8 @@ A main-list-only sensitivity preserves six distinct memberships across four film
 | Animated features | 4 | 2 | 0 | 0 |
 | Shorts, all subtypes | 4 | 0 | 0 | 0 |
 
+By source-year, the ten 2024 works have five known training, three known held-out and three overlapping observations; both 2023 shorts remain unknown. These year denominators and the format groups are recorded separately, not treated as calibrated temporal performance.
+
 Source-reported country memberships overlap and are nonadditive; exact country denominators are in results.json. Country is production metadata, not critic origin, story setting or viewer exposure. The two animated positive observations improve format evidence, while all shorts remain unknown. The new period was actually tested, but source sparsity prevents meaningful period/format stability or discovery-benefit estimates. Do not substitute unknown shorts for negative judgments.
 
 ## Timing, corrections and rights
