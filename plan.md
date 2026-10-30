@@ -1,8 +1,10 @@
 # film-iq — product, research and implementation plan
 
-**Version:** 1.1 (implementation reference) · **Date:** 2026-10-29 · **Status:** approved direction, empirical decisions pending  
+**Version:** 1.2 (implementation reference) · **Updated:** 2026-10-30 · **Status:** Gate A accepted narrowly; small usable MVP prioritized; B4/B8 Gate B open  
 **Source:** Film Intelligence white paper v1.0 plus 2026-10-29 architecture/research audit.  
 **Policy:** ADRs specify decisions; tracked issues implement them. This document defines scope, expected behavior, milestones and exit criteria, not a claim that implementation exists.
+
+**Current implementation priority (October 30, 2026):** Movary remains the personal record. Ship [#58](https://github.com/pavelkrotkov/film-iq/issues/58) (real history, ratings and verified history-comment export) and [#59](https://github.com/pavelkrotkov/film-iq/issues/59) (small rights-appropriate curated film cohort) before [#25](https://github.com/pavelkrotkov/film-iq/issues/25) (usable multi-film report). Personal enjoyment and personal artistic merit are **two user-provided 1–10 scores**, distinct from source-backed critical recognition ([ADR 0013](docs/adr/0013-two-personal-scores.md)). Bulk publisher scraping, trained preference models and production provider adoption are **not prerequisites** to the first report. The detailed [first-use MVP addendum](#first-useful-personal-mvp-and-two-subjective-ratings-user-direction-2026-10-30) supersedes earlier task-order assumptions; older appendices are dated historical evidence, not current gate status. B4 #14, B8 #18 and Epic B #2 remain open pending genuine later observation dates and adjudication. This is a planning decision, **not implemented functionality**.
 
 ## 1. Why build this?
 

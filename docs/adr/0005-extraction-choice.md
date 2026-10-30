@@ -33,8 +33,10 @@ reviews all six failed documents in 97.345139154 seconds of agent-assisted wall
 time, including inference/tool latency, with 151/151 records correct against
 the unchanged audit after repair. That is oracle-assisted correction, not a
 new automatic holdout rate or active human minutes. Original runtime timings
-retain their documented import/warm-up limitations. This is a scoped
-recommendation: the provisional status and validation gate are unchanged.
+retain their documented import/warm-up limitations. This paragraph records
+an earlier **provisional** recommendation; the **narrow deterministic default** was
+subsequently accepted in the decision immediately below. General tools and
+unattended unfamiliar-layout extraction remain gated.
 
 ## Narrow adoption decision — 2026-10-30
 
