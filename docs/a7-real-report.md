@@ -20,14 +20,19 @@ Availability source: **TMDB / JustWatch**, checked 2026-10-30T10:53:38.097610+00
 [Provider information](https://www.themoviedb.org/movie/5156-ladri-di-biciclette/watch?locale=US). This product uses the TMDB API but is not
 endorsed or certified by TMDB. No source images or raw criticism are retained.
 
-## Exact dry-run action
+## Approved action and verified outcome
 
 ```text
 Preview: add Bicycle Thieves (TMDB 5156) to watchlist
 ```
 
-No movie or watchlist addition has been attempted. The action requires explicit
-approval and a working Movary metadata-search configuration.
+This preview was shown before the user explicitly approved it. After the
+approved metadata configuration fix, the real CLI added the catalog movie first
+and its watchlist entry second. API readback found TMDB 5156 exactly once.
+The same CLI retried with `already on watchlist`, zero POST requests and no
+duplicate. See [the live validation](a7-live-validation.md) and
+[recorded request trace](a7-live-write-result.json). The offer/plan above remains
+the dated pre-write snapshot; no playback or personal entitlement is inferred.
 
 ## Default CLI output
 

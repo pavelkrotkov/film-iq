@@ -15,3 +15,13 @@ Final implementation can begin at known interfaces while integration of provisio
 ## Validation / reconsideration
 Gate: publish findings, update the relevant ADR and acceptance criteria before committing an uncertain dependency or architecture.
 
+## Gate A finding — 2026-10-30
+
+[The real source-to-watchlist trace](../a7-live-validation.md) supports acceptance
+of the narrow POC after explicit user approval, authoritative API readback and
+an idempotent CLI retry with zero further POSTs. The record states its fixture
+versus live evidence and unverified quality/rights/operational limits. No new
+runtime dependency or uncertain architecture choice was committed. Epic B's
+provider/source/calibration work remains independent; production release and
+the remaining empirical gates are not accepted by this result.
+

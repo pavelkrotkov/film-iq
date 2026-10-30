@@ -1,0 +1,15 @@
+{
+  "verified_date": "2026-10-30",
+  "authorization": "User explicitly approved both configuration and selected watchlist actions",
+  "image": "leepeuker/movary:0.82.1",
+  "state": "running",
+  "health": "healthy",
+  "compose_validation": "passed",
+  "service_reconfigure_exit": 0,
+  "tmdb_key_configured": true,
+  "secret_file_mode": "0600",
+  "image_pull": "disabled for the approved reconfiguration",
+  "original_failed_NBR_search_after_fix": "complete",
+  "selected_Bicycle_Thieves_search_after_fix": "complete",
+  "credential_values": "not retained in this evidence"
+}
