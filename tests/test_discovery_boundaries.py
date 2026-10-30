@@ -1,7 +1,7 @@
 """Read authoritative source fields and reject inconsistent report snapshots."""
 
 import pytest
-from discovery_fixtures import accept_source, cohort, snapshot
+from discovery_fixtures import accept_source, cohort, fresh_status, snapshot
 
 from film_iq.discovery import build_discovery
 
@@ -11,7 +11,7 @@ def test_stored_rank_wins_over_mutated_preview_and_obsolete_revision_is_pending(
     evidence_db.execute("UPDATE entry_observation SET rank=5")
     changed = cohort()
     changed["candidates"][0]["rank"] = 1
-    report = build_discovery(changed, snapshot(), db=evidence_db, refresh_status={"stale": False})
+    report = build_discovery(changed, snapshot(), db=evidence_db, refresh_status=fresh_status())
     assert report["candidates"][0]["rank"] == 5
     changed["revision_id"] = "obsolete"
     assert build_discovery(changed, snapshot(), db=evidence_db)["accepted"] == 0

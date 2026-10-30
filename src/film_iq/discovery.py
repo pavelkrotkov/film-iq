@@ -1,7 +1,8 @@
 """Read-only first-use discovery report with separate source and personal judgments."""
 
-from film_iq.discovery_evidence import accepted_row, recognition, validate_cohort
-from film_iq.discovery_personal import personal_index
+from film_iq.discovery_cohort import validate_cohort
+from film_iq.discovery_evidence import accepted_row, recognition
+from film_iq.discovery_personal import fresh_snapshot, personal_index
 
 SOURCE_FIELDS = (
     "source_id",
@@ -46,7 +47,7 @@ def _candidate(row, accepted, personal, scores, snapshot_available):
 def build_discovery(cohort: dict, snapshot: dict | None = None, *, db=None, refresh_status=None):
     """Only current accepted, reviewed, freshly unwatched films enter suggestions."""
     personal, scores = personal_index(snapshot), recognition(db)
-    stale = refresh_status is None or refresh_status.get("stale") is not False
+    stale = not fresh_snapshot(snapshot, refresh_status)
     candidates = [
         _candidate(
             row,
@@ -55,7 +56,7 @@ def build_discovery(cohort: dict, snapshot: dict | None = None, *, db=None, refr
             scores,
             snapshot is not None,
         )
-        for row in validate_cohort(cohort)
+        for row in validate_cohort(cohort, db)
     ]
     suggestions = [row for row in candidates if _suggested(row, stale)]
     return {

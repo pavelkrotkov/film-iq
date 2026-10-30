@@ -79,3 +79,7 @@ def accept_source(db):
         "INSERT INTO current_match(entry_id,revision_id,decision_id,film_id) VALUES('entry','rev','m',42)"
     )
     db.execute("INSERT INTO current_extraction(list_id,revision_id) VALUES('list','rev')")
+
+
+def fresh_status():
+    return {"stale": False, "last_successful_refresh": snapshot()["last_successful_refresh"]}

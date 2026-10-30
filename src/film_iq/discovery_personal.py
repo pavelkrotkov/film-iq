@@ -25,3 +25,12 @@ def personal_index(snapshot: dict | None) -> dict[int, dict]:
 def _identifier(identifier, films):
     if type(identifier) is not int or identifier <= 0 or identifier in films:
         raise ValueError("personal TMDB identities must be positive and unique")
+
+
+def fresh_snapshot(snapshot, status) -> bool:
+    return (
+        snapshot is not None
+        and status is not None
+        and status.get("stale") is False
+        and status.get("last_successful_refresh") == snapshot["last_successful_refresh"]
+    )

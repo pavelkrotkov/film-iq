@@ -33,7 +33,9 @@ def accepted_row(db: sqlite3.Connection | None, revision: str | None, position: 
         return None
     facts = json.loads(row[0])
     names = [column[0] for column in cursor.description]
-    facts.update(zip(names[2:], row[2:], strict=True))
+    normalized = dict(zip(names[2:], row[2:], strict=True))
+    facts["published_at"] = normalized.pop("published_at") or facts["published_at"]
+    facts.update(normalized)
     return facts, row[1]
 
 
@@ -46,13 +48,3 @@ def recognition(db: sqlite3.Connection | None) -> dict[int, dict]:
         for result in score(load_evidence(db))
         if int(result.film_id) in crosswalk
     }
-
-
-def validate_cohort(cohort: dict) -> list[dict]:
-    rows = cohort["candidates"]
-    if not isinstance(rows, list) or len(rows) != cohort["total_candidates"]:
-        raise ValueError("cohort count must match all supplied candidates")
-    positions = [row["position"] for row in rows]
-    if len(positions) != len(set(positions)):
-        raise ValueError("cohort positions must be unique")
-    return rows

@@ -2,14 +2,14 @@
 
 import json
 
-from discovery_fixtures import accept_source, cohort, snapshot
+from discovery_fixtures import accept_source, cohort, fresh_status, snapshot
 
 from film_iq.discovery import build_discovery
 from film_iq.discovery_render import markdown
 
 
 def test_preview_claims_cannot_accept_source_or_suggest_without_database():
-    report = build_discovery(cohort(), snapshot(), refresh_status={"stale": False})
+    report = build_discovery(cohort(), snapshot(), refresh_status=fresh_status())
     assert (report["accepted"], report["unresolved"]) == (0, 1)
     assert report["suggested_unwatched"] == []
     assert "PRIVATE COMMENT" not in json.dumps(report)
@@ -17,7 +17,7 @@ def test_preview_claims_cannot_accept_source_or_suggest_without_database():
 
 def test_current_acceptance_suggests_only_freshly_unwatched(evidence_db):
     accept_source(evidence_db)
-    report = build_discovery(cohort(), snapshot(), db=evidence_db, refresh_status={"stale": False})
+    report = build_discovery(cohort(), snapshot(), db=evidence_db, refresh_status=fresh_status())
     assert (report["accepted"], report["unresolved"], len(report["suggested_unwatched"])) == (
         1,
         0,
@@ -37,7 +37,7 @@ def test_current_acceptance_suggests_only_freshly_unwatched(evidence_db):
 def test_watched_scores_remain_visible_and_absent_snapshot_never_guesses(evidence_db):
     accept_source(evidence_db)
     report = build_discovery(
-        cohort(), snapshot(True), db=evidence_db, refresh_status={"stale": False}
+        cohort(), snapshot(True), db=evidence_db, refresh_status=fresh_status()
     )
     assert (report["watched_excluded"], report["suggested_unwatched"]) == (1, [])
     assert report["candidates"][0]["personal_enjoyment"] == 7

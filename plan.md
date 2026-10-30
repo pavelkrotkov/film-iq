@@ -1429,3 +1429,14 @@ These code slices do not accept whole issues, Epic C or Gate C. B4's later-date
 jobs remain untouched; future observation dates are not represented as completed.
 C7 local validation passes Ruff/format/ty and 416 tests with one opt-in skip;
 all 213 tracked/new Python files have maximum CC8 and minimum MI50.025032.
+
+C7's combined exact-head review found three concrete report defects: null
+normalized document metadata discarded a known accepted curated publication day;
+a successful status from a different personal snapshot generation enabled stale
+suggestions; and self-consistent subset/empty preview JSON hid accepted entries.
+The correction retains the accepted raw publication day when the normalized
+column is unknown, requires matching snapshot/status refresh tokens, and checks
+supplied positions against the full current accepted revision. Regressions cover
+a dated actual curated-import/acceptance/report path, generation mismatch/missing
+tokens, empty previews and truncated accepted selections. No personal or source
+record is changed by these report-boundary fixes.
