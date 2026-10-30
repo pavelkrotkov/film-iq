@@ -1,0 +1,327 @@
+[
+  {
+    "key": "history-01",
+    "query": "Uncle Boonmee Who Can Recall His Past Lives",
+    "source_titles": [
+      "Lung Boonmee Raluek Chat",
+      "Uncle Boonmee Who Can Recall His Past Lives"
+    ],
+    "directors": [
+      "Apichatpong Weerasethakul"
+    ],
+    "source_edition": 2010,
+    "production_year": 2010,
+    "production_year_context": "2010",
+    "premiere_year": null,
+    "source_publication_year_context": "?",
+    "local_release_eligibility": "?",
+    "source_urls": [
+      "https://www.festival-cannes.com/en/f/lung-boonmee-raluek-chat/"
+    ],
+    "source_context": "Cannes film record `https://www.festival-cannes.com/en/f/lung-boonmee-raluek-chat/`, competition 2010",
+    "accepted_tmdb_id": null,
+    "identity_status": "unreviewed"
+  },
+  {
+    "key": "history-02",
+    "query": "A Separation",
+    "source_titles": [
+      "Jodaeiye Nader az Simin",
+      "Nader and Simin, A Separation"
+    ],
+    "directors": [
+      "Asghar Farhadi"
+    ],
+    "source_edition": 2011,
+    "production_year": null,
+    "production_year_context": "? (programme labels film 2011)",
+    "premiere_year": null,
+    "source_publication_year_context": "?",
+    "local_release_eligibility": "?",
+    "source_urls": [
+      "https://www.berlinale.de/external/programme/archive/pdf/20116885.pdf"
+    ],
+    "source_context": "[Berlinale programme](https://www.berlinale.de/external/programme/archive/pdf/20116885.pdf), competition 2011",
+    "accepted_tmdb_id": null,
+    "identity_status": "unreviewed"
+  },
+  {
+    "key": "history-03",
+    "query": "Leidi",
+    "source_titles": [
+      "Leidi"
+    ],
+    "directors": [
+      "Simón Mesa Soto"
+    ],
+    "source_edition": 2014,
+    "production_year": 2014,
+    "production_year_context": "2014",
+    "premiere_year": null,
+    "source_publication_year_context": "2014 (announcement)",
+    "local_release_eligibility": "?",
+    "source_urls": [
+      "https://www.festival-cannes.com/f/leidi/",
+      "https://www.festival-cannes.com/en/2014/all-the-67th-festival-de-cannes-awards/"
+    ],
+    "source_context": "Cannes film record `https://www.festival-cannes.com/f/leidi/` and awards announcement `https://www.festival-cannes.com/en/2014/all-the-67th-festival-de-cannes-awards/`, 2014",
+    "accepted_tmdb_id": null,
+    "identity_status": "unreviewed"
+  },
+  {
+    "key": "history-04",
+    "query": "Shoplifters",
+    "source_titles": [
+      "Manbiki Kazoku",
+      "Shoplifters"
+    ],
+    "directors": [
+      "Hirokazu Kore-eda"
+    ],
+    "source_edition": 2018,
+    "production_year": 2018,
+    "production_year_context": "2018",
+    "premiere_year": null,
+    "source_publication_year_context": "?",
+    "local_release_eligibility": "?",
+    "source_urls": [
+      "https://www.festival-cannes.com/en/f/manbiki-kazoku/"
+    ],
+    "source_context": "Cannes film record `https://www.festival-cannes.com/en/f/manbiki-kazoku/`, competition 2018",
+    "accepted_tmdb_id": null,
+    "identity_status": "unreviewed"
+  },
+  {
+    "key": "history-05",
+    "query": "All These Creatures",
+    "source_titles": [
+      "All These Creatures"
+    ],
+    "directors": [
+      "Charles Williams"
+    ],
+    "source_edition": 2018,
+    "production_year": 2018,
+    "production_year_context": "2018",
+    "premiere_year": null,
+    "source_publication_year_context": "?",
+    "local_release_eligibility": "?",
+    "source_urls": [
+      "https://www.festival-cannes.com/en/f/all-these-creatures/"
+    ],
+    "source_context": "Cannes film record `https://www.festival-cannes.com/en/f/all-these-creatures/`, competition 2018",
+    "accepted_tmdb_id": null,
+    "identity_status": "unreviewed"
+  },
+  {
+    "key": "history-06",
+    "query": "Portrait of a Lady on Fire",
+    "source_titles": [
+      "Portrait de la jeune fille en feu",
+      "Portrait of a Lady on Fire"
+    ],
+    "directors": [
+      "Céline Sciamma"
+    ],
+    "source_edition": 2019,
+    "production_year": 2019,
+    "production_year_context": "2019",
+    "premiere_year": null,
+    "source_publication_year_context": "2019 (article)",
+    "local_release_eligibility": "?",
+    "source_urls": [
+      "https://www.festival-cannes.com/en/f/portrait-de-la-jeune-fille-en-feu/",
+      "https://www.festival-cannes.com/en/2019/meet-the-team-from-portrait-de-la-jeune-fille-en-feu-portrait-of-a-lady-on-fire/"
+    ],
+    "source_context": "Cannes film record `https://www.festival-cannes.com/en/f/portrait-de-la-jeune-fille-en-feu/` and festival article `https://www.festival-cannes.com/en/2019/meet-the-team-from-portrait-de-la-jeune-fille-en-feu-portrait-of-a-lady-on-fire/`, 2019",
+    "accepted_tmdb_id": null,
+    "identity_status": "unreviewed"
+  },
+  {
+    "key": "history-07",
+    "query": "Decision to Leave",
+    "source_titles": [
+      "Heojil Kyolshim",
+      "Decision to Leave"
+    ],
+    "directors": [
+      "Park Chan-wook"
+    ],
+    "source_edition": 2022,
+    "production_year": 2022,
+    "production_year_context": "2022",
+    "premiere_year": null,
+    "source_publication_year_context": "2022 (announcement)",
+    "local_release_eligibility": "?",
+    "source_urls": [
+      "https://www.festival-cannes.com/en/f/heojil-kyolshim/",
+      "https://www.festival-cannes.com/en/press/press-releases/the-films-of-the-official-selection-2022/"
+    ],
+    "source_context": "Cannes film record `https://www.festival-cannes.com/en/f/heojil-kyolshim/` and selection announcement `https://www.festival-cannes.com/en/press/press-releases/the-films-of-the-official-selection-2022/`, 2022",
+    "accepted_tmdb_id": null,
+    "identity_status": "unreviewed"
+  },
+  {
+    "key": "history-08",
+    "query": "The Water Murmurs",
+    "source_titles": [
+      "Hai Bian Sheng Qi Yi Zuo Xuan Ya",
+      "The Water Murmurs"
+    ],
+    "directors": [
+      "Jianying Chen"
+    ],
+    "source_edition": 2022,
+    "production_year": 2022,
+    "production_year_context": "2022",
+    "premiere_year": null,
+    "source_publication_year_context": "?",
+    "local_release_eligibility": "?",
+    "source_urls": [
+      "https://www.festival-cannes.com/en/f/hai-bian-sheng-qi-yi-zuo-xuan-ya/"
+    ],
+    "source_context": "Cannes film record `https://www.festival-cannes.com/en/f/hai-bian-sheng-qi-yi-zuo-xuan-ya/`, competition 2022",
+    "accepted_tmdb_id": null,
+    "identity_status": "unreviewed"
+  },
+  {
+    "key": "history-09",
+    "query": "No Other Land",
+    "source_titles": [
+      "No Other Land"
+    ],
+    "directors": [
+      "Basel Adra",
+      "Hamdan Ballal",
+      "Yuval Abraham",
+      "Rachel Szor"
+    ],
+    "source_edition": 2024,
+    "production_year": null,
+    "production_year_context": "? (Berlinale programme labels film 2024)",
+    "premiere_year": 2024,
+    "source_publication_year_context": "? (poll pages do not state publication dates)",
+    "local_release_eligibility": "The same film appears on lists with apparently conflicting US-release and undistributed criteria. Preserve both observations; do not infer a US release date or resolve the inconsistency without further evidence.",
+    "source_urls": [
+      "https://www.berlinale.de/media/download/presse/dossier/pressedossier-2024.pdf",
+      "https://www.filmcomment.com/best-films-of-2024/",
+      "https://www.filmcomment.com/best-undistributed-films-of-2024/"
+    ],
+    "source_context": "[Berlinale 2024 programme](https://www.berlinale.de/media/download/presse/dossier/pressedossier-2024.pdf), world premiere; Film Comment's [US-release list](https://www.filmcomment.com/best-films-of-2024/) and [undistributed list](https://www.filmcomment.com/best-undistributed-films-of-2024/)",
+    "accepted_tmdb_id": null,
+    "identity_status": "unreviewed"
+  },
+  {
+    "key": "history-10",
+    "query": "The Man Who Could Not Remain Silent",
+    "source_titles": [
+      "The Man Who Could Not Remain Silent"
+    ],
+    "directors": [
+      "Nebojša Slijepčević"
+    ],
+    "source_edition": 2024,
+    "production_year": 2024,
+    "production_year_context": "2024",
+    "premiere_year": null,
+    "source_publication_year_context": "2024 (programme)",
+    "local_release_eligibility": "?",
+    "source_urls": [
+      "https://www.festival-cannes.com/en/f/the-man-who-could-not-remain-silent/",
+      "https://www.festival-cannes.com/en/2024/the-short-film-competition-programme/"
+    ],
+    "source_context": "Cannes film record `https://www.festival-cannes.com/en/f/the-man-who-could-not-remain-silent/` and competition programme `https://www.festival-cannes.com/en/2024/the-short-film-competition-programme/`, 2024",
+    "accepted_tmdb_id": null,
+    "identity_status": "unreviewed"
+  },
+  {
+    "key": "history-11",
+    "query": "Percebes",
+    "source_titles": [
+      "Percebes"
+    ],
+    "directors": [
+      "Alexandra Ramires",
+      "Laura Gonçalves"
+    ],
+    "source_edition": 2024,
+    "production_year": 2024,
+    "production_year_context": "2024",
+    "premiere_year": null,
+    "source_publication_year_context": "?",
+    "local_release_eligibility": "?",
+    "source_urls": [
+      "https://www.annecyfestival.com/about/archives%3Aen/2024%3Aen/award-winners/film-index%3Afilm-20242481"
+    ],
+    "source_context": "[Annecy award record](https://www.annecyfestival.com/about/archives%3Aen/2024%3Aen/award-winners/film-index%3Afilm-20242481), 2024",
+    "accepted_tmdb_id": null,
+    "identity_status": "unreviewed"
+  },
+  {
+    "key": "history-12",
+    "query": "Sheep in the Box",
+    "source_titles": [
+      "Sheep in the Box"
+    ],
+    "directors": [
+      "Hirokazu Kore-eda"
+    ],
+    "source_edition": 2026,
+    "production_year": 2026,
+    "production_year_context": "2026",
+    "premiere_year": null,
+    "source_publication_year_context": "2026 (announcement)",
+    "local_release_eligibility": "?",
+    "source_urls": [
+      "https://cinemadedemain.festival-cannes.com/en/f/sheep-in-the-box/",
+      "https://www.festival-cannes.com/en/press/press-releases/the-films-of-the-official-selection-2026/"
+    ],
+    "source_context": "Cannes film record `https://cinemadedemain.festival-cannes.com/en/f/sheep-in-the-box/` and selection announcement `https://www.festival-cannes.com/en/press/press-releases/the-films-of-the-official-selection-2026/`, 2026",
+    "accepted_tmdb_id": null,
+    "identity_status": "unreviewed"
+  },
+  {
+    "key": "history-13",
+    "query": "Jeanne Dielman",
+    "source_titles": [
+      "Jeanne Dielman, 23, quai du Commerce, 1080 Bruxelles"
+    ],
+    "directors": [
+      "Chantal Akerman"
+    ],
+    "source_edition": 2012,
+    "production_year": null,
+    "production_year_context": "? (article labels film 1975)",
+    "premiere_year": null,
+    "source_publication_year_context": "2012",
+    "local_release_eligibility": "?",
+    "source_urls": [
+      "https://www.criterion.com/current/posts/2429-sight-sound-poll-2012-jeanne-dielman-23-quai-du-commerce-1080-bruxelles"
+    ],
+    "source_context": "[Criterion's 2012 retrospective article](https://www.criterion.com/current/posts/2429-sight-sound-poll-2012-jeanne-dielman-23-quai-du-commerce-1080-bruxelles) is a derivative account of the Sight and Sound poll, not an additional independent critic ballot.",
+    "accepted_tmdb_id": null,
+    "identity_status": "unreviewed"
+  },
+  {
+    "key": "history-14",
+    "query": "Man with a Movie Camera",
+    "source_titles": [
+      "Man with a Movie Camera"
+    ],
+    "directors": [
+      "Dziga Vertov"
+    ],
+    "source_edition": 2023,
+    "production_year": null,
+    "production_year_context": "? (article labels film 1929)",
+    "premiere_year": null,
+    "source_publication_year_context": "2024",
+    "local_release_eligibility": "?",
+    "source_urls": [
+      "https://www.filmlinc.org/daily/film-at-lincoln-center-staff-share-top-10-of-2023-lists/"
+    ],
+    "source_context": "[Film at Lincoln Center staff retrospective](https://www.filmlinc.org/daily/film-at-lincoln-center-staff-share-top-10-of-2023-lists/), a 2023 viewing published in 2024",
+    "accepted_tmdb_id": null,
+    "identity_status": "unreviewed"
+  }
+]
