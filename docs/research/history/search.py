@@ -5,13 +5,16 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 
-def fetch(query: str, page: int, token: str) -> tuple[int, bytes, dict[str, str]]:
-    params = urlencode(
-        {"query": query, "page": page, "language": "en-US", "include_adult": "false"}
-    )
+def fetch(query: str, page: int, auth: tuple[str, str]) -> tuple[int, bytes, dict[str, str]]:
+    token, api_key = auth
+    params = {"query": query, "page": page, "language": "en-US", "include_adult": "false"}
+    headers = {"Accept": "application/json"}
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    else:
+        params["api_key"] = api_key
     request = Request(
-        f"https://api.themoviedb.org/3/search/movie?{params}",
-        headers={"Authorization": f"Bearer {token}", "Accept": "application/json"},
+        f"https://api.themoviedb.org/3/search/movie?{urlencode(params)}", headers=headers
     )
     try:
         with urlopen(request, timeout=30) as response:

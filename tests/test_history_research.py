@@ -37,6 +37,7 @@ def run(monkeypatch, body, status=200, **kwargs):
 
 def test_dry_run_and_sample(monkeypatch):
     monkeypatch.delenv("TMDB_READ_ACCESS_TOKEN", raising=False)
+    monkeypatch.delenv("TMDB_API_KEY", raising=False)
     sample = json.loads(Path("docs/research/history/sample.json").read_text())
     assert len(sample) == 14 and all(row["accepted_tmdb_id"] is None for row in sample)
     assert all(lookup(row, live=True)["requests"] == 0 for row in sample)

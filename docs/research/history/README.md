@@ -2,6 +2,11 @@
 
 Version 0.1 · Source checks 2026-10-29 · [Issue #12](https://github.com/pavelkrotkov/film-iq/issues/12) · [Epic B](https://github.com/pavelkrotkov/film-iq/issues/2)
 
+**Dated continuation:** [The 2026-10-30 live search and detail experiment](live-20261030.md)
+supersedes the historical no-live-request status below. It preserves the original
+fourteen-case sample and its unresolved source contexts; a successful catalog
+response alone does not establish a correct film match.
+
 This is an exploratory, convenience-selected sample, not a representative catalog benchmark or a completed acceptance test. It spans the target periods and older retrospectives, with translated titles, documentaries, animation and shorts. The source pages were inspected using a web search/reader; their displayed records can change and are not permission to copy or redistribute the underlying source text. Only concise identifiers, links and findings are recorded here. [Plan §4](../../../plan.md) and [ADR 0003](../../adr/0003-film-identifiers.md) require keeping original evidence and unresolved matches rather than forcing an ID.
 
 Cannes URLs are recorded as identifiers rather than active links because its `https://www.festival-cannes.com/mentions-legales/` states conditions on links; this records the stated condition, not a legal opinion.
@@ -75,7 +80,7 @@ UV_CACHE_DIR="$PWD/.cache/uv" TMPDIR="$PWD/.cache/tmp" \
   --output .cache/history-dry-run.json
 ```
 
-For an authorized live run, configure `TMDB_READ_ACCESS_TOKEN` locally, review
+For an authorized live run, configure `TMDB_READ_ACCESS_TOKEN` or `TMDB_API_KEY` locally, review
 the applicable provider terms and retention period, and supply an explicit
 retention note. Use a new observation filename each time:
 
@@ -92,8 +97,11 @@ recorded query per film, English response language and `include_adult=false`;
 it deliberately applies no disputed release-year filter. Search results do not
 include director verification. Additional alias queries and film/credits
 adjudication are separate reviewed work, not automatic acceptance. Authentication
-uses the documented [Bearer header](https://developer.themoviedb.org/docs/authentication-application);
-tokens are neither written into URLs nor observation files.
+uses the documented [Bearer header or v3 API key](https://developer.themoviedb.org/docs/authentication-application).
+The Bearer token takes precedence when both are configured. A v3 key is sent only
+in the HTTPS request's `api_key` query parameter; evidence records use the fixed
+credential-free endpoint and never retain authenticated request URLs or exception
+messages. Neither credential is written into observation files.
 
 Each observation records exact query parameters, per-page UTC attempt time,
 HTTP status, exposed rate-limit headers, response hash, request count and selected
@@ -118,5 +126,6 @@ note grants rights. Optional IMDb verification remains outside this experiment.
 Offline tests cover successful pagination, missing credentials, empty results,
 request failure, malformed/truncated data, changing totals, duplicate IDs,
 page-budget exhaustion and partial later-page failures. This enables a future
-reproducible measurement; no live TMDB requests, current precision or coverage
-results have been obtained here.
+reproducible measurement. At initial preparation, no live TMDB requests, current
+precision or coverage results had been obtained; see the dated continuation above
+for the later observations and remaining acceptance gaps.

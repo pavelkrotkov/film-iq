@@ -12,14 +12,14 @@ from .search import fetch, quota
 from .validation import candidates, complete
 
 
-def read_page(query: str, page: int, token: str, get, attempts: list) -> dict:
+def read_page(query: str, page: int, auth: tuple[str, str], get, attempts: list) -> dict:
     attempt: dict[str, Any] = {
         "page": page,
         "observed_at": datetime.now(UTC).isoformat(),
         "phase": "transport",
     }
     attempts.append(attempt)
-    status, body, headers = get(query, page, token)
+    status, body, headers = get(query, page, auth)
     attempt.update(http_status=status, quota=quota(headers), phase="http_status")
     if status != 200:
         raise ValueError("unsuccessful search")
@@ -34,15 +34,15 @@ def read_page(query: str, page: int, token: str, get, attempts: list) -> dict:
     return data
 
 
-def pages(query: str, token: str, limit: int, get, attempts: list) -> list[dict]:
-    first = read_page(query, 1, token, get, attempts)
+def pages(query: str, auth: tuple[str, str], limit: int, get, attempts: list) -> list[dict]:
+    first = read_page(query, 1, auth, get, attempts)
     total_pages, total_results = first["total_pages"], first["total_results"]
     # A request budget must never silently truncate the candidate set.
     if total_pages > limit:
         attempts[-1]["phase"] = "page_budget"
         raise ValueError("page limit: incomplete candidate set")
     for page in range(2, total_pages + 1):
-        data = read_page(query, page, token, get, attempts)
+        data = read_page(query, page, auth, get, attempts)
         if (data["total_pages"], data["total_results"]) != (total_pages, total_results):
             attempts[-1]["phase"] = "pagination_consistency"
             raise ValueError("pagination changed")
@@ -66,11 +66,11 @@ def lookup(film: dict, live: bool = False, max_pages: int = 5, get=fetch) -> dic
         "attempts": [],
         "monetary_cost": None,
     }
-    token = os.getenv("TMDB_READ_ACCESS_TOKEN")
-    if not live or not token:
+    auth = (os.getenv("TMDB_READ_ACCESS_TOKEN", ""), os.getenv("TMDB_API_KEY", ""))
+    if not live or not any(auth):
         return result | {"requests": 0}
     try:
-        rows = pages(film["query"], token, max_pages, get, result["attempts"])
+        rows = pages(film["query"], auth, max_pages, get, result["attempts"])
         result.update(state="complete_search", reason=None, candidates=rows)
     # Retain successful earlier pages as partial evidence, never as a complete set.
     except (HTTPException, URLError, OSError, ValueError, KeyError, TypeError) as error:
