@@ -30,14 +30,14 @@ def markdown(report: dict) -> str:
         "",
         f"Last successful personal refresh: {_value(report['last_successful_refresh'])}; stale/unknown: {report['personal_state_stale']}.",
         f"Candidates {report['total_candidates']}; accepted {report['accepted']}; unresolved {report['unresolved']}; watched excluded {report['watched_excluded']}.",
-        f"Scope: {report['completeness']}. Lineage: {report['lineage']}",
+        f"Declared selection scope: {report['completeness']}. Declared lineage: {report['lineage']}",
         "",
         "| Title | TMDB | Identity | Extraction | Rank | Tie | Watched | Enjoyment | Artistic merit | Merit review | Public support |",
         "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
     ]
     lines.extend(_row(item) for item in report["candidates"])
     lines.extend(
-        f"- {_value(item['raw_title'])}: [{_value(item['edition'])}]({item['source_url']}), {_value(item['ballot_scope'])}; locator {_value(item['locator'])}; published {_value(item['published_at'])}; eligibility date {_value(item['eligibility_date'])}. Access: {item['access']}."
+        f"- {_value(item['raw_title'])}: [{_value(item['edition'])}]({item['source_url']}), {_value(item['ballot_scope'])}; locator {_value(item['locator'])}; published {_value(item['published_at'])}; eligibility date {_value(item['eligibility_date'])}; accepted source completeness {_value(item['source_completeness'])}, lineage {_value(item['source_lineage_kind'])}: {_value(item['source_lineage'])}; eligibility {_value(item['source_eligibility'])}. Access: {item['access']}."
         for item in report["candidates"]
     )
     lines.extend(["", "Suggested unwatched:"])

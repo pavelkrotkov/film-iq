@@ -54,7 +54,7 @@ def snapshot(watched=False):
 
 def accept_source(db):
     db.execute(
-        "UPDATE entry_observation SET raw_context=?,position=1",
+        "UPDATE entry_observation SET raw_context=?,position=1,rank=2,tie=NULL",
         (json.dumps(cohort()["candidates"][0]),),
     )
     db.execute("INSERT INTO film_index(id,tmdb_id) VALUES(42,123)")

@@ -10,7 +10,7 @@ from film_iq.discovery_render import markdown
 
 def test_preview_claims_cannot_accept_source_or_suggest_without_database():
     report = build_discovery(cohort(), snapshot(), refresh_status={"stale": False})
-    assert report["accepted"] == 0 and report["unresolved"] == 1
+    assert (report["accepted"], report["unresolved"]) == (0, 1)
     assert report["suggested_unwatched"] == []
     assert "PRIVATE COMMENT" not in json.dumps(report)
 
@@ -39,7 +39,7 @@ def test_watched_scores_remain_visible_and_absent_snapshot_never_guesses(evidenc
     report = build_discovery(
         cohort(), snapshot(True), db=evidence_db, refresh_status={"stale": False}
     )
-    assert report["watched_excluded"] == 1 and report["suggested_unwatched"] == []
+    assert (report["watched_excluded"], report["suggested_unwatched"]) == (1, [])
     assert report["candidates"][0]["personal_enjoyment"] == 7
     unknown = build_discovery(cohort(), db=evidence_db)
     assert unknown["candidates"][0]["watched"] is None

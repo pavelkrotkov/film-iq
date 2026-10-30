@@ -11,17 +11,30 @@ from film_iq.scoring.a1 import load_evidence
 def accepted_row(db: sqlite3.Connection | None, revision: str | None, position: int):
     if db is None or revision is None:
         return None
-    row = db.execute(
-        """SELECT o.raw_context, f.tmdb_id
+    cursor = db.execute(
+        """SELECT o.raw_context, f.tmdb_id,
+        l.completeness AS accepted_completeness, l.lineage_kind AS accepted_lineage_kind,
+        l.lineage AS accepted_lineage, l.eligibility AS accepted_eligibility,
+        o.raw_title, o.listed_year AS year, o.director, o.position, o.rank, o.tie, o.locator,
+        l.edition, l.author AS ballot_scope, l.source_id,
+        d.url AS source_url, d.published_at
         FROM current_extraction c
         JOIN extraction_revision r ON r.id=c.revision_id AND r.acceptance_state='accepted'
+        JOIN published_list l ON l.id=c.list_id
+        JOIN source_document d ON d.id=r.document_id
         JOIN entry_observation o ON o.revision_id=r.id AND o.extraction_decision='accepted'
         LEFT JOIN current_match m ON m.entry_id=o.entry_id AND m.revision_id=o.revision_id
         LEFT JOIN film_index f ON f.id=m.film_id
         WHERE r.id=? AND o.position=?""",
         (revision, position),
-    ).fetchone()
-    return (json.loads(row[0]), row[1]) if row is not None else None
+    )
+    row = cursor.fetchone()
+    if row is None:
+        return None
+    facts = json.loads(row[0])
+    names = [column[0] for column in cursor.description]
+    facts.update(zip(names[2:], row[2:], strict=True))
+    return facts, row[1]
 
 
 def recognition(db: sqlite3.Connection | None) -> dict[int, dict]:

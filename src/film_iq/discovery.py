@@ -26,6 +26,10 @@ def _candidate(row, accepted, personal, scores, snapshot_available):
     watched = state.get("watched", False) if snapshot_available and tmdb else None
     return {
         **{key: facts[key] for key in SOURCE_FIELDS},
+        "source_completeness": facts.get("accepted_completeness"),
+        "source_lineage_kind": facts.get("accepted_lineage_kind"),
+        "source_lineage": facts.get("accepted_lineage"),
+        "source_eligibility": facts.get("accepted_eligibility"),
         "tmdb_id": tmdb,
         "identity_status": "reviewed" if accepted is not None and tmdb else "unresolved",
         "extraction_status": "accepted" if accepted is not None else "pending_review",
