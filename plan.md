@@ -391,3 +391,18 @@ The #43 integrated tree passes 292 tests with one opt-in live skip (2.04 seconds
 locally), Ruff/format/ty and diff checks. All 107 source/test Python files retain
 maximum CC 8 and minimum MI 50.025. Legacy v1 snapshot input IDs and numeric
 results replay unchanged; new uncertainty fields remain explicitly unmeasured.
+
+### Issue #7 automated browser-audit finding (2026-10-30 UTC)
+
+A separate-from-resolver parent operator inspected four public TMDB records in
+the actual user browser. The auditor is `automated:Codex-browser`, not an
+independent human; independent GPT evidence-adequacy review is pending. A minimal
+[truth-only overlay and reproducible report](docs/identity-browser-audit.md)
+preserves differing primary/TMDB years, runtimes and name forms without changing
+frozen observations, candidates or earlier results. Existing `evaluate()` scores
+four cases: zero auto-accepts, coverage 0, review rate 1, conditional candidate
+recall 1, precision undefined. At Land remains unknown/incomplete and excluded.
+Recall is conditional on existing Wikidata lead retrieval, not TMDB full-catalog
+search. This convenience cohort and automated attestation do not establish
+calibrated accuracy, the 99% target, issue #7 closure or Gate A acceptance. No
+production identity behavior or ADR decision changes.
