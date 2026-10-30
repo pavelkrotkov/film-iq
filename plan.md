@@ -1322,3 +1322,26 @@ have minimum MI 50.613109. Mixed known/unknown actor coverage retains one
 support unit and its original selected rank; contradictory mappings fail
 before a snapshot is written. Both independent review findings receive native
 replies; thread resolution awaits the controller's exact-head follow-up.
+
+### C8 offline recovery and retention primitives (2026-10-30)
+
+The bounded #26 slice uses SQLite's native online backup into a new private file,
+read-only source restore, integrity/foreign-key validation and refusal to overwrite
+existing databases. Synthetic WAL and accepted-revision replay exercises preserve
+schema/current evidence without duplicate votes. Explicit versioned cache rights,
+expiry/termination status and named-file purge preview/optional execution are
+separate from provider permission; unknown rights block storage rather than grant
+retention. No live source data is deleted. The operations guide records TMDB's
+six-month/termination rules and native-provider limitations without adopting a
+feed or touching existing B4 jobs.
+
+Ruff/format/ty pass; 346 tests pass, one opt-in skips. Python metric gates remain
+CC<=8 and MI>=50. C8 remains open for actual provider-specific enforcement/quotas,
+full separately authorized Movary restoration, selected runtime integration and
+production failed-job acceptance. Disposable fixture recovery is not live recovery.
+
+C8 combined Standards/Spec review reproduced a named-cache symlink error: the
+preview named the alias but execution unlinked its resolved target. The correction
+validates resolved containment and unlinks the selected lexical path, preserving
+the unselected target. A disposable symlink regression covers that exact defect;
+no live cache/source data is touched. Follow-up review precedes merge.
