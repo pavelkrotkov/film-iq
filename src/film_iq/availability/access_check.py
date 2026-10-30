@@ -1,23 +1,27 @@
 """Inspect deduplicated discovery and separately qualified purchasing advice."""
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from .assertion import Assertion
 from .opportunity import Opportunity
+from .timing import purchase_window
 
 
-def purchase_ready(item: Assertion) -> bool:
-    """Require reviewed work, confirmed exact access and explicit price/currency."""
+def purchase_ready(item: Assertion, *, now: datetime, max_age: timedelta) -> bool:
+    """Require qualified access within supplied freshness and asserted availability."""
     offer = item.opportunity
     plan_known = offer.kind not in {"subscription", "add-on"} or offer.plan is not None
     add_on_known = offer.kind != "add-on" or offer.add_on is not None
-    return (
-        item.work_status == "reviewed"
-        and item.entitlement == "confirmed"
-        and plan_known
-        and add_on_known
-        and item.price_minor is not None
-        and item.currency is not None
+    return all(
+        (
+            item.work_status == "reviewed",
+            item.entitlement == "confirmed",
+            plan_known,
+            add_on_known,
+            item.price_minor is not None,
+            item.currency is not None,
+            purchase_window(item, now, max_age),
+        )
     )
 
 

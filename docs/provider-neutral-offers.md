@@ -11,6 +11,10 @@ price/entitlement disagreements. `first_seen_by_us` is the earliest supplied
 observation time, never a provider arrival assertion. Catalog discovery requires
 no consumer login; `purchase_ready` separately requires reviewed identity,
 confirmed access, known applicable plan/add-on and explicit price/currency.
+It requires explicit `now` and a caller-declared `max_age`: observations from the
+future or outside that freshness window cannot qualify. Asserted arrival must
+not be in the future and expiry must be strictly later than the assessment time.
+Unknown dates stay unknown; no expiry or polling cadence is invented.
 This is a qualification check, not independent proof of a provider's claim.
 
 `Fetch` scopes observations to source, work and country, with an explicit plan

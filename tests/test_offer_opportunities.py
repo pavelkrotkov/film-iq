@@ -18,7 +18,7 @@ def test_sources_deduplicate_opportunity_but_keep_prices_and_timestamps():
     assert len(grouped) == 1 and grouped[offer] == (first, other)
     assert first_seen_by_us(grouped[offer]) == NOW
     assert first.asserted_added_on is None and first.asserted_expires_at is None
-    assert not purchase_ready(first)
+    assert not purchase_ready(first, now=NOW, max_age=timedelta(days=1))
     assert (
         len(opportunities((first, replace(first, opportunity=replace(offer, plan="premium"))))) == 2
     )
@@ -29,7 +29,7 @@ def test_purchase_advice_requires_explicit_tier_price_cut_and_entitlement():
     known = Assertion(
         offer, "a", NOW, "https://example.test/a", 500, "USD", "confirmed", "reviewed"
     )
-    assert purchase_ready(known)
+    assert purchase_ready(known, now=NOW, max_age=timedelta(days=1))
     for changed in (
         replace(known, entitlement="unconfirmed"),
         replace(known, work_status="cut_uncertain"),
@@ -38,4 +38,4 @@ def test_purchase_advice_requires_explicit_tier_price_cut_and_entitlement():
         replace(known, opportunity=replace(offer, plan=None)),
         replace(known, opportunity=replace(offer, add_on=None)),
     ):
-        assert not purchase_ready(changed)
+        assert not purchase_ready(changed, now=NOW, max_age=timedelta(days=1))

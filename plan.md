@@ -1369,3 +1369,19 @@ files satisfy maximum CC 8 and minimum MI 50.025032. #22 remains open for
 B4/B8 provider adoption, exact-use rights/retention/quotas, C1/C8 durable state
 and expiry/recovery integration and account-plan acceptance. Offline contract
 tests are not live offer, entitlement or provider superiority validation.
+
+
+C4 combined review found purchasing qualification accepted a confirmed priced
+rental whose asserted expiry preceded its check time. The agreed correction
+requires an explicit assessment time and caller-declared maximum observation
+age, rejects future/stale checks and asserted intervals excluding that time,
+and preserves unknown dates without inventing expiry or provider cadence.
+Synthetic regressions cover expiry equality/past, future arrival, contradictory
+intervals, stale/future observations and invalid freshness inputs. Public
+discovery assertions and failed/partial no-removal semantics remain unchanged.
+
+After rebasing C4 onto the reviewed C1/C3/C5/C8 and personal/import foundations,
+Ruff/format/ty pass and 433 tests pass with one opt-in skip. All 226 tracked
+Python files satisfy maximum CC 8 and minimum MI 50.025032. The corrected
+advice timing remains an offline, caller-declared policy; no live offer state,
+provider cadence or gate acceptance is implied.
