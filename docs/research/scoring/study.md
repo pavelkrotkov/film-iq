@@ -2,9 +2,10 @@
 
 **Version:** 0.1 · **Reviewed:** 2026-10-29 · **Issue:** [#17](https://github.com/pavelkrotkov/film-iq/issues/17)
 
-The example comparisons below are synthetic. They do not measure ranking
+The initial example comparisons are synthetic. They do not measure ranking
 quality, discovery value, format or geographic stability, and do not select
-production weights. A real independent holdout is **pending**. This study
+production weights. A broad, independently corroborated holdout is **pending**.
+A real ten-film derivative-source pilot is reported below with its selection limits. This study
 implements neither the production scorer nor personal preference. It follows
 [plan §6](../../../plan.md#6-film-scoring-and-recommendations),
 [ADR 0006](../../adr/0006-scoring-separation.md) and
@@ -144,6 +145,87 @@ republication establishes permission or makes BFI-derived votes independent.
 No ballots were retained or scored. Lack of a recorded selection is unknown,
 not a negative observation.
 
+## Real 2008 pilot: observed selections and missingness
+
+On 2026-10-30 UTC, a bounded cohort was formed from the union of Best Picture,
+Best Actor and Animated Feature nominees at the
+[81st Academy Awards](https://www.oscars.org/oscars/ceremonies/2009): ten distinct
+films. These are award-eligibility cohorts, not a claim that every work was
+produced in 2008 (*The Visitor*'s source title uses 2007). This retrospective
+cohort was expanded after inspecting layouts; it is not a preregistered test.
+The first five-film Best Picture-only pilot produced individual-rank data for
+only *Milk* and *The Reader*, with no observations for the originally proposed
+held-out Chicago Tribune critic. That pilot was inconclusive and was not
+silently reported as a successful holdout.
+
+All ten Wikipedia API requests succeeded. The retained factual observations
+cover three pages: *Milk* (32), *The Wrestler* (25), and *The Reader* (4), for
+61 records after audit correction. The ordinal selector initially missed
+Roger Ebert's unranked *Milk* membership; an independent automated audit found
+it, and the correction is retained in the dataset. The other seven pages yielded no rows through the ordinal-bullet
+selector; this is **unknown coverage**, not evidence of no selections.
+*The Reader*'s four records were transcribed from its factual paragraph.
+Thus extraction coverage is 3/10 pages, not complete critic ballots or 100%
+entry recall. Source revisions, hashes, locators, copied factual excerpts,
+acquisition window and transformations are in `real_2008.json` and
+[the attribution notice](REAL_DATA_NOTICE.md). The publisher's API license
+declaration is retained in `wikipedia_rights.json`.
+
+The exploratory holdout removes both known New Yorker people, David Denby
+and Anthony Lane, from every training count. They were selected after seeing
+the available source rows, so results are descriptive and selection-biased.
+Wikipedia and the shared Metacritic intermediary are derivative carriers,
+not independent critics or independent corroboration of the original ballots.
+The remaining named people are counted once per work; the publication-only
+*Premiere* record has unknown critic identity and is excluded. Unranked Roger
+Ebert membership contributes to count but not an invented reciprocal rank.
+
+| Film | Observed identified training people | Reciprocal-rank sum | Known held-out people | Held-out reciprocal-rank sum |
+|---|---:|---:|---:|---:|
+| Milk | 31 | 8.749603 | 1 | 0.142857 |
+| The Wrestler | 22 | 7.809127 | 2 | 0.583333 |
+| The Reader | 4 | 0.875000 | unknown | unknown |
+| Seven other cohort films | unknown | unknown | unknown | unknown |
+
+On the **two** films with observed held-out selections, count and rank both
+put *Milk* first, whereas held-out rank sum puts *The Wrestler* first. Each
+training top-one hits one of two known held-out-selected films: conditional
+recall@1 is 1/2. Precision, exposure, complete-ballot recall, sampling error
+and generalization cannot be estimated from this selected partial evidence.
+The source-family labels separate the named people, but do not eliminate
+the common derivative intermediary's reporting bias.
+
+The [separate automated audit](real_2008_audit.json) independently matched
+all 60 original records against the exact rendered Wikipedia revisions and
+identified the additional unranked membership. It is not a human attestation
+or primary-publication/critic-identity verification. It did not reproduce the
+original API hashes or line numbers, and did not audit the seven unknown pages.
+The Wrestler's section also has a Metacritic citation labeled **2007** despite
+the section's 2008 heading; its edition lineage remains unresolved. These
+limitations further restrict any inference from the conditional comparison.
+
+A rank-plus-award sensitivity uses only the complete named event **2009 Best
+Picture**, won by *Slumdog Millionaire*, with coefficient 0.25. None of the
+three films with observed list data won that event, so their values and order
+are unchanged. The winner's list data remain unknown; its award cannot fill
+in a missing list score. This is not a count of all awards or a claim that
+the other films won no prizes. Reception and 45/30/15/10 comparisons remain
+inconclusive: no complete, contemporaneous, rights-reviewed critic/audience
+score sample was acquired. No missing component is replaced by zero.
+
+The no-weights output retains all ten candidates and their unknown fields.
+The three observed pages concern live-action features; the three animation
+nominees have unknown list observations here. Shorts and documentaries were
+not sampled. Production geography/language were not audited. These gaps
+preclude format/geography stability or sparse-film discovery conclusions.
+
+Run `uv run --no-sync python docs/research/scoring/real_evaluation.py` with
+the worktree-local cache environment above. The standard-library calculation
+is exercised in project pytest; its assertions check the frozen denominators,
+unknown rows and duplicate-insensitive identified-person arithmetic. It does
+not assert that either ranking is correct. Broader original-source, identity
+and period validation remain open; no production weight is chosen.
+
 ## Protocol for real evaluation
 
 1. Obtain permission for original-source observations and retention; select a
@@ -172,6 +254,6 @@ not a negative observation.
    source lineage. Re-evaluate after identity corrections. Only measured,
    independent results can support a future scoring decision.
 
-**Not yet run:** real-ballot holdout, provider data access and rights review,
+**Not yet run:** broad independently corroborated real-ballot holdout, provider data access and rights review,
 calibration, error rates, human relevance judgments, stability by format or
 geography, and any claim of improved discovery or personal satisfaction.
