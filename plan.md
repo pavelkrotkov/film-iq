@@ -1,8 +1,10 @@
 # film-iq — product, research and implementation plan
 
-**Version:** 1.1 (implementation reference) · **Date:** 2026-10-29 · **Status:** approved direction, empirical decisions pending  
+**Version:** 1.2 (implementation reference) · **Updated:** 2026-10-30 · **Status:** Gate A accepted narrowly; small usable MVP prioritized; B4/B8 Gate B open  
 **Source:** Film Intelligence white paper v1.0 plus 2026-10-29 architecture/research audit.  
 **Policy:** ADRs specify decisions; tracked issues implement them. This document defines scope, expected behavior, milestones and exit criteria, not a claim that implementation exists.
+
+**Current implementation priority (October 30, 2026):** Movary remains the personal record. Ship [#58](https://github.com/pavelkrotkov/film-iq/issues/58) (real history, ratings and verified history-comment export) and [#59](https://github.com/pavelkrotkov/film-iq/issues/59) (small rights-appropriate curated film cohort) before [#25](https://github.com/pavelkrotkov/film-iq/issues/25) (usable multi-film report). Personal enjoyment and personal artistic merit are **two user-provided 1–10 scores**, distinct from source-backed critical recognition ([ADR 0013](docs/adr/0013-two-personal-scores.md)). Bulk publisher scraping, trained preference models and production provider adoption are **not prerequisites** to the first report. The detailed [first-use MVP addendum](#first-useful-personal-mvp-and-two-subjective-ratings-user-direction-2026-10-30) supersedes earlier task-order assumptions; older appendices are dated historical evidence, not current gate status. B4 #14, B8 #18 and Epic B #2 remain open pending genuine later observation dates and adjudication. This is a planning decision, **not implemented functionality**.
 
 ## 1. Why build this?
 
@@ -1140,3 +1142,30 @@ Cleanup review found a manual-command working-directory ambiguity: the paired
 example now explicitly enters the main project folder before reading the
 consolidated cohort. The native jobs already used that folder; no runtime
 behavior or observation result changed.
+
+### First useful personal MVP and two subjective ratings (user direction, 2026-10-30)
+
+**Priority decision:** ship a **small, reliable, rights-appropriate personal discovery companion now**, not a broad publisher article/parser or 2010–2026 bulk backfill. This updates delivery priority, not the final product's wider ambition or the still-open B4/B8 research gates. The existing Movary on Hermes is immediately usable for genuine watch dates, one native personal rating and viewing-date comments. Gate A validated the one-film approved watchlist flow and a header-only real ratings export, **not** a populated two-score feedback loop.
+
+#### Explicit personal and public dimensions
+
+- `personal_enjoyment` (1–10): the user's enjoyment/watchability of a film; **native Movary film rating**.
+- `personal_artistic_merit` (1–10): the user's independent artistic judgment; initially a consistently spelled `Artistic merit: N/10` **viewing-date Movary comment**, available as a nullable derived film-level value after testing the pinned `user:export:history` CLI. Different tagged values across repeat viewings are conflicts for review, not last-write-wins. If comment retrieval cannot be verified, use an explicitly labeled temporary private **user-owned CSV** input while retaining Movary's original records.
+- `external_critical_recognition`: independent public critic/source/festival evidence; **never** substituted for the user's merit rating.
+- `predicted_personal_enjoyment`: optional later modeled estimate, not a user rating. Do not train until enough authentic observations and a time-ordered comparison exist.
+
+Movary documentation lists `userRating` in its **Ratings CSV** and `comment` in its **History CSV**; the latter is attached to a viewing-date entry. Movary 0.82.1 [ships a native history-export CLI](https://github.com/leepeuker/movary/blob/0.82.1/src/Command/UserHistoryExport.php), while the paginated History API omits comments. Its CSV writer repeats a date-entry comment for multiple plays; such repetitions must not become independent/conflicting merit ratings. The existing Film-IQ exporter has live-tested **zero** real rating rows, so a nonempty enjoyment/merit round trip must still be measured. See [ADR 0013](docs/adr/0013-two-personal-scores.md), [ADR 0007](docs/adr/0007-movary-ratings-export.md), and [#58](https://github.com/pavelkrotkov/film-iq/issues/58).
+
+#### First-use MVP issue DAG (independent of full Gate B)
+
+1. **#58 — Real Movary snapshot with two personal scores (start now).** Complete played/history/watchlist API reads, full replaceable ratings CSV, a verified nonempty `user:export:history` comment export or explicit manual merit fallback, real edited/deleted ratings, known/unknown/conflicting merit, no direct DB writes, private local snapshots. Keep the input UI in Movary.
+2. **#59 — Small manually curated original-source film cohort (start now).** Import **10–30** selected films from a publisher/edition such as BFI/Sight and Sound *only where proposed access, citation and retention are rights-appropriate*. Use an explicit audited CSV with rank/tie, edition/eligibility, source links as permitted and conservative TMDB identity; do not pretend the selected subset is a complete ballot, scrape general criticism or push candidates to Movary by default.
+3. **#25 — First useful read-only shortlist (can scaffold now; integrate #58 + #59).** Include multiple films, source evidence and freshness, both separate personal dimensions, external recognition, watched exclusion, and honestly tentative/no-purchase access. Test user-changed rating and comment refresh plus idempotent reports; no web UI or alerts needed.
+4. **Parallel correctness/ops:** scoped C1 #19 source attempt/edition/critic contracts, C3 #21 duplicate critic/rank fix, C5 #23 hybrid/rental feasibility, and C8 #26 rights/backup/restore may begin from Gate A and B1/B3/B7 evidence. Do not block the *first report* on their full production implementations; do require verified recovery/rights before an ongoing production release.
+5. **Conditional expansion:** C2 #20 wide source backfill only with source-specific rights and unseen-document completeness; production C4 #22 provider choice only after B4 #14's three actual dates and B8 #18; C6 #24 modeling only with authentic preference data and measured lift; C9 #27 upstream Movary multi-rating feature only if the comment/export workaround is demonstrably inadequate.
+
+**First acceptance test:** user enters 5–15 genuinely watched/rated films (some with merit comments); a complete private refresh makes the exact user-entered 1–10 ratings and comments available without loss, detects changes/deletions, and leaves uncertain values unknown. Import a small independently reviewed source cohort and produce a multi-film, previously-unwatched, explainable shortlist. The displayed report is the first usable product; it is **not** proof of optimum source weights, provider accuracy, real playback or global coverage.
+
+**B4 remains ongoing, not passed:** all retained pairs were dated 2026-10-30 UTC. Two registered Mac jobs are scheduled for 2026-10-31 and 2026-11-01; their registration does not prove execution. Neither the MVP work nor this decision authorizes rescheduling, triggering or stopping those jobs, adopting a provider, or closing #14/#18/Epic B.
+
+**Issue tracking:** [Epic C #3](https://github.com/pavelkrotkov/film-iq/issues/3) and [C0a #58](https://github.com/pavelkrotkov/film-iq/issues/58), [C0b #59](https://github.com/pavelkrotkov/film-iq/issues/59), [C7 #25](https://github.com/pavelkrotkov/film-iq/issues/25). Treat preceding chronological POC/research appendices as historical measured context; these approved priorities supersede the previous all-features-first implementation ordering.
