@@ -822,3 +822,22 @@ The rights report's native storage/attribution constraints and specific §10
 AI-model-use restriction remain applicable; no provider catalog or credentials
 are committed. Historical pending-access statements above describe earlier
 stages and are superseded only by this bounded continuation.
+
+
+### B2 source-stratified review effort (2026-10-30)
+
+A [frozen-protocol timed supplement](docs/research/history/review-effort-20261030.md)
+performed the manual evidence-review task for all fourteen existing cases in five
+primary-source blocks. One agent took 59.235865 seconds across Cannes (nine),
+Berlinale (two), Annecy (one), Criterion's derivative retrospective (one) and
+Film at Lincoln Center (one). These intervals include reading, reasoning,
+tool/model latency and entering decisions; they exclude setup, acquisition,
+report/CI work and earlier audits. This is an unblinded repeat review, not human
+labor or independent truth: human n=0/minutes null and model billing unknown.
+Twelve accepted/two ambiguous decisions remain unchanged, with zero source-field
+corrections, zero automatic acceptances and zero new provider requests. Date,
+runtime, lineage and local-release uncertainty are preserved. Precision and a
+missing-catalog rate remain inconclusive; the review does not create a new
+human-only oracle requirement or certify general coverage. Source-frame taxonomy
+is reconciled with B1, and festival shorts/translated aliases are the first
+recommended expansion. ADRs 0003/0011 and the frozen null-ID sample are unchanged.
