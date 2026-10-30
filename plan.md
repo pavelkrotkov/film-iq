@@ -914,3 +914,26 @@ Validation for this docs-only synthesis: Ruff check/format and ty pass;
 340 tests pass and one opt-in integration test skips. Radon over all 159
 tracked Python files reports maximum CC 8 and minimum MI 50.025032. No code,
 dependency, source payload or credential is added by this supplement.
+
+
+B8 consolidation now includes the fourteen-case, five-primary-source-frame B2
+review: 59.235865 seconds of unblinded agent-task wall time, twelve accepted/two
+ambiguous unchanged decisions, zero source-field corrections. Human sample size
+is zero and human minutes remain null; automatic precision and missing-catalog
+rate remain inconclusive. The public TMDB terms follow-up supersedes the prior
+unreadable/unknown-cache status with a six-month cap and termination purge.
+Broader AI-application and commercial-use conditions need proposed-use
+assessment; no coding-agent ban or AI-product permission is inferred.
+
+
+B3's [separately timed correction supplement](docs/research/extraction/correction-20261030.md)
+now covers all six recorded failures in 97.345139154 seconds (1.6224 minutes)
+of oracle-assisted agent wall time, including inference/tool latency. It changes
+120 category fields, one title field and inserts the missing runner-up, yielding
+151/151 exact reviewed records. The original frozen 539-observation benchmark
+remains 23/24 development and 3/8 holdout complete documents. A post-hoc inventory
+finds twenty-four year-rowspan headers only in the four failed Academy holdouts,
+none in development; this explains a real withheld-feature failure without
+claiming universal unfamiliar-layout coverage. Human active minutes and billing
+remain unknown. B2/B3 delivery acceptance is still reviewed separately; B8
+consolidates these results without inventing broader accuracy or cost outcomes.

@@ -43,3 +43,11 @@ and native comparison candidate provisional: all observations are one UTC date,
 so two later captures, change/expiry comparisons and unresolved rights/plan
 questions remain. No exclusive provider or polling cadence is selected, and
 this appendix does not waive the three-date gate.
+
+
+The [public terms follow-up](../research/availability/rights-20261030.md#public-browser-follow-up-tmdb-terms-now-readable)
+now establishes TMDB's six-month cache cap and deletion on termination. Apply
+that bound; do not claim perpetual history rights. Its broader AI-application
+and commercial-use conditions require proposed-use assessment, without
+conflating coding-agent assistance or deterministic comparison with model
+training/evaluation. These findings do not select or reject a feed by themselves.
