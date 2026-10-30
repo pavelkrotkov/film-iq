@@ -32,6 +32,10 @@ best-rank choice. All original ranks and excluded evidence remain explainable.
 author strings or publisher grouping alone never establishes a person identity.
 Known people are deduplicated across source groups; inputs without person IDs
 use their previously reviewed independence groups as evidence support units.
+Mixed linked/unlinked ballots retain that group dependence while explicit
+person links also deduplicate overlapping groups. Missing row-level identities
+are never filled in. Conflicting person IDs within one reviewed group require
+review before scoring or snapshot insertion.
 `independent_count` therefore counts supported evidence groups, **not inferred
 independent critics**. `known_person_count` and `unknown_contributor_count`
 expose this distinction. The latter counts support units with unknown

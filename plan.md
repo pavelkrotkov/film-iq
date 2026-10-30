@@ -1304,3 +1304,13 @@ identity from author text. All 177 tracked/new Python files have maximum CC 8
 and minimum MI 50.025032; the eleven changed/new Python files have minimum MI
 50.613109. Both original and derivative ballot-link paths have deterministic
 regression checks. Temporary test files remain under this project worktree.
+
+C3 combined review found that partially populated contributor links split a
+reviewed independence group into separate known/unknown buckets, manufacturing
+another endorsement. The correction retains reviewed group dependence and
+cross-publication person overlap without filling in unknown row identities.
+Conflicting known-person mappings within one group require visible review
+before scoring or snapshot insertion. Regression examples cover mixed actor
+coverage, overlap across publications, unchanged raw rows and rejected
+conflicting snapshots. Native review findings are accepted; exact-head
+follow-up review remains required before merge.
