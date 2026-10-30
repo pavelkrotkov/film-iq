@@ -588,3 +588,71 @@ transaction checks, and comparative change/expiry measurements remain open.
 The updated [B2 review](https://github.com/pavelkrotkov/film-iq/pull/39#pullrequestreview-5711278183)
 found no actionable Standards or Spec defects at 8317a76; its empirical gaps remain
 explicit. Gate B is not accepted.
+
+
+### Epic B implementation merge ledger (2026-10-30)
+
+Seven reviewed research/implementation PRs were merged into main. Each merge
+commit below is verified in main history; these merges do not accept Gate B or
+close an issue by themselves. PR #35 remains the separately reviewed evidence
+consolidation. All source worktrees and branches were preserved.
+
+| PR | Merge commit | Merged UTC |
+| --- | --- | --- |
+| [#36](https://github.com/pavelkrotkov/film-iq/pull/36) | `530051d4ab351e17c456d4e7142e9814b7bd2c1a` | 2026-10-30T12:00:55Z |
+| [#38](https://github.com/pavelkrotkov/film-iq/pull/38) | `ff0c7cb43662804d50f765937e7114a3ebd7a4c1` | 2026-10-30T12:00:59Z |
+| [#37](https://github.com/pavelkrotkov/film-iq/pull/37) | `49e944bdf50eb268c9641149eae97899d92030c3` | 2026-10-30T12:01:03Z |
+| [#39](https://github.com/pavelkrotkov/film-iq/pull/39) | `fa9caa61252811547f0c61065c7687c63aa5f5ff` | 2026-10-30T12:01:06Z |
+| [#40](https://github.com/pavelkrotkov/film-iq/pull/40) | `fa441797326cd5b1a511f1f9efac5d080d8191eb` | 2026-10-30T12:01:10Z |
+| [#41](https://github.com/pavelkrotkov/film-iq/pull/41) | `af0b41c9df4e56828f1a396a16ad9a1ed7c733cb` | 2026-10-30T12:01:13Z |
+| [#42](https://github.com/pavelkrotkov/film-iq/pull/42) | `a6c1416c2d2d30a1a15e215ebc46712d33f481a3` | 2026-10-30T12:01:17Z |
+
+The independent single-PR branches could not be merged by `gh stack merge`: the
+first attempt reported that the PR was not stacked, and `gh stack link` requires
+at least two branches. The controller therefore used native GitHub squash
+merges guarded by each reviewed head SHA and re-read the merged results. This
+consolidation was synchronized through gh-stack; its additive plan conflict
+retains all A7 and Epic B evidence. Research acceptance remains a separate
+issue-by-issue and gate decision.
+
+After synchronization onto main `a6c1416c2d2d30a1a15e215ebc46712d33f481a3`,
+the integrated tree passes Ruff, formatting, ty and 333 tests with one opt-in
+live test skipped. Radon over all 154 tracked Python files reports maximum
+CC 8 and minimum MI 50.025032. No additional runtime dependency or unrelated
+code change was needed. The source CSV retains its intentional CRLF bytes; the
+diff check permits CR-at-EOL rather than normalizing source evidence.
+
+[TMDB's published rate guidance](https://developer.themoviedb.org/docs/rate-limiting),
+checked 2026-10-30, describes an approximate 40-request/second anti-bulk ceiling
+that may change and requires respecting HTTP 429. Its old 40-per-ten-seconds
+limit was retired in 2019. This guidance is distinct from the account/monthly
+quota, cost and retention questions above; no observed quota headers does not
+mean unlimited access or zero charges.
+
+### Epic B issue acceptance reconciliation (2026-10-30)
+
+After independent review against the actual issue criteria, the controller closed
+[B1 #11](https://github.com/pavelkrotkov/film-iq/issues/11#issuecomment-6522320655),
+[B5 #15](https://github.com/pavelkrotkov/film-iq/issues/15#issuecomment-6522322222)
+and [B6 #16](https://github.com/pavelkrotkov/film-iq/issues/16#issuecomment-6522323392)
+as completed bounded research, with their source PRs merged. Unresolved source
+permissions are valid B1 audit findings; unknown playback/library eligibility is
+an accepted B5 outcome where testing is infeasible; qualitative adoption cost
+satisfies B6 without measured integration hours. None of these closures accepts
+Gate B, grants source rights or verifies personal entitlement. Epic #2 remains
+open and its three corresponding child checkboxes are updated.
+
+The remaining experiments follow their exact criteria: B2 needs timed manual
+review/correction by source stratum; B3 needs measured correction minutes and an
+honest boundary for withheld-layout evidence. Preserve the frozen extraction
+baseline and record corrections as a separate supplement. B7's New Yorker
+source-family holdout was performed and remains valid as a bounded experiment;
+its explicit period/diversity holdout still needs an informative extension or an
+accepted deferral. Missing numeric audience evidence legitimately leaves the full
+weighted formula inconclusive. No human-only identity oracle, mandatory
+primary-publisher fetching or broad statistical stability requirement is added.
+B4 still requires Movie of the Night access, genuinely separate observation
+dates, applicable rights and authorized first-party/account comparisons. B8 #18
+and Epic #2 stay open while these non-deferred experiments remain outstanding.
+The [working matrix](docs/research/gate-b.md) records concrete next measurements;
+no architecture change or additional paid dependency is needed for them.
