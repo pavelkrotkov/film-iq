@@ -1,0 +1,1451 @@
+{
+  "schema_version": 1,
+  "part": "part2",
+  "audited_at": "2026-10-30T03:42:25.401433+00:00",
+  "scope": "B4 entries b4-31 through b4-60; public source work identity only; no provider/account observation",
+  "counts": {
+    "candidates": 30,
+    "source_identity_established": 30,
+    "unresolved_work_identity": 0,
+    "provider_catalog_identities_audited": 0,
+    "duration_conflicts": 2,
+    "country_field_conflicts": 2
+  },
+  "limitations": [
+    "Source identity is separate from provider catalog identity and activation. No provider keys were needed or read.",
+    "20 Wikipedia source responses and 10 individual Cannes source responses hashed; Academy raw HTTP returned403 but factual selection-frame rendering accessible through web tool. Derived metadata hash is distinguished from response hash.",
+    "No provider calls, catalog confirmations, live availability, entitlement tests, or three-date observations.",
+    "Premiere_date null means exact premiere not independently classified; dated source release event labels retained verbatim."
+  ],
+  "entries": [
+    {
+      "key": "b4-31",
+      "candidate_title": "20 Days in Mariupol",
+      "stratum": "Documentary features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "20 Days in Mariupol",
+      "alternate_titles": [],
+      "directors": [
+        "Mstyslav Chernov"
+      ],
+      "film_year": 2023,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": "20 January 2023 ( 2023-01-20 ) ( Sundance ) [ 1 ]",
+      "premiere_date": null,
+      "work_type": "documentary feature",
+      "duration_minutes_as_individual_record": 94,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "Ukraine",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2024",
+        "edition": 96,
+        "year": 2024,
+        "category": "Documentary Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/20_Days_in_Mariupol",
+          "retrieved_at": "2026-10-30T03:40:02.535801+00:00",
+          "response_sha256": "849021a462918f827b305a7ab55098fb2e25d5070ce3a0a83ada042c7ec86957",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-31-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1382645531",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1382645531",
+          "attribution": "Wikipedia contributors; article title 20 Days in Mariupol; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-32",
+      "candidate_title": "Bobi Wine: The People's President",
+      "stratum": "Documentary features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Bobi Wine: The People's President",
+      "alternate_titles": [
+        "Bobi Wine: Ghetto President"
+      ],
+      "directors": [
+        "Christopher Sharp",
+        "Moses Bwayo"
+      ],
+      "film_year": 2022,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": "1 September 2022 ( 2022-09-01 ) ( Venice ) 28 July 2023 ( 2023-07-28 ) (United States)",
+      "premiere_date": null,
+      "work_type": "documentary feature",
+      "duration_minutes_as_individual_record": 113,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "Uganda United Kingdom United States",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2024",
+        "edition": 96,
+        "year": 2024,
+        "category": "Documentary Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Bobi_Wine:_The_People%27s_President",
+          "retrieved_at": "2026-10-30T03:40:03.947549+00:00",
+          "response_sha256": "916bfc4bec7b654985558c9515e5b5a7d0a41085c1e03eb4599eeefd5552fa7c",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-32-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1382357367",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1382357367",
+          "attribution": "Wikipedia contributors; article title Bobi Wine: The People's President; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": [
+        "Film/premiere year 2022; 2024 is Academy ceremony/selection edition, not production or world-premiere year."
+      ]
+    },
+    {
+      "key": "b4-33",
+      "candidate_title": "The Eternal Memory",
+      "stratum": "Documentary features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "The Eternal Memory",
+      "alternate_titles": [
+        "La memoria infinita"
+      ],
+      "directors": [
+        "Maite Alberdi"
+      ],
+      "film_year": 2023,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": "21 January 2023 ( 2023-01-21 ) ( Sundance ) 24 August 2023 ( 2023-08-24 ) (Chile)",
+      "premiere_date": null,
+      "work_type": "documentary feature",
+      "duration_minutes_as_individual_record": 85,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "Chile",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2024",
+        "edition": 96,
+        "year": 2024,
+        "category": "Documentary Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/The_Eternal_Memory",
+          "retrieved_at": "2026-10-30T03:40:02.447860+00:00",
+          "response_sha256": "c956596a05a6d0d5082d116e3d2876c76bcdfed94074861dea1b06b443cebd64",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-33-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1380339248",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1380339248",
+          "attribution": "Wikipedia contributors; article title The Eternal Memory; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-34",
+      "candidate_title": "Four Daughters",
+      "stratum": "Documentary features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Four Daughters",
+      "alternate_titles": [
+        "Les Filles d’Olfa",
+        "Banāt Olfa"
+      ],
+      "directors": [
+        "Kaouther Ben Hania"
+      ],
+      "film_year": 2023,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": "19 May 2023 ( 2023-05-19 ) ( Cannes ) 5 July 2023 ( 2023-07-05 ) (France) 20 September 2023 ( 2023-09-20 ) (Tunisia)",
+      "premiere_date": null,
+      "work_type": "documentary feature",
+      "duration_minutes_as_individual_record": 107,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "France Germany Tunisia Saudi Arabia",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2024",
+        "edition": 96,
+        "year": 2024,
+        "category": "Documentary Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Four_Daughters_(2023_film)",
+          "retrieved_at": "2026-10-30T03:40:02.450765+00:00",
+          "response_sha256": "a3e3ffdbf8bda27d0358ea7c935f5813c79ad33a76c5e4690b21ba8de704c57a",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-34-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1381910454",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1381910454",
+          "attribution": "Wikipedia contributors; article title Four Daughters; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": [
+        "Disambiguated to 2023 Kaouther Ben Hania documentary, not 1938 fiction film of the same English title."
+      ]
+    },
+    {
+      "key": "b4-35",
+      "candidate_title": "To Kill a Tiger",
+      "stratum": "Documentary features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "To Kill a Tiger",
+      "alternate_titles": [],
+      "directors": [
+        "Nisha Pahuja"
+      ],
+      "film_year": 2022,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": "September 10, 2022 ( 2022-09-10 ) ( TIFF )",
+      "premiere_date": null,
+      "work_type": "documentary feature",
+      "duration_minutes_as_individual_record": 127,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "Canada",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2024",
+        "edition": 96,
+        "year": 2024,
+        "category": "Documentary Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/To_Kill_a_Tiger",
+          "retrieved_at": "2026-10-30T03:40:02.847046+00:00",
+          "response_sha256": "53efd37f31e9cec6194aae3d7a421fcc13e76bf3e250418acd26286148878bd9",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-35-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1381395360",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1381395360",
+          "attribution": "Wikipedia contributors; article title To Kill a Tiger; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": [
+        "Film/premiere year 2022; 2024 is Academy ceremony/selection edition, not production or world-premiere year."
+      ]
+    },
+    {
+      "key": "b4-36",
+      "candidate_title": "No Other Land",
+      "stratum": "Documentary features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "No Other Land",
+      "alternate_titles": [],
+      "directors": [
+        "Basel Adra",
+        "Hamdan Ballal",
+        "Yuval Abraham",
+        "Rachel Szor"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": "16 February 2024 ( 2024-02-16 ) ( Berlinale )",
+      "premiere_date": null,
+      "work_type": "documentary feature",
+      "duration_minutes_as_individual_record": 92,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "Palestine Norway",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2025",
+        "edition": 97,
+        "year": 2025,
+        "category": "Documentary Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2025.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/No_Other_Land",
+          "retrieved_at": "2026-10-30T03:40:03.017839+00:00",
+          "response_sha256": "1bd3f491ac3879303ed54d486b772dc63f57957cb14f91ba2a6afa7c9fbb19b9",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-36-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1382372004",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1382372004",
+          "attribution": "Wikipedia contributors; article title No Other Land; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-37",
+      "candidate_title": "Black Box Diaries",
+      "stratum": "Documentary features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Black Box Diaries",
+      "alternate_titles": [],
+      "directors": [
+        "Shiori Itō"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": "January 20, 2024 ( 2024-01-20 ) ( Sundance ) October 25, 2024 ( 2024-10-25 ) (United States) October 25, 2024 ( 2024-10-25 ) (United Kingdom)",
+      "premiere_date": null,
+      "work_type": "documentary feature",
+      "duration_minutes_as_individual_record": 103,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "Japan United States United Kingdom",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2025",
+        "edition": 97,
+        "year": 2025,
+        "category": "Documentary Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2025.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Black_Box_Diaries",
+          "retrieved_at": "2026-10-30T03:40:03.019230+00:00",
+          "response_sha256": "eeb41b5492d6ff27fb5513eace3d43e69ef054d4467743b69fbdda56e314179e",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-37-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1379997510",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1379997510",
+          "attribution": "Wikipedia contributors; article title Black Box Diaries; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-38",
+      "candidate_title": "Porcelain War",
+      "stratum": "Documentary features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Porcelain War",
+      "alternate_titles": [],
+      "directors": [
+        "Brendan Bellomo",
+        "Slava Leontyev"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": "January 20, 2024 ( 2024-01-20 ) ( Sundance ) November 22, 2024 ( 2024-11-22 ) (United States)",
+      "premiere_date": null,
+      "work_type": "documentary feature",
+      "duration_minutes_as_individual_record": 87,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "United States Australia Ukraine",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2025",
+        "edition": 97,
+        "year": 2025,
+        "category": "Documentary Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2025.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Porcelain_War",
+          "retrieved_at": "2026-10-30T03:40:03.236964+00:00",
+          "response_sha256": "c3d4f646a107476259da3262d8770ae0592cdeba1563ccb29bdb3f1ca2d51014",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-38-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1379995596",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1379995596",
+          "attribution": "Wikipedia contributors; article title Porcelain War; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-39",
+      "candidate_title": "Soundtrack to a Coup d'Etat",
+      "stratum": "Documentary features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Soundtrack to a Coup d'Etat",
+      "alternate_titles": [],
+      "directors": [
+        "Johan Grimonprez"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": ".mw-parser-output .plainlist ol li,.mw-parser-output .plainlist ul li{margin-bottom:0} 22 January 2024 ( 2024-01-22 ) ( Sundance )",
+      "premiere_date": null,
+      "work_type": "documentary feature",
+      "duration_minutes_as_individual_record": 150,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "Belgium France Netherlands",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2025",
+        "edition": 97,
+        "year": 2025,
+        "category": "Documentary Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2025.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Soundtrack_to_a_Coup_d%27Etat",
+          "retrieved_at": "2026-10-30T03:40:03.488406+00:00",
+          "response_sha256": "5777745b0ab2077437b2217720d38b2acadc9bb001abc10bd428b23b93f0ba66",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-39-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1379997329",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1379997329",
+          "attribution": "Wikipedia contributors; article title Soundtrack to a Coup d'Etat; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-40",
+      "candidate_title": "Sugarcane",
+      "stratum": "Documentary features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Sugarcane",
+      "alternate_titles": [],
+      "directors": [
+        "Julian Brave NoiseCat",
+        "Emily Kassie"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": "January 20, 2024 ( 2024-01-20 ) ( Sundance ) August 9, 2024 ( 2024-08-09 ) (United States and Canada)",
+      "premiere_date": null,
+      "work_type": "documentary feature",
+      "duration_minutes_as_individual_record": 107,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "United States Canada",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2025",
+        "edition": 97,
+        "year": 2025,
+        "category": "Documentary Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2025.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Sugarcane_(film)",
+          "retrieved_at": "2026-10-30T03:40:03.419246+00:00",
+          "response_sha256": "2867ddc83486175e281f95d1253beb2449f7e0cdb1eaa4762b42e8358df27048",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-40-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1379995652",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1379995652",
+          "attribution": "Wikipedia contributors; article title Sugarcane; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-41",
+      "candidate_title": "The Boy and the Heron",
+      "stratum": "Animated features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "The Boy and the Heron",
+      "alternate_titles": [
+        "Kimitachi wa Dō Ikiru ka",
+        "君たちはどう生きるか"
+      ],
+      "directors": [
+        "Hayao Miyazaki"
+      ],
+      "film_year": 2023,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": "2023-07-14 (Japan)",
+      "premiere_date": null,
+      "work_type": "animated feature",
+      "duration_minutes_as_individual_record": 124,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "Japan",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2024",
+        "edition": 96,
+        "year": 2024,
+        "category": "Animated Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/The_Boy_and_the_Heron",
+          "retrieved_at": "2026-10-30T03:40:03.779965+00:00",
+          "response_sha256": "1591f6806b70e35e061b18004be48d4ff8aefb14d3707de92114d8ff130991e6",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-41-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1380591230",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1380591230",
+          "attribution": "Wikipedia contributors; article title The Boy and the Heron; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": [
+        "Nested language table limited initial infobox extract; duration/release/country supplied by separate public rendering receipt b4-41-web-supplement.json, not the initial response hash."
+      ]
+    },
+    {
+      "key": "b4-42",
+      "candidate_title": "Elemental",
+      "stratum": "Animated features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Elemental",
+      "alternate_titles": [],
+      "directors": [
+        "Peter Sohn"
+      ],
+      "film_year": 2023,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": "May 27, 2023 ( 2023-05-27 ) ( Cannes ) June 16, 2023 ( 2023-06-16 ) (United States)",
+      "premiere_date": null,
+      "work_type": "animated feature",
+      "duration_minutes_as_individual_record": 101,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "United States",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2024",
+        "edition": 96,
+        "year": 2024,
+        "category": "Animated Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Elemental_(2023_film)",
+          "retrieved_at": "2026-10-30T03:40:04.064977+00:00",
+          "response_sha256": "4abde197784f7103db8c1adb58ec0958ab9226df858e5e3d656513293b5760b6",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-42-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1382314951",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1382314951",
+          "attribution": "Wikipedia contributors; article title Elemental; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-43",
+      "candidate_title": "Nimona",
+      "stratum": "Animated features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Nimona",
+      "alternate_titles": [],
+      "directors": [
+        "Nick Bruno",
+        "Troy Quane"
+      ],
+      "film_year": 2023,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": "June 14, 2023 ( 2023-06-14 ) ( Annecy ) June 23, 2023 ( 2023-06-23 ) (United States) June 30, 2023 ( 2023-06-30 ) (Netflix)",
+      "premiere_date": null,
+      "work_type": "animated feature",
+      "duration_minutes_as_individual_record": 99,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "United States",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2024",
+        "edition": 96,
+        "year": 2024,
+        "category": "Animated Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Nimona_(film)",
+          "retrieved_at": "2026-10-30T03:40:04.067047+00:00",
+          "response_sha256": "c6777fb3be2fd44e8b2e61cdeadd7f6e75d4310e6bba072b66d7f834a92b30ea",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-43-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1381500131",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1381500131",
+          "attribution": "Wikipedia contributors; article title Nimona; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-44",
+      "candidate_title": "Robot Dreams",
+      "stratum": "Animated features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Robot Dreams",
+      "alternate_titles": [],
+      "directors": [
+        "Pablo Berger"
+      ],
+      "film_year": 2023,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": "21 May 2023 ( 2023-05-21 ) ( Cannes ) 6 December 2023 ( 2023-12-06 ) (Spain) 27 December 2023 ( 2023-12-27 ) (France)",
+      "premiere_date": null,
+      "work_type": "animated feature",
+      "duration_minutes_as_individual_record": 102,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "Spain France",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2024",
+        "edition": 96,
+        "year": 2024,
+        "category": "Animated Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Robot_Dreams_(film)",
+          "retrieved_at": "2026-10-30T03:40:04.829612+00:00",
+          "response_sha256": "44eba0e269056a10f7189d0276f76d29b4d30e69967c78fd08f623cdc14db1c5",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-44-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1382126864",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1382126864",
+          "attribution": "Wikipedia contributors; article title Robot Dreams; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-45",
+      "candidate_title": "Spider-Man: Across the Spider-Verse",
+      "stratum": "Animated features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Spider-Man: Across the Spider-Verse",
+      "alternate_titles": [],
+      "directors": [
+        "Joaquim Dos Santos",
+        "Kemp Powers",
+        "Justin K. Thompson"
+      ],
+      "film_year": 2023,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": "May 30, 2023 ( 2023-05-30 ) ( Regency Village Theater ) June 2, 2023 ( 2023-06-02 ) (United States)",
+      "premiere_date": null,
+      "work_type": "animated feature",
+      "duration_minutes_as_individual_record": 140,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "United States",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2024",
+        "edition": 96,
+        "year": 2024,
+        "category": "Animated Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Spider-Man:_Across_the_Spider-Verse",
+          "retrieved_at": "2026-10-30T03:40:05.201920+00:00",
+          "response_sha256": "1dfdc63e6aed61350e8b38ed089a150c21688ed9d1deaf3490079b285a909bae",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-45-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1379727353",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1379727353",
+          "attribution": "Wikipedia contributors; article title Spider-Man: Across the Spider-Verse; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-46",
+      "candidate_title": "Flow",
+      "stratum": "Animated features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Flow",
+      "alternate_titles": [
+        "Straume"
+      ],
+      "directors": [
+        "Gints Zilbalodis"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": "22 May 2024 ( 2024-05-22 ) ( Cannes ) 29 August 2024 ( 2024-08-29 ) (Latvia) 30 October 2024 ( 2024-10-30 ) (France) 15 January 2025 ( 2025-01-15 ) (Belgium)",
+      "premiere_date": null,
+      "work_type": "animated feature",
+      "duration_minutes_as_individual_record": 85,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "Latvia France Belgium",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2025",
+        "edition": 97,
+        "year": 2025,
+        "category": "Animated Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2025.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Flow_(2024_film)",
+          "retrieved_at": "2026-10-30T03:40:05.117927+00:00",
+          "response_sha256": "01c530a54e7045b6f40b3e8ffc7fca8c28923528022a01e23db7a3b1462c447c",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-46-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1381278890",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1381278890",
+          "attribution": "Wikipedia contributors; article title Flow; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": [
+        "Disambiguated to 2024 Gints Zilbalodis animated film Straume, not another work titled Flow."
+      ]
+    },
+    {
+      "key": "b4-47",
+      "candidate_title": "Inside Out 2",
+      "stratum": "Animated features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Inside Out 2",
+      "alternate_titles": [],
+      "directors": [
+        "Kelsey Mann"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": "June 10, 2024 ( 2024-06-10 ) ( El Capitan Theatre ) June 14, 2024 ( 2024-06-14 ) (United States)",
+      "premiere_date": null,
+      "work_type": "animated feature",
+      "duration_minutes_as_individual_record": 96,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "United States",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2025",
+        "edition": 97,
+        "year": 2025,
+        "category": "Animated Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2025.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Inside_Out_2",
+          "retrieved_at": "2026-10-30T03:40:05.184332+00:00",
+          "response_sha256": "bfe4500c64ba66dcf4ee2cac687c3b4b4254d3a00ac9b4435813d1d243c2a963",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-47-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1379327515",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1379327515",
+          "attribution": "Wikipedia contributors; article title Inside Out 2; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-48",
+      "candidate_title": "Memoir of a Snail",
+      "stratum": "Animated features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Memoir of a Snail",
+      "alternate_titles": [],
+      "directors": [
+        "Adam Elliot"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": ".mw-parser-output .plainlist ol li,.mw-parser-output .plainlist ul li{margin-bottom:0} 10 June 2024 ( 2024-06-10 ) ( Annecy ) 17 October 2024 ( 2024-10-17 ) (Australia)",
+      "premiere_date": null,
+      "work_type": "animated feature",
+      "duration_minutes_as_individual_record": 95,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "Australia",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2025",
+        "edition": 97,
+        "year": 2025,
+        "category": "Animated Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2025.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Memoir_of_a_Snail",
+          "retrieved_at": "2026-10-30T03:40:05.422913+00:00",
+          "response_sha256": "e192149a4b0ac23e7326302c563fd8840729d328140950169805c74c68cfaf76",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-48-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1382083192",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1382083192",
+          "attribution": "Wikipedia contributors; article title Memoir of a Snail; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-49",
+      "candidate_title": "Wallace & Gromit: Vengeance Most Fowl",
+      "stratum": "Animated features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Wallace & Gromit: Vengeance Most Fowl",
+      "alternate_titles": [],
+      "directors": [
+        "Nick Park",
+        "Merlin Crossingham"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": "27 October 2024 ( 2024-10-27 ) ( AFI ) 25 December 2024 ( 2024-12-25 ) (BBC) 3 January 2025 ( 2025-01-03 ) (Netflix)",
+      "premiere_date": null,
+      "work_type": "animated feature",
+      "duration_minutes_as_individual_record": 79,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "United Kingdom",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2025",
+        "edition": 97,
+        "year": 2025,
+        "category": "Animated Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2025.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Wallace_%26_Gromit:_Vengeance_Most_Fowl",
+          "retrieved_at": "2026-10-30T03:40:05.657955+00:00",
+          "response_sha256": "d60a899c580625e9feccbbf5c7303b10499c7c2c2373c3d893b0d0bbdaca04fe",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-49-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1381890892",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1381890892",
+          "attribution": "Wikipedia contributors; article title Wallace & Gromit: Vengeance Most Fowl; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": [
+        "2024 AFI premiere and BBC release precede 2025 Netflix release; 2025 ceremony does not change work year."
+      ]
+    },
+    {
+      "key": "b4-50",
+      "candidate_title": "The Wild Robot",
+      "stratum": "Animated features",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "The Wild Robot",
+      "alternate_titles": [],
+      "directors": [
+        "Chris Sanders"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Wikipedia film-year label, supported by dated release/premiere field",
+      "production_year": null,
+      "release_dates_as_reported": "September 8, 2024 ( 2024-09-08 ) ( TIFF ) September 27, 2024 ( 2024-09-27 ) (United States)",
+      "premiere_date": null,
+      "work_type": "animated feature",
+      "duration_minutes_as_individual_record": 102,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "United States",
+      "selection_frame": {
+        "url": "https://www.oscars.org/oscars/ceremonies/2025",
+        "edition": 97,
+        "year": 2025,
+        "category": "Animated Feature Film",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/oscars2025.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/The_Wild_Robot",
+          "retrieved_at": "2026-10-30T03:40:05.733418+00:00",
+          "response_sha256": "25f4f1d8da42ebfef642a069951b01baf354cb55bb1148ff08ea3e61f8227224",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-50-wiki.json",
+          "rights": "Wikipedia text CC BY-SA 4.0; attribution article contributors; linked history required; no images retained",
+          "revision": "1382061656",
+          "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1382061656",
+          "attribution": "Wikipedia contributors; article title The Wild Robot; revision/history linked; extracted identity fields adapted under CC BY-SA 4.0."
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Production/completion year not independently established; film year is a release/premiere label, not production date."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-51",
+      "candidate_title": "Volcelest",
+      "stratum": "Shorts / experimental",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Volcelest",
+      "alternate_titles": [],
+      "directors": [
+        "Éric Briche"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Cannes production year explicitly labeled",
+      "production_year": 2024,
+      "release_dates_as_reported": null,
+      "premiere_date": null,
+      "work_type": "short film",
+      "duration_minutes_as_individual_record": 15,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "France",
+      "selection_frame": {
+        "url": "https://www.festival-cannes.com/en/2024/the-short-film-competition-programme/",
+        "edition": 77,
+        "year": 2024,
+        "category": "Short Films in Competition",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/cannes2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://www.festival-cannes.com/en/f/volcelest/",
+          "retrieved_at": "2026-10-30T03:41:14.539755+00:00",
+          "response_sha256": "12d07453b85fc8cb161e201a93538a03f2473b53a9d890ff2204728f1607702e",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-51-cannes.json",
+          "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+          "revision": null,
+          "revision_url": null
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Exact premiere date and first commercial release date not independently established.",
+        "Short-film category is verified; live-action/animation/documentary/experimental subtype not inferred from assigned stratum."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-52",
+      "candidate_title": "Ootidė",
+      "stratum": "Shorts / experimental",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Ootidė",
+      "alternate_titles": [
+        "Ootid"
+      ],
+      "directors": [
+        "Eglė Razumaitė"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Cannes production year explicitly labeled",
+      "production_year": 2024,
+      "release_dates_as_reported": null,
+      "premiere_date": null,
+      "work_type": "short film",
+      "duration_minutes_as_individual_record": 10,
+      "duration_exact_version_status": "conflicting_sources",
+      "country_as_individual_record": "Lithuania, France",
+      "selection_frame": {
+        "url": "https://www.festival-cannes.com/en/2024/the-short-film-competition-programme/",
+        "edition": 77,
+        "year": 2024,
+        "category": "Short Films in Competition",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/cannes2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://www.festival-cannes.com/en/f/ootide/",
+          "retrieved_at": "2026-10-30T03:41:14.540576+00:00",
+          "response_sha256": "230c592590c8958d044c05ab10611212c0e204b9ae475435c7ee8fdd040bb834",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-52-cannes.json",
+          "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+          "revision": null,
+          "revision_url": null
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Exact premiere date and first commercial release date not independently established.",
+        "Short-film category is verified; live-action/animation/documentary/experimental subtype not inferred from assigned stratum."
+      ],
+      "notes": [
+        "Cannes programme gives 9 minutes and Lithuania; individual film record gives 10 minutes and Lithuania/France. Exact version/duration unresolved; retain both without choosing.",
+        "Programme uses Razumaitė Eglė (family/given order); individual record Eglé RAZUMAITE. Normalized director spelling Eglė Razumaitė; source variants retained in receipts."
+      ]
+    },
+    {
+      "key": "b4-53",
+      "candidate_title": "Sanki Yoxsan",
+      "stratum": "Shorts / experimental",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Sanki Yoxsan",
+      "alternate_titles": [],
+      "directors": [
+        "Azer Guliev"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Cannes production year explicitly labeled",
+      "production_year": 2024,
+      "release_dates_as_reported": null,
+      "premiere_date": null,
+      "work_type": "short film",
+      "duration_minutes_as_individual_record": 15,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "Azerbaijan, France",
+      "selection_frame": {
+        "url": "https://www.festival-cannes.com/en/2024/the-short-film-competition-programme/",
+        "edition": 77,
+        "year": 2024,
+        "category": "Short Films in Competition",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/cannes2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://www.festival-cannes.com/en/f/sanki-yoxsan/",
+          "retrieved_at": "2026-10-30T03:41:14.540791+00:00",
+          "response_sha256": "e67e0a485f9612ccdc649e9ece9b49db999cc8320f423fb4c8bee9ae59836a31",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-53-cannes.json",
+          "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+          "revision": null,
+          "revision_url": null
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Exact premiere date and first commercial release date not independently established.",
+        "Short-film category is verified; live-action/animation/documentary/experimental subtype not inferred from assigned stratum."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-54",
+      "candidate_title": "Les Belles Cicatrices",
+      "stratum": "Shorts / experimental",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Les Belles Cicatrices",
+      "alternate_titles": [],
+      "directors": [
+        "Raphaël Jouzeau"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Cannes production year explicitly labeled",
+      "production_year": 2024,
+      "release_dates_as_reported": null,
+      "premiere_date": null,
+      "work_type": "short film",
+      "duration_minutes_as_individual_record": 15,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "France",
+      "selection_frame": {
+        "url": "https://www.festival-cannes.com/en/2024/the-short-film-competition-programme/",
+        "edition": 77,
+        "year": 2024,
+        "category": "Short Films in Competition",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/cannes2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://www.festival-cannes.com/en/f/les-belles-cicatrices/",
+          "retrieved_at": "2026-10-30T03:41:14.541093+00:00",
+          "response_sha256": "b4d92fb70b1bce12fa1dbe10b630aa4792cd1b282932c5d54b34985c15e4bc71",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-54-cannes.json",
+          "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+          "revision": null,
+          "revision_url": null
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Exact premiere date and first commercial release date not independently established.",
+        "Short-film category is verified; live-action/animation/documentary/experimental subtype not inferred from assigned stratum."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-55",
+      "candidate_title": "Rrugës",
+      "stratum": "Shorts / experimental",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Rrugës",
+      "alternate_titles": [
+        "On the Way"
+      ],
+      "directors": [
+        "Samir Karahoda"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Cannes production year explicitly labeled",
+      "production_year": 2024,
+      "release_dates_as_reported": null,
+      "premiere_date": null,
+      "work_type": "short film",
+      "duration_minutes_as_individual_record": 15,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "Kosovo",
+      "selection_frame": {
+        "url": "https://www.festival-cannes.com/en/2024/the-short-film-competition-programme/",
+        "edition": 77,
+        "year": 2024,
+        "category": "Short Films in Competition",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/cannes2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://www.festival-cannes.com/en/f/rruges/",
+          "retrieved_at": "2026-10-30T03:41:16.756152+00:00",
+          "response_sha256": "40b09e44f4c603244926dc15cbe998941880eff6e2788ec9cf0e1f8215ab4874",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-55-cannes.json",
+          "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+          "revision": null,
+          "revision_url": null
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Exact premiere date and first commercial release date not independently established.",
+        "Short-film category is verified; live-action/animation/documentary/experimental subtype not inferred from assigned stratum."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-56",
+      "candidate_title": "Across the Waters",
+      "stratum": "Shorts / experimental",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Across the Waters",
+      "alternate_titles": [],
+      "directors": [
+        "Viv Li"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Cannes production year explicitly labeled",
+      "production_year": 2024,
+      "release_dates_as_reported": null,
+      "premiere_date": null,
+      "work_type": "short film",
+      "duration_minutes_as_individual_record": 15,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "France",
+      "selection_frame": {
+        "url": "https://www.festival-cannes.com/en/2024/the-short-film-competition-programme/",
+        "edition": 77,
+        "year": 2024,
+        "category": "Short Films in Competition",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/cannes2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://www.festival-cannes.com/en/f/across-the-waters/",
+          "retrieved_at": "2026-10-30T03:41:17.056053+00:00",
+          "response_sha256": "46c2693065c676f30b6f9c9fdfbfccb20bae5d04fe5afab5390f088018d80ebf",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-56-cannes.json",
+          "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+          "revision": null,
+          "revision_url": null
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Exact premiere date and first commercial release date not independently established.",
+        "Short-film category is verified; live-action/animation/documentary/experimental subtype not inferred from assigned stratum."
+      ],
+      "notes": [
+        "Cannes programme lists China; individual record Country field lists France. Preserve country-field discrepancy; location/story setting is not silently substituted for production country."
+      ]
+    },
+    {
+      "key": "b4-57",
+      "candidate_title": "Perfectly a Strangeness",
+      "stratum": "Shorts / experimental",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Perfectly a Strangeness",
+      "alternate_titles": [],
+      "directors": [
+        "Alison McAlpine"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Cannes production year explicitly labeled",
+      "production_year": 2024,
+      "release_dates_as_reported": null,
+      "premiere_date": null,
+      "work_type": "short film",
+      "duration_minutes_as_individual_record": 15,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "Canada",
+      "selection_frame": {
+        "url": "https://www.festival-cannes.com/en/2024/the-short-film-competition-programme/",
+        "edition": 77,
+        "year": 2024,
+        "category": "Short Films in Competition",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/cannes2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://www.festival-cannes.com/en/f/perfectly-a-strangeness/",
+          "retrieved_at": "2026-10-30T03:41:17.294462+00:00",
+          "response_sha256": "70ba1e93b554bf7e86029a4b81893d4dd19d4928b1f06dd71aeb1dd88f543e2b",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-57-cannes.json",
+          "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+          "revision": null,
+          "revision_url": null
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Exact premiere date and first commercial release date not independently established.",
+        "Short-film category is verified; live-action/animation/documentary/experimental subtype not inferred from assigned stratum."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-58",
+      "candidate_title": "Tea",
+      "stratum": "Shorts / experimental",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Tea",
+      "alternate_titles": [],
+      "directors": [
+        "Blake Rice"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Cannes production year explicitly labeled",
+      "production_year": 2024,
+      "release_dates_as_reported": null,
+      "premiere_date": null,
+      "work_type": "short film",
+      "duration_minutes_as_individual_record": 12,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "United States",
+      "selection_frame": {
+        "url": "https://www.festival-cannes.com/en/2024/the-short-film-competition-programme/",
+        "edition": 77,
+        "year": 2024,
+        "category": "Short Films in Competition",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/cannes2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://www.festival-cannes.com/en/f/tea/",
+          "retrieved_at": "2026-10-30T03:41:17.614964+00:00",
+          "response_sha256": "9f912f2197cbcf53cdc82d1afe866ed0e3fdc251de910697c31f9ca31266b3a6",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-58-cannes.json",
+          "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+          "revision": null,
+          "revision_url": null
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Exact premiere date and first commercial release date not independently established.",
+        "Short-film category is verified; live-action/animation/documentary/experimental subtype not inferred from assigned stratum."
+      ],
+      "notes": [
+        "Disambiguated to Blake Rice 2024 short, not other films named Tea."
+      ]
+    },
+    {
+      "key": "b4-59",
+      "candidate_title": "Amarela",
+      "stratum": "Shorts / experimental",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "Amarela",
+      "alternate_titles": [
+        "Yellow"
+      ],
+      "directors": [
+        "André Hayato Saito"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Cannes production year explicitly labeled",
+      "production_year": 2024,
+      "release_dates_as_reported": null,
+      "premiere_date": null,
+      "work_type": "short film",
+      "duration_minutes_as_individual_record": 15,
+      "duration_exact_version_status": "source_reported_not_version_audited",
+      "country_as_individual_record": "Brazil",
+      "selection_frame": {
+        "url": "https://www.festival-cannes.com/en/2024/the-short-film-competition-programme/",
+        "edition": 77,
+        "year": 2024,
+        "category": "Short Films in Competition",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/cannes2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://www.festival-cannes.com/en/f/amarela/",
+          "retrieved_at": "2026-10-30T03:41:17.915692+00:00",
+          "response_sha256": "00ed6f32a2afcac3f3942c729ad3857b2df280fc61db87dfc521d82a63d39026",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-59-cannes.json",
+          "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+          "revision": null,
+          "revision_url": null
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Exact premiere date and first commercial release date not independently established.",
+        "Short-film category is verified; live-action/animation/documentary/experimental subtype not inferred from assigned stratum."
+      ],
+      "notes": []
+    },
+    {
+      "key": "b4-60",
+      "candidate_title": "The Man Who Could Not Remain Silent",
+      "stratum": "Shorts / experimental",
+      "work_identity_status": "source_identity_established",
+      "canonical_title": "The Man Who Could Not Remain Silent",
+      "alternate_titles": [],
+      "directors": [
+        "Nebojša Slijepčević"
+      ],
+      "film_year": 2024,
+      "film_year_meaning": "Cannes production year explicitly labeled",
+      "production_year": 2024,
+      "release_dates_as_reported": null,
+      "premiere_date": null,
+      "work_type": "short film",
+      "duration_minutes_as_individual_record": 14,
+      "duration_exact_version_status": "conflicting_sources",
+      "country_as_individual_record": "Croatia, France, Bulgaria, Slovenia",
+      "selection_frame": {
+        "url": "https://www.festival-cannes.com/en/2024/the-short-film-competition-programme/",
+        "edition": 77,
+        "year": 2024,
+        "category": "Short Films in Competition",
+        "status": "verified_in_public_source",
+        "metadata_receipt": ".cache/cohort-audit/part2/cannes2024.json"
+      },
+      "identity_sources": [
+        {
+          "url": "https://www.festival-cannes.com/en/f/the-man-who-could-not-remain-silent/",
+          "retrieved_at": "2026-10-30T03:41:18.783733+00:00",
+          "response_sha256": "f039f00357688bb82bdece5f41c35589ca9ba777f00f7e8fad74d782fc8501d5",
+          "metadata_receipt": ".cache/cohort-audit/part2/b4-60-cannes.json",
+          "rights": "Minimal factual identity metadata only; Cannes copyright reserved; no synopsis, contact details, image or press kit retained.",
+          "revision": null,
+          "revision_url": null
+        }
+      ],
+      "provider_catalog_identity_status": "not_audited",
+      "derivative_provider_id_candidates": [],
+      "unresolved_facts": [
+        "Exact premiere date and first commercial release date not independently established.",
+        "Short-film category is verified; live-action/animation/documentary/experimental subtype not inferred from assigned stratum."
+      ],
+      "notes": [
+        "Cannes programme gives 13 minutes; individual film record gives 14 minutes. Exact version/duration unresolved; retain both without choosing."
+      ]
+    }
+  ]
+}

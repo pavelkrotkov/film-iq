@@ -1,0 +1,2356 @@
+{
+  "schema_version": "part1-work-audit-1",
+  "prepared_at_utc": "2026-10-30T03:41:50.544752+00:00",
+  "scope": "b4-01 through b4-30; all candidates preserved",
+  "evidence_policy": "Bounded CC-BY-SA Wikipedia revision lead/infobox metadata; original declared frames checked in bounded public requests. No provider requests. No guessed identifiers. No activation-field modifications.",
+  "selection_frame_receipts": [
+    {
+      "frame": "mainstream",
+      "url": "https://www.the-numbers.com/market/2019/top-grossing-movies",
+      "retrieved_at_utc": "2026-10-30T03:40:54.236688+00:00",
+      "retention": "No original page copy retained; response hash and request outcome only. Public access does not imply text reuse permission.",
+      "http_status": 200,
+      "bytes_read": 60269,
+      "complete_read": true,
+      "sha256": "efc4ecb95436c844107c0f4427cd36b7d0a3770d98d8cd3b5204b324fc1271e9",
+      "title_checks": [
+        {
+          "search": "Avengers: Endgame",
+          "found": true
+        },
+        {
+          "search": "The Lion King",
+          "found": true
+        },
+        {
+          "search": "Toy Story 4",
+          "found": true
+        },
+        {
+          "search": "Frozen",
+          "found": true
+        },
+        {
+          "search": "Captain Marvel",
+          "found": true
+        },
+        {
+          "search": "Star Wars",
+          "found": true
+        },
+        {
+          "search": "Spider-Man",
+          "found": true
+        },
+        {
+          "search": "Aladdin",
+          "found": true
+        },
+        {
+          "search": "Joker",
+          "found": true
+        },
+        {
+          "search": "It: Chapter Two",
+          "found": true
+        }
+      ]
+    },
+    {
+      "frame": "cannes",
+      "url": "https://www.festival-cannes.com/en/press/press-releases/the-films-of-the-official-selection-2024/",
+      "retrieved_at_utc": "2026-10-30T03:40:03.430717+00:00",
+      "retention": "No original page copy retained; response hash and request outcome only. Public access does not imply text reuse permission.",
+      "http_status": 200,
+      "bytes_read": 105894,
+      "complete_read": true,
+      "sha256": "dd9d543452c460d9309e771d88c23e86a5d8dab6b371727ff1543934c8bc6f5c"
+    },
+    {
+      "frame": "older",
+      "url": "https://www.bfi.org.uk/sight-and-sound/greatest-films-all-time",
+      "retrieved_at_utc": "2026-10-30T03:40:54.447631+00:00",
+      "retention": "No original page copy retained; response hash and request outcome only. Public access does not imply text reuse permission.",
+      "http_status": 200,
+      "bytes_read": 1024885,
+      "complete_read": true,
+      "sha256": "2fd8825332b18a22ea75ee28ea237328b5737237b2810ce4274208dc99ca43cc",
+      "title_checks": [
+        {
+          "search": "Tokyo Story",
+          "found": true
+        },
+        {
+          "search": "Citizen Kane",
+          "found": true
+        },
+        {
+          "search": "Vertigo",
+          "found": true
+        },
+        {
+          "search": "2001",
+          "found": true
+        },
+        {
+          "search": "Jeanne Dielman",
+          "found": true
+        },
+        {
+          "search": "Seven Samurai",
+          "found": true
+        },
+        {
+          "search": "Meshes",
+          "found": true
+        },
+        {
+          "search": "Pyaasa",
+          "found": true
+        },
+        {
+          "search": "Hiroshima",
+          "found": true
+        },
+        {
+          "search": "The River",
+          "found": true
+        }
+      ]
+    }
+  ],
+  "request_log": [
+    {
+      "key": "b4-01",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Avengers%3A+Endgame&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:38.350869+00:00",
+      "http_status": 200,
+      "sha256": "692ff2108034aa0beabaed10dbca9994943e40fe2e07bc129d1a4fc97fb47f41",
+      "bytes": 6104,
+      "raw_path": ".cache/cohort-audit/part1/b4-01.json",
+      "page_title": "Avengers: Endgame",
+      "revision_id": 1382180413,
+      "revision_timestamp": "2026-10-27T03:07:08Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1382180413",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-02",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=The+Lion+King+%282019+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:38.633155+00:00",
+      "http_status": 200,
+      "sha256": "948177ffdc88dafcd7dba13e3818874afbc9c36895fc358f09f0ca67b9f84682",
+      "bytes": 7856,
+      "raw_path": ".cache/cohort-audit/part1/b4-02.json",
+      "page_title": "The Lion King (2019 film)",
+      "revision_id": 1382740228,
+      "revision_timestamp": "2026-10-30T01:26:06Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1382740228",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-03",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Toy+Story+4&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:38.862221+00:00",
+      "http_status": 200,
+      "sha256": "39a5a97d82450122d9903e5523623703e890f8412009ed83ee2a10e045a66523",
+      "bytes": 6178,
+      "raw_path": ".cache/cohort-audit/part1/b4-03.json",
+      "page_title": "Toy Story 4",
+      "revision_id": 1382167190,
+      "revision_timestamp": "2026-10-27T01:11:49Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1382167190",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-04",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Frozen+II&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:39.116976+00:00",
+      "http_status": 200,
+      "sha256": "2c8378bd6193f9ecd18a3e9c9a032f945085406d0d5a712437b09484ffeef273",
+      "bytes": 5357,
+      "raw_path": ".cache/cohort-audit/part1/b4-04.json",
+      "page_title": "Frozen 2",
+      "revision_id": 1382740021,
+      "revision_timestamp": "2026-10-30T01:24:38Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1382740021",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-05",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Captain+Marvel+%28film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:39.357071+00:00",
+      "http_status": 200,
+      "sha256": "e1482948ec987e361e65435d894e581e3e5b073bc67d491bdcec59c44f742a03",
+      "bytes": 5292,
+      "raw_path": ".cache/cohort-audit/part1/b4-05.json",
+      "page_title": "Captain Marvel (film)",
+      "revision_id": 1380254633,
+      "revision_timestamp": "2026-10-14T18:16:13Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1380254633",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-06",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Star+Wars%3A+The+Rise+of+Skywalker&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:39.557963+00:00",
+      "http_status": 200,
+      "sha256": "ab6b7e0789c1e93c5c815e56f0220ac3c4869ccf7fdb74965239bf3020016f04",
+      "bytes": 8141,
+      "raw_path": ".cache/cohort-audit/part1/b4-06.json",
+      "page_title": "Star Wars: The Rise of Skywalker",
+      "revision_id": 1382510216,
+      "revision_timestamp": "2026-10-29T01:30:07Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1382510216",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-07",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Spider-Man%3A+Far+From+Home&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:39.781614+00:00",
+      "http_status": 200,
+      "sha256": "2d3bf69a4524928d95d4531e354d960fd6f5359d482860069c0d0642a0184dba",
+      "bytes": 5500,
+      "raw_path": ".cache/cohort-audit/part1/b4-07.json",
+      "page_title": "Spider-Man: Far From Home",
+      "revision_id": 1381327130,
+      "revision_timestamp": "2026-10-21T17:11:48Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1381327130",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-08",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Aladdin+%282019+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:40.042696+00:00",
+      "http_status": 200,
+      "sha256": "b9bc3841bb707be256a96ed5922109f6719352015a1cd0de854f73c5facedfb2",
+      "bytes": 5056,
+      "raw_path": ".cache/cohort-audit/part1/b4-08.json",
+      "page_title": "Aladdin (2019 film)",
+      "revision_id": 1379284412,
+      "revision_timestamp": "2026-10-09T01:37:14Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1379284412",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-09",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Joker+%282019+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:40.344257+00:00",
+      "http_status": 200,
+      "sha256": "f82fd8716ff26c5458f0a60a2d53cf2d0d656d4c072692a5c9bc34ba25b7e023",
+      "bytes": 5764,
+      "raw_path": ".cache/cohort-audit/part1/b4-09.json",
+      "page_title": "Joker (2019 film)",
+      "revision_id": 1382532369,
+      "revision_timestamp": "2026-10-29T03:35:39Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1382532369",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-10",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:40.577343+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-11",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Grand+Tour+%28film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:40.748780+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-12",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=All+We+Imagine+as+Light&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:40.916735+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-13",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=The+Seed+of+the+Sacred+Fig&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:41.087847+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-14",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Wild+Diamond&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:41.322938+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-15",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=The+Girl+with+the+Needle&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:41.491040+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-16",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=The+Village+Next+to+Paradise&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:41.678591+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-17",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=On+Becoming+a+Guinea+Fowl&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:41.869831+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-18",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Black+Dog+%282024+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:42.063565+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-19",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Viet+and+Nam&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:42.247493+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-20",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=My+Sunshine+%28film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:42.415474+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-21",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Tokyo+Story&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:42.582345+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-22",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Citizen+Kane&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:42.751096+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-23",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Vertigo+%28film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:43.006181+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-24",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=2001%3A+A+Space+Odyssey+%28film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:43.193846+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-25",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Jeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:43.360421+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-26",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Seven+Samurai&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:43.531547+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-27",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Meshes+of+the+Afternoon&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:43.705631+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-28",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Pyaasa&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:43.871529+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-29",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Hiroshima+mon+amour&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:44.057915+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-30",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=The+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:39:44.224313+00:00",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "key": "b4-22",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "Citizen Kane",
+      "revision_id": 1382459822,
+      "revision_timestamp": "2026-10-28T20:37:44Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1382459822",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-26",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "Seven Samurai",
+      "revision_id": 1381655382,
+      "revision_timestamp": "2026-10-23T22:53:04Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1381655382",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-27",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "Meshes of the Afternoon",
+      "revision_id": 1379911840,
+      "revision_timestamp": "2026-10-12T16:46:42Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1379911840",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-23",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "Vertigo (film)",
+      "revision_id": 1380335319,
+      "revision_timestamp": "2026-10-15T03:09:03Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1380335319",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-21",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "Tokyo Story",
+      "revision_id": 1381960846,
+      "revision_timestamp": "2026-10-25T20:45:17Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1381960846",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-29",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "Hiroshima mon amour",
+      "revision_id": 1371407453,
+      "revision_timestamp": "2026-08-26T07:03:54Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1371407453",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-28",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "Pyaasa",
+      "revision_id": 1381636687,
+      "revision_timestamp": "2026-10-23T20:28:19Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1381636687",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-30",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "The River (1951 film)",
+      "revision_id": 1378938744,
+      "revision_timestamp": "2026-10-07T00:44:38Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1378938744",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-25",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "Jeanne Dielman, 23 quai du Commerce, 1080 Bruxelles",
+      "revision_id": 1375974320,
+      "revision_timestamp": "2026-09-21T05:45:58Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1375974320",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-10",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "It Chapter Two",
+      "revision_id": 1381895820,
+      "revision_timestamp": "2026-10-25T13:48:52Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1381895820",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-11",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "Grand Tour (film)",
+      "revision_id": 1374022911,
+      "revision_timestamp": "2026-09-09T10:03:36Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1374022911",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-15",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "The Girl with the Needle",
+      "revision_id": 1380592679,
+      "revision_timestamp": "2026-10-16T18:12:15Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1380592679",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-12",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "All We Imagine as Light",
+      "revision_id": 1382054057,
+      "revision_timestamp": "2026-10-26T08:25:37Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1382054057",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-14",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "Wild Diamond",
+      "revision_id": 1377791433,
+      "revision_timestamp": "2026-10-01T03:39:14Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1377791433",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-17",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "On Becoming a Guinea Fowl",
+      "revision_id": 1375805602,
+      "revision_timestamp": "2026-09-20T04:31:39Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1375805602",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-13",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "The Seed of the Sacred Fig",
+      "revision_id": 1381904725,
+      "revision_timestamp": "2026-10-25T15:00:54Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1381904725",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-19",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "Viet and Nam",
+      "revision_id": 1374022105,
+      "revision_timestamp": "2026-09-09T09:53:36Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1374022105",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-20",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "My Sunshine (film)",
+      "revision_id": 1381905160,
+      "revision_timestamp": "2026-10-25T15:04:05Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1381905160",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-16",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "The Village Next to Paradise",
+      "revision_id": 1376162538,
+      "revision_timestamp": "2026-09-22T13:04:13Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1376162538",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-18",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "Black Dog (2024 film)",
+      "revision_id": 1374022845,
+      "revision_timestamp": "2026-09-09T10:02:46Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1374022845",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    },
+    {
+      "key": "b4-24",
+      "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+      "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+      "http_status": 200,
+      "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+      "bytes": 95093,
+      "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+      "page_title": "2001: A Space Odyssey",
+      "revision_id": 1381979001,
+      "revision_timestamp": "2026-10-25T22:04:22Z",
+      "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1381979001",
+      "license": "CC-BY-SA-4.0; text only, no media retained",
+      "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+    }
+  ],
+  "records": [
+    {
+      "key": "b4-01",
+      "candidate_title": "Avengers: Endgame",
+      "assigned_stratum": "Mainstream",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Avengers: Endgame",
+        "directors": [
+          "Anthony Russo",
+          "Joe Russo"
+        ],
+        "article_designated_film_year": 2019,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 181
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2019,
+        "selection_frame_year": 2019,
+        "release_events_wikipedia_wikitext": "{{Film date|2019|4|22|[[Los Angeles Convention Center]]|2019|4|26|United States}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-01",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Avengers%3A+Endgame&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:39:38.350869+00:00",
+          "http_status": 200,
+          "sha256": "692ff2108034aa0beabaed10dbca9994943e40fe2e07bc129d1a4fc97fb47f41",
+          "bytes": 6104,
+          "raw_path": ".cache/cohort-audit/part1/b4-01.json",
+          "page_title": "Avengers: Endgame",
+          "revision_id": 1382180413,
+          "revision_timestamp": "2026-10-27T03:07:08Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1382180413",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "mainstream",
+        "selection_frame_check": "Matched source-frame title and 2019 release context"
+      },
+      "resolution_notes": "Title, director, film-year and format distinguish this work in its declared selection frame.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-02",
+      "candidate_title": "The Lion King (2019)",
+      "assigned_stratum": "Mainstream",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "The Lion King",
+        "directors": [
+          "Jon Favreau"
+        ],
+        "article_designated_film_year": 2019,
+        "work_type": "animated feature film",
+        "runtime_minutes_as_source_assertion": 118
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2019,
+        "selection_frame_year": 2019,
+        "release_events_wikipedia_wikitext": "{{Film date|2019|7|9|[[Hollywood, Los Angeles|Hollywood]]|2019|7|19|United States}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-02",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=The+Lion+King+%282019+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:39:38.633155+00:00",
+          "http_status": 200,
+          "sha256": "948177ffdc88dafcd7dba13e3818874afbc9c36895fc358f09f0ca67b9f84682",
+          "bytes": 7856,
+          "raw_path": ".cache/cohort-audit/part1/b4-02.json",
+          "page_title": "The Lion King (2019 film)",
+          "revision_id": 1382740228,
+          "revision_timestamp": "2026-10-30T01:26:06Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1382740228",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "mainstream",
+        "selection_frame_check": "Matched source-frame title and 2019 release context"
+      },
+      "resolution_notes": "2019 photorealistically animated remake; distinguish from the 1994 film.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-03",
+      "candidate_title": "Toy Story 4",
+      "assigned_stratum": "Mainstream",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Toy Story 4",
+        "directors": [
+          "Josh Cooley"
+        ],
+        "article_designated_film_year": 2019,
+        "work_type": "animated feature film",
+        "runtime_minutes_as_source_assertion": 100
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2019,
+        "selection_frame_year": 2019,
+        "release_events_wikipedia_wikitext": "{{Film date|2019|6|11|[[El Capitan Theatre]]|2019|6|21|United States}}<!--NOTE: Per Template:Infobox film instructions this parameter is only for initial premiere and nation of origin (US) release date-->",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-03",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Toy+Story+4&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:39:38.862221+00:00",
+          "http_status": 200,
+          "sha256": "39a5a97d82450122d9903e5523623703e890f8412009ed83ee2a10e045a66523",
+          "bytes": 6178,
+          "raw_path": ".cache/cohort-audit/part1/b4-03.json",
+          "page_title": "Toy Story 4",
+          "revision_id": 1382167190,
+          "revision_timestamp": "2026-10-27T01:11:49Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1382167190",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "mainstream",
+        "selection_frame_check": "Matched source-frame title and 2019 release context"
+      },
+      "resolution_notes": "Title, director, film-year and format distinguish this work in its declared selection frame.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-04",
+      "candidate_title": "Frozen II",
+      "assigned_stratum": "Mainstream",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Frozen 2",
+        "directors": [
+          "Chris Buck",
+          "Jennifer Lee"
+        ],
+        "article_designated_film_year": 2019,
+        "work_type": "animated feature film",
+        "runtime_minutes_as_source_assertion": 103
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2019,
+        "selection_frame_year": 2019,
+        "release_events_wikipedia_wikitext": "{{Film date|2019|11|7|[[Dolby Theatre]]|2019|11|22|United States}}<!--NOTE: Per Template:Infobox film instructions this parameter is only for initial premiere and nation of origin (US) release date-->",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-04",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Frozen+II&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:39:39.116976+00:00",
+          "http_status": 200,
+          "sha256": "2c8378bd6193f9ecd18a3e9c9a032f945085406d0d5a712437b09484ffeef273",
+          "bytes": 5357,
+          "raw_path": ".cache/cohort-audit/part1/b4-04.json",
+          "page_title": "Frozen 2",
+          "revision_id": 1382740021,
+          "revision_timestamp": "2026-10-30T01:24:38Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1382740021",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "mainstream",
+        "selection_frame_check": "Matched source-frame title and 2019 release context"
+      },
+      "resolution_notes": "Article title Frozen 2; Frozen II is the stylized title used by the declared source chart.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-05",
+      "candidate_title": "Captain Marvel",
+      "assigned_stratum": "Mainstream",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Captain Marvel",
+        "directors": [
+          "Anna Boden",
+          "Ryan Fleck"
+        ],
+        "article_designated_film_year": 2019,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 124
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2019,
+        "selection_frame_year": 2019,
+        "release_events_wikipedia_wikitext": "{{Film date|2019|2|27|London|2019|3|8|United States}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-05",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Captain+Marvel+%28film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:39:39.357071+00:00",
+          "http_status": 200,
+          "sha256": "e1482948ec987e361e65435d894e581e3e5b073bc67d491bdcec59c44f742a03",
+          "bytes": 5292,
+          "raw_path": ".cache/cohort-audit/part1/b4-05.json",
+          "page_title": "Captain Marvel (film)",
+          "revision_id": 1380254633,
+          "revision_timestamp": "2026-10-14T18:16:13Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1380254633",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "mainstream",
+        "selection_frame_check": "Matched source-frame title and 2019 release context"
+      },
+      "resolution_notes": "2019 Boden/Fleck feature, not an earlier serial or similarly named work.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-06",
+      "candidate_title": "Star Wars: The Rise of Skywalker",
+      "assigned_stratum": "Mainstream",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Star Wars: The Rise of Skywalker",
+        "directors": [
+          "J. J. Abrams"
+        ],
+        "article_designated_film_year": 2019,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 141
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2019,
+        "selection_frame_year": 2019,
+        "release_events_wikipedia_wikitext": "{{Film date|2019|12|16|[[Dolby Theatre]]|2019|12|20|United States}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-06",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Star+Wars%3A+The+Rise+of+Skywalker&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:39:39.557963+00:00",
+          "http_status": 200,
+          "sha256": "ab6b7e0789c1e93c5c815e56f0220ac3c4869ccf7fdb74965239bf3020016f04",
+          "bytes": 8141,
+          "raw_path": ".cache/cohort-audit/part1/b4-06.json",
+          "page_title": "Star Wars: The Rise of Skywalker",
+          "revision_id": 1382510216,
+          "revision_timestamp": "2026-10-29T01:30:07Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1382510216",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "mainstream",
+        "selection_frame_check": "Matched source-frame title and 2019 release context"
+      },
+      "resolution_notes": "Title, director, film-year and format distinguish this work in its declared selection frame.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-07",
+      "candidate_title": "Spider-Man: Far From Home",
+      "assigned_stratum": "Mainstream",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Spider-Man: Far From Home",
+        "directors": [
+          "Jon Watts"
+        ],
+        "article_designated_film_year": 2019,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 129
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2019,
+        "selection_frame_year": 2019,
+        "release_events_wikipedia_wikitext": "{{Film date|2019|6|26|[[TCL Chinese Theatre]]|2019|7|2|United States}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-07",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Spider-Man%3A+Far+From+Home&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:39:39.781614+00:00",
+          "http_status": 200,
+          "sha256": "2d3bf69a4524928d95d4531e354d960fd6f5359d482860069c0d0642a0184dba",
+          "bytes": 5500,
+          "raw_path": ".cache/cohort-audit/part1/b4-07.json",
+          "page_title": "Spider-Man: Far From Home",
+          "revision_id": 1381327130,
+          "revision_timestamp": "2026-10-21T17:11:48Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1381327130",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "mainstream",
+        "selection_frame_check": "Matched source-frame title and 2019 release context"
+      },
+      "resolution_notes": "Title, director, film-year and format distinguish this work in its declared selection frame.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-08",
+      "candidate_title": "Aladdin (2019)",
+      "assigned_stratum": "Mainstream",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Aladdin",
+        "directors": [
+          "Guy Ritchie"
+        ],
+        "article_designated_film_year": 2019,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 128
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2019,
+        "selection_frame_year": 2019,
+        "release_events_wikipedia_wikitext": "{{Film date|2019|5|8|[[Grand Rex]]|2019|5|24|United States}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-08",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Aladdin+%282019+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:39:40.042696+00:00",
+          "http_status": 200,
+          "sha256": "b9bc3841bb707be256a96ed5922109f6719352015a1cd0de854f73c5facedfb2",
+          "bytes": 5056,
+          "raw_path": ".cache/cohort-audit/part1/b4-08.json",
+          "page_title": "Aladdin (2019 film)",
+          "revision_id": 1379284412,
+          "revision_timestamp": "2026-10-09T01:37:14Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1379284412",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "mainstream",
+        "selection_frame_check": "Matched source-frame title and 2019 release context"
+      },
+      "resolution_notes": "2019 Guy Ritchie live-action adaptation, not the 1992 animation.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-09",
+      "candidate_title": "Joker",
+      "assigned_stratum": "Mainstream",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Joker",
+        "directors": [
+          "Todd Phillips"
+        ],
+        "article_designated_film_year": 2019,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 122
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2019,
+        "selection_frame_year": 2019,
+        "release_events_wikipedia_wikitext": "{{Film date|2019|8|31|[[76th Venice International Film Festival|Venice]]|2019|10|4|United States}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-09",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=Joker+%282019+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:39:40.344257+00:00",
+          "http_status": 200,
+          "sha256": "f82fd8716ff26c5458f0a60a2d53cf2d0d656d4c072692a5c9bc34ba25b7e023",
+          "bytes": 5764,
+          "raw_path": ".cache/cohort-audit/part1/b4-09.json",
+          "page_title": "Joker (2019 film)",
+          "revision_id": 1382532369,
+          "revision_timestamp": "2026-10-29T03:35:39Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1382532369",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "mainstream",
+        "selection_frame_check": "Matched source-frame title and 2019 release context"
+      },
+      "resolution_notes": "2019 Todd Phillips feature, not other works titled Joker.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-10",
+      "candidate_title": "It: Chapter Two",
+      "assigned_stratum": "Mainstream",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "It Chapter Two",
+        "directors": [
+          "Andy Muschietti"
+        ],
+        "article_designated_film_year": 2019,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 169
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2019,
+        "selection_frame_year": 2019,
+        "release_events_wikipedia_wikitext": "{{Film date|2019|8|26|[[Fox Theater, Westwood Village|Regency Village Theatre]]|2019|9|6|United States}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-10",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "It Chapter Two",
+          "revision_id": 1381895820,
+          "revision_timestamp": "2026-10-25T13:48:52Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1381895820",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "mainstream",
+        "selection_frame_check": "Matched source-frame title and 2019 release context"
+      },
+      "resolution_notes": "The Numbers uses It: Chapter Two; revision title and billing form are It Chapter Two.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-11",
+      "candidate_title": "Grand Tour",
+      "assigned_stratum": "International arthouse",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Grand Tour",
+        "directors": [
+          "Miguel Gomes"
+        ],
+        "article_designated_film_year": 2024,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 129
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2024,
+        "selection_frame_year": 2024,
+        "release_events_wikipedia_wikitext": "{{Film date|df=yes|2024|5|22|[[2024 Cannes Film Festival|Cannes]]|2024|9|19|Portugal|2024|11|27|France}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-11",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "Grand Tour (film)",
+          "revision_id": 1374022911,
+          "revision_timestamp": "2026-09-09T10:03:36Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1374022911",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "cannes",
+        "selection_frame_check": "Matched Cannes 2024 title and director"
+      },
+      "resolution_notes": "2024 Miguel Gomes film, disambiguated by Cannes selection, not a generic travel documentary.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-12",
+      "candidate_title": "All We Imagine as Light",
+      "assigned_stratum": "International arthouse",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "All We Imagine as Light",
+        "directors": [
+          "Payal Kapadia"
+        ],
+        "article_designated_film_year": 2024,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 115
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2024,
+        "selection_frame_year": 2024,
+        "release_events_wikipedia_wikitext": "{{Film date|df=yes|2024|5|23|[[2024 Cannes Film Festival|Cannes]]|2024|9|21|India|2024|10|2|France}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-12",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "All We Imagine as Light",
+          "revision_id": 1382054057,
+          "revision_timestamp": "2026-10-26T08:25:37Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1382054057",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "cannes",
+        "selection_frame_check": "Matched Cannes 2024 title and director"
+      },
+      "resolution_notes": "Title, director, film-year and format distinguish this work in its declared selection frame.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-13",
+      "candidate_title": "The Seed of the Sacred Fig",
+      "assigned_stratum": "International arthouse",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "The Seed of the Sacred Fig",
+        "directors": [
+          "Mohammad Rasoulof"
+        ],
+        "article_designated_film_year": 2024,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 168
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2024,
+        "selection_frame_year": 2024,
+        "release_events_wikipedia_wikitext": "{{Film date|df=yes|2024|5|24|[[2024 Cannes Film Festival|Cannes]]|2024|9|18|France|2024|12|26|Germany}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-13",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "The Seed of the Sacred Fig",
+          "revision_id": 1381904725,
+          "revision_timestamp": "2026-10-25T15:00:54Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1381904725",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "cannes",
+        "selection_frame_check": "Matched Cannes 2024 title and director"
+      },
+      "resolution_notes": "Title, director, film-year and format distinguish this work in its declared selection frame.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-14",
+      "candidate_title": "Wild Diamond",
+      "assigned_stratum": "International arthouse",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Wild Diamond",
+        "directors": [
+          "Agathe Riedinger"
+        ],
+        "article_designated_film_year": 2024,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 103
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2024,
+        "selection_frame_year": 2024,
+        "release_events_wikipedia_wikitext": "{{Film date|df=yes|2024|5|15|[[2024 Cannes Film Festival|Cannes]]|2024|11|20|France}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-14",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "Wild Diamond",
+          "revision_id": 1377791433,
+          "revision_timestamp": "2026-10-01T03:39:14Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1377791433",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "cannes",
+        "selection_frame_check": "Matched Cannes 2024 title and director"
+      },
+      "resolution_notes": "Title, director, film-year and format distinguish this work in its declared selection frame.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-15",
+      "candidate_title": "The Girl with the Needle",
+      "assigned_stratum": "International arthouse",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "The Girl with the Needle",
+        "directors": [
+          "Magnus von Horn"
+        ],
+        "article_designated_film_year": 2024,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 123
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2024,
+        "selection_frame_year": 2024,
+        "release_events_wikipedia_wikitext": "{{Film date|df=yes|2024|5|15|[[2024 Cannes Film Festival|Cannes]]|2025|1|17|Poland|2025|1|23|Denmark}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-15",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "The Girl with the Needle",
+          "revision_id": 1380592679,
+          "revision_timestamp": "2026-10-16T18:12:15Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1380592679",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "cannes",
+        "selection_frame_check": "Matched Cannes 2024 title and director"
+      },
+      "resolution_notes": "2024 film and Cannes premiere; Poland and Denmark domestic releases in 2025 remain separate dates.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-16",
+      "candidate_title": "The Village Next to Paradise",
+      "assigned_stratum": "International arthouse",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "The Village Next to Paradise",
+        "directors": [
+          "Mo Harawe"
+        ],
+        "article_designated_film_year": 2024,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 132
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2024,
+        "selection_frame_year": 2024,
+        "release_events_wikipedia_wikitext": "{{Film date|df=y|2024|05|21|[[2024 Cannes Film Festival|Cannes]]|ref1=<ref name=\"sd\">{{cite web |last1=Baughan |first1=Nikki |title='The Village Next To Paradise': Cannes Review |url=https://www.screendaily.com/reviews/the-village-next-to-paradise-cannes-review/5193825.article |website=Screen Daily |access-date=21 May 2024}}</ref>}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-16",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "The Village Next to Paradise",
+          "revision_id": 1376162538,
+          "revision_timestamp": "2026-09-22T13:04:13Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1376162538",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "cannes",
+        "selection_frame_check": "Matched Cannes 2024 title and director"
+      },
+      "resolution_notes": "Title, director, film-year and format distinguish this work in its declared selection frame.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-17",
+      "candidate_title": "On Becoming a Guinea Fowl",
+      "assigned_stratum": "International arthouse",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "On Becoming a Guinea Fowl",
+        "directors": [
+          "Rungano Nyoni"
+        ],
+        "article_designated_film_year": 2024,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 99
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2024,
+        "selection_frame_year": 2024,
+        "release_events_wikipedia_wikitext": "{{Film date|2024|5|16|[[2024 Cannes Film Festival|Cannes]]|2024|12|6|United Kingdom and Ireland|2025|3|7|United States}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-17",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "On Becoming a Guinea Fowl",
+          "revision_id": 1375805602,
+          "revision_timestamp": "2026-09-20T04:31:39Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1375805602",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "cannes",
+        "selection_frame_check": "Matched Cannes 2024 title and director"
+      },
+      "resolution_notes": "2024 film and Cannes premiere; US release in 2025 remains separate.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-18",
+      "candidate_title": "Black Dog",
+      "assigned_stratum": "International arthouse",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Black Dog",
+        "directors": [
+          "Guan Hu"
+        ],
+        "article_designated_film_year": 2024,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 110
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2024,
+        "selection_frame_year": 2024,
+        "release_events_wikipedia_wikitext": "{{Film date|df=yes|2024|05|18|[[2024 Cannes Film Festival|Cannes]]|2024|06|15|China|2024|07|25|Singapore}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-18",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "Black Dog (2024 film)",
+          "revision_id": 1374022845,
+          "revision_timestamp": "2026-09-09T10:02:46Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1374022845",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "cannes",
+        "selection_frame_check": "Matched Cannes 2024 title and director"
+      },
+      "resolution_notes": "Guan Hu’s Gou Zhen (2024), corroborated by declared Cannes frame; not other Black Dog films.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-19",
+      "candidate_title": "Viet and Nam",
+      "assigned_stratum": "International arthouse",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Viet and Nam",
+        "directors": [
+          "Trương Minh Quý"
+        ],
+        "article_designated_film_year": 2024,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 129
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2024,
+        "selection_frame_year": 2024,
+        "release_events_wikipedia_wikitext": "{{Film date|2024|5|22|[[2024 Cannes Film Festival|Cannes]]}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-19",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "Viet and Nam",
+          "revision_id": 1374022105,
+          "revision_timestamp": "2026-09-09T09:53:36Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1374022105",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "cannes",
+        "selection_frame_check": "Matched Cannes 2024 title and director"
+      },
+      "resolution_notes": "Title, director, film-year and format distinguish this work in its declared selection frame.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-20",
+      "candidate_title": "My Sunshine",
+      "assigned_stratum": "International arthouse",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "My Sunshine",
+        "directors": [
+          "Hiroshi Okuyama"
+        ],
+        "article_designated_film_year": 2024,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 100
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 2024,
+        "selection_frame_year": 2024,
+        "release_events_wikipedia_wikitext": "{{Film date|2024|5|19|[[2024 Cannes Film Festival|Cannes]]|2024|9||Japan|df=yes}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-20",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "My Sunshine (film)",
+          "revision_id": 1381905160,
+          "revision_timestamp": "2026-10-25T15:04:05Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1381905160",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "cannes",
+        "selection_frame_check": "Matched Cannes 2024 title and director"
+      },
+      "resolution_notes": "Hiroshi Okuyama’s Boku no Ohisama (2024), corroborated by declared Cannes frame.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-21",
+      "candidate_title": "Tokyo Story",
+      "assigned_stratum": "Older",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Tokyo Story",
+        "directors": [
+          "Yasujirō Ozu"
+        ],
+        "article_designated_film_year": 1953,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 136
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 1953,
+        "selection_frame_year": 2022,
+        "release_events_wikipedia_wikitext": "{{Film date|1953|11|3}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-21",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "Tokyo Story",
+          "revision_id": 1381960846,
+          "revision_timestamp": "2026-10-25T20:45:17Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1381960846",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "older",
+        "selection_frame_check": "Matched expanded 2022 Sight and Sound retrospective title; not necessarily top100"
+      },
+      "resolution_notes": "Title, director, film-year and format distinguish this work in its declared selection frame.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-22",
+      "candidate_title": "Citizen Kane",
+      "assigned_stratum": "Older",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Citizen Kane",
+        "directors": [
+          "Orson Welles"
+        ],
+        "article_designated_film_year": 1941,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 119
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 1941,
+        "selection_frame_year": 2022,
+        "release_events_wikipedia_wikitext": "{{Film date|1941|05|01|[[Palace Theatre (New York City)|Palace Theatre]]|1941|09|05|United States}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-22",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "Citizen Kane",
+          "revision_id": 1382459822,
+          "revision_timestamp": "2026-10-28T20:37:44Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1382459822",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "older",
+        "selection_frame_check": "Matched expanded 2022 Sight and Sound retrospective title; not necessarily top100"
+      },
+      "resolution_notes": "Title, director, film-year and format distinguish this work in its declared selection frame.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-23",
+      "candidate_title": "Vertigo",
+      "assigned_stratum": "Older",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Vertigo",
+        "directors": [
+          "Alfred Hitchcock"
+        ],
+        "article_designated_film_year": 1958,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 128
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 1958,
+        "selection_frame_year": 2022,
+        "release_events_wikipedia_wikitext": "{{Film date|1958|5|9}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-23",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "Vertigo (film)",
+          "revision_id": 1380335319,
+          "revision_timestamp": "2026-10-15T03:09:03Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1380335319",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "older",
+        "selection_frame_check": "Matched expanded 2022 Sight and Sound retrospective title; not necessarily top100"
+      },
+      "resolution_notes": "Title, director, film-year and format distinguish this work in its declared selection frame.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-24",
+      "candidate_title": "2001: A Space Odyssey",
+      "assigned_stratum": "Older",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "2001: A Space Odyssey",
+        "directors": [
+          "Stanley Kubrick"
+        ],
+        "article_designated_film_year": 1968,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 139
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 1968,
+        "selection_frame_year": 2022,
+        "release_events_wikipedia_wikitext": "{{Film date|df=yes|1968|4|2|[[Uptown Theater (Washington, D.C.)|Uptown Theater]]|ref1=<ref name=\"Release\">{{cite web |last1=Coate |first1=Michael |title=The Original Reserved-Seat Roadshow Engagements Of \"2001: A Space Odyssey\" |url=https://www.in70mm.com/presents/1959_super_panavision/1968_2OO1/engagements/2001/engagements/index.htm |website=in70mm.com |access-date=12 July 2023 |archive-date=23 July 2023 |archive-url=https://web.archive.org/web/20230723191025/https://www.in70mm.com/presents/1959_super_panavision/1968_2OO1/engagements/2001/engagements/index.htm |url-status=live}}</ref>|1968|04|03|United States|ref2=<ref name=\"Release\" />|1968|5|1|United Kingdom|ref3=<ref name=\"Release\" />}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-24",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "2001: A Space Odyssey",
+          "revision_id": 1381979001,
+          "revision_timestamp": "2026-10-25T22:04:22Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1381979001",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "older",
+        "selection_frame_check": "Matched expanded 2022 Sight and Sound retrospective title; not necessarily top100"
+      },
+      "resolution_notes": "1968 Kubrick film; 2001 in title is not the release year. Runtime is revision assertion for a release version, not verification of all cuts.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-25",
+      "candidate_title": "Jeanne Dielman, 23 quai du Commerce, 1080 Bruxelles",
+      "assigned_stratum": "Older",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Jeanne Dielman, 23 quai du Commerce, 1080 Bruxelles",
+        "directors": [
+          "Chantal Akerman"
+        ],
+        "article_designated_film_year": 1975,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 201
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 1975,
+        "selection_frame_year": 2022,
+        "release_events_wikipedia_wikitext": "{{film date|df=yes|1975|5|22|[[1975 Cannes Film Festival|Cannes]]|1976|1|21|France}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-25",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "Jeanne Dielman, 23 quai du Commerce, 1080 Bruxelles",
+          "revision_id": 1375974320,
+          "revision_timestamp": "2026-09-21T05:45:58Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1375974320",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "older",
+        "selection_frame_check": "Matched expanded 2022 Sight and Sound retrospective title; not necessarily top100"
+      },
+      "resolution_notes": "1975 film and Cannes premiere; France release in 1976 remains separate.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-26",
+      "candidate_title": "Seven Samurai",
+      "assigned_stratum": "Older",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Seven Samurai",
+        "directors": [
+          "Akira Kurosawa"
+        ],
+        "article_designated_film_year": 1954,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 207
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 1954,
+        "selection_frame_year": 2022,
+        "release_events_wikipedia_wikitext": "{{Film date|1954|04|26}}<!-- Do not add the US release date here, please; see WP:FILMRELEASE. -->",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-26",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "Seven Samurai",
+          "revision_id": 1381655382,
+          "revision_timestamp": "2026-10-23T22:53:04Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1381655382",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "older",
+        "selection_frame_check": "Matched expanded 2022 Sight and Sound retrospective title; not necessarily top100"
+      },
+      "resolution_notes": "207-minute runtime includes intermission; cut-specific equivalence remains unverified.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-27",
+      "candidate_title": "Meshes of the Afternoon",
+      "assigned_stratum": "Older",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Meshes of the Afternoon",
+        "directors": [
+          "Maya Deren",
+          "Alexandr Hackenschmied"
+        ],
+        "article_designated_film_year": 1943,
+        "work_type": "experimental short film",
+        "runtime_minutes_as_source_assertion": 14
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 1943,
+        "selection_frame_year": 2022,
+        "release_events_wikipedia_wikitext": "{{film date|1943}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-27",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "Meshes of the Afternoon",
+          "revision_id": 1379911840,
+          "revision_timestamp": "2026-10-12T16:46:42Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1379911840",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "older",
+        "selection_frame_check": "Matched expanded 2022 Sight and Sound retrospective title; not necessarily top100"
+      },
+      "resolution_notes": "Older assignment overlaps shorts/experimental: 1943 14-minute short. Retain in assigned stratum; no double counting.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-28",
+      "candidate_title": "Pyaasa",
+      "assigned_stratum": "Older",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Pyaasa",
+        "directors": [
+          "Guru Dutt"
+        ],
+        "article_designated_film_year": 1957,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 153
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 1957,
+        "selection_frame_year": 2022,
+        "release_events_wikipedia_wikitext": "{{Film date|df=yes|1957|02|22}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-28",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "Pyaasa",
+          "revision_id": 1381636687,
+          "revision_timestamp": "2026-10-23T20:28:19Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1381636687",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "older",
+        "selection_frame_check": "Matched expanded 2022 Sight and Sound retrospective title; not necessarily top100"
+      },
+      "resolution_notes": "Expanded 2022 BFI list shows tied rank 185, not top100.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-29",
+      "candidate_title": "Hiroshima mon amour",
+      "assigned_stratum": "Older",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "Hiroshima mon amour",
+        "directors": [
+          "Alain Resnais"
+        ],
+        "article_designated_film_year": 1959,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 90
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 1959,
+        "selection_frame_year": 2022,
+        "release_events_wikipedia_wikitext": "{{film date|1959|5|8|[[1959 Cannes Film Festival|Cannes]]|1959|6|10|France|1959|6|20|Japan|df=yes}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-29",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "Hiroshima mon amour",
+          "revision_id": 1371407453,
+          "revision_timestamp": "2026-08-26T07:03:54Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1371407453",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "older",
+        "selection_frame_check": "Matched expanded 2022 Sight and Sound retrospective title; not necessarily top100"
+      },
+      "resolution_notes": "Expanded 2022 BFI list shows tied rank 169, not top100.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    },
+    {
+      "key": "b4-30",
+      "candidate_title": "The River (1951)",
+      "assigned_stratum": "Older",
+      "work_audit_status": "work_metadata_verified_with_source_limitations",
+      "verified_facts": {
+        "title": "The River",
+        "directors": [
+          "Jean Renoir"
+        ],
+        "article_designated_film_year": 1951,
+        "work_type": "feature film",
+        "runtime_minutes_as_source_assertion": 99
+      },
+      "year_fields": {
+        "production_year": null,
+        "article_designated_film_year": 1951,
+        "selection_frame_year": 2022,
+        "release_events_wikipedia_wikitext": "{{Film date|1951|09|10|df=yes}}",
+        "interpretation": "Film-year assertion is not production-year verification. Release/festival/territorial events retained as distinct source assertions."
+      },
+      "source_evidence": {
+        "wikipedia": {
+          "key": "b4-30",
+          "request_url": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Ctimestamp%7Ccontent&rvslots=main&rvsection=0&titles=It+Chapter+Two%7CGrand+Tour+%28film%29%7CAll+We+Imagine+as+Light%7CThe+Seed+of+the+Sacred+Fig%7CWild+Diamond%7CThe+Girl+with+the+Needle%7CThe+Village+Next+to+Paradise%7COn+Becoming+a+Guinea+Fowl%7CBlack+Dog+%282024+film%29%7CViet+and+Nam%7CMy+Sunshine+%28film%29%7CTokyo+Story%7CCitizen+Kane%7CVertigo+%28film%29%7C2001%3A+A+Space+Odyssey+%28film%29%7CJeanne+Dielman%2C+23+quai+du+Commerce%2C+1080+Bruxelles%7CSeven+Samurai%7CMeshes+of+the+Afternoon%7CPyaasa%7CHiroshima+mon+amour%7CThe+River+%281951+film%29&format=json&formatversion=2&redirects=1",
+          "retrieved_at_utc": "2026-10-30T03:40:19.840670+00:00",
+          "http_status": 200,
+          "sha256": "f08a2f97ea08dec66553ab4e1fe8b8b52371943f64dfd1a6e8bb9a0902ba2280",
+          "bytes": 95093,
+          "raw_path": ".cache/cohort-audit/part1/remaining-batch.json",
+          "page_title": "The River (1951 film)",
+          "revision_id": 1378938744,
+          "revision_timestamp": "2026-10-07T00:44:38Z",
+          "permanent_url": "https://en.wikipedia.org/w/index.php?oldid=1378938744",
+          "license": "CC-BY-SA-4.0; text only, no media retained",
+          "scope": "revision lead/infobox (rvsection=0); derivative encyclopedia, not provider catalog"
+        },
+        "fields_location": "revision lead and Infobox film: director, released, runtime, name; field-level facts reviewed against retained text",
+        "selection_frame": "older",
+        "selection_frame_check": "Matched expanded 2022 Sight and Sound retrospective title; not necessarily top100"
+      },
+      "resolution_notes": "1951 Jean Renoir film, not other works titled The River; expanded BFI list tied rank185.",
+      "unresolved_fields": [
+        "production_year",
+        "independently accepted current TMDB movie identifier",
+        "independently accepted current IMDb movie identifier",
+        "provider catalog identity/type acceptance",
+        "all cut-specific runtimes",
+        "streaming availability",
+        "account entitlement"
+      ],
+      "catalog_identifier_candidates": [],
+      "catalog_acceptance_status": "unknown; no catalog request made, no activation fields changed",
+      "authority_limit": "Wikipedia is a derivative encyclopedia. Source work facts are verified as published metadata assertions; not independent catalog matching, provenance independence, or provider precision evidence."
+    }
+  ]
+}

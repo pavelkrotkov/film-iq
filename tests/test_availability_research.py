@@ -28,6 +28,9 @@ def response(data, status=200):
 def test_all_60_unresolved_candidates_are_retained_without_requests():
     cohort = json.loads((RESEARCH / "cohort.json").read_text())
     assert len(cohort) == len({row["key"] for row in cohort}) == 60
+    first = json.loads((RESEARCH / "cohort-audit/part1.json").read_text())["records"]
+    second = json.loads((RESEARCH / "cohort-audit/part2.json").read_text())["entries"]
+    assert {row["key"] for row in first + second} == {row["key"] for row in cohort}
     records = [observe(row, "tmdb", True) for row in cohort]
     assert all(row["state"] == "unknown" and row["requests"] == 0 for row in records)
 

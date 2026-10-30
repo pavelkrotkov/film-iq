@@ -2,7 +2,7 @@
 
 **Version:** 0.1 · **Prepared:** 2026-10-29 · [Issue #14](https://github.com/pavelkrotkov/film-iq/issues/14) · [Epic B](https://github.com/pavelkrotkov/film-iq/issues/2)
 
-**Status:** Cohort candidates, an opt-in runnable observer and offline checks. No live provider observation, account entitlement check, coverage estimate, or three-date comparison has been completed.
+**Status:** Published work metadata checked for all 60 candidates, with source revisions/receipts and unresolved source discrepancies. Provider-catalog identities remain unverified. The opt-in observer and offline checks are runnable; no live provider observation, account entitlement check, coverage estimate or three-date comparison has been completed.
 
 This convenience cohort deliberately assigns ten candidates to each of six strata. Assignments are for reporting and may overlap in reality; for example, an older film can also be a short. The samples are not a random or representative estimate of all cinema. Confirm each title against a source, director and an unambiguous provider identifier before freezing the cohort; a year of festival selection or award eligibility is not automatically the production or premiere year. Replace an ambiguous candidate only with a recorded reason and source. Follow [plan §7](../../../plan.md), [ADR 0008](../../adr/0008-availability-providers.md) and [ADR 0011](../../adr/0011-cost-rights.md).
 
@@ -20,6 +20,34 @@ The source references identify the selection frame, not current availability or 
 | Shorts / experimental | 2024 Cannes short competition: `https://www.festival-cannes.com/en/2024/the-short-film-competition-programme/` | Volcelest; Ootidė; Sanki Yoxsan; Les Belles Cicatrices; Rrugës; Across the Waters; Perfectly a Strangeness; Tea; Amarela; The Man Who Could Not Remain Silent |
 
 The source frames overrepresent award nominees, prominent festivals and a single box-office year. They are useful contrasts for an initial experiment, not evidence of provider performance across all films, countries or formats. Regional production, original language, translated titles, premieres and exact IDs still need individual audit. Resolve the overlapping-strata issue before estimating by stratum; never count a film twice within an overall denominator.
+
+## Published work identity audit
+
+Two automated source audits checked every candidate's published title, director,
+film-year assertion and format in its selection context. The first 30 records are
+in [part1.json](cohort-audit/part1.json), the last 30 in
+[part2.json](cohort-audit/part2.json); join them to the machine cohort by `key`.
+Each cohort row's `work_audit` points to its evidence file. Attribution and
+receipt limitations are in the adjacent `part1-attribution.md`,
+`part2-attribution.md` and `part2-receipts.json`. Wikipedia evidence is derivative
+and revision-bound; these are automated checks of published metadata, not human
+attestations or independent current TMDB/IMDb matches.
+
+All 60 work records were retained, and all provider activation fields remain
+null. A source-reported film year is kept separate from production, premiere,
+regional release and award-edition years. For example, two films in the 2024
+Oscar frame have 2022 film/premiere contexts. Older-cohort membership does not
+imply feature length: Meshes of the Afternoon is a short. The BFI retrospective
+frame includes tied positions outside its top 100; it was not a top-100 sample.
+
+Two short-film durations disagree between the programme and individual records
+(Ootidė, 9/10 minutes; The Man Who Could Not Remain Silent, 13/14 minutes).
+Country assertions also differ for Ootidė and Across the Waters. Both source
+assertions remain in the audit; a particular cut, country interpretation or
+source error has not been adjudicated. API 403s, rendering-derived receipts and
+source-access limitations are recorded rather than treated as missing works.
+Provider identifiers require a separate, current catalog check before the
+observer may make requests; this work audit does not enable live calls.
 
 ## Observation and comparison
 
