@@ -1,0 +1,31 @@
+{
+  "scope": "Only the NBR 2023 Best Film award; other announcement categories are excluded",
+  "title": "Killers of the Flower Moon",
+  "director": "Martin Scorsese",
+  "film_release_year": null,
+  "selection_category": "Best Film",
+  "rank": null,
+  "edition": "2023",
+  "published": "2023-12-06",
+  "publisher": "National Board of Review",
+  "source_url": "https://nationalboardofreview.org/2023/12/national-board-of-review-names-2023-honorees/",
+  "locator": "2023 award recipients / Best Film; accompanying Best Director selection",
+  "source_role": "original",
+  "independence_group": "national-board-of-review",
+  "audit": {
+    "auditor": "automated:independent-evidence-agent:2026-10-30T10:32:27Z",
+    "auditor_kind": "automated",
+    "audited_at": "2026-10-30T10:32:27Z",
+    "method": "Separate read-only agent inspected the original publisher announcement independently of the parent extraction",
+    "independent": true,
+    "complete_for_declared_scope": true,
+    "expected_count": 1
+  },
+  "limitations": [
+    "Best Film is an award category, not a published numeric rank",
+    "The award edition is not evidence of the film release year",
+    "Film identity, other categories and the complete announcement were not audited",
+    "Automated factual attestation, not human review",
+    "Minimal factual metadata and links; no raw HTML, images or publisher prose retained or licensed"
+  ]
+}

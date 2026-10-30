@@ -440,3 +440,68 @@ The browser explicitly requested sign-in; no account token or signed-in session
 was available, and opening the extension UI paused automation. No unauthorized
 reset or key generation was performed. Root-plan reconciliation remains owned
 by the parent; this appendix is confined to this worktree.
+
+
+### A7 authenticated API validation (2026-10-30)
+
+The user saved the existing Movary personal token in the selected project's
+ignored mode-0600 `.env`. Actual HTTP authentication succeeds (200), and the
+implemented paginated readers complete for played/history/watchlist with zero
+records in each. The earlier live ratings CLI export likewise has zero ratings.
+No browser was used for these integration checks and no credential value was
+printed. Sign-in/token discovery is resolved.
+
+Movie metadata search returns HTTP 500 through both the implemented backend and
+a direct authenticated GET. Targeted application-log inspection and installed
+client source identify upstream TMDB HTTP 401 (`TMDB API key is probably not set
+or invalid.`). The working Movary credential is separate from this failure.
+No configuration fix is claimed yet. An empty `TMDB_API_KEY` slot was added to
+`.env` for a valid API v3 key; existing Movary values and mode 0600 were preserved.
+A usable key was requested, with the failed live search as the verification loop.
+
+An independent automated auditor verified the original NBR 2023 Best Film award
+for Killers of the Flower Moon and its director credit. It is an award category,
+not a numeric rank; the film's release year is not inferred from the award edition.
+The one-fact original-source scope is explicit. Existing ingestion/acceptance
+interfaces stored that factual record, and its unchanged rerun added zero changes.
+Identity remains unresolved pending working metadata access; the scorer therefore
+has zero eligible matches. No offers/recommendations or live writes were invented.
+The isolated final-validation worktree holds the factual audit and current check
+report; Gate A still requires verified metadata/offers, a concrete dry run, and
+explicit selected-write approval/readback. No personal state was changed.
+
+
+### A7 real API report and pending approvals (2026-10-30)
+
+The user-provided TMDB v3 key passes direct authentication; metadata/credits and
+US provider APIs succeed. The deployed Movary configuration still causes its
+movie-search API to fail with upstream TMDB 401. Automatic approval review
+rejected sending the key to Hermes and updating/recreating that service without
+explicit authorization. The proposed `.env`/Compose change was not executed.
+
+A separate independent automated audit verified Bicycle Thieves at published
+**=20** in BFI's 2022 directors' aggregate, with Vittorio De Sica and 1948.
+Direct TMDB metadata verifies movie 5156 and 89 minutes. The existing ingestion,
+explicit audit acceptance and reviewed identity interfaces produce one independent
+scoring group and reciprocal-rank component 1/20. Raw observations are preserved;
+unchanged ingestion/automatic replay produce zero new changes. The existing
+read-only CLI report leaves the database dump unchanged.
+
+[The real report](docs/a7-real-report.md) includes the default CLI output and a
+separate Tubi-only scenario calculated by the existing planner from the actual
+US `ads` offer: 89 minutes, one configured 90-minute slot on 2026-11-01, zero
+purchase budget and zero incremental purchase cost. No subscription, rental
+price or current subscription is assumed. Playback and personal entitlement
+remain unverified; provider attribution is TMDB / JustWatch. Full US observations
+are retained privately without filtering; the selected scenario is explicit.
+
+The exact dry run is `Preview: add Bicycle Thieves (TMDB 5156) to watchlist`.
+[Validation evidence and the proposed operations](docs/a7-live-validation.md)
+are reviewable before approval. Remaining steps require explicit authorization:
+install the existing saved TMDB key in the documented Hermes deployment and
+recreate its same-image service; then use the API to add only movie 5156 to the
+catalog if absent and its watchlist entry if absent, read back, and retry for
+idempotence. No personal movie/watchlist POST was attempted. Gate A remains open;
+no population precision, playback, full paid-plan entitlement or release-readiness
+claim is made. The NBR award fact remains a separate unused candidate, without
+an invented numeric rank or an assumed film release year.
