@@ -1,0 +1,30 @@
+{
+  "phase": "pre-approval read-only validation",
+  "movary_authentication_http_status": 200,
+  "movary_complete_collection_counts": {
+    "played": 0,
+    "history": 0,
+    "watchlist": 0
+  },
+  "movary_metadata_search_http_status": 500,
+  "movary_search_cause": "upstream TMDB HTTP 401 confirmed by installed client exception mapping",
+  "direct_tmdb_authentication_http_status": 200,
+  "direct_tmdb_movie_id": 5156,
+  "direct_tmdb_metadata_and_US_provider_requests": "success",
+  "source_observation_scope": "one independently audited original BFI entry at =20",
+  "identity_decision": "explicit automated operator review after title-only abstention",
+  "held_out_evaluation_modified": false,
+  "scored_independent_groups": 1,
+  "reciprocal_rank_component": "1/20",
+  "ingestion_and_automatic_replay_new_changes": 0,
+  "report_database_changes": 0,
+  "remote_configuration_change": "rejected by automatic approval review before execution; explicit authorization pending",
+  "watchlist_write_attempted": false,
+  "input_sha256": {
+    "docs/a7-bicycle-selection.json": "810eaa6e868f164251edcbeac709f84666b8940935eddbd1f0931cccf94a6d0f",
+    ".cache/epic-a-live/movie-5156-facts.json": "e94a2a547d8dc8f1338be7f2e424f9d7e60c2fdb5b51370f81b03f65288e63ae",
+    ".cache/epic-a-live/movie-5156-US-providers.json": "9436f0a01abff4965f8acaa20b389dce273267358ec53690fbd6a3ed666f6a54",
+    ".cache/epic-a-live/movary-read-summary.json": "0a8e0857af110a5d024518f2468f2033d15a5fead6696dbfac2f6a6e6a3e3ab4",
+    ".cache/epic-a-live/report-inputs.json": "ae66d6708ef89850385c3dac9ca57d6e12e91702aee3a83897650770d74e85e3"
+  }
+}

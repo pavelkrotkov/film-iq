@@ -1,0 +1,32 @@
+{
+  "scope": "Only the Bicycle Thieves entry in the 2022 directors' aggregate; all other entries excluded",
+  "title": "Bicycle Thieves",
+  "director": "Vittorio De Sica",
+  "film_release_year": 1948,
+  "rank": 20,
+  "raw_rank": "=20",
+  "tied": true,
+  "edition": "2022-directors",
+  "published": null,
+  "publisher": "BFI Sight and Sound",
+  "source_url": "https://www.bfi.org.uk/sight-and-sound/directors-100-greatest-films-all-time",
+  "corroborating_url": "https://www.bfi.org.uk/film/594f7408-2fdd-55a0-a347-79370e42e0ed/bicycle-thieves",
+  "locator": "Directors' 100 Greatest Films of All Time / Bicycle Thieves; film record / Ranked in The Greatest Films of All Time poll / 2022 directors' poll",
+  "independence_group": "bfi-sight-and-sound-directors",
+  "audit": {
+    "auditor": "automated:independent-primary-evidence-agent:01a18c71-46a4-77a3-960d-e568a1b6d709",
+    "auditor_kind": "automated",
+    "audited_at": "2026-10-30",
+    "method": "Separate read-only agent inspected both original BFI pages independently of the parent extraction",
+    "independent": true,
+    "complete_for_declared_scope": true,
+    "expected_count": 1
+  },
+  "limitations": [
+    "One aggregate entry, not a complete top-100 extraction or individual ballot",
+    "Publication date was not displayed and remains unknown",
+    "The same publisher's two pages corroborate one fact, not two independent votes",
+    "TMDB identity and availability are separate API checks",
+    "Minimal factual metadata and links only; no raw HTML, criticism, images or redistribution license asserted"
+  ]
+}
