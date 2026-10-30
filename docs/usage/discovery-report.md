@@ -46,3 +46,10 @@ three reviewed identities and seven unresolved works, but no genuine personal
 snapshot was supplied: personal refresh remains unknown and it suggests no films.
 Real-user watches/ratings and changed/deleted enjoyment/merit readback acceptance
 remain open; synthetic tests do not satisfy those live requirements.
+
+The subsequently authorized live-refresh check completed and generated a separate
+private `discovery-live.json`/`.md` report using the matching complete personal
+snapshot/status. The earlier first-use report remains historical. Private
+account contents and counts are deliberately absent from public documentation;
+the live check does not establish the outstanding nonempty-rating, merit-change
+or real-user acceptance cases. See the personal-refresh follow-up.

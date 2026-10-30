@@ -1452,3 +1452,19 @@ MI50.025032. The private ten-candidate report was regenerated against scorer
 identities, seven unresolved, personal state unknown/stale and zero suggestions.
 No real personal history, ratings or comments were read or invented. The
 remaining Epic C gate matrix above still applies.
+
+### Authorized C0a/C7 live execution follow-up (2026-10-30)
+
+The user's explicit approval supersedes the earlier automatic-approval rejection
+for read-only Movary API reads and supported ratings/history CLI exports. The
+approved operation completed, privately retained the complete snapshot and
+matching freshness status, and regenerated the discovery report using the
+current accepted source cohort. Private receipts and outputs stay inside the
+selected project's ignored `.cache/epic-c/` directories; no account contents,
+personal scores/comments, identifiers or account-level counts are published.
+
+This clears the execution/authorization blocker only. Live nonempty rating/merit
+readback, rated-only cases and changed/deleted ratings/comments remain unverified;
+no personal records were fabricated or changed. #58/#25 and whole Epic C remain
+open under their existing finish gates. No live Movary write, production-provider
+adoption, watchlist action or change to B4 observation jobs occurred.
