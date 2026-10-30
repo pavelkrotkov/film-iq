@@ -105,9 +105,11 @@ This initial manifest produces **60 unknown candidates, zero requests**. A live 
 For paired observations on subsequent dates, pass `--provider both` with the
 same frozen, locally reviewed manifest containing both accepted IDs. Each film
 is observed through TMDB and then Movie of the Night before the next film.
-For example, after checking credentials and the applicable retention basis:
+For this paired example, use the main project folder where the consolidated
+evidence lives, after checking credentials and the applicable retention basis:
 
 ```sh
+cd /Users/pavel/dev/film-iq
 UV_CACHE_DIR="$PWD/.cache/uv" TMPDIR="$PWD/.cache/tmp" UV_PYTHON_DOWNLOADS=never \
   uv run --env-file /Users/pavel/dev/film-iq/.env --no-sync \
   python -m docs.research.availability.run \

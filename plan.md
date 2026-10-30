@@ -1135,3 +1135,8 @@ extra retained virtual environment is required for collection. The
 [current protocol](docs/research/availability/dated-observations.md) gives paths.
 Future measurements remain unperformed; B4/B8/Epic B stay open. This cleanup
 does not install an agent wake-up or claim future analysis is automated.
+
+Cleanup review found a manual-command working-directory ambiguity: the paired
+example now explicitly enters the main project folder before reading the
+consolidated cohort. The native jobs already used that folder; no runtime
+behavior or observation result changed.
