@@ -12,7 +12,8 @@ def load_evidence(db: sqlite3.Connection) -> list[Evidence]:
         SELECT m.film_id, l.id, d.url, d.published_at, s.independence_group,
                l.eligibility, o.rank, o.entry_id, o.revision_id, m.decision_id,
                s.id, d.id, o.locator, l.lineage_kind, l.lineage, l.author,
-               l.completeness, l.rank_semantics, s.family
+               l.completeness, l.rank_semantics, s.family,
+               ballot.contributor_id, ballot.original_ballot_id
         FROM current_extraction AS c
         JOIN extraction_revision AS r ON r.id = c.revision_id AND r.list_id = c.list_id
         JOIN published_list AS l ON l.id = c.list_id
@@ -20,6 +21,8 @@ def load_evidence(db: sqlite3.Connection) -> list[Evidence]:
         JOIN source_document AS d ON d.id = r.document_id
         JOIN entry_observation AS o ON o.revision_id = r.id AND o.list_id = l.id
         JOIN current_match AS m ON m.entry_id = o.entry_id AND m.revision_id = o.revision_id
+        LEFT JOIN entry_ballot AS eb ON eb.entry_id = o.entry_id AND eb.list_id = l.id
+        LEFT JOIN source_ballot AS ballot ON ballot.id = eb.ballot_id AND ballot.list_id = l.id
         WHERE r.acceptance_state = 'accepted' AND o.extraction_decision = 'accepted'
           AND m.decision = 'accepted' AND s.independence_verification = 'verified'
           AND length(trim(s.independence_group)) > 0
@@ -48,6 +51,8 @@ def load_evidence(db: sqlite3.Connection) -> list[Evidence]:
             completeness=completeness,
             rank_semantics=rank_semantics,
             source_family=family,
+            person_id=person_id,
+            derivative_of=(original_ballot,) if original_ballot else (),
         )
         for (
             film,
@@ -69,5 +74,7 @@ def load_evidence(db: sqlite3.Connection) -> list[Evidence]:
             completeness,
             rank_semantics,
             family,
+            person_id,
+            original_ballot,
         ) in rows
     ]

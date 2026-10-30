@@ -45,9 +45,11 @@ ID. Historical `independent-reciprocal-rank-v1` snapshots replay their original
 best-rank numeric policy and retain the old version label; saving their inputs
 now produces a distinct v2 snapshot. Unsupported versions fail explicitly.
 
-The current A1 reader carries verified source-family/lineage metadata; it does
-not infer `person_id` from `author`. Integration with C1's reviewed actor/ballot
-links and typed award/reception ingestion remains pending. Both B7 experiments
+The current A1 reader carries verified source-family/lineage metadata and C1's
+explicit contributor/ballot links. It does not infer `person_id` from `author`;
+a derivative original-ballot link excludes a repeated endorsement even if the
+publisher list was classified original. Typed award/reception ingestion remains
+pending. Both B7 experiments
 remain performed but inconclusive. Offline duplicate, tie/unranked,
 source-family holdout and snapshot checks demonstrate semantics, not predictive
 quality or a completed Gate C.

@@ -1292,6 +1292,15 @@ v1 snapshots retain the historical best-rank numeric rule and old version.
 Initial isolated validation passes Ruff check/format, ty and 347 tests with one
 opt-in skip. All 166 tracked/new Python files meet maximum CC 8 and minimum MI
 50.025032. This fixture result does not certify calibrated significance, source
-permissions or live identity accuracy. C1 reviewed actor/ballot read integration,
-typed award/reception ingestion and C7 rendering remain issue #21 acceptance
+permissions or live identity accuracy. After rebasing onto C1, the A1 reader
+uses explicit contributor and original-ballot links without author inference.
+Typed award/reception ingestion and C7 rendering remain issue #21 acceptance
 work rather than silently accepted production outcomes.
+
+C3's post-C1 integration validation passes 361 tests with one opt-in skip, Ruff
+check/format and ty. The reader uses explicit `source_ballot.contributor_id`
+and derivative `original_ballot_id` through entry links; it never infers an
+identity from author text. All 177 tracked/new Python files have maximum CC 8
+and minimum MI 50.025032; the eleven changed/new Python files have minimum MI
+50.613109. Both original and derivative ballot-link paths have deterministic
+regression checks. Temporary test files remain under this project worktree.
