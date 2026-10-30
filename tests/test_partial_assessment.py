@@ -16,7 +16,7 @@ def test_partial_individual_assessment_preserves_complete_published_content(evid
         parser_revision="synthetic-extraction-v1",
         content_sha256=sha256(body).hexdigest(),
         eligibility="US releases in 2025",
-        ballot_completeness="partial individual assessment; some eligible films unseen",
+        ballot_completeness="partial",
         extraction_scope="complete published ballot: both selections; no missing films inferred",
         lineage="wholly synthetic anonymous individual ballot; no real source",
         rank_semantics="unranked; display order is not rank",
