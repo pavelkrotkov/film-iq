@@ -2,7 +2,7 @@
 
 Issue #14 and Epic #2 require three genuinely separated observation dates.
 Oct 30 is date one; repeated requests on that date do not advance the count.
-The next two planned passes are **2026-10-31 and 2026-11-01 at 10:00 local
+The two later planned passes are **2026-10-31 and 2026-11-01 at 10:00 local
 America/New_York time** (14:00 and 15:00 UTC respectively across the DST change).
 They reuse the accepted both-ID manifest with SHA-256
 `303cd59ff2996571492a7aaee032c26fd7552673e234951295c625a515a0aa12`.
@@ -62,3 +62,20 @@ inconclusive rather than zero. Keep tier and account uncertainty explicit for
 pre-subscription discovery. Publish the dated summary through the ordinary
 reviewed PR workflow, then adjudicate #14 and the final Gate B. Unload the two
 local jobs after the experiment; preserve source evidence and project files.
+
+## Date-two execution inspected — 2026-10-31
+
+The [second dated report](comparison-20261031.md) verifies the Oct31 job completed
+one run with exit0: 120 observations/requests, all HTTP200, from 14:00:00 to
+14:00:11 UTC using the unchanged accepted manifest. TMDB has 53 complete US
+responses/seven unknown; native has49 complete/11 unknown. Complete-pair native
+source opportunity sets changed for five film keys (nine present/two absent),
+while12 keys changed in the broader detail comparison. These are source claims,
+not independently confirmed removals or measured change latency. No quota headers
+were returned. Native source rows changed274→284; variant rows and deduplicated
+opportunities are different units.
+
+At14:58UTC, the Nov1 job still had zero runs and no result file. Date three and
+final reviewed B4/B8 adjudication remain pending. Jobs, cohort, credentials and
+source captures were not changed by this inspection; public discovery still
+needs no consumer sign-in. Original rights/deletion deadlines remain in force.
