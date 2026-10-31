@@ -38,7 +38,7 @@ def _execute(parser, args) -> int:
         from film_iq.report_command import report_command
 
         try:
-            print(report_command(args.database, args.inputs, args.format))
+            print(report_command(args.database, args.inputs, args.format, args.snapshot))
         except (OSError, ValueError, KeyError, TypeError, sqlite3.Error) as error:
             parser.error(str(error))
         return 0

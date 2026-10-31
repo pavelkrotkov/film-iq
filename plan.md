@@ -1468,3 +1468,18 @@ readback, rated-only cases and changed/deleted ratings/comments remain unverifie
 no personal records were fabricated or changed. #58/#25 and whole Epic C remain
 open under their existing finish gates. No live Movary write, production-provider
 adoption, watchlist action or change to B4 observation jobs occurred.
+
+### C5 runtime integration completion follow-up (2026-10-31)
+
+The report entrypoint now accepts the same complete private Movary snapshot as
+C7, requires its matching successful refresh marker, and uses its watched state
+instead of stale catalog flags. Both personal judgments are retained separately.
+Declared utility sensitivity and independently searched verified/exploratory
+alternatives now reach the actual CLI report rather than remaining pure APIs.
+Reviewed C4 assertions can feed planning with explicit assessment freshness,
+source/tier/add-on identity, USD prices and purchase qualification; legacy TMDB
+snapshots remain tentative. Different plans cannot share one numeric input ID,
+unknown fees are excluded, and asserted expiry constrains viewing dates.
+The command stays read-only. See docs/usage/planning-report.md. Actual user
+budgets/slots, provider rights and live price/entitlement evidence are inputs to
+verify before accepting a production plan; fixtures do not supply those facts.

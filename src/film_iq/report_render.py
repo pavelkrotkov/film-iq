@@ -63,19 +63,48 @@ def _choice(choice: dict, offers: dict) -> str:
     )
 
 
-def _plans(report: dict) -> list[str]:
+def _assertion_offers(report: dict) -> list[dict]:
+    return [
+        {
+            "film_id": item["opportunity"]["film_id"],
+            "provider_id": item["provider_id"],
+            "kind": item["opportunity"]["kind"],
+            "provider": " / ".join(
+                filter(
+                    None,
+                    (
+                        item["opportunity"]["service"],
+                        item["opportunity"]["plan"],
+                        item["opportunity"]["add_on"],
+                    ),
+                )
+            ),
+            "url": item["url"],
+            "checked_at": item["checked_at"],
+            "source": item["source"],
+        }
+        for item in report.get("assertions", [])
+    ]
+
+
+def _plans(report: dict, key: str = "plans") -> list[str]:
     # A provider can supply multiple access kinds for the same film.
-    lines = ["## Viewing options"]
+    lines = [
+        "## Verified viewing options"
+        if key == "verified_plans"
+        else "## Exploratory viewing options"
+    ]
     offers = {
         _offer_key(offer): offer
         for observation in report["offers"]
         for offer in observation["offers"]
     }
-    for plan in report["plans"]:
+    offers.update({_offer_key(item): item for item in _assertion_offers(report)})
+    for plan in report.get(key, []):
         lines.append(
             f"### {plan['option']} — USD {plan['cost_cents'] / 100:.2f}, {plan['total_minutes']} minutes"
         )
-        lines.append(plan["assumptions"])
+        lines.append(f"Feasibility: {plan['feasibility']}. {plan['assumptions']}")
         lines.extend(_choice(choice, offers) for choice in plan["choices"])
     return lines
 
@@ -83,7 +112,10 @@ def _plans(report: dict) -> list[str]:
 def markdown(report: dict) -> str:
     lines = ["# Film IQ — dry-run viewing report", "", report["assumptions"], ""]
     lines.extend(_evidence(report))
+    lines.extend(_plans(report, "verified_plans"))
     lines.extend(_plans(report))
+    if report.get("personal_refresh"):
+        lines.append(f"Personal state refreshed: {report['personal_refresh']}")
     lines.append("## Provider snapshots")
     lines.extend(
         f"- TMDB {item['tmdb_id']}: {item['status']}, checked {item['checked_at']} (TMDB / JustWatch)."
