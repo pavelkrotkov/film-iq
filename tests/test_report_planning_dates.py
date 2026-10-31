@@ -25,7 +25,11 @@ def test_same_day_historical_assessment_is_not_compared_to_wall_clock(evidence_d
     data["assessed_at"] = "2020-01-01T13:00:00+00:00"
     data["dates"] = ["2020-01-01"]
     data["assertions"] = [
-        assertion(checked_at=data["checked_at"], asserted_added_on="2020-01-01T12:30:00+00:00")
+        assertion(
+            checked_at=data["checked_at"],
+            asserted_added_on="2020-01-01T12:30:00+00:00",
+            asserted_expires_at="2020-01-02T00:00:00+00:00",
+        )
     ]
     report = build_report(evidence_db, data)
     assert report["verified_plans"][0]["choices"][0]["viewing_date"].isoformat() == "2020-01-01"

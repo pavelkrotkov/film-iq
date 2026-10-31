@@ -33,5 +33,10 @@ def known_inputs(offers: list[Access], services: dict[int, int | None], verified
         validate_free_price(offer.kind, offer.price_cents)
     prices = [price for price in services.values() if price is not None]
     if verified_only:
-        offers = [offer for offer in offers if offer.entitlement == "confirmed"]
+        offers = [offer for offer in offers if verified_access(offer)]
     return offers, prices
+
+
+def verified_access(offer: Access) -> bool:
+    """Current entitlement alone cannot verify a future dated viewing choice."""
+    return offer.entitlement == "confirmed" and offer.expires is not None
