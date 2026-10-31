@@ -1669,3 +1669,11 @@ make these contracts executable without a production provider or network call.
 See docs/usage/offer-ledger.md. B4/B8 selection, actual provider-specific quota/
 rights/retention assessment, account-plan checks and ongoing live monitoring
 remain finish gates; no scheduled B4 job, Movary state or live offer is changed.
+
+C4 rebased runtime verification passes Ruff check/format, ty and 481 tests with
+one opt-in skip. All twenty changed Python files have maximum CC8 and minimum
+MI50.829857. Synthetic checks exercise reopened/replayed observations, partial
+and unknown no-removal, exact-plan conflict rejection, cross-source opportunity
+deduplication, immediate policy denial, expiry/termination purge, killed-write
+rollback/retry, local CLI flow and schema-9 upgrade with unchanged editorial
+observations. These are runtime contracts, not provider-selection evidence.
