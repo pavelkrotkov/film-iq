@@ -1687,3 +1687,8 @@ Transition events reference both input observations; readers enforce both
 deadlines and cascading deletion removes the derived event without expiring an
 unrelated newer baseline. Exact renewal/purge/replay and renewal/removal/old-
 expiry regressions exercise both failures. No live cache or source is changed.
+
+C4 corrected-head integration on main `6744e8a` passes Ruff check/format, ty and
+484 tests with one opt-in skip. The 22 changed Python files retain maximum CC8
+and minimum MI50.649400. Both native retention findings await independent
+corrected-head follow-up before thread resolution and merge.

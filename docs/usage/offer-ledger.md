@@ -66,7 +66,8 @@ Movary data are untouched. Existing private backups may contain older cached
 provider data: their retention must obey the same approved terms. This command
 does not discover or silently modify external backups.
 
-Migration 010 adds only offer-policy/observation/baseline/event tables. Existing
+Migration 010 adds only offer-policy/observation/baseline/event tables and the
+non-content purge watermark. Existing
 editorial revisions and acquisition attempts remain unchanged. Older binaries
 refuse schema 10; restore an appropriate private backup to roll back. The usual
 online SQLite backup and offline restore preserve this ledger with its foreign
