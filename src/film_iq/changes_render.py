@@ -25,7 +25,7 @@ def markdown(result: dict) -> str:
 def _offer(change: dict) -> str:
     offer = change["opportunity"]
     action = {
-        "source_first_seen": "Newly observed offer",
-        "source_absent": "Offer absent from complete source snapshot",
+        "source_first_seen": "newly reports",
+        "source_absent": "no longer reports",
     }[change["kind"]]
-    return f"- {action}: TMDB {offer['film_id']}, {offer['service']} / {offer['plan'] or 'unknown plan'} ({change['source']}); observed {change['observed_at']}."
+    return f"- Source {change['source']} {action} [TMDB {offer['film_id']}](https://www.themoviedb.org/movie/{offer['film_id']}) on {offer['service']} / {offer['plan'] or 'unknown plan'} in its complete snapshot; observed {change['observed_at']}."

@@ -17,7 +17,12 @@ def test_offer_addition_and_absence_are_source_specific(evidence_db):
     result, _ = digest(evidence_db, baseline, NOW + timedelta(days=1))
     result["acknowledgement"] = "preview; not acknowledged"
     output = markdown(result)
-    assert "Newly observed offer" in output
-    assert "Offer absent from complete source snapshot" in output
-    assert output.count("TMDB 1, Fixture cinema / Standard (fixture)") == 2
+    assert "Source fixture newly reports" in output
+    assert "Source fixture no longer reports" in output
+    assert (
+        output.count(
+            "[TMDB 1](https://www.themoviedb.org/movie/1) on Fixture cinema / Standard in its complete snapshot"
+        )
+        == 2
+    )
     assert "preview; not acknowledged" in output
