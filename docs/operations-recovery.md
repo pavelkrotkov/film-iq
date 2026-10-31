@@ -309,3 +309,24 @@ and unsetting the flag corrected the driver without changing product code.
 This verifies the captured installation on the tested host/cache, not all hosts
 or a complete Movary restore. Genuine personal-edit acceptance and production
 provider/B4/B8 decisions remain outstanding.
+
+### Observed digest baseline and post-planner restore — 2026-10-31
+
+The actual changes CLI at merged C7 revision `eedd73b` completed a preview that
+created no checkpoint, an explicit acknowledgement establishing the 24 accepted
+source-scope baseline, and a repeat with zero pending changes. No historical
+alert or real source/offer transition was fabricated. The checkpoint retained
+only opaque IDs and revision pointers; both it and the baseline report were
+mode 0600. Evidence database bytes were unchanged. No production provider policy
+was configured for this check.
+
+The selected installation archive at post-planner revision `8a724c1` included
+the changes checkpoint and baseline report. Its isolated restore passed file
+hashes, SQLite integrity and foreign keys, and the restored application CLI
+reproduced the full discovery JSON semantically. Restored changes preview
+returned no duplicates without changing its checkpoint. There were no external
+calls or Movary actions; copied catalog data retained its original 2027-04-29
+expiry. Private archives/receipts remain in the selected project's ignored
+storage. This verifies the observed baseline/recovery behavior, not actual
+delivery of live transitions, complete Movary restoration, production providers
+or genuine user rating/comment edits.

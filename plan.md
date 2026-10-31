@@ -2076,3 +2076,28 @@ format and ty pass; 593 tests pass with one opt-in skip. The fifteen changed
 Python files meet maximum CC8 and minimum MI51.688272; all 358 tracked Python
 files meet maximum CC8 and minimum MI50.025032. Exact-head follow-up remains
 required before review-thread resolution and merge.
+
+### Actual digest baseline and post-planner recovery — 2026-10-31
+
+The actual local changes CLI at merged C7 revision `eedd73b` previewed the
+accepted database without creating a checkpoint. Explicit acknowledgement
+established the 24-scope baseline without historical alerts; a repeat had zero
+pending changes. The checkpoint held opaque IDs/revision pointers only, and
+both checkpoint and baseline output were mode 0600. Evidence database bytes were
+unchanged. No provider policies were configured and no real source/offer
+transition was fabricated or claimed delivered by this baseline check.
+
+After the reviewed planner merge, a complete selected Film-IQ archive at
+`8a724c1` included that checkpoint and baseline output. An isolated restore
+passed file-hash, SQLite integrity and foreign-key checks; its restored CLI
+reproduced the complete discovery JSON semantically. Restored changes preview
+reported no duplicates and left the restored checkpoint unchanged. No external
+call or Movary action occurred. Copied catalog data kept its original
+2027-04-29 deadline; backup/restore does not extend permitted retention.
+
+The same merged revision's full tracked-Python audit found all 358 files within
+maximum CC 8 and minimum MI 50.025032, with no violations. These observations
+cover the selected installation/revisions, not later code, actual delivered
+transitions, complete Movary recovery, production-provider adoption or genuine
+personal-edit acceptance. Private receipts and runtime files remain ignored;
+no account contents/counts, secrets or private installation paths are published.
