@@ -1692,3 +1692,17 @@ C4 corrected-head integration on main `6744e8a` passes Ruff check/format, ty and
 484 tests with one opt-in skip. The 22 changed Python files retain maximum CC8
 and minimum MI50.649400. Both native retention findings await independent
 corrected-head follow-up before thread resolution and merge.
+
+C4's next Standards follow-up reproduced a newer batch carrying an unchanged
+old nested assertion after purge. The correction checks nested assertion times
+against the purge watermark without rewriting them. Still-retained source/check-
+time inputs also keep their earliest frozen deadline when reused in a newer
+batch; an expired cached input is rejected before physical purge. Two focused
+regressions cover the honest newer-wrapper/old-assertion case, frozen-deadline
+inheritance and genuinely fresh assertion checks remaining importable. This is
+accepted correction of actual cached-input replay, not a new polling/provider
+capability. No live data is read, changed or purged.
+
+C4 nested-input corrected validation passes Ruff check/format, ty and 486 tests
+with one opt-in skip. All 24 changed Python files meet maximum CC8 and minimum
+MI50.649400. The new native finding remains open for exact-head follow-up.

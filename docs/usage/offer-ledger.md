@@ -61,7 +61,12 @@ on both compared observations: its reader checks both deadlines, and deleting
 either input cascades the event without deleting the other observation. A
 non-content source/time watermark survives purge and rejects historical imports
 at or before the purged check time; reacquisition requires a genuinely new
-check. It retains no film, service, plan, URL or assertion payload. Editorial evidence and
+check, including fresh nested assertion checks. A newer batch timestamp cannot
+refresh older cached assertion content. Reused source/assertion check times
+inherit the earliest retained input deadline; a batch containing cached inputs
+uses their shortest deadline and rejects them once due, even before physical
+purge. No timestamp is rewritten. The watermark retains no film, service, plan,
+URL or assertion payload. Editorial evidence and
 Movary data are untouched. Existing private backups may contain older cached
 provider data: their retention must obey the same approved terms. This command
 does not discover or silently modify external backups.

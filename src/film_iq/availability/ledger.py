@@ -5,6 +5,7 @@ from datetime import datetime
 
 from film_iq.availability.codec import decode_fetch, encode, key, scope_key, timestamp
 from film_iq.availability.fetch import Fetch
+from film_iq.availability.input_retention import input_deadline
 from film_iq.availability.ledger_checks import _baseline, _chronology, _initial, _validate_time
 from film_iq.availability.policies import policy_for
 from film_iq.availability.reconcile import changes
@@ -24,6 +25,7 @@ def save_fetch(db: sqlite3.Connection, fetch: Fetch, now: datetime) -> str:
     if db.execute("SELECT 1 FROM offer_fetch WHERE id=?", (identifier,)).fetchone():
         return identifier
     _chronology(db, fetch, scope)
+    expires_at = input_deadline(db, fetch, policy.expires_at, now)
     with db:
         previous = _previous(db, scope, now)
         db.execute(
@@ -33,7 +35,7 @@ def save_fetch(db: sqlite3.Connection, fetch: Fetch, now: datetime) -> str:
                 fetch.source,
                 scope,
                 timestamp(fetch.checked_at),
-                timestamp(policy.expires_at),
+                expires_at,
                 encode(policy),
                 payload,
             ),
