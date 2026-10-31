@@ -19,8 +19,8 @@ def test_unknown_expiry_stays_tentative_without_losing_access_fact(
     item["opportunity"].update(kind=kind, plan="Fixture tier")
     data.update(assertions=[item], service_prices_cents={"7": 500})
     report = build_report(evidence_db, data)
-    plan = next(p for p in report["plans"] if p["option"] == option)
-    verified = next(p for p in report["verified_plans"] if p["option"] == option)
+    plan = {p["option"]: p for p in report["plans"]}[option]
+    verified = {p["option"]: p for p in report["verified_plans"]}[option]
     # Qualified current access remains a fact; only future-plan certainty changes.
     assert (
         plan["feasibility"] == "tentative"
