@@ -36,11 +36,13 @@ def markdown(report: dict) -> str:
     lines.extend(
         [
             "",
-            "Source reasons below describe public critical recognition, separate from your own ratings. Names and years follow the original source; film links open the reviewed catalog identity.",
+            "Source reasons describe public critical recognition, separate from your own ratings. Reviewed catalog aliases are display-only; original source names and years remain in evidence details. Catalog release dates are not source eligibility years.",
             "",
             "## Suggested next",
         ]
     )
+    if "ordering" in report:
+        lines.extend([report["ordering"]["explanation"], ""])
     if not report["suggested_unwatched"]:
         lines.append(
             "No verified unwatched picks are ready yet. Source selections and review items are below."
@@ -57,7 +59,7 @@ def markdown(report: dict) -> str:
         ]
     )
     lines.extend(_other(remaining(report)))
-    lines.extend(["", *_audit(report)])
+    lines.extend(["", *_catalog_status(report), "", *_audit(report)])
     return "\n".join(lines) + "\n"
 
 
@@ -69,3 +71,12 @@ def _other(items):
         else:
             lines.extend(["", *card(item)])
     return lines
+
+
+def _catalog_status(report):
+    context = report.get("display_catalog", {"status": "not_supplied"})
+    if context["status"] != "fresh":
+        return [f"Reviewed catalog display: {context['status']}; original source facts are shown."]
+    return [
+        f"Catalog facts checked {context['observed_at']}; expire {context['expires_at']}. {context['attribution']}"
+    ]

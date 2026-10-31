@@ -6,11 +6,19 @@ from contextlib import closing
 from pathlib import Path
 
 from film_iq.discovery_batch import build_discoveries
+from film_iq.discovery_order import Order
+from film_iq.discovery_presentation import present_discovery
 from film_iq.discovery_render import markdown
 
 
 def discovery_command(
-    cohort: Path | list[Path], snapshot: Path | None, database: Path | None, output_format: str
+    cohort: Path | list[Path],
+    snapshot: Path | None,
+    database: Path | None,
+    output_format: str,
+    *,
+    catalog: Path | None = None,
+    order: Order = "source",
 ):
     records = _read_cohorts(cohort)
     personal = json.loads(snapshot.read_text()) if snapshot else None
@@ -21,6 +29,7 @@ def discovery_command(
     else:
         with closing(sqlite3.connect(database.resolve().as_uri() + "?mode=ro", uri=True)) as db:
             output = build_discoveries(records, personal, db=db, refresh_status=status)
+    output = present_discovery(output, catalog, order)
     return (
         json.dumps(output, default=str, ensure_ascii=False, indent=2)
         if output_format == "json"

@@ -1706,3 +1706,38 @@ capability. No live data is read, changed or purged.
 C4 nested-input corrected validation passes Ruff check/format, ty and 486 tests
 with one opt-in skip. All 24 changed Python files meet maximum CC8 and minimum
 MI50.649400. The new native finding remains open for exact-head follow-up.
+
+### Reviewed display facts and explicit discovery order (2026-10-31)
+
+The next #25 usability slice fixes two actual pipeline gaps: source-preserving
+cards lacked reviewed English aliases/runtime/director metadata, and merged
+suggestions ignored the existing C3 support components. Optional `--catalog`
+reads a finite reviewed display snapshot with explicit attribution, evidence,
+reviewer and bounded180-day freshness. It enriches only already reviewed matching
+work IDs, never establishes identity or overwrites raw source/personal fields.
+Catalog release date is labeled separately from source-listed/eligibility year;
+expired/future facts fall back to the original source. No catalog DB or new
+provider acquisition is added.
+
+CLI discovery and scheduled operations explicitly default to `public-support`:
+existing reviewed evidence-group count only, stable source-order ties. Unknown
+support retains its original slot, never becomes zero or a negative quality
+signal. Original ranks remain separate, with no count/rank/personal-score blend.
+`--order source` restores input order; Python command/run functions retain their
+source-order defaults. Missing exposure, evidence uncertainty and uncalibrated
+quality/personal fit stay explicit. Report options are kept out of refresh/export
+arguments, so the actual scheduled path can use the same display and order.
+
+The private accepted collection now contains47 source entries across five
+explicitly scoped named ballots and source editions2018,2023 and2024:46 reviewed
+mentions resolve to42 work IDs; one experimental-work identity remains unknown.
+This is not complete2010–2026 coverage or the whole publisher poll. The42-work
+primary metadata audit reports six2018, one2022, twenty-three2023, eight2024 and
+four2025 catalog release dates, which do not overwrite source years. It records
+27 production-country labels (83 overlapping country observations),12 original
+language labels, and overlapping genre tags including nine Documentary and one
+Animation. All42 supply catalog runtimes12–240minutes. These are provider factual
+assertions, not independently verified country/format truth; genre labels are
+not a short/experimental taxonomy. The unresolved work, unmeasured exposure,
+source-permission limits and actual human review throughput remain explicit.
+No private account contents or counts are added to public findings.

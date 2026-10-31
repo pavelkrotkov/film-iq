@@ -9,6 +9,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from film_iq.discovery_command import discovery_command
+from film_iq.discovery_order import Order
 from film_iq.movary import MovaryClient
 from film_iq.operations_write import private_text
 from film_iq.personal_io import private_json
@@ -26,6 +27,8 @@ def run_once(
     report: Path,
     backups: Path,
     status: Path,
+    catalog: Path | None = None,
+    order: Order = "source",
     **exports,
 ) -> dict:
     """Serialize this installation's scheduled runs; retain prior outputs on failure."""
@@ -40,15 +43,26 @@ def run_once(
             "stale": True,
         }
         private_json(status, state)
-        return _execute(client, database, cohort, snapshot, report, backups, status, state, exports)
+        return _execute(
+            client,
+            database,
+            cohort,
+            snapshot,
+            report,
+            backups,
+            status,
+            state,
+            exports,
+            {"catalog": catalog, "order": order},
+        )
 
 
-def _execute(client, database, cohort, snapshot, report, backups, status, state, exports):
+def _execute(client, database, cohort, snapshot, report, backups, status, state, exports, display):
     try:
         with closing(connect(database)) as db:
             migrate(db)
         refresh(client, snapshot, **exports)
-        output = discovery_command(cohort, snapshot, database, "markdown")
+        output = discovery_command(cohort, snapshot, database, "markdown", **display)
         backups.mkdir(parents=True, exist_ok=True, mode=0o700)
         destination = backups / f"evidence-{uuid4().hex}.db"
         with closing(connect(database)) as db:

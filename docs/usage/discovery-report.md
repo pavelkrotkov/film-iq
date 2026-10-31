@@ -72,8 +72,9 @@ counts describe source observations; `unique_films` counts distinct reviewed
 work IDs, and `cohort_count` counts selected ballots. Unresolved entries cannot
 be safely deduplicated by title. Duplicate revision inputs are rejected.
 
-Selection order determines shortlist order; this is not a fitted personal ranking
-or a claim of complete publisher/year coverage. Retain private factual inputs
+Source order remains available explicitly with `--order source`; the default
+public-support ordering is described below. Neither ordering is fitted personal
+ranking or a claim of complete publisher/year coverage. Retain private factual inputs
 only under each source's recorded permission; no broader scrape is implied.
 
 ## Readable output
@@ -86,3 +87,38 @@ ballots lists every supplied reason rather than duplicating the film. JSON
 retains all machine-readable fields. Film years and director names remain raw
 source assertions, so a catalog spelling or premiere-year correction does not
 silently rewrite the published source.
+
+## Reviewed display facts and transparent ordering
+
+`discover` accepts an optional `--catalog path.json` containing a finite,
+explicitly reviewed display snapshot. It does not fetch metadata or change the
+evidence database. Catalog aliases, director names, runtime and release date are
+shown only for already reviewed matching TMDB identities. Original source
+title/director/year, rank, lineage and all personal scores remain unchanged in
+JSON and evidence details. Catalog release dates are labeled separately from
+source-listed/eligibility years; a later commercial release never rewrites the
+source's year. Expired or future metadata falls back to original source facts.
+
+The snapshot schema is `version: "reviewed-display-v1"`, timezone-aware
+`observed_at`/`expires_at`, nonblank `attribution`, and a `records` array. Each
+record supplies positive `tmdb_id`, nonblank `title`/`original_title`, nonempty
+`directors`, nullable ISO `release_date`, nullable positive `runtime_minutes`,
+nonblank `reviewer` and nonempty factual `evidence` links. Duplicate IDs fail.
+Expiry must be after observation and no later than180days. Only these display
+fields are retained; synopsis/images or arbitrary provider fields are ignored.
+This provenance is an explicit review assertion, not independent quality proof.
+
+The CLI defaults explicitly to `--order public-support`: existing C3 reviewed
+evidence-group count only, decreasing; ties retain source order. Published ranks
+remain separate source reasons. Unknown support keeps its original source-order
+slot rather than becoming zero or being pushed below assessed films. This is a
+provisional public-support baseline, not a calibrated quality or enjoyment model,
+and source exposure/missingness remain unknown where unmeasured. Use
+`--order source` to restore the selected ballot/input order. Direct Python
+`discovery_command`/`run_once` calls retain their source-order default.
+
+The scheduled `film_iq.operations` command accepts the same optional `--catalog`
+and explicit `--order` choices/default. These are report options, never forwarded
+to personal export/refresh commands. Retain display snapshots privately under
+their recorded attribution/expiry and the source/provider terms; no new provider
+feed, model, purchase, watchlist write or web interface is introduced.
