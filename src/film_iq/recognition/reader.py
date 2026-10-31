@@ -14,7 +14,8 @@ KINDS = (
 
 def current_components(db: sqlite3.Connection) -> list[dict]:
     cursor = db.execute("""
-        SELECT o.entry_id,o.revision_id,m.film_id,f.tmdb_id,o.raw_title,o.listed_year,o.raw_context,
+        SELECT o.entry_id,o.revision_id,m.film_id,f.tmdb_id,m.decision_id AS match_decision_id,
+               d.id AS document_id,o.raw_title,o.listed_year,o.raw_context,
                o.rank,o.tie,l.completeness,l.rank_semantics,
                d.url,d.published_at,o.locator,l.edition,l.author,l.eligibility,
                l.lineage_kind,l.lineage,l.lineage_verification,s.id AS source_id,s.family,
@@ -24,10 +25,10 @@ def current_components(db: sqlite3.Connection) -> list[dict]:
         JOIN entry_observation o ON o.revision_id=r.id AND o.extraction_decision='accepted'
         JOIN published_list l ON l.id=c.list_id JOIN source s ON s.id=l.source_id
         JOIN source_document d ON d.id=r.document_id
-        JOIN current_match m ON m.entry_id=o.entry_id AND m.revision_id=o.revision_id
-        JOIN film_index f ON f.id=m.film_id
+        LEFT JOIN current_match m ON m.entry_id=o.entry_id AND m.revision_id=o.revision_id AND m.decision='accepted'
+        LEFT JOIN film_index f ON f.id=m.film_id
         LEFT JOIN entry_recognition t ON t.entry_id=o.entry_id AND t.revision_id=o.revision_id
-        WHERE r.acceptance_state='accepted' AND m.decision='accepted'
+        WHERE r.acceptance_state='accepted'
         ORDER BY o.entry_id,o.revision_id
     """)
     names = [column[0] for column in cursor.description]
@@ -37,6 +38,7 @@ def current_components(db: sqlite3.Connection) -> list[dict]:
 def _decode(row: dict) -> dict:
     payload = row.pop("payload")
     row["component"] = json.loads(payload) if payload else None
+    row["catalog_release_year"] = None  # Bounded external display facts are not persisted here.
     row["classification_reviewed"] = row.pop("review") is not None
     row["published_at"] = _published(row["published_at"], row.pop("raw_context"))
     return row

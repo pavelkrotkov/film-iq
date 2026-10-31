@@ -1781,3 +1781,31 @@ unknowns, rights rejection, immutable correction and snapshots. The existing rea
 LOC cohort is still a separately reviewed input; no actual source import, Movary
 write, provider adoption or scheduled-job change occurs in this code work.
 Readable C7/report integration and final review remain in progress.
+
+C3 typed facts now reach both actual discovery and viewing-report construction
+and rendering. Registry-only accepted reviewed unwatched films remain eligible
+with unknown critic support. Known award recipients/categories/outcomes can
+appear as concise reasons; full units/sample counts, missingness and provenance
+remain in the audit/JSON. Unresolved identities retain their own accepted source
+facts per entry and never merge under a null work key. Known publication days,
+source-listed years, source eligibility and source family survive component
+views/snapshots. Fresh reviewed display dates support a separate bounded release
+cohort view; expiring catalog facts are not copied into indefinite snapshots.
+
+The workflow audit reproduced an accidental closing reference in draft PR78:
+GitHub recognized negated issue-closing language as a directive for issue21.
+The partial-delivery body was corrected before merge, and a subsequent native
+closingIssuesReferences read returned empty. AGENTS.md now requires Refs/Related
+wording for partial work and explicit inspection of closing references before
+merge. Issue state cannot substitute for completed acceptance evidence.
+
+C3 integrated typed runtime validation on main `0fcc05e` passes Ruff check/format,
+ty and 531 tests with one opt-in skip. All 51 changed Python files have maximum
+CC8 and minimum MI50.270742. Regressions cover current accepted source → typed
+storage → readable discovery/viewing reports, registry-only unknown critic
+support, person-prize subject, original reception units/sample counts, unknown
+and unresolved facts, strict numeric/rights inputs, type-only pending correction,
+legacy schema10 upgrade, canonical component snapshots, historical critic replay
+and fresh reviewed release-cohort context. Actual permitted typed-cohort import,
+independent exact-head reviews and final acceptance for #21 remain controller
+work; no live/personal source contents are invented or changed by these tests.

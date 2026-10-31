@@ -2,8 +2,10 @@
 
 from dataclasses import replace
 
+from discovery_fixtures import cohort, fresh_status, snapshot
 from test_curated_csv import MANIFEST, body
 
+from film_iq.discovery import build_discovery
 from film_iq.ingest.accept import accept
 from film_iq.ingest.audit import AuditAttestation
 from film_iq.ingest.curated import import_list
@@ -26,6 +28,8 @@ def accepted_component(db, component):
     single = (
         "\n".join(
             body(
+                rank="",
+                tie="",
                 tmdb_id="123",
                 identity_reviewer="fixture reviewer",
                 identity_evidence="synthetic work identity",
@@ -52,3 +56,9 @@ def accepted_component(db, component):
         "UPDATE published_list SET lineage_kind='original',lineage_verification='verified' WHERE source_id='critic'"
     )
     return revision, entry
+
+
+def discovery(db, component):
+    revision, _ = accepted_component(db, component)
+    selected = {**cohort(), "revision_id": revision}
+    return build_discovery(selected, snapshot(), db=db, refresh_status=fresh_status())

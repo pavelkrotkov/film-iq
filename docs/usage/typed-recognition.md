@@ -40,8 +40,10 @@ nonfinite numbers, invalid ranges and fractional/negative sample counts reject
 before storage. No unit conversion, guessed sample size or calibrated weight is
 introduced. Rights-uncleared real reception data must remain absent/unknown.
 
-`recognition.components(db, tmdb_id)` reads only current accepted observations
-with accepted work identities. It exposes separate component arrays, unknown
+`recognition.components(db, tmdb_id)` reads current accepted observations
+through accepted work identities. Unresolved source facts remain per-entry in
+component snapshots and discovery review cards; they never establish a film
+match or merge distinct unknown films. It exposes separate component arrays, unknown
 classifications and explicit missing coverage alongside source/document/revision/
 match links, publication/measurement dates and lineage. Detailed classification
 rights/auditor assertions remain in the database instead of cluttering reports.
@@ -51,7 +53,19 @@ rights/auditor assertions remain in the database instead of cluttering reports.
 separate current critic outputs. Repeating identical state returns the same ID;
 `replay` preserves that frozen document after corrections. Existing critic
 `independent-reciprocal-rank-v1` and `independent-priority-rank-v2` snapshots retain
-their existing replay algorithms. No historical snapshot is reinterpreted.
+their existing replay algorithms. No historical snapshot is reinterpreted. Source-listed release years, source
+eligibility and source family remain explicit. Snapshot catalog release year is
+unknown: the expiring external display catalog is not copied into indefinite
+component snapshots. The discovery presentation separately offers bounded
+release-cohort views from its fresh reviewed catalog dates; it never substitutes
+a source edition or source-listed year for a catalog release date.
+
+Discovery cards retain their title/director/runtime and source reasons. Known
+registry/institutional selections and explicit award recipients/categories can
+appear as concise reasons. Full reception units/sample counts, dates, missingness
+and component provenance remain in the expandable audit and JSON. The planning
+report also shows accepted typed facts; registry-only works have unknown critic
+utility and are never assigned an invented zero or automatic award weight.
 
 Migration011 adds classification and component-snapshot tables; existing rows
 remain unknown. Use the normal private SQLite backup/migration/restore workflow.

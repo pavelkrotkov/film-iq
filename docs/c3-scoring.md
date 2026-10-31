@@ -52,8 +52,13 @@ now produces a distinct v2 snapshot. Unsupported versions fail explicitly.
 The current A1 reader carries verified source-family/lineage metadata and C1's
 explicit contributor/ballot links. It does not infer `person_id` from `author`;
 a derivative original-ballot link excludes a repeated endorsement even if the
-publisher list was classified original. Typed award/reception ingestion remains
-pending. Both B7 experiments
+publisher list was classified original. Migration011 and the
+[typed recognition contract](usage/typed-recognition.md) classify current database
+observations explicitly: only critic selections enter this scorer. Institutional
+and registry selections, award outcomes and reception measurements retain
+separate original facts and unknown coverage. Legacy missing classification
+remains unknown until explicit review; historical v1/v2 snapshots retain their
+frozen inputs and algorithms. Both B7 experiments
 remain performed but inconclusive. Offline duplicate, tie/unranked,
 source-family holdout and snapshot checks demonstrate semantics, not predictive
 quality or a completed Gate C.

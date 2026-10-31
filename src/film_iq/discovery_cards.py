@@ -3,13 +3,21 @@
 from film_iq.discovery_display_card import display_details
 from film_iq.discovery_display_card import text as text
 from film_iq.discovery_display_card import title as title
+from film_iq.recognition.discovery import award_reasons
 
 
 def source_reason(item: dict) -> str:
     rank = f"#{item['rank']} — " if item["rank"] is not None else ""
     tie = " (tied)" if item["tie"] else ""
     label = text(item["ballot_scope"]).replace(" / ", " — ")
-    return f"{rank}[{label}]({item['source_url']}){tie}"
+    kind = item.get("evidence_kind", "unknown")
+    prefix = {
+        "registry_selection": "Registry selection — ",
+        "institutional_selection": "Institutional selection — ",
+        "award_outcome": "Award source — ",
+        "reception_metric": "Reception source — ",
+    }.get(kind, "")
+    return f"{prefix}{rank}[{label}]({item['source_url']}){tie}"
 
 
 def personal(item: dict) -> str:
@@ -32,6 +40,7 @@ def card(item: dict) -> list[str]:
     reasons = item.get("source_reasons", [item])
     lines = [f"### {title(item)}", "", *display_details(item), "", "Why consider it:"]
     lines.extend(f"- {source_reason(reason)}" for reason in reasons)
+    lines.extend(award_reasons(item))
     if rating := personal(item):
         lines.extend(["", rating])
     if item["identity_status"] != "reviewed":

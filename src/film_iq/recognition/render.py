@@ -45,12 +45,12 @@ def _fact(kind: str, value: dict) -> str:
 def report_lines(rows: list[dict]) -> list[str]:
     by_work = {}
     for row in rows:
-        by_work.setdefault(row["tmdb_id"], []).append(row)
+        by_work.setdefault(row["tmdb_id"] or (row["entry_id"], row["revision_id"]), []).append(row)
     lines = ["## Other public evidence"]
-    for work, items in by_work.items():
+    for items in by_work.values():
         lines.extend(
             [
-                f"### {items[0]['raw_title']} (TMDB {work or 'unknown'})",
+                f"### {items[0]['raw_title']} (TMDB {items[0]['tmdb_id'] or 'unknown'})",
                 *component_lines(group_components(items)),
             ]
         )

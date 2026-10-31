@@ -20,6 +20,8 @@ def test_pending_type_change_preserves_accepted_predecessor(evidence_db):
     source = (
         "\n".join(
             body(
+                rank="",
+                tie="",
                 tmdb_id="123",
                 identity_reviewer="fixture reviewer",
                 identity_evidence="synthetic work identity",
