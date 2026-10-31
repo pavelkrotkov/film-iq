@@ -2004,4 +2004,10 @@ explicit baseline; preview does not acknowledge, and explicit acknowledgement is
 written only after output succeeds. The private checkpoint retains opaque event
 IDs and revision pointers only. Missing/denied/expired sources are unknown, never
 removal notifications. This adds no external delivery, provider adoption, polling,
-HTTP endpoint, migration or personal-state writes. Fixture validation is pending.
+HTTP endpoint, migration or personal-state writes. Retained output inherits source
+permissions and original deadlines; it cannot extend the underlying lease. One
+consumer per checkpoint is the deliberate local ceiling (no queue/locking service).
+Fixtures cover baseline/preview/ack, repeated runs and replay, accepted source
+replacement followed by failed acquisition, partial offer attempts, denied and
+terminated policies, old-input expiry, purge/renewal and broken output. Required
+checks and final complexity evidence are recorded in the PR.

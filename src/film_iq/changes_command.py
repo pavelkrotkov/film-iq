@@ -7,7 +7,9 @@ from contextlib import closing
 from datetime import UTC, datetime
 from pathlib import Path
 
-from film_iq.changes import checkpoint, digest, markdown
+from film_iq.changes import digest
+from film_iq.changes_checkpoint import checkpoint
+from film_iq.changes_render import markdown
 from film_iq.operations_write import private_text
 
 

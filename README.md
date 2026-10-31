@@ -112,3 +112,20 @@ revisions as new endorsements. Historical revisions and their observations remai
 
 MIT for this repository's original code; source data and adapted OSS components retain their own terms and attribution.
 
+
+Local changes can be previewed without external notifications:
+
+```sh
+uv run film-iq changes --database path/to/evidence.db --checkpoint path/to/private/changes-seen.json
+uv run film-iq changes --database path/to/evidence.db --checkpoint path/to/private/changes-seen.json --format json --output path/to/private/changes.json --ack
+```
+
+First use explicitly establishes a baseline instead of announcing the existing
+catalog. Preview leaves the checkpoint untouched; `--ack` records opaque event
+IDs and accepted revision pointers only, after atomic private output publication
+or successful stdout flush. Use one consumer per checkpoint. A failed output is
+not acknowledged; failed/partial source requests and expired/denied retention do
+not imply disappearance. Reports inherit the underlying sources' original
+permissions and retention deadlines; an exported report grants no longer lease.
+Provider adoption remains gated separately. No provider polling, personal-state
+writes, external delivery or web endpoint is enabled by this command.
