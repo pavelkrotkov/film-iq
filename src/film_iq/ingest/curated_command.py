@@ -6,6 +6,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from film_iq.ingest.curated import import_list, load_manifest
+from film_iq.ingest.curated_attempt import persist_attempt
 from film_iq.storage import connect, migrate
 
 
@@ -20,8 +21,7 @@ def import_list_command(csv_path: Path, manifest_path: Path, database: Path | No
         db = connect(database)
         try:
             migrate(db)
-            with db:
-                result = import_list(body, manifest, db=db, accessed_at=now)
+            result = persist_attempt(db, body, manifest, now)
         finally:
             db.close()
     return json.dumps(result, ensure_ascii=False, indent=2)

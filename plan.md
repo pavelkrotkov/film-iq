@@ -1600,3 +1600,22 @@ suggestion. Readable selection filtering now deduplicates/excludes only reviewed
 identities and retains every unresolved card. The focused regression checks both
 collisions outside the collapsed audit section. Full local checks pass 450 tests
 with one opt-in skip and Ruff/format/ty; exact-head follow-up precedes merge.
+
+### C1 operational importer completion — 2026-10-31
+
+The acceptance audit found that durable attempt primitives were disconnected
+from the real curated-import command. The persistence path now commits a UUID
+attempt before the import transaction and finishes it separately from semantic
+revision acceptance. An initial explicit allowed manifest may establish the
+manual-curated-csv permission only when absent; existing denied, expired or
+different-method decisions block reimport. A successful repeat has two attempts
+and one revision. Persistence errors preserve prior cursor/evidence with a
+generic diagnostic; process interruption remains visibly running and a deliberate
+retry remains semantically idempotent. Invalid input still fails before opening
+storage. No publisher crawler, personal write or scheduled B4 change is added.
+
+C1 local verification passes Ruff check/format, ty and 452 tests with one opt-in
+skip. New/changed Python functions have maximum CC7 and minimum module MI50.153789.
+These checks cover durable attempt/idempotent semantic separation, generic failure
+state, interruption/retry and denied/expired/different-method permission. Live
+source imports and full operational acceptance are still separate evidence.

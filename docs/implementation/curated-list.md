@@ -77,3 +77,19 @@ release year differing from an external premiere year. Independent source and ID
 review, integration with the current real personal snapshot and C7 report are
 required before #59 closes. No identity precision, discovery quality, entitlement
 or overall source completeness is established by parser tests.
+
+## Acquisition attempts
+
+`import-list --persist` records a durable manual-curated-csv attempt after all
+CSV/rights preflight validation. The initial explicit manifest attestation may
+establish that method's permission; an existing blocked, expired or different
+method decision is never overwritten by reimport. Review source rights before
+using the command; the ledger records that assertion rather than granting rights.
+
+Each completed import gets a distinct attempt, while unchanged records reuse
+the same semantic extraction revision. Failure retains the prior successful
+cursor and records a generic error. An interrupted process leaves a visible
+`running` attempt; a deliberate retry creates another attempt and replays
+idempotently. `film-iq acquisition-status --database …` shows the latest attempt
+separately from the last successful cursor. Source acceptance remains an explicit
+independent review, not an effect of successful acquisition.
