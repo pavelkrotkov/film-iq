@@ -2170,3 +2170,17 @@ The [C2 bounded acceptance assessment](docs/research/c2-bounded-acceptance.md) r
 A native private-copy replay of all 24 unchanged imports retained identical revisions, semantic counts and canonical component/scorer output. Actual evidence/source hashes and semantics remained unchanged. Automated review labels remain explicit: this is neither human labor nor a general matching-precision estimate. The 67 noncritic normalized legacy lineage records remain unknown alongside their reviewed typed/descriptive evidence; no silent retagging occurred.
 
 Earlier wording incorrectly made representative human timing an unconditional C2 blocker. The criterion requires actual measurement before a human bulk/backfill work estimate; no estimate is proposed, and human minutes remain unknown. The coverage report and earlier plan statement now reflect that condition without deleting it. Proposed bounded MVP acceptance still requires explicit approval of the existing source-specific private/manual uses, independent PR review and CI; broader rights/method/retention expansion, automated backfill and any human bulk estimate remain conditional. This does not accept general Gate B or alter the separate Epic C contracts.
+
+### B4 date-two primary corroboration follow-up — 2026-10-31
+
+Bounded signed-out checks follow the five actual changed-film source locators,
+not a fresh provider search. Apple's public US SKU metadata currently matches
+Wild Diamond's HD/SD buy and HD rent prices and Sugarcane's HD buy/rent prices.
+Two original pages were inaccessible through the reader; two single-SKU fallbacks
+returned HTTP200/one matching record each. These facts corroborate current SKU
+prices, not checkout/account entitlement, exact cuts, departure dates, actual
+addition time or detection latency. The [primary-check report](docs/research/availability/primary-checks-20261031.md)
+keeps request units and unknowns explicit. No original source capture, streaming
+provider request, job, account or production-feed adoption is changed. Third-date
+and reviewed B4/B8 decisions remain required; independent remaining cases are
+pending the draft's completion.

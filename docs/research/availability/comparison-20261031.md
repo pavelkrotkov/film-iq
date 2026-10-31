@@ -51,7 +51,9 @@ It does not flatten variant prices or turn detection time into effective additio
 Original captures and all source details remain unchanged in the private cache;
 no offer dump or row-level catalog is published here.
 
-There was no independently timed first-party change check in this continuation.
+At the capture inspection there was no independently timed first-party change check.
+The subsequent [bounded primary checks](primary-checks-20261031.md) distinguish
+current SKU corroboration from unknown historical effective times.
 The actual transition times, correctness of the source differences, false-removal
 rate and change-detection latency therefore remain **unknown**, not zero. Earlier
 bounded first-party checks remain dated date-one evidence. Personal account/tier
