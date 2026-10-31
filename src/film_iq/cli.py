@@ -9,6 +9,10 @@ from film_iq.cli_parser import build_parser
 
 def main(argv: Sequence[str] | None = None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
+    if argv and argv[0] == "changes":
+        from film_iq.changes_command import main as changes_main
+
+        return changes_main(argv[1:])
     if argv and argv[0] == "status":
         from film_iq.status_command import main as status_main
 

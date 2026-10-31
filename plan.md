@@ -1994,3 +1994,14 @@ The [bounded C2 coverage report](docs/research/c2-bounded-coverage.md) publishes
 Retained audit evidence records bounded request/candidate windows, one explicit same-title rejection, unresolved identities and failed-source access with primary alternatives. Complete transport-failure totals and actual representative human review minutes remain unknown. All 24 selected imports replayed semantically unchanged; that evidence does not generalize to unfamiliar layouts or provide a bulk estimate. The 67 noncritic observations retain unknown normalized legacy lineage fields while independently reviewed typed classifications and descriptive lineage audits remain separate; no direct retagging or new correction occurred.
 
 This documentation-only read-only audit changed no sources, evidence database, catalog, personal state or operations. C2 #20 remains open for source-specific final Gate B/bulk approval and representative human effort measurements. No whole 2010–2026 coverage, matching-precision, calibration or user-satisfaction claim is made.
+### C7 local changes digest — implementation follow-up
+
+Related #25: the full issue requires deduplicated source/offer changes even though
+its first-use amendment deliberately did not block the initial shortlist on alerts.
+A local CLI Markdown/JSON digest uses accepted source revision pointers and the
+existing policy/retention-guarded durable offer events. First use establishes an
+explicit baseline; preview does not acknowledge, and explicit acknowledgement is
+written only after output succeeds. The private checkpoint retains opaque event
+IDs and revision pointers only. Missing/denied/expired sources are unknown, never
+removal notifications. This adds no external delivery, provider adoption, polling,
+HTTP endpoint, migration or personal-state writes. Fixture validation is pending.

@@ -25,17 +25,10 @@ def read_state(db: sqlite3.Connection, scope: Fetch, now: datetime) -> dict:
         "WHERE c.scope=? AND f.expires_at>?",
         (identifier, checked),
     ).fetchone()
-    events = db.execute(
-        "SELECT e.payload FROM offer_event e JOIN offer_fetch f ON e.fetch_id=f.id "
-        "LEFT JOIN offer_fetch p ON p.id=e.previous_fetch_id "
-        "WHERE f.scope=? AND f.expires_at>? AND (p.id IS NULL OR p.expires_at>?) "
-        "ORDER BY f.checked_at,e.id",
-        (identifier, checked, checked),
-    )
     return {
         "latest_attempt": json.loads(latest[0]) if latest else None,
         "current": json.loads(current[0]) if current else None,
-        "events": [json.loads(row[0]) for row in events],
+        "events": [event["change"] for event in retained_events(db, now, scope=identifier)],
         "first_seen_by_us": _first_seen(db, identifier, checked),
     }
 
@@ -71,4 +64,23 @@ def _first_seen(db, scope, now):
     return [
         {"opportunity": asdict(item), "first_seen_by_us": timestamp(checked)}
         for item, checked in sorted(seen.items(), key=lambda pair: repr(pair[0]))
+    ]
+
+
+def retained_events(
+    db: sqlite3.Connection, now: datetime, *, scope: str | None = None
+) -> list[dict]:
+    """Stable event IDs, gated by current policy and every retained input deadline."""
+    checked = timestamp(now)
+    rows = db.execute(
+        "SELECT e.id,f.source,e.payload FROM offer_event e JOIN offer_fetch f ON e.fetch_id=f.id "
+        "LEFT JOIN offer_fetch p ON p.id=e.previous_fetch_id "
+        "WHERE f.expires_at>? AND (p.id IS NULL OR p.expires_at>?) "
+        "AND (? IS NULL OR f.scope=?) ORDER BY f.checked_at,e.id",
+        (checked, checked, scope, scope),
+    )
+    return [
+        {"id": identifier, "change": json.loads(payload)}
+        for identifier, source, payload in rows
+        if readable(db, source, now)
     ]
