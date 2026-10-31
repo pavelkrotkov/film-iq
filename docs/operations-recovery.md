@@ -330,3 +330,18 @@ expiry. Private archives/receipts remain in the selected project's ignored
 storage. This verifies the observed baseline/recovery behavior, not actual
 delivery of live transitions, complete Movary restoration, production providers
 or genuine user rating/comment edits.
+
+### Completion observed at the configured daily time — 2026-10-31
+
+A later read-only native-job inspection found two completed runs, last exit 0
+and an idle job. Its second successful completion was 14:30:03 UTC (10:30 local),
+matching the registered daily calendar time; native stdout, run status and the
+personal snapshot/status generation agreed. This corroborates execution at the
+configured time, without asserting the trigger's provenance or reboot/login
+persistence. The inspection changed no jobs, accounts, databases or B4 settings.
+
+The refresh/report implementation supports absent personal scores correctly;
+genuine nonempty score/comment changes are still unobserved real-user acceptance
+cases. Complete Movary recovery remains pending its separately scoped approval
+and test, and production-provider requirements remain gated independently. These
+limits do not require another user source audit or invented personal ratings.
