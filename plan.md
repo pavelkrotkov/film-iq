@@ -2188,6 +2188,6 @@ bounded ten-attempt follow-up budget. Third-date and reviewed B4/B8 decisions
 remain required; no historical effective time or detection latency is inferred.
 
 C2 #20's bounded manual delivery is now accepted and closed after PR89 and the
-[explicit source/use decisions](https://github.com/pavelkrotkov/film-iq/issues/20#issuecomment-6545209723);
+[explicit source/use decisions](https://github.com/pavelkrotkov/film-iq/pull/89#issuecomment-6545209723);
 earlier pending-status paragraphs are historical. Broader bulk ingestion and a
 human-throughput estimate remain conditional on undertaking that broader work.
