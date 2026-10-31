@@ -1593,3 +1593,10 @@ MI50.025032; changed renderer/helper/tests have minimum MI50.266826. A private
 preview was rendered from the existing authorized live-report JSON without
 printing or committing account contents. This verifies format/data plumbing,
 not user satisfaction or the outstanding live rating-change acceptance cases.
+
+C7 Standards review reproduced hidden review cards when distinct unresolved
+entries shared a provisional TMDB ID, including a collision with a reviewed
+suggestion. Readable selection filtering now deduplicates/excludes only reviewed
+identities and retains every unresolved card. The focused regression checks both
+collisions outside the collapsed audit section. Full local checks pass 450 tests
+with one opt-in skip and Ruff/format/ty; exact-head follow-up precedes merge.

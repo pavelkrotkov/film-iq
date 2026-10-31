@@ -1,19 +1,7 @@
 """Human-readable discovery shortlist; technical evidence stays in a separate section."""
 
 from film_iq.discovery_cards import card, personal, source_reason, text, title
-
-
-def _unique(items):
-    selected = {}
-    for item in items:
-        key = item["tmdb_id"] or (item["source_id"], item["edition"], item["position"])
-        selected.setdefault(key, item)
-    return list(selected.values())
-
-
-def _remaining(report):
-    suggested = {item["tmdb_id"] for item in report["suggested_unwatched"]}
-    return _unique(item for item in report["candidates"] if item["tmdb_id"] not in suggested)
+from film_iq.discovery_selection import remaining
 
 
 def _audit(report):
@@ -68,8 +56,7 @@ def markdown(report: dict) -> str:
             "Rental and streaming availability, price and plan entitlement have not been verified. Your scores appear only where available.",
         ]
     )
-    remaining = _remaining(report)
-    lines.extend(_other(remaining))
+    lines.extend(_other(remaining(report)))
     lines.extend(["", *_audit(report)])
     return "\n".join(lines) + "\n"
 
