@@ -25,6 +25,7 @@ class Access:
     entitlement: Literal["confirmed", "unconfirmed", "unavailable_on_plan"]
     price_cents: int | None = None
     expires: date | None = None
+    assertion_index: int | None = None
 
 
 @dataclass(frozen=True)

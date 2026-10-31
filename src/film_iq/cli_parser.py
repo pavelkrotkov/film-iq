@@ -18,6 +18,7 @@ def build_parser():
     report.add_argument(
         "--inputs", type=Path, required=True, help="Catalog and provider snapshot JSON"
     )
+    report.add_argument("--snapshot", type=Path, help="Fresh complete private Movary snapshot")
     report.add_argument("--format", choices=("markdown", "json"), default="markdown")
     sync = commands.add_parser("sync", help="Preview one Movary watchlist addition")
     sync.add_argument("--title", required=True)
