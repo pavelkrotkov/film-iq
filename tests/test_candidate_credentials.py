@@ -1,11 +1,9 @@
 """Official credential paths stay only in outbound requests, never receipts/errors."""
 
 import json
-from email.message import Message
 from unittest.mock import Mock
-from urllib.error import HTTPError, URLError
+from urllib.error import URLError
 
-import pytest
 from candidate_support import WORK, permit
 from offer_store_support import NOW
 
@@ -24,16 +22,8 @@ def test_tmdb_v3_fallback_and_bearer_preference(monkeypatch):
     assert preferred.get_header("Authorization") == "Bearer fixture-bearer"
 
 
-@pytest.mark.parametrize(
-    "failure",
-    [
-        URLError("fixture-secret"),
-        HTTPError(
-            "https://example.test/?api_key=fixture-secret", 500, "fixture-secret", Message(), None
-        ),
-    ],
-)
-def test_transport_exception_cannot_leak_key(evidence_db, monkeypatch, failure):
+def test_transport_exception_cannot_leak_key(evidence_db, monkeypatch):
+    failure = URLError("fixture-secret")
     permit(evidence_db, "tmdb")
     monkeypatch.delenv("TMDB_READ_ACCESS_TOKEN", raising=False)
     monkeypatch.setenv("TMDB_API_KEY", "fixture-secret")
@@ -49,19 +39,3 @@ def test_transport_exception_cannot_leak_key(evidence_db, monkeypatch, failure):
     assert "fixture-secret" not in json.dumps(result)
     assert result["results"][0]["status"] == "unknown"
     assert "fixture-secret" not in "\n".join(evidence_db.iterdump())
-
-
-def test_http_error_adapter_returns_status_not_authenticated_url(monkeypatch):
-    opener = Mock()
-    opener.open.side_effect = HTTPError(
-        "https://example.test/?api_key=fixture-secret", 401, "fixture-secret", Message(), None
-    )
-    monkeypatch.setattr(candidate_transport, "build_opener", Mock(return_value=opener))
-    result = candidate_transport.fetch(Mock())
-    assert result == (401, b"", {})
-    assert (
-        candidate_transport._NoRedirect().redirect_request(
-            None, None, 302, "", {}, "https://elsewhere.test"
-        )
-        is None
-    )

@@ -14,7 +14,10 @@ from film_iq.availability.state import read_state
 
 @pytest.mark.parametrize(
     "status,headers",
-    [(401, {}), (403, {}), (429, {}), (200, {"X-RateLimit-Requests-Remaining": "0"})],
+    [
+        (401, {}),
+        (429, {}),
+    ],
 )
 def test_access_or_known_exhaustion_stops_and_retains_baseline(
     evidence_db, monkeypatch, status, headers

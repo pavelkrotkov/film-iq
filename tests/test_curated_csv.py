@@ -80,24 +80,6 @@ def test_ranks_unknowns_and_partial_selection():
     ) == (3, 0, 3, 0)
 
 
-@pytest.mark.parametrize(
-    "change",
-    [
-        {"rank": "0"},
-        {"position": ""},
-        {"rank": "", "tie": "a"},
-        {"tmdb_id": "123"},
-        {"year": "unknown"},
-        {"published_at": "2024"},
-        {"raw_title": " "},
-        {"source_url": "file:///private"},
-    ],
-)
-def test_rejects_invalid_facts(change):
-    with pytest.raises(ValueError):
-        read_csv(body(**change))
-
-
 def test_rejects_schema_and_incomplete_selection():
     with pytest.raises(ValueError, match="header"):
         read_csv(body().replace("raw_title", "other"))

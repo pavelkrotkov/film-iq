@@ -25,14 +25,3 @@ def test_zero_policy_database_retains_original_unknown_output(evidence_db, tmp_p
     assert (
         result["candidates"][0]["access"] == "unknown; price, entitlement and freshness unverified"
     )
-
-
-def test_unreviewed_candidate_cannot_inherit_offer_links(evidence_db, tmp_path):
-    configure(evidence_db, tmp_path)
-    prepare(evidence_db)
-    import_observation(tmp_path, observation())
-    evidence_db.execute("DELETE FROM current_match")
-    evidence_db.commit()
-    result = report(tmp_path)
-    assert result["candidates"][0]["identity_status"] == "unresolved"
-    assert "offer_states" not in result["candidates"][0]

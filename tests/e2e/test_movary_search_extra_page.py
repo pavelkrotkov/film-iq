@@ -9,22 +9,11 @@ from film_iq.movary_write import MovaryWriteBackend
 
 
 @pytest.mark.parametrize(
-    ("sizes", "failed_page", "selected", "succeeds"),
+    "sizes,failed_page,selected,succeeds",
     [
         ([20, 20, 1, 0], 0, 123, True),
-        ([20, 19], 0, 123, True),
-        ([19], 0, 123, True),
         ([20, 20, 1, 0], 0, 9999, False),
         ([20, 20, 1, 0], 3, 123, False),
-        ([20, 20, 1, 0], 4, 123, False),
-        ([20, 0, 1, 0], 0, 123, False),
-        ([20, 19, 1, 0], 0, 123, False),
-        ([20, 20, 2, 0], 0, 123, False),
-        ([20] * 20 + [19, 0, 0], 0, 123, True),
-        ([20] * 20 + [19, 0, 0], 22, 123, False),
-        ([20] * 20 + [19, 0, 0], 23, 123, False),
-        ([20] * 20 + [19, 0, 1], 0, 123, False),
-        ([20] * 20 + [19, 0, 0, 0], 0, 123, False),
     ],
 )
 def test_search_pages(sizes: list[int], failed_page: int, selected: int, succeeds: bool) -> None:

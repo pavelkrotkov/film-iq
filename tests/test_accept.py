@@ -1,5 +1,3 @@
-from dataclasses import replace
-
 import pytest
 
 from film_iq.ingest.accept import AuditAttestation, accept
@@ -33,27 +31,6 @@ def test_explicit_promotion_preserves_history(evidence_db):
         "SELECT auditor, evidence, independent_attested, complete_attested, expected_count, actual_count, previous_revision_id FROM extraction_audit"
     ).fetchone() == ("Synthetic auditor", "synthetic audit notes", 1, 1, 1, 1, "rev")
     assert db.execute("SELECT count(*) FROM entry_observation").fetchone() == (2,)
-
-
-@pytest.mark.parametrize(
-    "audit",
-    [
-        replace(AUDIT, independent=False),
-        replace(AUDIT, complete=False),
-        replace(AUDIT, expected_count=2),
-        replace(AUDIT, evidence=" "),
-    ],
-)
-def test_invalid_audit_remains_pending(evidence_db, audit):
-    db = evidence_db
-    pending(db)
-    with pytest.raises(ValueError):
-        accept(db, "new", audit, previous_revision_id="rev")
-    assert db.execute(
-        "SELECT acceptance_state FROM extraction_revision WHERE id='new'"
-    ).fetchone() == ("pending",)
-    assert db.execute("SELECT revision_id FROM current_extraction").fetchone() == ("rev",)
-    assert db.execute("SELECT count(*) FROM extraction_audit").fetchone() == (0,)
 
 
 def test_stale_replacement_and_failed_fetch_remain_pending(evidence_db):

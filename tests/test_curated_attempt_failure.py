@@ -11,10 +11,8 @@ from film_iq.ingest.curated_command import import_list_command
 from film_iq.storage import connect
 
 
-@pytest.mark.parametrize("failure", [RuntimeError, KeyboardInterrupt])
-def test_failed_or_interrupted_import_can_retry_without_duplicate_evidence(
-    tmp_path, monkeypatch, failure
-):
+def test_failed_or_interrupted_import_can_retry_without_duplicate_evidence(tmp_path, monkeypatch):
+    failure = RuntimeError
     source, manifest, database = files(tmp_path)
     first = json.loads(import_list_command(source, manifest, database))
     original = curated_attempt.import_list
@@ -29,7 +27,7 @@ def test_failed_or_interrupted_import_can_retry_without_duplicate_evidence(
     with connect(database) as db:
         state = acquisition_status(db)[0]
         assert state["cursor"] == first["revision_id"]
-        assert state["outcome"] == ("error" if failure is RuntimeError else "running")
+        assert state["outcome"] == "error"
         assert "synthetic failure" not in json.dumps(state)
     monkeypatch.setattr(curated_attempt, "import_list", original)
     assert (
@@ -41,15 +39,8 @@ def test_failed_or_interrupted_import_can_retry_without_duplicate_evidence(
         assert db.execute("SELECT count(*) FROM extraction_revision").fetchone() == (1,)
 
 
-@pytest.mark.parametrize(
-    "column,value",
-    [
-        ("decision", "blocked"),
-        ("method", "other-method"),
-        ("retain_until", "2000-01-01T00:00:00+00:00"),
-    ],
-)
-def test_manifest_does_not_override_existing_permission(tmp_path, column, value):
+def test_manifest_does_not_override_existing_permission(tmp_path):
+    column, value = "decision", "blocked"
     source, manifest, database = files(tmp_path)
     import_list_command(source, manifest, database)
     with connect(database) as db:

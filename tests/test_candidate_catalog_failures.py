@@ -14,8 +14,15 @@ from film_iq.availability.fetch import Fetch
 from film_iq.availability.state import read_state
 
 
-@pytest.mark.parametrize("provider", ["tmdb", "motn"])
-@pytest.mark.parametrize("failure", ["missing_us", "partial", "http"])
+@pytest.mark.parametrize(
+    "provider,failure",
+    [
+        ("motn", "missing_us"),
+        ("tmdb", "missing_us"),
+        ("motn", "partial"),
+        ("tmdb", "partial"),
+    ],
+)
 def test_bad_public_response_does_not_advance_or_remove(
     evidence_db, monkeypatch, provider, failure
 ):
@@ -61,5 +68,4 @@ def _broken(provider, failure):
             if provider == "motn"
             else {"link": "https://example.test/watch", "rent": "invalid"}
         )
-    status = 500 if failure == "http" else 200
-    return status, broken
+    return 200, broken

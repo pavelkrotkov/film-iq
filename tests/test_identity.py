@@ -23,30 +23,6 @@ def test_resolution() -> None:
     )
 
 
-def test_unknown_id_is_unresolved() -> None:
-    assert resolve(Observation("Unknown", tmdb_id=999), (Candidate(1, ("A",)),)).match is None
-
-
-@pytest.mark.parametrize(
-    ("observation", "candidate", "expected"),
-    [
-        (Observation("A", imdb_id=" "), Candidate(1, ("B",), imdb_id=" "), None),
-        (Observation("A", " ", 2020), Candidate(1, ("A",), " ", 2020), None),
-        (
-            Observation("A", "Director", 2020, imdb_id=" "),
-            Candidate(1, ("A",), "Director", 2020),
-            1,
-        ),
-    ],
-)
-def test_blank_identity_fields_are_missing(
-    observation: Observation, candidate: Candidate, expected: int | None
-) -> None:
-    # Empty identifiers cannot match each other, and empty directors cannot
-    # satisfy title matching. A blank ID also must not block a valid title match.
-    assert resolve(observation, (candidate,)).match == expected
-
-
 def test_reversible_review() -> None:
     raw = Observation("Titre Alternatif", "A Director", 2020)
     decision = resolve(

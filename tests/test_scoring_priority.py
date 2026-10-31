@@ -3,8 +3,6 @@
 from dataclasses import replace
 from fractions import Fraction
 
-import pytest
-
 from film_iq.scoring import Evidence, score
 from film_iq.scoring.policy import ScoringPolicy
 
@@ -55,11 +53,3 @@ def test_publisher_or_author_does_not_establish_known_people():
     assert result.unranked_count == 1
     excluded = score(entries, policy=ScoringPolicy(excluded_sources=("publisher-a",)))[0]
     assert excluded.contributing == (entries[1],) and excluded.rank_score is None
-
-
-def test_conflicting_same_ballot_rank_requires_review():
-    item = ballot("source", 2)
-    with pytest.raises(ValueError, match="Conflicting ranks"):
-        score([item, replace(item, rank=1)])
-    with pytest.raises(ValueError, match="person_id"):
-        replace(item, person_id=" ")

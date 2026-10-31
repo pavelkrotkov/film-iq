@@ -52,38 +52,11 @@ def test_api_pagination_and_failure():
         client.read("played")
 
 
-@pytest.mark.parametrize("collection", ["played", "history", "watchlist"])
-def test_empty_advertised_final_page(collection):
+def test_empty_advertised_final_page():
+    collection = "played"
     pages = [
         response(collection, [{"movie": {}}] * 100),
         response(collection, [], current=2),
     ]
     with pytest.raises(ValueError):
         read_pages(collection, *pages)
-
-
-def test_empty_single_page():
-    assert read_pages("played", response("played", [], last=1)) == []
-    with pytest.raises(ValueError):
-        read_pages("played", response("played", []))
-
-
-@pytest.mark.parametrize("collection", ["played", "history", "watchlist"])
-@pytest.mark.parametrize("size,last", [(1, 2), (101, 2), (101, 1)])
-def test_invalid_page_size(collection, size, last):
-    pages = [
-        response(collection, [{"movie": {}}] * size, last=last),
-        response(collection, [{}], current=2),
-    ]
-    with pytest.raises(ValueError):
-        read_pages(collection, *pages)
-
-
-@pytest.mark.parametrize("collection", ["played", "history", "watchlist"])
-def test_full_page_and_short_final_page(collection):
-    movie = {"movie": {}}
-    pages = [
-        response(collection, [movie] * 100),
-        response(collection, [movie], current=2),
-    ]
-    assert read_pages(collection, *pages) == [movie] * 101

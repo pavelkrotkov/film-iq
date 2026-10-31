@@ -16,18 +16,6 @@ def policy(**kwargs):
     )
 
 
-def test_expiry_and_termination_are_explicit_and_previewed(tmp_path):
-    path = tmp_path / "cache.json"
-    path.write_text("synthetic disposable cache")
-    expired = policy(allowed=True, expires_at=NOW)
-    assert purge(tmp_path, [path.name], expired, NOW) == (path.name,)
-    assert path.exists()
-    purge(tmp_path, [path.name], expired, NOW, execute=True)
-    assert not path.exists()
-    terminated = policy(allowed=True, expires_at=NOW + timedelta(days=1), terminated=True)
-    assert status(terminated, NOW) == "purge_due"
-
-
 def test_unresolved_rights_block_retention_and_paths_cannot_escape(tmp_path):
     blocked = policy(allowed=False, expires_at=NOW + timedelta(days=1))
     assert status(blocked, NOW) == "blocked"

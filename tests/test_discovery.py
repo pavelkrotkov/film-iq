@@ -17,7 +17,10 @@ def test_preview_claims_cannot_accept_source_or_suggest_without_database():
 
 def test_current_acceptance_suggests_only_freshly_unwatched(evidence_db):
     accept_source(evidence_db)
-    report = build_discovery(cohort(), snapshot(), db=evidence_db, refresh_status=fresh_status())
+    evidence_db.execute("UPDATE entry_observation SET rank=5")
+    selected = cohort()
+    selected["candidates"][0]["rank"] = 1
+    report = build_discovery(selected, snapshot(), db=evidence_db, refresh_status=fresh_status())
     assert (report["accepted"], report["unresolved"], len(report["suggested_unwatched"])) == (
         1,
         0,
@@ -29,7 +32,12 @@ def test_current_acceptance_suggests_only_freshly_unwatched(evidence_db):
         None,
         "conflict",
     )
-    assert item["external_critical_recognition"] is None
+    selected["revision_id"] = "obsolete"
+    assert (
+        item["rank"],
+        build_discovery(selected, snapshot(), db=evidence_db)["accepted"],
+        item["external_critical_recognition"],
+    ) == (5, 0, None)
     assert "No purchase" in markdown(report)
     assert build_discovery(cohort(), snapshot(), db=evidence_db)["suggested_unwatched"] == []
 

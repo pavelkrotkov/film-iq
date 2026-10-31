@@ -1,10 +1,6 @@
 """Support counts stay separate from ranks, missing evidence and personal scores."""
 
-from typing import cast
-
-import pytest
-
-from film_iq.discovery_order import Order, ordered_suggestions
+from film_iq.discovery_order import ordered_suggestions
 
 
 def item(name, support, rank=None):
@@ -25,8 +21,3 @@ def test_support_order_keeps_unknown_slots_and_stable_unranked_ties():
     assert result[1]["external_critical_recognition"] is None
     assert rows[0]["rank"] == 1 and result[0]["rank"] is None
     assert ordered_suggestions(rows) == rows
-
-
-def test_unknown_policy_does_not_silently_change_order():
-    with pytest.raises(ValueError, match="order"):
-        ordered_suggestions([], cast(Order, "invalid"))

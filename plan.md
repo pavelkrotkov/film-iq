@@ -2380,3 +2380,37 @@ Actual producer/two-import regressions cover malformed, HTTP, userinfo, credenti
 query and null locators; prior valid snapshots/events survive. The valid HTTPS
 explicit-empty transition remains covered and produces only source-specific
 absence. No provider request or frozen-study change was made.
+
+## Approved test-suite reduction — 2026-10-31
+
+The user approved reducing the recurring suite from 697 collected cases to at most
+200. Remove redundant test functions, Cartesian invalid-value permutations and
+completed POC wrappers; retain meaningful public workflows and real regressions.
+Do not hide tests behind skips, selection configuration or replacement loops.
+Preserve source/identity/rank lineage, approval before personal writes, failed-read
+no-removal behavior, price/entitlement uncertainty and recoverability. Transfer
+unique useful assertions into retained workflow cases without changing runtime
+behavior. Keep imported helpers and original research evidence. Validation and
+review evidence will be recorded here before merge.
+
+Implementation in PR #97 physically removes 498 collected cases and 80 unused
+test modules. Default collection is 199: 198 pass and the existing opt-in live
+Movary check remains skipped. Imported mock helpers and original research inputs
+remain. No runtime modules, dependency settings, CI jobs or pytest collection
+configuration change. Single-case parameter scaffolding and unused imports are
+removed rather than retained around fixed values.
+
+Useful assertions were transferred into retained workflows: readable provider and
+add-on names, exact provider-detected/last-day timestamps, legacy payload/scope
+identities, authoritative stored ranks, obsolete revisions, uncertain future
+expiry, assessment-anchored planning, confirmed existing add-on access, and real
+schema 9→11 evidence preservation through online backup/restore. The actual
+malformed-empty-frame no-removal regression remains once. This deliberately
+reduces historical/POC and invalid-value permutation coverage; no equal defect
+detection or full historical-upgrade coverage is claimed.
+
+Local validation: Ruff check/format, ty and the full default suite pass. All 321
+remaining tracked Python files satisfy CC≤8 (including methods/closures) and
+MI≥50; observed minimum MI is 50.025032. The recurring test budget is recorded in
+AGENTS.md. CI and independent final-head review dispositions are required before
+merge and will be recorded in the PR.
