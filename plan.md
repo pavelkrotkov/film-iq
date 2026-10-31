@@ -1561,3 +1561,42 @@ only identities reviewed in accepted evidence; pending previews retain their
 separate unresolved observations. The real repeated-cohort CLI regression now
 asserts zero reviewed unique works for two pending selections. Full local checks
 pass: 450 tests, one opt-in skip, Ruff/format/ty; CC<=8 and MI>=50.
+
+### C7 readable discovery delivery and completed first-ballot identity review (2026-10-31)
+
+The user-facing Markdown now leads with film cards and their original critic
+reasons, followed by viewing choices and separately retained watched/review
+items. Title/year/director and reviewed catalog links replace the technical
+identity/status table. Multiple source reasons can accompany a single suggested
+work. Personal enjoyment and artistic merit remain separate, missing values
+are not guessed, and source years/names remain identifiable as original-source
+assertions. Detailed completeness, lineage, publication, locator and exact
+candidate denominators are retained in a separate expandable evidence section;
+the JSON contract remains unchanged. No web UI or extra runtime dependency is
+introduced.
+
+A separate private primary-source audit reviewed all seven remaining work IDs
+in the first ten-entry ballot. Searches were complete; Sisu's fifteen results
+were distinguished by exact work title, director and year, including its later
+sequel. The audit preserves the publisher's director spelling and source-listed
+years, records the Goldman director-name correction separately, and distinguishes
+Enys Men's source/release year from its independently verified earlier festival
+premiere. New reviewed CSV/manifest and minimal factual identity receipts stay
+inside the selected project's ignored cache, with explicit TMDB attribution and
+180-day expiry metadata. No source prose, catalog dump or personal data is added
+to Git. This resolves identity review for that first ballot, not broader catalog
+precision, availability, personal acceptance or the remaining Epic C gates.
+
+Readable-report validation: Ruff check/format and ty pass; 449 tests pass with
+one opt-in skip. All 243 tracked/new Python files satisfy maximum CC8 and minimum
+MI50.025032; changed renderer/helper/tests have minimum MI50.266826. A private
+preview was rendered from the existing authorized live-report JSON without
+printing or committing account contents. This verifies format/data plumbing,
+not user satisfaction or the outstanding live rating-change acceptance cases.
+
+C7 Standards review reproduced hidden review cards when distinct unresolved
+entries shared a provisional TMDB ID, including a collision with a reviewed
+suggestion. Readable selection filtering now deduplicates/excludes only reviewed
+identities and retains every unresolved card. The focused regression checks both
+collisions outside the collapsed audit section. Full local checks pass 450 tests
+with one opt-in skip and Ruff/format/ty; exact-head follow-up precedes merge.

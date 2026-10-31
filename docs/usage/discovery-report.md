@@ -75,3 +75,14 @@ be safely deduplicated by title. Duplicate revision inputs are rejected.
 Selection order determines shortlist order; this is not a fitted personal ranking
 or a claim of complete publisher/year coverage. Retain private factual inputs
 only under each source's recorded permission; no broader scrape is implied.
+
+## Readable output
+
+The Markdown output now starts with a readable film shortlist: title, source
+listed year/director, original critic reasons and reviewed film links. Watching
+choices and retained personal history follow; detailed source/audit fields are
+in a separate expandable section. A pick supported by multiple supplied source
+ballots lists every supplied reason rather than duplicating the film. JSON
+retains all machine-readable fields. Film years and director names remain raw
+source assertions, so a catalog spelling or premiere-year correction does not
+silently rewrite the published source.
