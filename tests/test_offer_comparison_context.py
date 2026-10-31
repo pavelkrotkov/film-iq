@@ -9,12 +9,7 @@ from film_iq.availability.reconcile import changes
 
 
 def test_public_scope_cannot_compare_a_different_context():
-    difference = "legacy_unscoped"
     public = replace(fetch(), plan_scope=None, catalog_scope="public_country")
-    other = {
-        "legacy_unscoped": replace(public, catalog_scope=None),
-        "account_plan": replace(public, catalog_scope=None, plan_scope="Standard"),
-        "source": replace(public, source="other", assertions=()),
-    }[difference]
+    other = replace(public, catalog_scope=None)
     with pytest.raises(ValueError, match="scopes differ"):
         changes(public, other)

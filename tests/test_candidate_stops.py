@@ -16,7 +16,7 @@ from film_iq.availability.state import read_state
     "status,headers",
     [
         (401, {}),
-        (403, {}),
+        (429, {}),
     ],
 )
 def test_access_or_known_exhaustion_stops_and_retains_baseline(
