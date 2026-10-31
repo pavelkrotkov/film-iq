@@ -1993,7 +1993,7 @@ The [bounded C2 coverage report](docs/research/c2-bounded-coverage.md) publishes
 
 Retained audit evidence records bounded request/candidate windows, one explicit same-title rejection, unresolved identities and failed-source access with primary alternatives. Complete transport-failure totals and actual representative human review minutes remain unknown. All 24 selected imports replayed semantically unchanged; that evidence does not generalize to unfamiliar layouts or provide a bulk estimate. The 67 noncritic observations retain unknown normalized legacy lineage fields while independently reviewed typed classifications and descriptive lineage audits remain separate; no direct retagging or new correction occurred.
 
-This documentation-only read-only audit changed no sources, evidence database, catalog, personal state or operations. C2 #20 remains open for source-specific final Gate B/bulk approval and representative human effort measurements. No whole 2010–2026 coverage, matching-precision, calibration or user-satisfaction claim is made.
+This documentation-only read-only audit changed no sources, evidence database, catalog, personal state or operations. C2 #20 remains open pending bounded-source adjudication; broader source/method expansion still needs its applicable approval. Representative human effort must be measured before a human bulk/backfill work estimate, not as an extra human-audit requirement for the existing bounded cohorts. No whole 2010–2026 coverage, matching-precision, calibration or user-satisfaction claim is made.
 
 ### C7 local changes digest — implementation follow-up
 
@@ -2162,3 +2162,11 @@ functional failure caused by nullable scores. Complete Movary restoration still
 requires the pending scoped authorization and test. Production-provider gates
 remain separate. No new user source-verification task or fabricated personal
 judgment is required to accept the already evidenced implementation portions.
+
+### C2 resumed factual acceptance review — 2026-10-31
+
+The [C2 bounded acceptance assessment](docs/research/c2-bounded-acceptance.md) reconciles every existing criterion against the current 24 scopes. An independent automated/agent-assisted audit checked all 114 accepted raw contexts and normalized source/rank/tie/year/identity/eligibility fields, all manifests and typed payloads against prior independent source/primary-identity decisions. All 112 resolved mentions agreed, representing 106 works; both unresolved cases remained visible. A fresh original Library of Congress 2022 check and a separate controller inspection corroborated its 25-entry list and person Best Actor context. No factual correction was required.
+
+A native private-copy replay of all 24 unchanged imports retained identical revisions, semantic counts and canonical component/scorer output. Actual evidence/source hashes and semantics remained unchanged. Automated review labels remain explicit: this is neither human labor nor a general matching-precision estimate. The 67 noncritic normalized legacy lineage records remain unknown alongside their reviewed typed/descriptive evidence; no silent retagging occurred.
+
+Earlier wording incorrectly made representative human timing an unconditional C2 blocker. The criterion requires actual measurement before a human bulk/backfill work estimate; no estimate is proposed, and human minutes remain unknown. The coverage report and earlier plan statement now reflect that condition without deleting it. Proposed bounded MVP acceptance still requires explicit approval of the existing source-specific private/manual uses, independent PR review and CI; broader rights/method/retention expansion, automated backfill and any human bulk estimate remain conditional. This does not accept general Gate B or alter the separate Epic C contracts.
