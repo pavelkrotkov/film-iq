@@ -246,3 +246,66 @@ observed component summary, not a release-health or production-provider claim.
 Complete Movary database/storage/config/version restoration, genuine personal
 score/comment edits and the B4/B8 production-provider decisions remain separate
 outstanding acceptance requirements.
+
+## Reinstall the restored application with its captured lock
+
+Use an existing compatible `uv` executable and a provided Python 3.12+ whose
+SQLite passes the application's patched-WAL version gate. The example below
+keeps the restored application, cache and temporary files inside an
+operator-selected project. Restore the installation archive first, then use
+its captured `uv.lock`; do not resolve a new dependency set during recovery.
+
+```sh
+(
+set -e
+FILMIQ_PROJECT=/absolute/path/to/selected/project
+FILMIQ_RESTORE="$FILMIQ_PROJECT/.cache/recovery/isolated-restore"
+FILMIQ_APP="$FILMIQ_RESTORE/application"
+FILMIQ_PYTHON=/absolute/path/to/python3.12
+export UV_CACHE_DIR="$FILMIQ_PROJECT/.cache/uv"
+export TMPDIR="$FILMIQ_PROJECT/.cache/recovery-tmp"
+export UV_PYTHON_DOWNLOADS=never UV_LINK_MODE=copy
+export UV_PROJECT_ENVIRONMENT="$FILMIQ_APP/.venv"
+mkdir -p "$UV_CACHE_DIR" "$TMPDIR" "$FILMIQ_APP/.cache"
+cp "$FILMIQ_RESTORE/inputs/uv.lock" "$FILMIQ_APP/uv.lock"
+uv sync --project "$FILMIQ_APP" --frozen --offline --dev --python "$FILMIQ_PYTHON"
+  cd "$FILMIQ_APP" || exit 1
+  unset MOVARY_INTEGRATION
+  uv run --frozen --offline ruff check .
+  uv run --frozen --offline ruff format --check .
+  uv run --frozen --offline ty check .
+  uv run --frozen --offline pytest --basetemp "$FILMIQ_APP/.cache/pytest-restore"
+)
+```
+
+Offline installation requires all locked packages and build requirements to be
+present in the selected uv cache; a new empty cache is not sufficient. This
+procedure does not establish a clean network bootstrap on arbitrary hosts.
+`MOVARY_INTEGRATION` must be unset for credential-free tests: the opt-in test
+treats any nonempty value, including `0`, as enabled. Creating the explicit
+pytest basetemp parent avoids a test-driver directory error.
+
+Finally run the fresh `$FILMIQ_APP/.venv/bin/film-iq discover` with every selected
+cohort and the database, snapshot/status and catalog paths mapped to restored
+inputs from the archive manifest. Do not reuse live installation paths. Compare
+the complete parsed JSON to the captured expected report; ordering/formatting
+of JSON object keys alone is not a behavioral difference. Keep personal inputs
+and comparison output private under their original retention rules.
+
+### Actual fresh-environment acceptance — 2026-10-31
+
+The restored schema11 application at captured revision `4ce74ba` was installed
+into a fresh virtual environment using its unchanged lock and the existing
+private offline cache. CPython 3.12.15 installed 45 packages including the editable
+application. Ruff check/format and ty passed; pytest passed 544 tests with one
+opt-in skip. The freshly installed CLI then consumed all 24 selected cohorts
+and only restored inputs, reproducing the full discovery JSON semantically.
+No external calls or Movary actions occurred.
+
+The initial acceptance driver failed because its explicit basetemp parent was
+absent and it set the truthy opt-in flag to `0`; the resulting live-test setup
+failed before I/O. The private failure log was retained. Creating the parent
+and unsetting the flag corrected the driver without changing product code.
+This verifies the captured installation on the tested host/cache, not all hosts
+or a complete Movary restore. Genuine personal-edit acceptance and production
+provider/B4/B8 decisions remain outstanding.
