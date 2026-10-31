@@ -3,6 +3,7 @@
 from math import isfinite
 
 from .models import Access, Film
+from .prices import validate_free_price
 
 
 def options(current: set[int], services: dict[int, int | None]):
@@ -28,6 +29,8 @@ def validate_utility(films: list[Film], power: float) -> None:
 
 
 def known_inputs(offers: list[Access], services: dict[int, int | None], verified_only: bool):
+    for offer in offers:
+        validate_free_price(offer.kind, offer.price_cents)
     prices = [price for price in services.values() if price is not None]
     if verified_only:
         offers = [offer for offer in offers if offer.entitlement == "confirmed"]

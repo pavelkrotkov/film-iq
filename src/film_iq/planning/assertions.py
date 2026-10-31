@@ -8,6 +8,7 @@ from film_iq.availability.assertion import Assertion
 from film_iq.availability.opportunity import Opportunity
 from film_iq.availability.timing import purchase_window
 from film_iq.planning.models import Access
+from film_iq.planning.prices import validate_free_price
 
 
 def assertion_access(inputs: dict) -> tuple[list[dict], list[Access]]:
@@ -41,7 +42,9 @@ def _parse(raw: dict) -> tuple[int, Assertion]:
     for field in ("checked_at", "asserted_added_on", "asserted_expires_at"):
         if data.get(field) is not None:
             data[field] = datetime.fromisoformat(data[field])
-    return identifier, Assertion(**data)
+    assertion = Assertion(**data)
+    validate_free_price(assertion.opportunity.kind, assertion.price_minor)
+    return identifier, assertion
 
 
 def _plan(plans: dict, identifier: int, offer: Opportunity) -> None:

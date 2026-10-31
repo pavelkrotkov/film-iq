@@ -39,3 +39,21 @@ Date-only viewing slots conservatively exclude the whole asserted expiry day,
 because the report cannot prove a viewing ends before an intraday deadline.
 Unknown expiry stays unknown. Sources and entitlement still require independent
 verification: supplying this JSON does not clear provider rights or Gate B.
+
+Free/ad-supported access with a known nonzero price is contradictory and is
+rejected before planner filtering, for both direct `Access` callers and source
+assertions. Unknown prices remain unknown rather than being rewritten to zero.
+Viewing dates must be on or after the calendar day of caller `assessed_at`, or
+legacy `checked_at`, in that timestamp's declared timezone. Same-day slots are
+allowed because slots have no time of day; this does not prove that a viewing
+starts after an intraday assessment/arrival. Historical assessments remain valid
+for backtests. Assertions with a future provider-supplied arrival are already
+ineligible at assessment; no future-access guarantee or new solver is added.
+
+Each Markdown choice shows its known USD price or explicit unknown, with rentals
+labelled one-off and recurring service/add-on fees labelled assumptions/sunk
+costs rather than additional per-film charges. Its conservative last full viewing
+day is separate from the selected source's actual asserted expiry timestamp;
+unknown dates stay unknown. The selected assertion's original citation and
+entitlement are preserved. These are caller-supplied facts/assumptions, not an
+independent verification of provider accuracy or tax treatment.

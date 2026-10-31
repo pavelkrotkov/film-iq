@@ -1994,6 +1994,7 @@ The [bounded C2 coverage report](docs/research/c2-bounded-coverage.md) publishes
 Retained audit evidence records bounded request/candidate windows, one explicit same-title rejection, unresolved identities and failed-source access with primary alternatives. Complete transport-failure totals and actual representative human review minutes remain unknown. All 24 selected imports replayed semantically unchanged; that evidence does not generalize to unfamiliar layouts or provide a bulk estimate. The 67 noncritic observations retain unknown normalized legacy lineage fields while independently reviewed typed classifications and descriptive lineage audits remain separate; no direct retagging or new correction occurred.
 
 This documentation-only read-only audit changed no sources, evidence database, catalog, personal state or operations. C2 #20 remains open for source-specific final Gate B/bulk approval and representative human effort measurements. No whole 2010–2026 coverage, matching-precision, calibration or user-satisfaction claim is made.
+
 ### C7 local changes digest — implementation follow-up
 
 Related #25: the full issue requires deduplicated source/offer changes even though
@@ -2021,3 +2022,36 @@ aware offset timestamps are compared as instants. Legacy unparseable/undated
 labels remain unknown, without inventing an acceptance time or reconstructing
 historical current pointers. Before/exact/after and first-baseline fixtures cover
 both source and offer paths; acknowledgement then suppresses repeat delivery.
+
+
+### C5 concrete planner contract corrections — 2026-10-31
+
+The independent remaining-work audit reproduced three actual defects: a
+positive-priced free/ad-supported assertion could become verified zero-cost
+access; a viewing slot could precede the declared assessment/known arrival; and
+Markdown omitted the chosen price/expiry already present in structured inputs.
+Shared planner price validation now rejects contradictory nonzero free/ads costs
+before entitlement/currency filtering, covering direct Access comparisons and
+source assertion parsing without rewriting preserved C4 observations.
+
+Report slots now reject dates before the caller's aware assessment calendar day
+(legacy checked time when no explicit assessment exists), never today's wall
+clock. Same-day date-only slots remain permitted; intraday starts cannot be
+proven. Existing purchase-window checks reject known arrivals after assessment,
+so no Access start field or scheduling solver is added. Historical backtests
+remain anchored to their declared historical assessment.
+
+Markdown choices now show known USD prices or unknown, distinguish one-off
+rentals from recurring fee assumptions/sunk existing costs, and separate the
+conservative last full viewing day from the selected source's actual asserted
+expiry timestamp. Exact assertion indexes, source citations and entitlement
+remain unchanged. The blanket unverified-price sentence is replaced by per-
+choice reporting. No actual data, personal record, provider call, scheduler or
+B4 job is changed; real budget/utility/entitlement/provider acceptance remains
+separate from these reproducible corrections.
+
+Validation: Ruff check/format and ty pass; 568 tests pass with one opt-in skip.
+All thirteen changed Python files satisfy maximum CC8 and minimum MI52.270760.
+Regression checks cover the exact contradictory free-cost/earlier-slot paths,
+legacy dates, historical and same-day offset semantics, future arrivals,
+unknown prices/expiry, selected-source provenance and recurring fee accounting.

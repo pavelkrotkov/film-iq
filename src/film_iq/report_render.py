@@ -1,5 +1,6 @@
 """Concise Markdown rendering of a dry-run report with explicit identity links."""
 
+from film_iq.planning.choice_terms import choice_terms
 from film_iq.recognition.render import report_lines
 
 
@@ -61,7 +62,7 @@ def _choice(choice: dict, offers: dict) -> str:
     return (
         f"- {choice['film']['title']} (TMDB {choice['film']['id']}), "
         f"{choice['film']['minutes']} minutes: {access['kind']}, {provider}, "
-        f"entitlement {access['entitlement']}, {choice['viewing_date']}."
+        f"entitlement {access['entitlement']}, {choice['viewing_date']}; {choice_terms(access, offer)}."
     )
 
 
@@ -85,6 +86,7 @@ def _assertion_offers(report: dict) -> list[dict]:
             "url": item["url"],
             "checked_at": item["checked_at"],
             "source": item["source"],
+            "asserted_expires_at": item["asserted_expires_at"],
         }
         for index, item in enumerate(report.get("assertions", []))
     ]
