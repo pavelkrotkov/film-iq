@@ -2055,3 +2055,18 @@ All thirteen changed Python files satisfy maximum CC8 and minimum MI52.270760.
 Regression checks cover the exact contradictory free-cost/earlier-slot paths,
 legacy dates, historical and same-day offset semantics, future arrivals,
 unknown prices/expiry, selected-source provenance and recurring fee accounting.
+
+C5's combined Standards/Spec review reproduced two boundary defects. The expiry
+cutoff used the source timestamp's calendar rather than the declared assessment
+calendar; normalization now happens before subtracting the conservative day,
+while the original source timestamp/citation remain unchanged. Full report
+regressions cover both offset directions and exact-midnight expiry, including
+eligible preceding days and excluded intraday-expiry days.
+
+The legacy TMDB path also lost a declared service fee at choice rendering even
+though the plan total charged it. The report now preserves caller service-price
+assumptions separately from source access prices; legacy choices label a known
+fallback as caller-declared, prefer a known selected assertion price, and retain
+unknown/sunk existing fees. No billing interval, new entitlement or extra
+per-film fee is inferred. Both findings are accepted for correction and native
+follow-up; actual data and operational jobs remain untouched.

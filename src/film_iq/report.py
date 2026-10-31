@@ -93,6 +93,9 @@ def build_report(
         "public_evidence_components": current_components(db),
         "offers": observations,
         "assertions": assertions,
+        "service_price_assumptions": {
+            str(key): value for key, value in inputs["service_prices_cents"].items()
+        },
         "plans": [asdict(plan) for plan in plans],
         "verified_plans": [asdict(plan) for plan in verified],
         "films": [asdict(film) for film in films],

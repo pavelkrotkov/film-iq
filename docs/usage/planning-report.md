@@ -57,3 +57,11 @@ day is separate from the selected source's actual asserted expiry timestamp;
 unknown dates stay unknown. The selected assertion's original citation and
 entitlement are preserved. These are caller-supplied facts/assumptions, not an
 independent verification of provider accuracy or tax treatment.
+
+The conservative expiry day uses the assessment timestamp's timezone, matching
+viewing-slot dates; the original provider expiry retains its supplied offset.
+For legacy subscription access without a source price, a supplied service fee
+is separately preserved in `service_price_assumptions` and labelled caller-
+declared in the choice text. A known selected assertion price takes precedence.
+This neither invents a billing interval nor adds a second per-film fee; absent
+existing-service fees remain unknown and sunk.

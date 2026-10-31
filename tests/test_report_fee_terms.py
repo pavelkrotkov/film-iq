@@ -25,7 +25,9 @@ def test_current_subscription_fee_remains_sunk(evidence_db):
     data = report_inputs()
     item = assertion(price_minor=500)
     item["opportunity"].update(kind="subscription", plan="Existing fixture tier")
-    data.update(assertions=[item], current_services=[7])
+    data.update(assertions=[item], current_services=[7], service_prices_cents={"7": 900})
     report = build_report(evidence_db, data)
     assert report["verified_plans"][0]["cost_cents"] == 0
-    assert "subscription fee assumption USD 5.00" in markdown(report)
+    output = markdown(report)
+    assert "subscription fee assumption USD 5.00" in output
+    assert "caller-declared subscription fee assumption USD 9.00" not in output

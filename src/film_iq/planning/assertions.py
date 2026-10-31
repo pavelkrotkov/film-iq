@@ -72,7 +72,7 @@ def _access(identifier: int, item: Assertion, now: datetime, age: timedelta, ind
         raise ValueError("library borrowing is not a priced planner option")
     expiry = item.asserted_expires_at
     # Date-only scheduling cannot prove a slot before an intraday expiry.
-    expires = (expiry - timedelta(days=1)).date() if expiry else None
+    expires = (expiry.astimezone(now.tzinfo) - timedelta(days=1)).date() if expiry else None
     entitlement = item.entitlement
     if entitlement == "confirmed" and not purchase_ready(item, now=now, max_age=age):
         entitlement = "unconfirmed"
