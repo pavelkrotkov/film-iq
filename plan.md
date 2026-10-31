@@ -1619,3 +1619,34 @@ skip. New/changed Python functions have maximum CC7 and minimum module MI50.1537
 These checks cover durable attempt/idempotent semantic separation, generic failure
 state, interruption/retry and denied/expired/different-method permission. Live
 source imports and full operational acceptance are still separate evidence.
+
+### Accepted discovery collection and live recovery — 2026-10-31
+
+The readable private report now consumes three scoped original contributor
+ballots: 30 accepted source observations, 26 conservatively reviewed distinct
+works and no unresolved identities in that selection. One ballot has published
+ranks; two are unranked (one alphabetical). Separate reviewed person/ballot keys
+preserve critical independence and all selected source reasons. Repeating every
+real import records another successful acquisition attempt but creates no new
+semantic revisions or observations. No personal watchlist write accompanies
+source discovery. This completes that bounded #59 cohort's source/identity and
+current-personal-state integration; it is not full historical/publisher coverage
+or calibrated recommendation quality. Private factual records stay under their
+scoped private-study basis; no publisher prose/images/catalog dumps enter Git.
+
+The actual read-only C8 runner completed refresh/report/backup, then a controlled
+local export-command failure preserved prior snapshot/report bytes and
+acquisition state while setting stale status. Correct exports recovered matching
+freshness and a new successful-run time. Native restore of the resulting evidence
+backup passed integrity, foreign-key, schema and cursor checks with private file
+modes. This clears the actual failed-job/evidence-recovery check, not the pending
+full Movary/config/storage restore or provider-specific production gates.
+
+The audit also found that the scheduled CLI silently retained only the last
+repeated cohort argument. It now accumulates all selected ballots, with a real
+CLI→discovery→backup integration regression verifying one reviewed work retains
+both original ballot reasons. The single-Path Python API remains supported.
+Genuine nonempty personal rating/merit edits and deletion acceptance remain open;
+no user opinions are manufactured to satisfy the gate. B4's actual later-date
+measurements remain scheduled and untouched; production provider adoption waits
+for their reviewed outcome.

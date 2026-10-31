@@ -128,3 +128,23 @@ and verifying application/worker operation. A running SQLite file copy is not
 a valid substitute. A separately scoped service interruption and isolated
 target/storage authorization remain required; no stop, backup, restore or
 personal-data write was performed by this inspection.
+
+## Complete selected collection
+
+Repeat `--cohort` on `python -m film_iq.operations` for every independently
+accepted ballot in the installation. The same complete-cohort validation,
+reviewed-work deduplication and personal freshness checks used by `discover`
+apply to the scheduled report. Repeated arguments accumulate; later ballots
+never silently replace earlier ones. The Python API also accepts a single Path
+for existing callers or a list of Paths for a collection.
+
+A real private read-only acceptance run completed refresh/report/backup, then
+reproduced an export-command failure and successful retry. The failure retained
+the previous snapshot/report bytes, successful timestamp and acquisition state,
+while both freshness markers became stale. Retry produced a matching fresh
+snapshot/status and a new successful timestamp. The resulting evidence backup
+restored to a disposable database with passing integrity, foreign-key, schema
+and cursor checks; files were mode0600. Private commands and receipts remain
+inside the selected project's ignored cache. This does not establish complete
+Movary installation restoration, which still requires the separately requested
+service-stop/isolated-restore authorization, or production provider acceptance.
