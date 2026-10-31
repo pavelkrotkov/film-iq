@@ -148,6 +148,10 @@ source names, film data, ratings, comments, rights text, paths and exception
 payloads are not printed. This command makes no network call, requires no
 credentials and opens an existing SQLite database with `mode=ro`; it never
 creates a missing database, migrates, repairs or purges anything.
+Native SQLite read-only WAL access may create `-wal`/`-shm` coordination files;
+read-only refers to database contents, not a guarantee of zero filesystem
+activity. A directory that cannot provide required WAL coordination may report
+`invalid`. Do not use `immutable=1` for a potentially live WAL database.
 
 Exit 1 means a configured input is missing/invalid, stale, expired/not-yet-valid,
 or has acquisition/policy state needing attention. Exit 0 means no such
@@ -178,3 +182,22 @@ and cursor checks; files were mode0600. Private commands and receipts remain
 inside the selected project's ignored cache. This does not establish complete
 Movary installation restoration, which still requires the separately requested
 service-stop/isolated-restore authorization, or production provider acceptance.
+
+### Actual bounded Film-IQ installation restore — 2026-10-31
+
+A private schema10 installation at Git revision `0fcc05e` was archived and
+restored into a separate project-local directory. The archive included a native
+online evidence backup, the pinned Git source archive and `uv.lock`, selected
+cohort/source-audit inputs, reviewed catalog, personal snapshot/status and private
+operator configuration. Restored file hashes matched; SQLite integrity and
+foreign-key checks passed. The restored application CLI consumed only restored
+inputs and reproduced the complete original discovery JSON semantically, with
+no external calls or Movary actions. Private archive/receipts remain inside the
+selected project's ignored cache; copied metadata retains its expiry and usage
+restrictions, including archive copies.
+
+This verifies recovery of that selected schema10 Film-IQ installation. Later
+schema/input changes require their own recovery check. It does not verify
+Movary database/storage/config/version restoration, which remains pending the
+separately scoped service-stop/isolated-restore authorization, or production
+provider adoption/permissions.

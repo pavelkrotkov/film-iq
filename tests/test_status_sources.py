@@ -1,6 +1,8 @@
 """Read-only acquisition status preserves failures and previous successful cursors."""
 
 import json
+import sqlite3
+from contextlib import closing
 
 from test_acquisition import END, START, permit
 
@@ -16,6 +18,8 @@ def test_failed_source_keeps_success_time_without_revealing_cursor(evidence_db, 
     finish_attempt(db, first, END, "success", revision_id="rev", cursor="private-secret")
     second = begin_attempt(db, "s", END)
     finish_attempt(db, second, END, "error", error_code="private-error")
+    query = "SELECT id,outcome,cursor FROM acquisition_attempt ORDER BY id"
+    expected_rows = db.execute(query).fetchall()
     path = tmp_path / "status-copy.db"
     backup(db, path)
     before = path.read_bytes()
@@ -28,3 +32,5 @@ def test_failed_source_keeps_success_time_without_revealing_cursor(evidence_db, 
         END,
     )
     assert "private" not in output and path.read_bytes() == before
+    with closing(sqlite3.connect(path.resolve().as_uri() + "?mode=ro", uri=True)) as inspected:
+        assert inspected.execute(query).fetchall() == expected_rows

@@ -1885,3 +1885,22 @@ Validation: Ruff check/format and ty pass; 508 tests pass with one opt-in skip.
 The twelve changed Python files meet maximum CC8 and minimum MI50.625676.
 This verifies local status reporting, not the pending complete Movary restore,
 genuine-score acceptance, native schedule registration or provider gate.
+
+Status Standards review accepted one documentation precision finding: SQLite
+`mode=ro` preserves database contents but can create native WAL coordination
+sidecars. The module/operations wording now states that bounded guarantee;
+no immutable connection, copy framework or new database behavior was added.
+The existing byte-preservation regression also verifies unchanged acquisition
+semantic rows. Spec review found no actionable defect at the initial head.
+
+A separate actual schema10 Film-IQ installation recovery exercise archived a
+native online evidence backup, pinned source revision `0fcc05e`/`uv.lock`,
+selected source/cohort/catalog inputs, personal snapshot/status and private
+operator config, then restored to an isolated directory inside the selected
+project. Restored hashes and SQLite integrity/foreign keys passed. The restored
+application CLI reproduced the complete original discovery JSON identically
+using only restored inputs, with no external call or Movary action. Private
+receipts/archive remain ignored; archive copies inherit source/catalog rights
+and expiry. This is bounded evidence for that selected schema10 installation,
+not a claim about later schema/input changes, production provider acceptance or
+the separately authorized complete Movary restore still pending.

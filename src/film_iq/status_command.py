@@ -1,4 +1,4 @@
-"""Read explicitly selected local operational state without network access or writes."""
+"""Read selected local state without network access or database-content changes."""
 
 import argparse
 import json
