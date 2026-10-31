@@ -1,21 +1,15 @@
 """Readable film cards keep source reasons separate from the user's own judgments."""
 
-
-def text(value):
-    return "unknown" if value is None else str(value).replace("\n", " ")
-
-
-def title(item: dict) -> str:
-    name = f"{text(item['raw_title'])} ({text(item['year'])})"
-    if item["identity_status"] == "reviewed" and item["tmdb_id"]:
-        name = f"[{name}](https://www.themoviedb.org/movie/{item['tmdb_id']})"
-    return f"{name} — {text(item['director'])}"
+from film_iq.discovery_display_card import display_details
+from film_iq.discovery_display_card import text as text
+from film_iq.discovery_display_card import title as title
 
 
 def source_reason(item: dict) -> str:
-    rank = f"#{item['rank']}" if item["rank"] is not None else "unranked selection"
-    tie = f" (tie: {item['tie']})" if item["tie"] else ""
-    return f"{rank}{tie} in [{text(item['ballot_scope'])}: {text(item['edition'])}]({item['source_url']})"
+    rank = f"#{item['rank']} — " if item["rank"] is not None else ""
+    tie = " (tied)" if item["tie"] else ""
+    label = text(item["ballot_scope"]).replace(" / ", " — ")
+    return f"{rank}[{label}]({item['source_url']}){tie}"
 
 
 def personal(item: dict) -> str:
@@ -36,7 +30,7 @@ def _rating(value):
 
 def card(item: dict) -> list[str]:
     reasons = item.get("source_reasons", [item])
-    lines = [f"### {title(item)}", "", "Why consider it:"]
+    lines = [f"### {title(item)}", "", *display_details(item), "", "Why consider it:"]
     lines.extend(f"- {source_reason(reason)}" for reason in reasons)
     if rating := personal(item):
         lines.extend(["", rating])

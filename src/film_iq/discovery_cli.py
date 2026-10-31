@@ -40,6 +40,10 @@ def _parser(command: str):
         )
         parser.add_argument("--database", type=Path, help="Read-only current accepted evidence")
         parser.add_argument("--format", choices=("markdown", "json"), default="markdown")
+        parser.add_argument("--catalog", type=Path, help="Optional reviewed display metadata JSON")
+        parser.add_argument(
+            "--order", choices=("source", "public-support"), default="public-support"
+        )
     elif command == "import-list":
         parser.add_argument("--csv", type=Path, required=True)
         parser.add_argument("--manifest", type=Path, required=True)
@@ -51,7 +55,14 @@ def _parser(command: str):
 
 def _run(command: str, args) -> str:
     if command == "discover":
-        return discovery_command(args.cohort, args.snapshot, args.database, args.format)
+        return discovery_command(
+            args.cohort,
+            args.snapshot,
+            args.database,
+            args.format,
+            catalog=args.catalog,
+            order=args.order,
+        )
     if command == "import-list":
         from film_iq.ingest.curated_command import import_list_command
 
