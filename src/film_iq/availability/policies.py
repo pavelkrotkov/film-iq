@@ -40,11 +40,17 @@ def purge_source(
     policy = policy_for(db, source)
     terminal = status(policy, now) != "retain"
     rows = db.execute(
-        "SELECT id FROM offer_fetch WHERE source=? AND (? OR expires_at<=?) ORDER BY id",
+        "SELECT id,checked_at FROM offer_fetch WHERE source=? AND (? OR expires_at<=?) ORDER BY id",
         (source, terminal, timestamp(now)),
     ).fetchall()
     identifiers = tuple(row[0] for row in rows)
     if execute:
         with db:
+            if rows:
+                db.execute(
+                    "INSERT INTO offer_purge VALUES (?,?) ON CONFLICT(source) DO UPDATE "
+                    "SET checked_at=max(checked_at,excluded.checked_at)",
+                    (source, max(row[1] for row in rows)),
+                )
             db.executemany("DELETE FROM offer_fetch WHERE id=?", [(key,) for key in identifiers])
     return identifiers

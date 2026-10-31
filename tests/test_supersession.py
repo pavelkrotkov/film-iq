@@ -40,6 +40,7 @@ def test_version_four_rejects_invalid_supersession_atomically(evidence_db):
     db.execute("DROP TABLE offer_event")
     db.execute("DROP TABLE offer_current")
     db.execute("DROP TABLE offer_fetch")
+    db.execute("DROP TABLE offer_purge")
     db.execute("DROP TABLE offer_policy")
     db.execute("DROP TABLE entry_ballot")
     db.execute("DROP TABLE source_ballot")

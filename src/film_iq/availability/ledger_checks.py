@@ -8,6 +8,11 @@ from film_iq.availability.opportunity import Change
 
 
 def _chronology(db, fetch, scope):
+    purged = db.execute(
+        "SELECT checked_at FROM offer_purge WHERE source=?", (fetch.source,)
+    ).fetchone()
+    if purged and timestamp(fetch.checked_at) <= purged[0]:
+        raise ValueError("historical observation was purged; acquire a fresh source observation")
     rows = db.execute(
         "SELECT checked_at,payload FROM offer_fetch WHERE scope=? AND checked_at>=?",
         (scope, timestamp(fetch.checked_at)),

@@ -38,7 +38,7 @@ ledger.save_fetch(connect(__import__('pathlib').Path(sys.argv[1])), fetch(), NOW
 def test_schema_nine_upgrade_preserves_evidence(evidence_db):
     evidence_db.executescript("""
         DROP TABLE offer_event; DROP TABLE offer_current;
-        DROP TABLE offer_fetch; DROP TABLE offer_policy;
+        DROP TABLE offer_fetch; DROP TABLE offer_purge; DROP TABLE offer_policy;
         PRAGMA user_version=9;
     """)
     migrate(evidence_db)

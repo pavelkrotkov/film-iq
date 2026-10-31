@@ -4,6 +4,11 @@ CREATE TABLE offer_policy (
     payload TEXT NOT NULL,
     reviewed_at TEXT NOT NULL
 );
+-- Non-content watermark prevents a purge being reversed by historical replay.
+CREATE TABLE offer_purge (
+    source TEXT PRIMARY KEY REFERENCES offer_policy(source),
+    checked_at TEXT NOT NULL
+);
 CREATE TABLE offer_fetch (
     id TEXT PRIMARY KEY,
     source TEXT NOT NULL REFERENCES offer_policy(source),
@@ -21,5 +26,6 @@ CREATE TABLE offer_current (
 CREATE TABLE offer_event (
     id TEXT PRIMARY KEY,
     fetch_id TEXT NOT NULL REFERENCES offer_fetch(id) ON DELETE CASCADE,
+    previous_fetch_id TEXT REFERENCES offer_fetch(id) ON DELETE CASCADE,
     payload TEXT NOT NULL
 );

@@ -1677,3 +1677,13 @@ and unknown no-removal, exact-plan conflict rejection, cross-source opportunity
 deduplication, immediate policy denial, expiry/termination purge, killed-write
 rollback/retry, local CLI flow and schema-9 upgrade with unchanged editorial
 observations. These are runtime contracts, not provider-selection evidence.
+
+C4's combined Sol high review reproduced two retention defects: policy renewal
+could resurrect an identical old observation after physical purge, and a removal
+event retained old opportunity data under only the newer observation's deadline.
+Both findings are accepted. A non-content source/check-time purge watermark now
+rejects historical reacquisition, while a fresh checked observation still works.
+Transition events reference both input observations; readers enforce both
+deadlines and cascading deletion removes the derived event without expiring an
+unrelated newer baseline. Exact renewal/purge/replay and renewal/removal/old-
+expiry regressions exercise both failures. No live cache or source is changed.

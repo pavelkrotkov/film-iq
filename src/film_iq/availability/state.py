@@ -27,8 +27,10 @@ def read_state(db: sqlite3.Connection, scope: Fetch, now: datetime) -> dict:
     ).fetchone()
     events = db.execute(
         "SELECT e.payload FROM offer_event e JOIN offer_fetch f ON e.fetch_id=f.id "
-        "WHERE f.scope=? AND f.expires_at>? ORDER BY f.checked_at,e.id",
-        (identifier, checked),
+        "LEFT JOIN offer_fetch p ON p.id=e.previous_fetch_id "
+        "WHERE f.scope=? AND f.expires_at>? AND (p.id IS NULL OR p.expires_at>?) "
+        "ORDER BY f.checked_at,e.id",
+        (identifier, checked, checked),
     )
     return {
         "latest_attempt": json.loads(latest[0]) if latest else None,

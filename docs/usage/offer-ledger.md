@@ -56,7 +56,12 @@ uv run python -m film_iq.availability.store_command purge --database private.db 
 
 The first command previews exact observation IDs. Execution deletes expired rows,
 or all that source's rows when its policy is denied, expired or terminated;
-foreign keys remove corresponding baselines/events. Editorial evidence and
+foreign keys remove corresponding baselines/events. A transition event depends
+on both compared observations: its reader checks both deadlines, and deleting
+either input cascades the event without deleting the other observation. A
+non-content source/time watermark survives purge and rejects historical imports
+at or before the purged check time; reacquisition requires a genuinely new
+check. It retains no film, service, plan, URL or assertion payload. Editorial evidence and
 Movary data are untouched. Existing private backups may contain older cached
 provider data: their retention must obey the same approved terms. This command
 does not discover or silently modify external backups.

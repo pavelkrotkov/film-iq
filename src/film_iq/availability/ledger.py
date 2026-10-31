@@ -39,27 +39,30 @@ def save_fetch(db: sqlite3.Connection, fetch: Fetch, now: datetime) -> str:
             ),
         )
         if _baseline(fetch):
-            events = changes(previous, fetch) if previous else _initial(fetch)
-            _advance(db, scope, identifier, events)
+            events = changes(previous[0], fetch) if previous else _initial(fetch)
+            _advance(db, scope, identifier, events, previous[1] if previous else None)
     return identifier
 
 
 def _previous(db, scope, now):
     row = db.execute(
-        "SELECT f.payload FROM offer_current c JOIN offer_fetch f ON f.id=c.fetch_id "
+        "SELECT f.payload,f.id FROM offer_current c JOIN offer_fetch f ON f.id=c.fetch_id "
         "WHERE c.scope=? AND f.expires_at>?",
         (scope, timestamp(now)),
     ).fetchone()
-    return decode_fetch(row[0]) if row else None
+    return (decode_fetch(row[0]), row[1]) if row else None
 
 
-def _advance(db, scope, identifier, events):
+def _advance(db, scope, identifier, events, previous_identifier):
     db.execute(
         "INSERT INTO offer_current VALUES (?,?) ON CONFLICT(scope) "
         "DO UPDATE SET fetch_id=excluded.fetch_id",
         (scope, identifier),
     )
     db.executemany(
-        "INSERT INTO offer_event VALUES (?,?,?)",
-        [(key(identifier + encode(event)), identifier, encode(event)) for event in events],
+        "INSERT INTO offer_event VALUES (?,?,?,?)",
+        [
+            (key(identifier + encode(event)), identifier, previous_identifier, encode(event))
+            for event in events
+        ],
     )

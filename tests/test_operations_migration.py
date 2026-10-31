@@ -16,7 +16,7 @@ def test_schema_eight_is_upgraded_before_discovery(tmp_path, monkeypatch):
     _, paths = configuration(tmp_path, monkeypatch)
     with connect(paths["database"]) as db:
         db.executescript("""
-            DROP TABLE offer_event; DROP TABLE offer_current; DROP TABLE offer_fetch; DROP TABLE offer_policy;
+            DROP TABLE offer_event; DROP TABLE offer_current; DROP TABLE offer_fetch; DROP TABLE offer_purge; DROP TABLE offer_policy;
         DROP TABLE entry_ballot; DROP TABLE source_ballot;
             DROP TABLE acquisition_cursor; DROP TABLE acquisition_attempt;
             DROP TABLE acquisition_permission;
