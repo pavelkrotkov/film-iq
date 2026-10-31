@@ -2145,3 +2145,20 @@ scheduled 15:00 UTC tomorrow. Date three and reviewed provider/use/retention B4/
 decisions remain required; no provider winner, adoption, job change, new request,
 account mutation or indefinite history is introduced. Human review throughput
 is not a blocker for this evidence; it is relevant before a bulk-work estimate.
+
+### Observed completion at the daily schedule time — 2026-10-31
+
+A read-only inspection found the registered discovery job had completed two
+native runs, last exit 0, and was idle. The second completion at 14:30:03 UTC
+(10:30 local) matched the configured daily calendar time; native stdout and
+the successful run marker agreed. The current personal snapshot/status also
+matched that refresh generation. This corroborates execution at the configured
+time, without proving trigger provenance or reboot/login persistence. No job,
+account, evidence database or B4 setting was changed by this inspection.
+
+The personal refresh and report contracts are implemented and exercised; genuine
+enjoyment/merit score-edit cases remain unobserved acceptance inputs, not a
+functional failure caused by nullable scores. Complete Movary restoration still
+requires the pending scoped authorization and test. Production-provider gates
+remain separate. No new user source-verification task or fabricated personal
+judgment is required to accept the already evidenced implementation portions.
