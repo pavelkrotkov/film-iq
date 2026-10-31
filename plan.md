@@ -2312,3 +2312,23 @@ Validation for this documentation-only assessment: Ruff check/format and ty pass
 617 tests pass with one opt-in skip. Local links and whitespace checks pass.
 No Python changes, new dependencies, raw provider responses or logo assets were
 added by this PR. Consumer attribution corrections remain a separate owned change.
+
+### C8 retained-copy readiness exercise — 2026-10-31
+
+A synthetic end-to-end regression composes existing retention, offer-ledger and
+SQLite recovery helpers; no runtime registry, schema or scheduler was added.
+An explicit inventory covers derived report/export files, validated online
+backup, archive, extracted backup and isolated restored database. Original
+observation expiry survives identical reimport, backup and restore even after a
+later policy deadline. For both expiry and explicit termination, previews leave
+copies/rows untouched; explicit execution removes all named affected copies and
+target source rows while preserving unrelated primary source rows and a
+user-owned sentinel. Mixed backups are removed whole when containing the target
+source. Unknown permission stays blocked without invented termination.
+
+The [operator procedure](docs/operations-recovery.md#explicit-retained-copy-inventory-and-purge-procedure)
+requires an explicit inventory and authorized deletion scope. Helpers do not
+find unlisted artifacts or automatically enforce retention across an installation.
+Only fixture-owned files were deleted; actual caches, backups, accounts, APIs,
+services and B4 jobs were untouched. Production provider policy/adoption remains
+separate; this exercise does not close that gate.

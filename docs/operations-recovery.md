@@ -373,3 +373,40 @@ plaintext-password sign-in was not tested. The clone was removed after acceptanc
 private backups and receipts remain in the selected project's ignored storage
 under existing retention restrictions. No production-provider requests, original
 account changes or B4 job changes accompanied this exercise.
+
+## Explicit retained-copy inventory and purge procedure
+
+A copied report/export, online database backup, archive and extracted/restored
+copy retain the earliest deadline of every restricted input they contain.
+Copying, restoring, replaying an old observation or renewing a source policy
+must not reset that deadline. A mixed-source archive containing an expired
+source must be removed as a whole unless a separately reviewed replacement
+excludes that content; unrelated primary source rows can remain.
+
+For future managed copies, keep a private, explicit inventory alongside operator
+configuration: source IDs, original earliest expiry, policy version/termination
+decision and each exact relative filename under the agreed private cache root.
+Include the archive, extracted backup and restored database as separate names.
+This is an operator-maintained record, not automatic artifact discovery. Do not
+infer permission to delete personal archives or unrelated files. Obtain the
+necessary scope before executing against actual retained copies.
+
+For an explicitly expired or terminated policy, first call
+`cache_purge.purge(root, names, policy, now)` and
+`availability.policies.purge_source(db, source, now)` without `execute`; compare
+both previews to the approved inventory. Only then call both with
+`execute=True`, verify each named file is absent and the source ledger data is
+removed, and check unrelated source rows/user-owned files remain. Open database
+copies must be closed before deleting their names. A denied/unknown permission
+is `blocked`, not invented termination or permission for arbitrary deletion.
+The file helper accepts named files, never a directory tree; neither helper
+finds unlisted copies, rewrites mixed backups or schedules cleanup.
+
+The synthetic retained-copy regression exercises reports/exports, a validated
+online backup, an archive, its extracted backup and an isolated restored copy.
+Both expiry and explicit termination preview without deleting, then remove all
+named affected copies and source rows while preserving unrelated primary rows
+and a user-owned sentinel. Backup/restore and identical reimport preserve the
+original observation expiry despite a later policy deadline. This is tested
+readiness for an explicit inventory, not a claim that real copies were purged or
+that a production provider policy has been adopted.
