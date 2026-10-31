@@ -1554,3 +1554,10 @@ estimate is made: measured human-review throughput remains unavailable. B4's
 later-date observations remain untouched and cannot be claimed ahead of time.
 
 
+
+C2 multi-cohort review found that the unique-film denominator trusted supplied
+TMDB IDs even while those previews remained unresolved. The correction counts
+only identities reviewed in accepted evidence; pending previews retain their
+separate unresolved observations. The real repeated-cohort CLI regression now
+asserts zero reviewed unique works for two pending selections. Full local checks
+pass: 450 tests, one opt-in skip, Ruff/format/ty; CC<=8 and MI>=50.

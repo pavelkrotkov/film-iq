@@ -41,7 +41,7 @@ def _merge(cohorts, reports):
 
 
 def _unique_films(candidates):
-    return len({row["tmdb_id"] for row in candidates if row["tmdb_id"]})
+    return len({row["tmdb_id"] for row in candidates if row["identity_status"] == "reviewed"})
 
 
 def _totals(reports):

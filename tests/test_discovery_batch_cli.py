@@ -19,3 +19,4 @@ def test_discover_cli_combines_distinct_pending_cohorts(tmp_path, capsys):
     )
     report = json.loads(capsys.readouterr().out)
     assert (report["total_candidates"], report["cohort_count"], report["accepted"]) == (2, 2, 0)
+    assert (report["unique_films"], report["unresolved"]) == (0, 2)
