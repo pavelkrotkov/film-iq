@@ -1491,3 +1491,31 @@ index with each planner Access and joins presentation to that identity. Both
 input orders retain the fresh qualified citation; all raw assertions remain
 available for audit. Full local validation passes 455 tests with one opt-in skip
 and Ruff/format/ty. Exact-head follow-up and CI precede merge.
+
+### C8 completion audit and recoverable local runner — 2026-10-31
+
+The renewed Epic C audit confirms that merged primitive implementations did not
+finish C8. A standalone `python -m film_iq.operations` now connects the existing
+read-only complete Movary refresh, accepted-evidence discovery and native SQLite
+backup under one nonblocking per-installation file lock. Status marks each
+attempt stale before work, preserves the last successful time after failure and
+publishes only generic diagnostics. A successful retry publishes a private
+atomic report and a new validated evidence backup. It does not acquire provider
+data, accept source revisions, mutate Movary or alter existing B4 jobs. Native
+scheduling and recovery usage are documented in `docs/operations-recovery.md`.
+
+Read-only live deployment inspection verified a healthy pinned Movary 0.82.1
+container and patched SQLite 3.53.4. The official pinned backup guide requires a
+service/worker stop for consistent complete storage capture, then an isolated
+restore of database, storage, config/secrets and original application version.
+No live service stop, backup or restore was performed. That explicitly scoped
+authorization, complete installation restore, selected provider enforcement and
+real failed-job recovery remain C8 finish gates. Empty personal scores cannot
+verify C0a/C9 score-edit friction; no personal ratings were manufactured.
+
+Runner checks reproduce an overlapping-run refusal, a failed refresh retaining
+the prior report/last-successful time, a successful retry and restoration of
+the resulting schema-9 evidence backup. Ruff check/format and ty pass; the full
+suite passes 448 tests with one opt-in skip. The six new Python files satisfy
+maximum CC 8 and minimum MI 51.386209. These deterministic checks do not replace
+the remaining authorized live restore/failed-job acceptance.

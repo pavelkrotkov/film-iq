@@ -47,7 +47,62 @@ before storing data, then include all retained copies in a deletion plan.
 
 Current opt-in HTTP transports use bounded timeouts and a single attempt rather
 than unbounded retries; real quotas and production polling remain gated on
-B4/B8. No job broker or new scheduler is needed for these primitives.
+B4/B8.
+
+## One scheduled private run
+
+`uv run python -m film_iq.operations` connects the existing read-only Movary
+refresh, accepted-evidence discovery report and online Film-IQ database backup.
+It requires `--database`, `--cohort`, `--snapshot`, `--report`, `--backups` and
+`--status` paths, plus the same two complete CSV or exporter-command options
+as `refresh-movary`. The three `MOVARY_*` credentials stay in the process
+environment. Use absolute paths inside the selected project for scheduling.
+The cohort must already have independently accepted source/identity evidence;
+this command does not accept a pending import or add films to Movary.
+
+For example, after privately loading credentials and setting complete export
+commands as JSON argv arrays:
+
+```sh
+uv run python -m film_iq.operations \
+  --database .cache/private/evidence.db --cohort .cache/private/cohort.json \
+  --snapshot .cache/private/snapshot.json --report .cache/private/discovery.md \
+  --backups .cache/private/backups --status .cache/private/run.status \
+  --ratings-command "$RATINGS_COMMAND" --history-command "$HISTORY_COMMAND"
+```
+
+The status path identifies the installation: all its scheduled invocations
+must use that same absolute path. A nonblocking native file lock rejects an
+overlapping run without reading Movary or replacing status. Do manual imports
+with that schedule disabled, rather than running a second writer. The lock
+releases when a process exits or is killed; no lock-file deletion is needed.
+This command works on Linux/macOS, where `fcntl.flock` is available.
+
+Register this exact command with the host's existing native scheduler (cron,
+systemd timer or launchd); no Python scheduler or daemon is needed. Set its
+working directory to the selected project, use the absolute `uv` executable,
+set `umask 077`, privately load credentials, and send routine output to a
+private log. A daily or weekly schedule is a user/operator choice, not a
+provider polling recommendation. This run makes only the five existing
+personal-data reads; it performs no production-provider polling. Existing B4
+jobs are independent and must not be edited or repurposed.
+
+Status is marked stale **before** work begins and records the last successful
+run separately. An interruption therefore cannot claim freshness. A failed
+refresh preserves the prior snapshot, and any later failed step preserves the
+prior report; status remains stale with a generic error that contains no
+private response or credential. The personal snapshot may be newer than the
+retained report after a later-step failure. Check run status before using the
+report. Fix the failed input and rerun the same command; do not clear state or
+re-import evidence. A successful retry atomically publishes a mode-0600 report,
+creates a new validated evidence backup and clears stale state. Backups are
+never silently overwritten or automatically deleted.
+
+The run's evidence backup is **not** a complete installation archive. Preserve
+private personal snapshots/status, curated inputs, operator config/secrets,
+the deployed Git revision and `uv.lock` alongside it under their respective
+rights/retention policies before claiming complete Film-IQ recovery. Production
+source/provider storage is still gated as described above.
 
 ## Remaining production acceptance
 
@@ -57,3 +112,19 @@ authorization and an isolated target agreed with the user. No Movary export,
 backup, service stop, restore or new retention decision is claimed by this PR.
 Actual selected C1/C4/C5 integration, rights/quotas and an observed production
 failed-job recovery still require acceptance.
+
+### Live deployment inspection — 2026-10-31
+
+Read-only inspection found the running Movary image pinned to
+`leepeuker/movary:0.82.1`, a healthy application container and SQLite 3.53.4.
+The deployment's storage is a bind mount containing `movary.sqlite`, `app`
+and `logs`. No personal contents or credentials are published here.
+
+The [pinned upstream recovery guide](https://github.com/leepeuker/movary/blob/0.82.1/docs/backup-and-restore.md)
+requires stopping Movary and its worker before copying complete storage,
+preserving config/secrets and the application version, then restoring into an
+isolated target, recreating `storage:link`, checking `database:migration:status`
+and verifying application/worker operation. A running SQLite file copy is not
+a valid substitute. A separately scoped service interruption and isolated
+target/storage authorization remain required; no stop, backup, restore or
+personal-data write was performed by this inspection.
