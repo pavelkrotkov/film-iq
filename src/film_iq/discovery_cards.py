@@ -6,9 +6,10 @@ from film_iq.discovery_display_card import title as title
 
 
 def source_reason(item: dict) -> str:
-    rank = f"#{item['rank']}" if item["rank"] is not None else "unranked selection"
-    tie = f" (tie: {item['tie']})" if item["tie"] else ""
-    return f"{rank}{tie} in [{text(item['ballot_scope'])}: {text(item['edition'])}]({item['source_url']})"
+    rank = f"#{item['rank']} — " if item["rank"] is not None else ""
+    tie = " (tied)" if item["tie"] else ""
+    label = text(item["ballot_scope"]).replace(" / ", " — ")
+    return f"{rank}[{label}]({item['source_url']}){tie}"
 
 
 def personal(item: dict) -> str:

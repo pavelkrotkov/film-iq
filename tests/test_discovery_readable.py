@@ -17,7 +17,7 @@ def test_shortlist_leads_with_film_and_reason_before_audit(evidence_db):
     rendered = markdown(report(evidence_db))
     assert rendered.index("## Suggested next") < rendered.index("### [Unchanged title")
     assert rendered.index("Why consider it:") < rendered.index("<details>")
-    assert "#2 in [Critic: 2025]" in rendered
+    assert "#2 — [Critic]" in rendered
     assert "Your ratings: enjoyment 7/10; artistic merit unknown — needs review" in rendered
     assert "| Title | TMDB" not in rendered
 
@@ -28,7 +28,7 @@ def test_one_pick_can_explain_multiple_sources(evidence_db):
     second = {**deepcopy(item), "ballot_scope": "Second critic", "rank": None}
     item["source_reasons"] = [deepcopy(item), second]
     rendered = markdown(output)
-    assert "unranked selection in [Second critic: 2025]" in rendered
+    assert "[Second critic]" in rendered
     assert rendered.count("### [Unchanged title") == 1
 
 

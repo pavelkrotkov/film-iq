@@ -1753,3 +1753,9 @@ read-only evidence DB and42-work reviewed catalog; DB/snapshot/catalog byte
 hashes remain unchanged. The actual scheduler migration/run after merge belongs
 to controller verification. User satisfaction, genuine score/comment edits and
 provider/whole-epic finish gates are not declared verified by these tests.
+
+### C7 actual-reading-flow correction — 2026-10-31
+
+The controller's actual private preview found that replacing a table with cards still left implementation jargon in the main reading flow. The shortlist now leads with linked English title and year, director, compact runtime, and human source-scope links with published rank where known. Repeated support-group counts, edition identifiers, unknown display fields, ISO dates and calibration policy have moved into the expandable evidence audit. Personal ratings, unresolved identity/source acceptance warnings, original source assertions, metadata attribution and the full JSON contract remain intact. This is a readability correction; genuine personal-edit acceptance and user satisfaction remain unverified.
+
+Private before/after previews and a hash-comparison receipt were saved inside the selected project: JSON is identical and the accepted database, catalog, selected cohorts and personal snapshot/status inputs are unchanged. No private account contents are reproduced here. Ruff, format and ty pass; 500 tests pass with one opt-in skip. All 295 tracked Python files retain CC <= 8 and MI >= 50 (minimum 50.025). The changed heading/cards/renderer modules have MI 57.403/54.016/51.051 and maximum CC 7/5/6. PR #77 requires another exact-head review on both axes after this correction.
