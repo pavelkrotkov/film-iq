@@ -1,6 +1,7 @@
 # Offline recovery and disposable-cache policy
 
-C8 #26 supplies small offline primitives, not a verified production deployment.
+C8 #26 supplies offline recovery primitives; dated operational acceptance is
+recorded below. Earlier pending statements describe their observation time.
 Run Python 3.12+ with `uv sync --dev`; SQLite must pass the existing patched-WAL
 version gate. Keep databases, exports, comments, ratings, secrets, backups and
 reports in ignored private directories inside the selected project folder.
@@ -106,12 +107,11 @@ source/provider storage is still gated as described above.
 
 ## Remaining production acceptance
 
-C8 stays open. A complete Movary backup must include its database, storage,
-configuration and pinned application version; a live restore needs explicit user
-authorization and an isolated target agreed with the user. No Movary export,
-backup, service stop, restore or new retention decision is claimed by this PR.
-Actual selected C1/C4/C5 integration, rights/quotas and an observed production
-failed-job recovery still require acceptance.
+The authorized complete Movary recovery is now verified for the captured
+installation, as recorded in the latest acceptance below. Earlier statements
+that its authorization/test were pending are historical. Production-provider
+rights, quotas and adoption remain separate requirements; this recovery does
+not adopt a provider feed or certify unrestricted retention.
 
 ### Live deployment inspection — 2026-10-31
 
@@ -345,3 +345,31 @@ genuine nonempty score/comment changes are still unobserved real-user acceptance
 cases. Complete Movary recovery remains pending its separately scoped approval
 and test, and production-provider requirements remain gated independently. These
 limits do not require another user source audit or invented personal ratings.
+
+### Authorized complete Movary recovery — 2026-10-31
+
+With explicit user approval, the original Movary application and its background
+worker were stopped together. An exit trap and independent restart fallback
+protected the original service. Complete stopped SQLite storage, application
+files/logs, deployment configuration/secrets, effective environment and the exact
+running image were captured privately inside the selected project. The original
+service was healthy again after approximately six seconds and passed a final
+health check. No running SQLite file copy or live personal-data edit was used.
+
+The separate restore used the captured Movary 0.82.1 image, project-local writable
+bind mounts, a read-only container root, disabled container logging, no published
+ports and no network access. Original storage file hashes matched; integrity and
+foreign-key checks passed. Every original database table matched the backup
+before authenticated reads. Native storage linking, current migration status,
+application and background-worker startup passed. The preserved account token
+read complete played/history/watchlist collections, and native ratings/history
+exports succeeded. Authenticated API reads update the clone token's last-use
+metadata; the pre-read comparison distinguishes that expected change.
+
+After preservation checks, the supported native CLI created a disposable account
+only in the offline clone. Native CSRF/session login and a protected account page
+succeeded. The original users' stored password hashes were preserved; their
+plaintext-password sign-in was not tested. The clone was removed after acceptance;
+private backups and receipts remain in the selected project's ignored storage
+under existing retention restrictions. No production-provider requests, original
+account changes or B4 job changes accompanied this exercise.
