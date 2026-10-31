@@ -198,6 +198,9 @@ Every recommendation must answer: which distinct original critics/lists/awards c
 
 ## 8. Monthly plan and subscription economics
 
+This section applies only when the optional planner is invoked; a personal plan
+is not required for core use, development, deployment or release.
+
 **The choice is a bundle, not a list of attractive movies nor a raw count per platform.** Define a versioned mapping from individual priority to utility of watching a set. A sum, nonlinear high-value weighting, diversity preference and urgency can choose different bundles; validate against actual preference before claiming an optimum.
 
 Let A denote already usable access, O(s) offers from service s, B the time/film capacity, and V(X,B) the highest utility of a *feasible viewing bundle* from access X. Compare:
@@ -316,7 +319,7 @@ Epic C components may start as their **specific** POC or research prerequisites 
 6. Implement transparent bundle utility, budget/no-purchase/rental choices, overlap, urgency, feasible plans and readable reports.
 7. Harden backups, restore, deployment, legal compliance, quotas and security; propose only proven upstream Movary enhancements.
 
-**Gate C (release):** a usable 5–8 film or configured monthly plan backed by auditable evidence and correctly classified offers; recovery, accuracy and rights acceptance checks pass. Defer premium providers, LLM infra, graph/vector DB, complex calendar optimization or Movary UI changes absent measured need.
+**Gate C (release):** usable source-led discovery/reporting with nullable personal inputs; the optional planner respects explicitly supplied constraints and offer uncertainty without requiring an actual personal plan. Recovery, accuracy and rights acceptance checks pass. Defer premium providers, LLM infra, graph/vector DB, complex calendar optimization or Movary UI changes absent measured need.
 
 ### Proposed acceptance matrix (targets, not achieved)
 
