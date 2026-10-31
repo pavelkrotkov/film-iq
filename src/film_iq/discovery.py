@@ -3,6 +3,7 @@
 from film_iq.discovery_cohort import validate_cohort
 from film_iq.discovery_evidence import accepted_row, recognition
 from film_iq.discovery_personal import fresh_snapshot, personal_index
+from film_iq.discovery_works import coalesce_works
 from film_iq.recognition.discovery import attach_components
 
 SOURCE_FIELDS = (
@@ -63,7 +64,8 @@ def build_discovery(cohort: dict, snapshot: dict | None = None, *, db=None, refr
         for row in validate_cohort(cohort, db)
     ]
     candidates = attach_components(candidates, db)
-    suggestions = [row for row in candidates if _suggested(row, stale)]
+    # Keep raw source entries intact; only reviewed viewing cards coalesce.
+    suggestions = coalesce_works(row for row in candidates if _suggested(row, stale))
     return {
         "mode": "read-only discovery",
         "last_successful_refresh": snapshot["last_successful_refresh"] if snapshot else None,

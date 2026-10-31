@@ -1845,3 +1845,20 @@ picks, all reasons, section/source order and unchanged serialized report state.
 C3 sectioned-reading validation passes Ruff check/format, ty and 535 tests with
 one opt-in skip. All 55 changed Python files retain maximum CC8 and minimum
 MI50.270742. Exact-head review and actual typed-source acceptance remain pending.
+
+The next Standards follow-up reproduced duplicate work cards when one legitimate
+award cohort contained several category rows for the same reviewed film. A
+shared reviewed-work coalescer now serves single-cohort suggestions, multi-cohort
+suggestions and remaining selections. It preserves all raw source entries/counts
+and every flat category/source reason, reuses the existing globally attached
+typed components, and leaves unresolved identities distinct. An actual import,
+per-category classification, independent acceptance and render regression checks
+three category rows produce one card; adding a second already-coalesced cohort
+retains six flat reasons/components and six raw candidates without nested reason
+lists or self-reference. No actual typed source/account data is changed.
+
+C3 reviewed-work correction verification passes Ruff check/format, ty and 536
+tests with one opt-in skip. All 60 changed Python files satisfy maximum CC8 and
+minimum MI50.298483. The one-level flat-reason helper matches actual producer
+contracts; no recursive/cycle machinery or component-merge framework is added.
+Native finding awaits exact-head independent follow-up before thread resolution.

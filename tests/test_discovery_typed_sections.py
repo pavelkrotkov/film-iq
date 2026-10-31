@@ -12,12 +12,14 @@ from film_iq.discovery_sections import SECTIONS
 
 
 def pick(base, identifier, kind):
-    return {
+    item = {
         **deepcopy(base),
         "tmdb_id": identifier,
         "raw_title": f"Fixture {identifier}",
         "evidence_kind": kind,
     }
+    item.pop("source_reasons", None)
+    return item
 
 
 def test_distinct_sections_keep_every_pick_once_with_all_multi_type_reasons(evidence_db):

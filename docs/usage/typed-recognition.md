@@ -68,8 +68,12 @@ a source edition or source-listed year for a catalog release date.
 
 Markdown groups choices into critic lists, festival/award recognition,
 preservation/institutional selections and other source selections. Each work
-appears once in its first applicable view with all its reasons; this changes no
-JSON ordering, score or source fact. Order within a section follows the existing
+appears once in its first applicable view with all its reasons. Reviewed work
+coalescing applies to single and multiple source cohorts alike, while raw
+candidates/entry counts and distinct unresolved identities remain intact.
+Already-coalesced source reasons flatten when cohorts combine, without nesting
+or self-reference. Grouped Markdown changes no JSON ordering policy, score or
+source fact. Order within a section follows the existing
 suggestion list. The source-support ordering sentence applies only to eligible
 critic choices with known support; unknown support is never zero.
 
