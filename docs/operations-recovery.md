@@ -129,6 +129,36 @@ a valid substitute. A separately scoped service interruption and isolated
 target/storage authorization remain required; no stop, backup, restore or
 personal-data write was performed by this inspection.
 
+## Read actual operational status
+
+`film-iq status` replaces the former static POC message. Supply only the private
+paths to inspect; omitted components remain `not_configured`:
+
+```sh
+uv run film-iq status --run-status .cache/private/run.status \
+  --snapshot .cache/private/snapshot.json --database .cache/private/evidence.db \
+  --catalog .cache/private/reviewed-display.json --format json
+```
+
+The default text output and JSON share the same allowlisted facts: operation
+last-successful time, personal snapshot/status generation consistency, source
+attempt/error/running counts and last-successful cursor time, catalog expiry,
+and explicit permitted/blocked/purge-due provider policy counts. Raw cursors,
+source names, film data, ratings, comments, rights text, paths and exception
+payloads are not printed. This command makes no network call, requires no
+credentials and opens an existing SQLite database with `mode=ro`; it never
+creates a missing database, migrates, repairs or purges anything.
+
+Exit 1 means a configured input is missing/invalid, stale, expired/not-yet-valid,
+or has acquisition/policy state needing attention. Exit 0 means no such
+condition was observed; omitted configuration is still unknown, not healthy.
+`current` means a supported successful status (and matching personal generation),
+not a claimed refresh interval or release acceptance. Successful times are shown
+in UTC; no arbitrary age threshold is invented. Use optional timezone-aware
+`--now` for a reproducible catalogue/policy expiry assessment. The command does
+not prove a scheduler is registered, a provider feed adopted or a full
+installation restored.
+
 ## Complete selected collection
 
 Repeat `--cohort` on `python -m film_iq.operations` for every independently

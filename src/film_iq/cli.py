@@ -9,6 +9,10 @@ from film_iq.cli_parser import build_parser
 
 def main(argv: Sequence[str] | None = None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
+    if argv and argv[0] == "status":
+        from film_iq.status_command import main as status_main
+
+        return status_main(argv[1:])
     if argv and argv[0] in {"discover", "import-list", "refresh-movary", "acquisition-status"}:
         from film_iq.discovery_cli import main as discovery_main
 
@@ -19,9 +23,6 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 
 def _execute(parser, args) -> int:
-    if args.command == "status":
-        print("film-iq POC modules available; see plan.md for validation status")
-        return 0
     if args.command == "sync":
         from film_iq.sync_cli import sync_watchlist
 

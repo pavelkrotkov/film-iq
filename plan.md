@@ -1862,3 +1862,26 @@ tests with one opt-in skip. All 60 changed Python files satisfy maximum CC8 and
 minimum MI50.298483. The one-level flat-reason helper matches actual producer
 contracts; no recursive/cycle machinery or component-merge framework is added.
 Native finding awaits exact-head independent follow-up before thread resolution.
+
+### C8 actual read-only operational status — 2026-10-31
+
+The renewed finish audit reproduced that `film-iq status` still printed only a
+static POC message. It now composes existing operation/snapshot generation,
+acquisition cursor/attempt, catalog expiry and explicit provider-policy readers
+for caller-selected local paths. Missing/unconfigured/invalid states remain
+distinct; it makes no health claim from absent configuration or an arbitrary
+refresh-age threshold. Configured stale/error/expiry conditions return exit1.
+Text and JSON expose only counts, categorical states and validated timestamps;
+private contents, raw cursors, paths and exception payloads are not printed.
+
+Existing evidence databases open read-only without migrations or missing-file
+creation. Regression checks cover generation mismatch, malformed status,
+failed acquisition preserving the previous success, expired catalog/policy,
+missing database and byte-identical input files after inspection. No scheduler
+registration, Movary read/write, provider acquisition, source acceptance,
+retention deletion, service stop/restore or B4 job change accompanies this work.
+
+Validation: Ruff check/format and ty pass; 508 tests pass with one opt-in skip.
+The twelve changed Python files meet maximum CC8 and minimum MI50.625676.
+This verifies local status reporting, not the pending complete Movary restore,
+genuine-score acceptance, native schedule registration or provider gate.
