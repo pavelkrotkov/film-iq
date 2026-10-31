@@ -1908,3 +1908,26 @@ the separately authorized complete Movary restore still pending.
 After rebasing status reporting onto reviewed typed-recognition main `fdba280`,
 Ruff check/format and ty pass; 544 tests pass with one opt-in skip. All twelve
 status-change Python files retain maximum CC8 and minimum MI50.625676.
+
+### Actual typed collection and native daily execution — 2026-10-31
+
+The controller backed up the actual evidence database before migration11, then
+activated the independently reviewed typed cohorts on main `fdba280`. The
+selected collection now contains 114 source facts across 24 cohorts: 47 critic
+selections, 50 Registry selections and 17 award outcomes. 112 reviewed source
+mentions represent 106 distinct reviewed works; 2 entries remain unresolved and visible.
+These counts describe bounded selected material, not whole-publisher/global
+coverage or general identity precision. All 24 identical imports replayed without
+new semantic evidence. Existing critic values and historical snapshots stayed
+unchanged, and canonical typed-component snapshot replay passed.
+
+The exact native operations invocation completed read-only personal refresh,
+reporting for all 24 cohorts and backup. The project-local private launchd job
+`com.filmiq.discovery.daily` is registered in the current GUI domain at 10:30
+local time with RunAtLoad false. An explicit native kickstart produced one
+observed run, last exit 0, a fresh successful run marker and final not-running
+state. Future calendar firing and reboot/login persistence are not claimed.
+Private receipts/config/logs remain ignored; no account counts, scores,
+comments, identifiers or credentials are published. No provider polling,
+Movary write or B4 job change occurred. Full Movary restoration, genuine rating/
+merit edits and production-provider B4/B8 acceptance remain outstanding.

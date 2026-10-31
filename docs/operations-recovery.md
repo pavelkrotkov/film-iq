@@ -201,3 +201,29 @@ schema/input changes require their own recovery check. It does not verify
 Movary database/storage/config/version restoration, which remains pending the
 separately scoped service-stop/isolated-restore authorization, or production
 provider adoption/permissions.
+
+### Actual selected collection and native scheduling — 2026-10-31
+
+After a pre-migration backup, the actual selected evidence database advanced to
+schema11 using the reviewed typed-recognition implementation at `fdba280`.
+The 24 accepted cohorts contain 114 source facts: 47 critic selections, 50
+Registry selections and 17 award outcomes. There are 112 reviewed work mentions
+representing 106 distinct reviewed works; two source entries remain unresolved.
+These are explicitly selected cohorts, not complete publisher/world coverage.
+Identical replay of all 24 imports preserved semantic evidence, historical
+critic snapshots and existing critic values; canonical typed-component snapshot
+replay also passed. No reception values or personal opinions were invented.
+
+The exact native operations command then completed read-only personal refresh,
+the full selected-collection report and evidence backup. The private launchd
+job `com.filmiq.discovery.daily` is now registered in the current user's GUI
+domain for 10:30 local time, with `RunAtLoad` disabled. An explicit native
+kickstart completed one observed run with exit 0, a fresh successful run status
+and an idle/nonrunning final job state. This verifies registration and one
+native execution, not a future calendar firing or reboot/login persistence.
+Private configuration, commands, logs and receipts stay in the selected project.
+No personal account counts/values or credentials are published here.
+
+No provider polling, Movary writes or existing B4 job changes accompanied these
+operations. Complete Movary recovery, genuine personal rating/comment-edit
+acceptance and the time-separated B4/B8 production-provider gate remain pending.
