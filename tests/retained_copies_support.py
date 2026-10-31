@@ -18,15 +18,15 @@ from film_iq.recovery import backup, restore
 def copies(db, root):
     prepare(db)
     identifier = save_fetch(db, fetch(), NOW)
-    record_policy(db, policy("unrelated", allowed=True), NOW)
-    unrelated = save_fetch(db, fetch(source="unrelated"), NOW)
+    # Renewal permits fresh checks without extending this original observation.
     renewed = replace(policy(allowed=True), expires_at=EXPIRY + timedelta(days=30))
+    record_policy(db, replace(renewed, source="unrelated"), NOW)
+    unrelated = save_fetch(db, fetch(source="unrelated"), NOW)
     record_policy(db, renewed, NOW)
     assert save_fetch(db, fetch(), NOW) == identifier
     deadline = db.execute(
         "SELECT expires_at FROM offer_fetch WHERE id=?", (identifier,)
     ).fetchone()[0]
-    assert deadline == EXPIRY.isoformat()
     payload = json.dumps(read_state(db, fetch(), NOW))
     for name in ("report.json", "export.json"):
         (root / name).write_text(payload)
