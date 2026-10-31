@@ -1526,3 +1526,31 @@ refresh/discovery. A regression uses the real reader against a disposable
 schema-8 database and verifies a completed run, schema-9 tables and backup.
 Full local checks pass: 449 tests, one opt-in skip and Ruff/format/ty. No live
 installation or B4 collection is changed by this correction.
+
+### Epic C completion resumed — 2026-10-31
+
+The merged component PRs did not close Epic C. A live acceptance audit found
+that #58 and #25 had been closed despite missing genuine personal-rating,
+merit-comment and changed/deleted-score evidence; both issues are reopened.
+The existing ten-film Markdown output also failed the user's discovery task.
+Completion requires useful real outputs and the documented release gates,
+not only green tests. C7 presentation/identity, C1/C5 runtime integration and
+C8 recovery/scheduling are being completed in independent worktrees.
+
+Source expansion has another concrete integration gap: discovery previously
+accepted only one ballot. Repeated `discover --cohort` now joins explicitly
+selected complete ballots while retaining every source observation and
+deduplicating suggestions by reviewed work ID. Original scopes, provenance,
+global dependence-aware recognition and per-cohort counts survive the join.
+Duplicate input revisions and truncated accepted cohorts fail. Fresh personal
+state gates suggestions across all selected cohorts. This enables a collection
+of original ballots; it does not certify historical coverage or permissions.
+
+Two further original unranked contributor ballots have been manually transcribed
+as private minimal factual research under the existing scoped Senses policy.
+They remain pending independent source/identity acceptance. No publisher prose,
+images, personal account data or provider responses enter Git. No bulk throughput
+estimate is made: measured human-review throughput remains unavailable. B4's
+later-date observations remain untouched and cannot be claimed ahead of time.
+
+

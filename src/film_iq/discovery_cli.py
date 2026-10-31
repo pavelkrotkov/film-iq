@@ -29,7 +29,11 @@ def _parser(command: str):
     parser = argparse.ArgumentParser(prog=f"film-iq {command}", description=__doc__)
     if command == "discover":
         parser.add_argument(
-            "--cohort", type=Path, required=True, help="Complete curated import JSON"
+            "--cohort",
+            type=Path,
+            action="append",
+            required=True,
+            help="Complete curated import JSON; repeat for additional source ballots",
         )
         parser.add_argument(
             "--snapshot", type=Path, help="Private Movary snapshot; omit for unknown"

@@ -53,3 +53,25 @@ snapshot/status. The earlier first-use report remains historical. Private
 account contents and counts are deliberately absent from public documentation;
 the live check does not establish the outstanding nonempty-rating, merit-change
 or real-user acceptance cases. See the personal-refresh follow-up.
+
+## Multiple selected ballots
+
+Repeat `--cohort` to discover films across separately imported ballots in the
+same evidence database:
+
+```sh
+uv run film-iq discover --cohort data/first-preview.json --cohort data/second-preview.json --database data/evidence.db --snapshot data/personal.json
+```
+
+Every ballot still needs its own complete source/identity audit and explicit
+acceptance. Combining previews never grants acceptance. The report retains all
+source observations, each ballot's scope/counts, and global dependence-aware
+recognition. A reviewed unwatched work appears once in suggestions with all
+selected source reasons. Candidate, accepted, unresolved and watched-excluded
+counts describe source observations; `unique_films` counts distinct reviewed
+work IDs, and `cohort_count` counts selected ballots. Unresolved entries cannot
+be safely deduplicated by title. Duplicate revision inputs are rejected.
+
+Selection order determines shortlist order; this is not a fitted personal ranking
+or a claim of complete publisher/year coverage. Retain private factual inputs
+only under each source's recorded permission; no broader scrape is implied.
