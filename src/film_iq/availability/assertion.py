@@ -20,10 +20,17 @@ class Assertion:
     work_status: Literal["reviewed", "unresolved", "cut_uncertain"] = "unresolved"
     asserted_added_on: datetime | None = None
     asserted_expires_at: datetime | None = None
+    provider_detected_at: datetime | None = None
+    provider_last_day_at: datetime | None = None
 
     def __post_init__(self) -> None:
         aware(self.checked_at)
-        for value in (self.asserted_added_on, self.asserted_expires_at):
+        for value in (
+            self.asserted_added_on,
+            self.asserted_expires_at,
+            self.provider_detected_at,
+            self.provider_last_day_at,
+        ):
             if value is not None:
                 aware(value)
         required(self.source, self.url)

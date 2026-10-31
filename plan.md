@@ -2332,3 +2332,22 @@ find unlisted artifacts or automatically enforce retention across an installatio
 Only fixture-owned files were deleted; actual caches, backups, accounts, APIs,
 services and B4 jobs were untouched. Production provider policy/adoption remains
 separate; this exercise does not close that gate.
+### C4 candidate fetch preparation — fixture-only implementation
+
+Related #22: a bounded candidate path connects synthetic response transport to
+validated Fetch, the existing policy/retention ledger and discovery. Provider
+choice is explicit, dry-run is default/no I/O, and live calls require an existing
+reviewed allowed source policy and finite whole-batch request cap. No provider,
+policy, scheduler or production data is activated; frozen B4 observer behavior
+remains untouched pending the genuine third date and reviewed B8 decision.
+
+Candidate native mapping retains exact reviewed work IDs and all valid source
+variants. Provider detection and last-watch-day timestamps remain distinct from
+effective addition/exact expiry, with legacy None-field hash compatibility.
+TMDB reuses its pure normalizer. Prices use exact Decimal/integer-ratio minor
+units and a bounded verified currency set. Header-only credentials, no redirects/
+retries, and access/quota stops keep the operational path bounded. Named-provider
+credits, approved TMDB logo and notices are visible without private rights notes.
+Initial synthetic end-to-end/crosswalk fixtures pass; full checks and boundary
+regressions remain in progress in the draft. No actual provider request, account,
+policy registration or job change occurred.

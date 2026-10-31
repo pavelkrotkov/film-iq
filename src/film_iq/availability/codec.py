@@ -18,7 +18,13 @@ def timestamp(value: datetime) -> str:
 
 
 def encode(value) -> str:
-    return json.dumps(asdict(value), sort_keys=True, ensure_ascii=False, default=timestamp)
+    data = asdict(value)
+    # New optional provider-date fields must not change legacy observation hashes.
+    for item in data.get("assertions", (data,)):
+        for field in ("provider_detected_at", "provider_last_day_at"):
+            if item.get(field) is None:
+                item.pop(field, None)
+    return json.dumps(data, sort_keys=True, ensure_ascii=False, default=timestamp)
 
 
 def key(value: str) -> str:
@@ -39,7 +45,13 @@ def decode_fetch(payload: str) -> Fetch:
 def decode_assertion(data: dict) -> Assertion:
     data = dict(data)
     data["opportunity"] = Opportunity(**data["opportunity"])
-    for field in ("checked_at", "asserted_added_on", "asserted_expires_at"):
+    for field in (
+        "checked_at",
+        "asserted_added_on",
+        "asserted_expires_at",
+        "provider_detected_at",
+        "provider_last_day_at",
+    ):
         if data.get(field) is not None:
             data[field] = datetime.fromisoformat(data[field])
     return Assertion(**data)

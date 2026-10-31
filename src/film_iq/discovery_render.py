@@ -1,7 +1,8 @@
 """Human-readable discovery shortlist; technical evidence stays in a separate section."""
 
 from film_iq.discovery_cards import card, personal, source_reason, text, title
-from film_iq.discovery_offer_render import access_note, audit_offers, offer_credits
+from film_iq.discovery_credits import visible_credits
+from film_iq.discovery_offer_render import access_note, audit_offers
 from film_iq.discovery_order import public_support
 from film_iq.discovery_sections import ordering_sentence, suggestion_sections
 from film_iq.discovery_selection import remaining
@@ -74,7 +75,7 @@ def markdown(report: dict) -> str:
             "",
             *report["options"],
             access_note(report),
-            *offer_credits(report["candidates"]),
+            *visible_credits(report),
         ]
     )
     lines.extend(_other(remaining(report)))
