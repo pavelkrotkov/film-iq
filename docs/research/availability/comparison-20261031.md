@@ -51,11 +51,64 @@ It does not flatten variant prices or turn detection time into effective additio
 Original captures and all source details remain unchanged in the private cache;
 no offer dump or row-level catalog is published here.
 
-There was no independently timed first-party change check in this continuation.
+At the capture inspection there was no independently timed first-party change check.
+The subsequent [bounded primary checks](#bounded-first-party-follow-up--2026-10-31) distinguish
+current SKU corroboration from unknown historical effective times.
 The actual transition times, correctness of the source differences, false-removal
 rate and change-detection latency therefore remain **unknown**, not zero. Earlier
 bounded first-party checks remain dated date-one evidence. Personal account/tier
 entitlement and exact-cut qualifications remain unknown where untested.
+
+## Bounded first-party follow-up — 2026-10-31
+
+The five changed-film source locators guide this signed-out follow-up, not a new
+provider search. The original Apple TV pages for Wild Diamond and Sugarcane were
+inaccessible through the web reader at 15:14 UTC, with no HTTP status exposed.
+One fallback per film used Apple's public US SKU metadata endpoint and the SKU
+already in the provider locator. Both returned HTTP 200 and one matching title/
+director record during **2026-10-31 15:14:57–15:14:58 UTC**.
+
+| Work / first-party SKU | Native date-two transaction assertions corroborated by current Apple metadata |
+| --- | --- |
+| [Wild Diamond — 1823301255](https://itunes.apple.com/lookup?id=1823301255&country=us) | HD buy USD 14.99; SD buy USD 12.99; HD rent USD 4.99 |
+| [Sugarcane — 1796301439](https://itunes.apple.com/lookup?id=1796301439&country=us) | HD buy USD 14.99; HD rent USD 3.99 |
+| [Việt and Nam — 1805009787](https://itunes.apple.com/lookup?id=1805009787&country=us) | HD buy USD 14.99; SD buy USD 12.99; HD rent USD 4.99 |
+| [Inside Out 2 — 1757560069](https://itunes.apple.com/lookup?id=1757560069&country=us) | HD buy USD 19.99; HD rent USD 3.99 |
+
+Prices use `Decimal(str(value))` into USD minor units. HD/SD and rent/buy remain
+separate. This is current SKU metadata agreement, not checkout, playback, account
+ownership, tax treatment or exact-cut proof. No departure or independently timed
+effective-addition date is established. Missing expiry remains unknown and cannot
+verify a future dated plan.
+
+This pair used two public-page tool attempts plus two public SKU HTTP lookups,
+within its four-attempt budget. The page tool exposes no underlying HTTP/asset
+counts, so four is an application-level attempt count. No page body is retained;
+minimal factual receipts record locators, times, fields and access failures.
+No streaming-provider API, polling job, sign-in, playback or purchase was used.
+
+An independent reviewer checked the remaining three films during **15:17:13–
+15:17:16 UTC**, with six signed-out HTTP GETs, redirects disabled and no retries.
+Apple TV pages for Việt and Nam and Inside Out 2 returned HTTP 200 with matching
+title metadata; one US SKU lookup each returned a single matching title/director
+record and the additional prices above. The Việt and Nam page metadata did not
+establish the identity, tier or entitlement of the newly reported add-on
+`tvs.sbd.1000249`; it remains unknown.
+
+For [Vertigo's original Amazon locator](https://www.amazon.com/gp/video/detail/0IIILF2NQBCK5L54JUKV6ZD4I6),
+the response was HTTP 302 and was not followed. A single
+[same-ID Prime Video fallback](https://www.primevideo.com/detail/0IIILF2NQBCK5L54JUKV6ZD4I6)
+returned HTTP 200 but no usable title/offer metadata in the bounded extraction.
+Neither result verifies US buy/rent absence. The two no-longer-reported native
+opportunities remain uncorroborated, not false removals or confirmed removals.
+
+Across the four Apple works, current metadata corroborates **eight transaction
+opportunities / ten native quality-price variants**. The ninth newly reported
+opportunity is the unverified add-on. Historical effective times, source-change
+accuracy and detection latency remain unknown for all cases. Total follow-up
+budget consumed: **eight explicit public HTTP GETs plus two opaque web-reader
+page attempts**, ten application-level attempts; underlying web-reader HTTP/asset
+counts remain unavailable. No further request followed exhaustion of the budget.
 
 ## Receipts and remaining gate
 
