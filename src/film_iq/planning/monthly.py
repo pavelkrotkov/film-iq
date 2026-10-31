@@ -60,7 +60,7 @@ def compare(
 ) -> tuple[Plan, ...]:
     """Compare positive-score bundles with caller-provided viewing slots and total USD prices.
 
-    Costs break utility ties. Unconfirmed entitlement is tentative, not verified.
+    Costs break utility ties. Unknown expiry or unconfirmed entitlement is tentative.
     """
     offers, prices = known_inputs(offers, services, verified_only)
     _validate(films, offers, [max_minutes, max_films, budget_cents, *prices])

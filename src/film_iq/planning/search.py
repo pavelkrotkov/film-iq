@@ -5,6 +5,7 @@ from datetime import date
 from itertools import combinations, product
 
 from .models import Access, Choice, Film, Plan
+from .utility import verified_access
 
 
 def _schedule(
@@ -48,7 +49,12 @@ def _best(
     utility_power: float = 1,
 ) -> Plan:
     best = Plan(
-        label, (), 0, fee, 0, "USD cents; prices include tax; unconfirmed entitlement is tentative"
+        label,
+        (),
+        0,
+        fee,
+        0,
+        "USD cents; prices include tax; unknown expiry or unconfirmed entitlement is tentative",
     )
     for bundle in _bundles(available, min(len(slots), max_films)):
         minutes = sum(f.minutes for f, _ in bundle)
@@ -63,6 +69,4 @@ def _best(
 
 
 def _feasibility(plan: Plan):
-    return (
-        "tentative" if any(c.offer.entitlement != "confirmed" for c in plan.choices) else "verified"
-    )
+    return "tentative" if any(not verified_access(c.offer) for c in plan.choices) else "verified"

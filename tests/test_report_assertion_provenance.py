@@ -11,7 +11,11 @@ from film_iq.report_render import markdown
 def test_excluded_assertion_cannot_supply_verified_plan_citation(evidence_db, reverse):
     setup_db(evidence_db)
     data = report_inputs()
-    fresh = assertion(source="fresh-official", url="https://example.test/qualified")
+    fresh = assertion(
+        source="fresh-official",
+        url="https://example.test/qualified",
+        asserted_expires_at="2026-11-30T00:00:00+00:00",
+    )
     stale = assertion(
         source="stale-decoy",
         url="https://example.test/excluded",

@@ -41,11 +41,14 @@ def setup_db(db):
 def test_assertions_produce_separate_verified_plan_and_preserve_source(evidence_db):
     setup_db(evidence_db)
     data = report_inputs()
+    data["assertions"] = [assertion(asserted_expires_at="2026-11-30T00:00:00+00:00")]
     result = build_report(evidence_db, data)
     assert result["verified_plans"][0]["choices"][0]["film"]["id"] == 1
     assert result["assertions"][0]["source"] == "official-test"
     assert "power=2" in result["plans"][0]["assumptions"]
-    data["assertions"] = [assertion(entitlement="unconfirmed")]
+    data["assertions"] = [
+        assertion(entitlement="unconfirmed", asserted_expires_at="2026-11-30T00:00:00+00:00")
+    ]
     result = build_report(evidence_db, data)
     assert result["plans"][0]["feasibility"] == "tentative"
     assert not result["verified_plans"][0]["choices"]

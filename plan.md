@@ -2101,3 +2101,28 @@ cover the selected installation/revisions, not later code, actual delivered
 transitions, complete Movary recovery, production-provider adoption or genuine
 personal-edit acceptance. Private receipts and runtime files remain ignored;
 no account contents/counts, secrets or private installation paths are published.
+### C5 dated-plan certainty — remaining explicit contract correction
+
+Related #23: plan section8 requires tentative planning when a real departure date
+or account verification is missing. The previous implementation qualified current
+entitlement/price but allowed a known-now offer with unknown departure into a
+verified future viewing plan. A shared planner predicate now requires confirmed
+entitlement and a known expiry bound for both verified-only candidate selection
+and final feasibility. Unknown departure remains unknown; the original confirmed
+entitlement and positive exploratory utility are preserved, with tentative dated
+planning rather than invented dates or absence. Current-access C4 purchase checks
+are unchanged. Existing upper-bound scheduling checks the supplied known dates.
+
+Fixture coverage includes direct comparisons, lower-utility known-expiry verified
+alternatives, actual report free/rental/subscription paths, no-purchase outcomes
+and the known last-full-day boundary. Existing fixtures explicitly asserting
+verified dated plans now supply synthetic credible bounds; default unknown-expiry
+assertions remain unchanged. This adds no solver, schema, dependency, price policy,
+provider calls, personal-state writes or job changes. Actual budget/slots/utility
+and rights-cleared live tier/price/entitlement/expiry acceptance remain external
+inputs to a useful production plan.
+
+Expiry-certainty validation: Ruff check/format and ty pass; 599 tests pass with
+one opt-in skip. All nine changed Python files meet maximum CC8 and minimum
+MI50.785443. This establishes the bounded code contract, not actual provider or
+user plan acceptance.
