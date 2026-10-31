@@ -37,7 +37,9 @@ known tier/add-on where relevant, and acceptable time window. A new subscription
 fee must match its exact plan's USD assertion; unknown fees are not zero.
 Date-only viewing slots conservatively exclude the whole asserted expiry day,
 because the report cannot prove a viewing ends before an intraday deadline.
-Unknown expiry stays unknown. Sources and entitlement still require independent
+A verified dated choice requires both confirmed entitlement and a known expiry
+bound. Unknown expiry stays unknown and keeps the offer in exploratory plans as
+tentative, without changing its original entitlement fact. Sources and entitlement still require independent
 verification: supplying this JSON does not clear provider rights or Gate B.
 
 Free/ad-supported access with a known nonzero price is contradictory and is

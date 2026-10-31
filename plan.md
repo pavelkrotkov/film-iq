@@ -2121,3 +2121,8 @@ assertions remain unchanged. This adds no solver, schema, dependency, price poli
 provider calls, personal-state writes or job changes. Actual budget/slots/utility
 and rights-cleared live tier/price/entitlement/expiry acceptance remain external
 inputs to a useful production plan.
+
+Expiry-certainty validation: Ruff check/format and ty pass; 599 tests pass with
+one opt-in skip. All nine changed Python files meet maximum CC8 and minimum
+MI50.785443. This establishes the bounded code contract, not actual provider or
+user plan acceptance.
