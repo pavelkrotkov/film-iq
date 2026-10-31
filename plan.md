@@ -2301,3 +2301,14 @@ card. Links now show each assertion's original check time; the enclosing wrapper
 is labelled only as the attempt's recorded time. Actual import/reopen/report
 regressions cover a reused old assertion and a mixed-age batch, preserving source
 facts, windows and the existing frozen-input retention behavior.
+
+### Declared provider use and candidate operating bounds — 2026-10-31
+
+The [provider use assessment](docs/research/availability/intended-use-20261031.md) re-read current official terms and native pricing without login, provider API requests or acceptance/contact actions. The declared private deterministic companion has no runtime personal model, provider-data model training/evaluation, or public data API/export. This distinguishes AI-assisted coding from selected runtime use without inventing an exemption from TMDB's broader AI/derivative/commercial wording. Native application-use/retention, required credit/API link and hard Free quota are evidenced; actual account balances and native burst limits remain unknown.
+
+Concrete handoff gaps are a visible approved TMDB logo/Credits notice, source-specific JustWatch/native API credits, and complete retained-copy purge accounting. Proposed internal ceilings are sequential one attempt/second, 60 reviewed IDs/75 total attempts per run, and native 750 attempts per rolling 31 days, all subordinate to lower provider limits and quota/auth failures. These are candidate safeguards, not account entitlement, a cadence or activated policy. TMDB six-month/termination rules include reports/exports/backups/restores; native functional retention does not waive third-party notice deletion. No actual source, provider policy, personal data, scheduled/B4 job or consumer code changed. The third B4 date and reviewed B8 adoption decision remain pending.
+
+Validation for this documentation-only assessment: Ruff check/format and ty pass;
+617 tests pass with one opt-in skip. Local links and whitespace checks pass.
+No Python changes, new dependencies, raw provider responses or logo assets were
+added by this PR. Consumer attribution corrections remain a separate owned change.
