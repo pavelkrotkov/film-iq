@@ -2126,3 +2126,22 @@ Expiry-certainty validation: Ruff check/format and ty pass; 599 tests pass with
 one opt-in skip. All nine changed Python files meet maximum CC8 and minimum
 MI50.785443. This establishes the bounded code contract, not actual provider or
 user plan acceptance.
+
+### B4 actual second date — 2026-10-31
+
+Read-only inspection at 14:58 UTC verified the existing Oct31 job completed one
+run/exit 0 with 120 observations and 120 requests, all HTTP 200 at 14:00:00–14:00:11UTC,
+using the frozen accepted manifest. TMDB 53 complete/seven unknown and native 49
+complete/11 unknown preserve missing US data as unknown; no quota headers were
+reported. Date-one→two native opportunity sets differ for five films (nine newly
+present/two absent source assertions), and 12 films differ in the broader detail
+multiset. Native variant rows 274→284 and deduplicated opportunities are different
+units. TMDB comparable source tuples/details were unchanged. These are not global
+removal, accuracy or latency findings. See the [bounded date-two report](docs/research/availability/comparison-20261031.md)
+and [dated-run protocol](docs/research/availability/dated-observations.md).
+
+Nov1 remains genuinely future: job zero runs/no result file at inspection,
+scheduled 15:00 UTC tomorrow. Date three and reviewed provider/use/retention B4/B8
+decisions remain required; no provider winner, adoption, job change, new request,
+account mutation or indefinite history is introduced. Human review throughput
+is not a blocker for this evidence; it is relevant before a bulk-work estimate.
