@@ -2244,3 +2244,25 @@ network, personal entry/edit, model training or live recovery action was involve
 Validation: Ruff check/format and ty pass; 599 tests pass with one opt-in skip.
 This correction changes documentation/acceptance only; no Python complexity
 surface, runtime dependency or private user record is changed.
+
+### C8 complete Movary recovery accepted operationally — 2026-10-31
+
+Explicit user approval enabled the previously pending service interruption and
+isolated recovery test. A restart-guarded stop captured complete consistent
+storage, configuration/secrets, effective environment and the exact running
+Movary 0.82.1 image. The original application/worker returned healthy in about
+six seconds and remained healthy at the final check.
+
+An offline project-local clone passed complete storage hashes, SQLite integrity/
+foreign keys, all-original-table equality before authenticated reads, native
+storage linking/current migrations and app/worker startup. Preserved-token reads
+covered all played/history/watchlist pages; native ratings/history exports also
+passed. A supported CLI-created disposable clone account passed native session
+login and protected-page access. Original password hashes were preserved; actual
+users' plaintext-password sign-in was not tested. The disposable clone was removed.
+
+This supersedes earlier pending Movary-recovery statements; it does not claim
+provider adoption, unrestricted retention or invented personal opinions. No live
+personal writes, provider requests or B4 changes occurred. Private artifacts stay
+in the selected project's ignored storage; [operations evidence](docs/operations-recovery.md#authorized-complete-movary-recovery--2026-10-31)
+records the bounded procedure. This PR changes documentation only.
