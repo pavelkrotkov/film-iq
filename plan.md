@@ -1650,3 +1650,59 @@ Genuine nonempty personal rating/merit edits and deletion acceptance remain open
 no user opinions are manufactured to satisfy the gate. B4's actual later-date
 measurements remain scheduled and untouched; production provider adoption waits
 for their reviewed outcome.
+
+### C4 permitted durable offer runtime (2026-10-31)
+
+Migration 010 connects C4's provider-neutral Fetch/Assertion/reconciliation and
+C8's explicit CachePolicy to durable SQLite observations, exact-plan scoped
+complete baselines and source-specific events. Every observation freezes its
+permission/attribution/deadline; renewals cannot extend old retained data.
+Registration is explicit review input, with no provider rights inferred. Denied,
+expired or terminated policies immediately suppress reads; named-source purge
+previews and explicitly deletes affected snapshots/baselines/events. Partial,
+unknown and unreviewed observations do not overwrite complete comparable state
+or produce absence. Identical replay is idempotent; contradictory complete
+same-time observations fail visibly. Atomic rollback/restart is tested.
+
+The local policy/import/state/purge entrypoint and current-opportunity reader
+make these contracts executable without a production provider or network call.
+See docs/usage/offer-ledger.md. B4/B8 selection, actual provider-specific quota/
+rights/retention assessment, account-plan checks and ongoing live monitoring
+remain finish gates; no scheduled B4 job, Movary state or live offer is changed.
+
+C4 rebased runtime verification passes Ruff check/format, ty and 481 tests with
+one opt-in skip. All twenty changed Python files have maximum CC8 and minimum
+MI50.829857. Synthetic checks exercise reopened/replayed observations, partial
+and unknown no-removal, exact-plan conflict rejection, cross-source opportunity
+deduplication, immediate policy denial, expiry/termination purge, killed-write
+rollback/retry, local CLI flow and schema-9 upgrade with unchanged editorial
+observations. These are runtime contracts, not provider-selection evidence.
+
+C4's combined Sol high review reproduced two retention defects: policy renewal
+could resurrect an identical old observation after physical purge, and a removal
+event retained old opportunity data under only the newer observation's deadline.
+Both findings are accepted. A non-content source/check-time purge watermark now
+rejects historical reacquisition, while a fresh checked observation still works.
+Transition events reference both input observations; readers enforce both
+deadlines and cascading deletion removes the derived event without expiring an
+unrelated newer baseline. Exact renewal/purge/replay and renewal/removal/old-
+expiry regressions exercise both failures. No live cache or source is changed.
+
+C4 corrected-head integration on main `6744e8a` passes Ruff check/format, ty and
+484 tests with one opt-in skip. The 22 changed Python files retain maximum CC8
+and minimum MI50.649400. Both native retention findings await independent
+corrected-head follow-up before thread resolution and merge.
+
+C4's next Standards follow-up reproduced a newer batch carrying an unchanged
+old nested assertion after purge. The correction checks nested assertion times
+against the purge watermark without rewriting them. Still-retained source/check-
+time inputs also keep their earliest frozen deadline when reused in a newer
+batch; an expired cached input is rejected before physical purge. Two focused
+regressions cover the honest newer-wrapper/old-assertion case, frozen-deadline
+inheritance and genuinely fresh assertion checks remaining importable. This is
+accepted correction of actual cached-input replay, not a new polling/provider
+capability. No live data is read, changed or purged.
+
+C4 nested-input corrected validation passes Ruff check/format, ty and 486 tests
+with one opt-in skip. All 24 changed Python files meet maximum CC8 and minimum
+MI50.649400. The new native finding remains open for exact-head follow-up.

@@ -27,6 +27,6 @@ def test_failure_then_retry_preserves_report_and_restorable_backup(tmp_path, mon
     assert not recovered["stale"] and "error" not in recovered
     restore(tmp_path / recovered["evidence_backup"], tmp_path / "restored.db")
     with connect(tmp_path / "restored.db") as db:
-        assert db.execute("PRAGMA user_version").fetchone() == (9,)
+        assert db.execute("PRAGMA user_version").fetchone() == (10,)
     assert paths["report"].stat().st_mode & 0o777 == 0o600
     assert paths["status"].stat().st_mode & 0o777 == 0o600
