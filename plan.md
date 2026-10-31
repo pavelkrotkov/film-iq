@@ -1986,3 +1986,11 @@ tested-host/cache evidence, not an arbitrary-host network-bootstrap claim.
 Complete Movary restoration, genuine personal score/comment edits and the
 production-provider/B4/B8 gates remain pending; no account counts, values,
 secrets or private installation paths are published.
+
+### C2 bounded coverage evidence — 2026-10-31
+
+The [bounded C2 coverage report](docs/research/c2-bounded-coverage.md) publishes the independently checked current sample: 114 observations in 24 scopes, 112 reviewed mentions, 106 distinct reviewed works and two unresolved entries. It separates critic/Registry/award editions from catalog release years, lists 2010–2026 release counts and older groups, and records geography/language known for 42 works and uncollected for 64. Explicit primary format assertions cover 23 works; 83 lack classification. Genres and runtimes do not infer formats.
+
+Retained audit evidence records bounded request/candidate windows, one explicit same-title rejection, unresolved identities and failed-source access with primary alternatives. Complete transport-failure totals and actual representative human review minutes remain unknown. All 24 selected imports replayed semantically unchanged; that evidence does not generalize to unfamiliar layouts or provide a bulk estimate. The 67 noncritic observations retain unknown normalized legacy lineage fields while independently reviewed typed classifications and descriptive lineage audits remain separate; no direct retagging or new correction occurred.
+
+This documentation-only read-only audit changed no sources, evidence database, catalog, personal state or operations. C2 #20 remains open for source-specific final Gate B/bulk approval and representative human effort measurements. No whole 2010–2026 coverage, matching-precision, calibration or user-satisfaction claim is made.
