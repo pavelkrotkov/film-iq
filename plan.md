@@ -1830,3 +1830,18 @@ C3 corrected-head verification passes Ruff check/format, ty and 534 tests with
 one opt-in skip. All 53 changed Python files retain maximum CC8 and minimum
 MI50.270742. Native findings await independent corrected-head follow-up; actual
 typed source acceptance and whole-Epic gates remain separate controller evidence.
+
+The actual mixed-source reading-flow audit found that a flat shortlist could
+make critic ballots, performance/festival awards and preservation selections
+look like one scalar quality rank. Markdown now separates critic-list choices,
+festival/award recognition, preservation/institutional selections and other
+sources. A work appears once in the first applicable view with every reason
+retained. Section projection preserves the JSON, score values, ordering policy
+and source-relative order inside each section. The main ordering sentence is
+scoped to critic choices with known support; technical policy and missingness
+remain in the audit. A mixed/multi-type fixture checks no dropped/duplicated
+picks, all reasons, section/source order and unchanged serialized report state.
+
+C3 sectioned-reading validation passes Ruff check/format, ty and 535 tests with
+one opt-in skip. All 55 changed Python files retain maximum CC8 and minimum
+MI50.270742. Exact-head review and actual typed-source acceptance remain pending.

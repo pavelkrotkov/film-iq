@@ -66,6 +66,13 @@ component snapshots. The discovery presentation separately offers bounded
 release-cohort views from its fresh reviewed catalog dates; it never substitutes
 a source edition or source-listed year for a catalog release date.
 
+Markdown groups choices into critic lists, festival/award recognition,
+preservation/institutional selections and other source selections. Each work
+appears once in its first applicable view with all its reasons; this changes no
+JSON ordering, score or source fact. Order within a section follows the existing
+suggestion list. The source-support ordering sentence applies only to eligible
+critic choices with known support; unknown support is never zero.
+
 Discovery cards retain their title/director/runtime and source reasons. Known
 registry/institutional selections and explicit award recipients/categories can
 appear as concise reasons. Full reception units/sample counts, dates, missingness
