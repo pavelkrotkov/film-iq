@@ -1931,3 +1931,36 @@ Private receipts/config/logs remain ignored; no account counts, scores,
 comments, identifiers or credentials are published. No provider polling,
 Movary write or B4 job change occurred. Full Movary restoration, genuine rating/
 merit edits and production-provider B4/B8 acceptance remain outstanding.
+
+### Accepted C3 and current Epic C frontier — 2026-10-31
+
+[C3 #21 acceptance](https://github.com/pavelkrotkov/film-iq/issues/21#issuecomment-6540145452)
+is now recorded after independent verification of every current issue criterion
+and MVP amendment at merged main `4ce74ba`. The audit passed 63 focused tests
+and four offline lineage/ablation/holdout experiments. The transparent baseline,
+typed components, uncertainty/missingness, dependence semantics, versioned replay
+and actual selected-source/report integration satisfy that issue's contract.
+The research remains inconclusive about calibration, predictive lift and optimal
+weights. No runtime reception measurements were adopted; missing reception stays
+unknown. This acceptance does not establish recommendation quality or user
+satisfaction.
+
+The selected schema11 Film-IQ installation at `4ce74ba` also passed a separate
+actual archive/isolated-restore exercise. Restored file hashes, SQLite integrity
+and foreign keys passed, and the restored application CLI reproduced the full
+discovery JSON semantically using restored inputs only. There were no external
+calls or Movary actions. Catalog copies retain the original 2027-04-29 expiry.
+An actual read of all configured private status inputs reported operations and
+personal generations current, acquisition observed, catalog fresh and provider
+policies not configured; these observations are not an overall release-health
+claim. The full tracked-Python audit found all 336 files within CC8 and MI50,
+with minimum MI50.025032 and no violations.
+
+Epic C #3 remains open with eight children: #58 personal-score acceptance,
+#20 source expansion/review evidence, #22 production offers/provider gate,
+#23 real feasible planning integration, #25 report acceptance/remaining alerts,
+#26 complete Movary recovery/operational acceptance, and conditional #24
+personalization and #27 upstream Movary assessment. Genuine rating/merit edits,
+the separately scoped Movary restore and time-separated B4/B8 provider decisions
+remain outstanding. Private receipts remain ignored; no personal contents,
+account counts, secrets or private installation paths are published here.

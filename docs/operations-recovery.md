@@ -227,3 +227,22 @@ No personal account counts/values or credentials are published here.
 No provider polling, Movary writes or existing B4 job changes accompanied these
 operations. Complete Movary recovery, genuine personal rating/comment-edit
 acceptance and the time-separated B4/B8 production-provider gate remain pending.
+
+### Schema11 recovery and actual status follow-up — 2026-10-31
+
+The selected schema11 Film-IQ installation at merged revision `4ce74ba` passed
+its own archive/isolated-restore check after the typed collection and status CLI
+were integrated. Restored file hashes, SQLite integrity and foreign keys passed;
+the restored application CLI reproduced the complete discovery JSON semantically
+using only restored inputs, with zero external calls or Movary actions. Private
+archive/receipt files remain inside the selected project's ignored cache. The
+copied catalog retains its original 2027-04-29 expiry; restoration does not renew
+metadata rights or retention deadlines.
+
+The merged status CLI was also inspected against all configured private inputs:
+operations and personal generations were current, acquisition was observed,
+catalog facts were fresh and provider policies were not configured. This is an
+observed component summary, not a release-health or production-provider claim.
+Complete Movary database/storage/config/version restoration, genuine personal
+score/comment edits and the B4/B8 production-provider decisions remain separate
+outstanding acceptance requirements.
