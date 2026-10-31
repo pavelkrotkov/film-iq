@@ -2380,3 +2380,15 @@ Actual producer/two-import regressions cover malformed, HTTP, userinfo, credenti
 query and null locators; prior valid snapshots/events survive. The valid HTTPS
 explicit-empty transition remains covered and produces only source-specific
 absence. No provider request or frozen-study change was made.
+
+## Approved test-suite reduction — 2026-10-31
+
+The user approved reducing the recurring suite from 697 collected cases to at most
+200. Remove redundant test functions, Cartesian invalid-value permutations and
+completed POC wrappers; retain meaningful public workflows and real regressions.
+Do not hide tests behind skips, selection configuration or replacement loops.
+Preserve source/identity/rank lineage, approval before personal writes, failed-read
+no-removal behavior, price/entitlement uncertainty and recoverability. Transfer
+unique useful assertions into retained workflow cases without changing runtime
+behavior. Keep imported helpers and original research evidence. Validation and
+review evidence will be recorded here before merge.
