@@ -1,5 +1,6 @@
 """Concise Markdown rendering of a dry-run report with explicit identity links."""
 
+from film_iq.planning.choice_terms import choice_terms
 from film_iq.recognition.render import report_lines
 
 
@@ -48,7 +49,7 @@ def _offer_key(offer: dict) -> tuple:
     return offer["film_id"], offer["provider_id"], offer["kind"], offer.get("assertion_index")
 
 
-def _choice(choice: dict, offers: dict) -> str:
+def _choice(choice: dict, offers: dict, service_prices: dict | None = None) -> str:
     # Source names/URLs supplement access; entitlement stays the planner's value.
     access = choice["offer"]
     offer = offers.get(_offer_key(access))
@@ -61,7 +62,7 @@ def _choice(choice: dict, offers: dict) -> str:
     return (
         f"- {choice['film']['title']} (TMDB {choice['film']['id']}), "
         f"{choice['film']['minutes']} minutes: {access['kind']}, {provider}, "
-        f"entitlement {access['entitlement']}, {choice['viewing_date']}."
+        f"entitlement {access['entitlement']}, {choice['viewing_date']}; {choice_terms(access, offer, service_prices)}."
     )
 
 
@@ -85,6 +86,7 @@ def _assertion_offers(report: dict) -> list[dict]:
             "url": item["url"],
             "checked_at": item["checked_at"],
             "source": item["source"],
+            "asserted_expires_at": item["asserted_expires_at"],
         }
         for index, item in enumerate(report.get("assertions", []))
     ]
@@ -108,7 +110,10 @@ def _plans(report: dict, key: str = "plans") -> list[str]:
             f"### {plan['option']} — USD {plan['cost_cents'] / 100:.2f}, {plan['total_minutes']} minutes"
         )
         lines.append(f"Feasibility: {plan['feasibility']}. {plan['assumptions']}")
-        lines.extend(_choice(choice, offers) for choice in plan["choices"])
+        lines.extend(
+            _choice(choice, offers, report.get("service_price_assumptions"))
+            for choice in plan["choices"]
+        )
     return lines
 
 

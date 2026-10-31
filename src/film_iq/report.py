@@ -2,7 +2,6 @@
 
 import sqlite3
 from dataclasses import asdict
-from datetime import date
 from typing import Any
 
 from film_iq.planning.assertions import assertion_access
@@ -10,6 +9,7 @@ from film_iq.planning.integration import planner_film
 from film_iq.planning.models import Access, Film, Plan
 from film_iq.planning.monthly import compare
 from film_iq.planning.personal import apply_personal
+from film_iq.planning.report_dates import planning_dates
 from film_iq.planning.report_offers import _offers
 from film_iq.recognition.reader import current_components
 from film_iq.scoring import Score, score
@@ -93,12 +93,15 @@ def build_report(
         "public_evidence_components": current_components(db),
         "offers": observations,
         "assertions": assertions,
+        "service_price_assumptions": {
+            str(key): value for key, value in inputs["service_prices_cents"].items()
+        },
         "plans": [asdict(plan) for plan in plans],
         "verified_plans": [asdict(plan) for plan in verified],
         "films": [asdict(film) for film in films],
         "personal_refresh": snapshot["last_successful_refresh"] if snapshot else None,
         "previews": _previews(plans),
-        "assumptions": "Caller-supplied snapshots; TMDB / JustWatch attribution; prices and entitlement unverified",
+        "assumptions": "Caller-supplied snapshots; price, entitlement and expiry are shown per choice. Legacy snapshots: TMDB / JustWatch attribution.",
     }
 
 
@@ -107,7 +110,7 @@ def _comparisons(films: list[Film], access: list[Access], inputs: dict):
         films,
         access,
         set(inputs["current_services"]),
-        [date.fromisoformat(value) for value in inputs["dates"]],
+        planning_dates(inputs),
         inputs["max_minutes"],
         inputs["max_films"],
         inputs["budget_cents"],
