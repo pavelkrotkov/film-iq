@@ -1519,3 +1519,10 @@ the resulting schema-9 evidence backup. Ruff check/format and ty pass; the full
 suite passes 448 tests with one opt-in skip. The six new Python files satisfy
 maximum CC 8 and minimum MI 51.386209. These deterministic checks do not replace
 the remaining authorized live restore/failed-job acceptance.
+
+C8 Spec review reproduced schema-8 failure because discovery queried new ballot
+tables before the runner reached migration. The runner now migrates before
+refresh/discovery. A regression uses the real reader against a disposable
+schema-8 database and verifies a completed run, schema-9 tables and backup.
+Full local checks pass: 449 tests, one opt-in skip and Ruff/format/ty. No live
+installation or B4 collection is changed by this correction.

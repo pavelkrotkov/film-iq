@@ -45,12 +45,13 @@ def run_once(
 
 def _execute(client, database, cohort, snapshot, report, backups, status, state, exports):
     try:
+        with closing(connect(database)) as db:
+            migrate(db)
         refresh(client, snapshot, **exports)
         output = discovery_command(cohort, snapshot, database, "markdown")
         backups.mkdir(parents=True, exist_ok=True, mode=0o700)
         destination = backups / f"evidence-{uuid4().hex}.db"
         with closing(connect(database)) as db:
-            migrate(db)
             backup(db, destination)
         private_text(report, output)
     except (OSError, ValueError, KeyError, TypeError, sqlite3.Error, RuntimeError):
