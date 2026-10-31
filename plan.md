@@ -2177,10 +2177,17 @@ Bounded signed-out checks follow the five actual changed-film source locators,
 not a fresh provider search. Apple's public US SKU metadata currently matches
 Wild Diamond's HD/SD buy and HD rent prices and Sugarcane's HD buy/rent prices.
 Two original pages were inaccessible through the reader; two single-SKU fallbacks
-returned HTTP200/one matching record each. These facts corroborate current SKU
+returned HTTP 200/one matching record each. These facts corroborate current SKU
 prices, not checkout/account entitlement, exact cuts, departure dates, actual
-addition time or detection latency. The [primary-check report](docs/research/availability/primary-checks-20261031.md)
+addition time or detection latency. The [primary-check report](docs/research/availability/comparison-20261031.md#bounded-first-party-follow-up--2026-10-31)
 keeps request units and unknowns explicit. No original source capture, streaming
-provider request, job, account or production-feed adoption is changed. Third-date
-and reviewed B4/B8 decisions remain required; independent remaining cases are
-pending the draft's completion.
+provider request, job, account or production-feed adoption is changed. Independent checks also corroborated Việt and Nam and Inside Out 2 Apple prices;
+the Việt and Nam add-on identity/tier and Vertigo's US buy/rent absence remain
+unknown. Eight explicit HTTP GETs plus two opaque page attempts consumed the
+bounded ten-attempt follow-up budget. Third-date and reviewed B4/B8 decisions
+remain required; no historical effective time or detection latency is inferred.
+
+C2 #20's bounded manual delivery is now accepted and closed after PR89 and the
+[explicit source/use decisions](https://github.com/pavelkrotkov/film-iq/issues/20#issuecomment-6545209723);
+earlier pending-status paragraphs are historical. Broader bulk ingestion and a
+human-throughput estimate remain conditional on undertaking that broader work.
