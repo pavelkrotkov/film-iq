@@ -129,6 +129,40 @@ a valid substitute. A separately scoped service interruption and isolated
 target/storage authorization remain required; no stop, backup, restore or
 personal-data write was performed by this inspection.
 
+## Read actual operational status
+
+`film-iq status` replaces the former static POC message. Supply only the private
+paths to inspect; omitted components remain `not_configured`:
+
+```sh
+uv run film-iq status --run-status .cache/private/run.status \
+  --snapshot .cache/private/snapshot.json --database .cache/private/evidence.db \
+  --catalog .cache/private/reviewed-display.json --format json
+```
+
+The default text output and JSON share the same allowlisted facts: operation
+last-successful time, personal snapshot/status generation consistency, source
+attempt/error/running counts and last-successful cursor time, catalog expiry,
+and explicit permitted/blocked/purge-due provider policy counts. Raw cursors,
+source names, film data, ratings, comments, rights text, paths and exception
+payloads are not printed. This command makes no network call, requires no
+credentials and opens an existing SQLite database with `mode=ro`; it never
+creates a missing database, migrates, repairs or purges anything.
+Native SQLite read-only WAL access may create `-wal`/`-shm` coordination files;
+read-only refers to database contents, not a guarantee of zero filesystem
+activity. A directory that cannot provide required WAL coordination may report
+`invalid`. Do not use `immutable=1` for a potentially live WAL database.
+
+Exit 1 means a configured input is missing/invalid, stale, expired/not-yet-valid,
+or has acquisition/policy state needing attention. Exit 0 means no such
+condition was observed; omitted configuration is still unknown, not healthy.
+`current` means a supported successful status (and matching personal generation),
+not a claimed refresh interval or release acceptance. Successful times are shown
+in UTC; no arbitrary age threshold is invented. Use optional timezone-aware
+`--now` for a reproducible catalogue/policy expiry assessment. The command does
+not prove a scheduler is registered, a provider feed adopted or a full
+installation restored.
+
 ## Complete selected collection
 
 Repeat `--cohort` on `python -m film_iq.operations` for every independently
@@ -148,3 +182,48 @@ and cursor checks; files were mode0600. Private commands and receipts remain
 inside the selected project's ignored cache. This does not establish complete
 Movary installation restoration, which still requires the separately requested
 service-stop/isolated-restore authorization, or production provider acceptance.
+
+### Actual bounded Film-IQ installation restore — 2026-10-31
+
+A private schema10 installation at Git revision `0fcc05e` was archived and
+restored into a separate project-local directory. The archive included a native
+online evidence backup, the pinned Git source archive and `uv.lock`, selected
+cohort/source-audit inputs, reviewed catalog, personal snapshot/status and private
+operator configuration. Restored file hashes matched; SQLite integrity and
+foreign-key checks passed. The restored application CLI consumed only restored
+inputs and reproduced the complete original discovery JSON semantically, with
+no external calls or Movary actions. Private archive/receipts remain inside the
+selected project's ignored cache; copied metadata retains its expiry and usage
+restrictions, including archive copies.
+
+This verifies recovery of that selected schema10 Film-IQ installation. Later
+schema/input changes require their own recovery check. It does not verify
+Movary database/storage/config/version restoration, which remains pending the
+separately scoped service-stop/isolated-restore authorization, or production
+provider adoption/permissions.
+
+### Actual selected collection and native scheduling — 2026-10-31
+
+After a pre-migration backup, the actual selected evidence database advanced to
+schema11 using the reviewed typed-recognition implementation at `fdba280`.
+The 24 accepted cohorts contain 114 source facts: 47 critic selections, 50
+Registry selections and 17 award outcomes. There are 112 reviewed work mentions
+representing 106 distinct reviewed works; two source entries remain unresolved.
+These are explicitly selected cohorts, not complete publisher/world coverage.
+Identical replay of all 24 imports preserved semantic evidence, historical
+critic snapshots and existing critic values; canonical typed-component snapshot
+replay also passed. No reception values or personal opinions were invented.
+
+The exact native operations command then completed read-only personal refresh,
+the full selected-collection report and evidence backup. The private launchd
+job `com.filmiq.discovery.daily` is now registered in the current user's GUI
+domain for 10:30 local time, with `RunAtLoad` disabled. An explicit native
+kickstart completed one observed run with exit 0, a fresh successful run status
+and an idle/nonrunning final job state. This verifies registration and one
+native execution, not a future calendar firing or reboot/login persistence.
+Private configuration, commands, logs and receipts stay in the selected project.
+No personal account counts/values or credentials are published here.
+
+No provider polling, Movary writes or existing B4 job changes accompanied these
+operations. Complete Movary recovery, genuine personal rating/comment-edit
+acceptance and the time-separated B4/B8 production-provider gate remain pending.

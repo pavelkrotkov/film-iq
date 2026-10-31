@@ -1862,3 +1862,72 @@ tests with one opt-in skip. All 60 changed Python files satisfy maximum CC8 and
 minimum MI50.298483. The one-level flat-reason helper matches actual producer
 contracts; no recursive/cycle machinery or component-merge framework is added.
 Native finding awaits exact-head independent follow-up before thread resolution.
+
+### C8 actual read-only operational status — 2026-10-31
+
+The renewed finish audit reproduced that `film-iq status` still printed only a
+static POC message. It now composes existing operation/snapshot generation,
+acquisition cursor/attempt, catalog expiry and explicit provider-policy readers
+for caller-selected local paths. Missing/unconfigured/invalid states remain
+distinct; it makes no health claim from absent configuration or an arbitrary
+refresh-age threshold. Configured stale/error/expiry conditions return exit1.
+Text and JSON expose only counts, categorical states and validated timestamps;
+private contents, raw cursors, paths and exception payloads are not printed.
+
+Existing evidence databases open read-only without migrations or missing-file
+creation. Regression checks cover generation mismatch, malformed status,
+failed acquisition preserving the previous success, expired catalog/policy,
+missing database and byte-identical input files after inspection. No scheduler
+registration, Movary read/write, provider acquisition, source acceptance,
+retention deletion, service stop/restore or B4 job change accompanies this work.
+
+Validation: Ruff check/format and ty pass; 508 tests pass with one opt-in skip.
+The twelve changed Python files meet maximum CC8 and minimum MI50.625676.
+This verifies local status reporting, not the pending complete Movary restore,
+genuine-score acceptance, native schedule registration or provider gate.
+
+Status Standards review accepted one documentation precision finding: SQLite
+`mode=ro` preserves database contents but can create native WAL coordination
+sidecars. The module/operations wording now states that bounded guarantee;
+no immutable connection, copy framework or new database behavior was added.
+The existing byte-preservation regression also verifies unchanged acquisition
+semantic rows. Spec review found no actionable defect at the initial head.
+
+A separate actual schema10 Film-IQ installation recovery exercise archived a
+native online evidence backup, pinned source revision `0fcc05e`/`uv.lock`,
+selected source/cohort/catalog inputs, personal snapshot/status and private
+operator config, then restored to an isolated directory inside the selected
+project. Restored hashes and SQLite integrity/foreign keys passed. The restored
+application CLI reproduced the complete original discovery JSON identically
+using only restored inputs, with no external call or Movary action. Private
+receipts/archive remain ignored; archive copies inherit source/catalog rights
+and expiry. This is bounded evidence for that selected schema10 installation,
+not a claim about later schema/input changes, production provider acceptance or
+the separately authorized complete Movary restore still pending.
+
+After rebasing status reporting onto reviewed typed-recognition main `fdba280`,
+Ruff check/format and ty pass; 544 tests pass with one opt-in skip. All twelve
+status-change Python files retain maximum CC8 and minimum MI50.625676.
+
+### Actual typed collection and native daily execution — 2026-10-31
+
+The controller backed up the actual evidence database before migration11, then
+activated the independently reviewed typed cohorts on main `fdba280`. The
+selected collection now contains 114 source facts across 24 cohorts: 47 critic
+selections, 50 Registry selections and 17 award outcomes. 112 reviewed source
+mentions represent 106 distinct reviewed works; 2 entries remain unresolved and visible.
+These counts describe bounded selected material, not whole-publisher/global
+coverage or general identity precision. All 24 identical imports replayed without
+new semantic evidence. Existing critic values and historical snapshots stayed
+unchanged, and canonical typed-component snapshot replay passed.
+
+The exact native operations invocation completed read-only personal refresh,
+reporting for all 24 cohorts and backup. The project-local private launchd job
+`com.filmiq.discovery.daily` is registered in the current GUI domain at 10:30
+local time with RunAtLoad false. An explicit native kickstart produced one
+observed run, last exit 0, a fresh successful run marker and final not-running
+state. Future calendar firing and reboot/login persistence are not claimed.
+Private receipts/config/logs remain ignored; no account counts, scores,
+comments, identifiers or credentials are published. No provider polling,
+Movary write or B4 job change occurred. Full Movary restoration, genuine rating/
+merit edits and production-provider B4/B8 acceptance remain outstanding.
