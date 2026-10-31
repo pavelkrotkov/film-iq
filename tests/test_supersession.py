@@ -37,6 +37,8 @@ def test_version_four_rejects_invalid_supersession_atomically(evidence_db):
     )
     db.execute("DROP TRIGGER match_supersedes_insert")
     db.execute("DROP TRIGGER match_supersedes_update")
+    db.execute("DROP TABLE recognition_snapshot")
+    db.execute("DROP TABLE entry_recognition")
     db.execute("DROP TABLE offer_event")
     db.execute("DROP TABLE offer_current")
     db.execute("DROP TABLE offer_fetch")

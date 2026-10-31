@@ -25,6 +25,7 @@ def current_score(evidence_db):
     db.execute(
         "INSERT INTO current_match (entry_id, revision_id, decision_id, film_id) VALUES ('entry', 'rev', 'match', 42)"
     )
+    db.execute("INSERT INTO entry_recognition VALUES ('entry','rev','critic_selection','[]',NULL)")
     return score(load_evidence(db))[0]
 
 

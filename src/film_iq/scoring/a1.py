@@ -20,6 +20,8 @@ def load_evidence(db: sqlite3.Connection) -> list[Evidence]:
         JOIN source AS s ON s.id = l.source_id
         JOIN source_document AS d ON d.id = r.document_id
         JOIN entry_observation AS o ON o.revision_id = r.id AND o.list_id = l.id
+        JOIN entry_recognition AS type ON type.entry_id=o.entry_id
+          AND type.revision_id=o.revision_id AND type.kind='critic_selection'
         JOIN current_match AS m ON m.entry_id = o.entry_id AND m.revision_id = o.revision_id
         LEFT JOIN entry_ballot AS eb ON eb.entry_id = o.entry_id AND eb.list_id = l.id
         LEFT JOIN source_ballot AS ballot ON ballot.id = eb.ballot_id AND ballot.list_id = l.id

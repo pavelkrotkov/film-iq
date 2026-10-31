@@ -3,6 +3,8 @@
 from film_iq.ingest.curated_identity import record_identity
 from film_iq.ingest.persist import _savepoint, persist
 from film_iq.ingest.persist_checks import _key
+from film_iq.recognition.models import Selection
+from film_iq.recognition.storage import declare_selection
 
 
 def persist_curated(db, captured, rows, manifest, accessed_at):
@@ -24,6 +26,12 @@ def persist_curated(db, captured, rows, manifest, accessed_at):
                 ),
             )
             record_identity(db, entry, revision, row)
+            declare_selection(
+                db,
+                entry,
+                revision,
+                Selection(manifest.evidence_kind, manifest.ballot_scope, manifest.edition),
+            )
         db.execute(
             "UPDATE published_list SET author=? WHERE id=? AND author IS NULL",
             (manifest.ballot_scope, list_id),
