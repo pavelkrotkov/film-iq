@@ -1964,3 +1964,25 @@ personalization and #27 upstream Movary assessment. Genuine rating/merit edits,
 the separately scoped Movary restore and time-separated B4/B8 provider decisions
 remain outstanding. Private receipts remain ignored; no personal contents,
 account counts, secrets or private installation paths are published here.
+
+### C8 fresh restored-environment acceptance — 2026-10-31
+
+The controller installed the archived schema11 application at captured revision
+`4ce74ba` into a fresh virtual environment with the unchanged captured lock,
+provided CPython 3.12.15 and existing private uv cache. The frozen offline
+installation installed 45 packages including the editable application. Ruff check/
+format and ty passed; pytest passed 544 tests with one opt-in skip. The freshly
+installed CLI consumed all 24 selected cohorts and only restored inputs, and
+its complete discovery JSON matched the expected parsed JSON semantically.
+No external call or Movary action occurred.
+
+The initial driver failure is retained privately: its explicit pytest basetemp
+parent was missing, and `MOVARY_INTEGRATION=0` enabled the truthy opt-in test,
+which failed during setup before I/O. Creating the parent and unsetting that
+flag corrected the driver without product-code changes. The operations guide
+now documents this reproduction, provided patched-SQLite Python, captured-lock
+reuse and the cached-package requirement for offline installation. This is
+tested-host/cache evidence, not an arbitrary-host network-bootstrap claim.
+Complete Movary restoration, genuine personal score/comment edits and the
+production-provider/B4/B8 gates remain pending; no account counts, values,
+secrets or private installation paths are published.
