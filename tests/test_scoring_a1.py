@@ -8,6 +8,9 @@ from film_iq.scoring.snapshot import initialize, replay, save
 
 
 def accepted(db):
+    db.execute(
+        "INSERT OR IGNORE INTO entry_recognition VALUES ('entry','rev','critic_selection','{}',NULL)"
+    )
     db.execute("UPDATE source SET independence_verification = 'verified'")
     db.execute(
         "UPDATE published_list SET lineage_verification = 'verified', lineage_kind = 'original'"

@@ -1,5 +1,7 @@
 """Concise Markdown rendering of a dry-run report with explicit identity links."""
 
+from film_iq.recognition.render import report_lines
+
 
 def _citation(item: dict, treatment: str) -> str:
     """Keep publication and dependence context beside each source citation."""
@@ -113,6 +115,7 @@ def _plans(report: dict, key: str = "plans") -> list[str]:
 def markdown(report: dict) -> str:
     lines = ["# Film IQ — dry-run viewing report", "", report["assumptions"], ""]
     lines.extend(_evidence(report))
+    lines.extend(report_lines(report.get("public_evidence_components", [])))
     lines.extend(_plans(report, "verified_plans"))
     lines.extend(_plans(report))
     if report.get("personal_refresh"):

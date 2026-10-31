@@ -46,7 +46,7 @@ def extraction(body: str, manifest: CuratedList) -> tuple[Extraction, tuple[Cura
         rows[0].source_url,
         manifest.document_revision,
         "curated-csv-1",
-        sha256(body.encode()).hexdigest(),
+        sha256(json.dumps([body, manifest.evidence_kind], ensure_ascii=False).encode()).hexdigest(),
         manifest.eligibility,
         manifest.completeness,
         manifest.scope,
@@ -54,7 +54,11 @@ def extraction(body: str, manifest: CuratedList) -> tuple[Extraction, tuple[Cura
         manifest.rank_semantics,
         entries,
         review_reason=json.dumps(
-            {"rights_evidence": manifest.rights_evidence, "permitted_use": manifest.permitted_use}
+            {
+                "rights_evidence": manifest.rights_evidence,
+                "permitted_use": manifest.permitted_use,
+                "evidence_kind": manifest.evidence_kind,
+            }
         ),
     )
     return captured, rows

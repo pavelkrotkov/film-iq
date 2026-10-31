@@ -1759,3 +1759,106 @@ provider/whole-epic finish gates are not declared verified by these tests.
 The controller's actual private preview found that replacing a table with cards still left implementation jargon in the main reading flow. The shortlist now leads with linked English title and year, director, compact runtime, and human source-scope links with published rank where known. Repeated support-group counts, edition identifiers, unknown display fields, ISO dates and calibration policy have moved into the expandable evidence audit. Personal ratings, unresolved identity/source acceptance warnings, original source assertions, metadata attribution and the full JSON contract remain intact. This is a readability correction; genuine personal-edit acceptance and user satisfaction remain unverified.
 
 Private before/after previews and a hash-comparison receipt were saved inside the selected project: JSON is identical and the accepted database, catalog, selected cohorts and personal snapshot/status inputs are unchanged. No private account contents are reproduced here. Ruff, format and ty pass; 500 tests pass with one opt-in skip. All 295 tracked Python files retain CC <= 8 and MI >= 50 (minimum 50.025). The changed heading/cards/renderer modules have MI 57.403/54.016/51.051 and maximum CC 7/5/6. PR #77 requires another exact-head review on both axes after this correction.
+
+### C3 typed public-component completion work (2026-10-31)
+
+The completion audit reopened #21 because closed status contradicted the bounded
+PR65 contract: typed award/reception ingestion and C7 missingness remained absent.
+Migration011 now records explicit per-observation-revision kinds and immutable
+structured components. Current critic aggregation positively requires
+critic_selection; institutional/registry selections, award outcomes, reception
+metrics and unclassified legacy facts cannot manufacture critic support. Curated
+kind declarations affect semantic revision identity, so pending reclassification
+preserves the accepted predecessor. Legacy classification requires explicit
+independent source-use review, not publisher/person inference.
+
+Separate award recipient/category/outcome and reception population/value/unit/
+sample/date models preserve unlike facts and unknowns. Canonical same-kind tuples
+support multiple measurements from one source entry without fake extra entries.
+Component snapshots use recognition-components-v1; critic v1/v2 replay remains
+unchanged. Synthetic accepted-source/identity paths exercise source linkage,
+unknowns, rights rejection, immutable correction and snapshots. The existing real
+LOC cohort is still a separately reviewed input; no actual source import, Movary
+write, provider adoption or scheduled-job change occurs in this code work.
+Readable C7/report integration and final review remain in progress.
+
+C3 typed facts now reach both actual discovery and viewing-report construction
+and rendering. Registry-only accepted reviewed unwatched films remain eligible
+with unknown critic support. Known award recipients/categories/outcomes can
+appear as concise reasons; full units/sample counts, missingness and provenance
+remain in the audit/JSON. Unresolved identities retain their own accepted source
+facts per entry and never merge under a null work key. Known publication days,
+source-listed years, source eligibility and source family survive component
+views/snapshots. Fresh reviewed display dates support a separate bounded release
+cohort view; expiring catalog facts are not copied into indefinite snapshots.
+
+The workflow audit reproduced an accidental closing reference in draft PR78:
+GitHub recognized negated issue-closing language as a directive for issue21.
+The partial-delivery body was corrected before merge, and a subsequent native
+closingIssuesReferences read returned empty. AGENTS.md now requires Refs/Related
+wording for partial work and explicit inspection of closing references before
+merge. Issue state cannot substitute for completed acceptance evidence.
+
+C3 integrated typed runtime validation on main `0fcc05e` passes Ruff check/format,
+ty and 531 tests with one opt-in skip. All 51 changed Python files have maximum
+CC8 and minimum MI50.270742. Regressions cover current accepted source → typed
+storage → readable discovery/viewing reports, registry-only unknown critic
+support, person-prize subject, original reception units/sample counts, unknown
+and unresolved facts, strict numeric/rights inputs, type-only pending correction,
+legacy schema10 upgrade, canonical component snapshots, historical critic replay
+and fresh reviewed release-cohort context. Actual permitted typed-cohort import,
+independent exact-head reviews and final acceptance for #21 remain controller
+work; no live/personal source contents are invented or changed by these tests.
+
+C3's combined Standards/controller review reproduced a routine typed-ingest
+replay failure: an unchanged unknown manifest attempted to retract its separately
+reviewed award/reception annotation. The source declaration now preserves that
+reviewed annotation and original review on semantic replay. Actual shared-CLI
+regressions cover award and reception import, independent classification, source
+acceptance and identical reimport with one semantic revision and successful
+second acquisition cursor. Explicit kind/content corrections remain pending
+new revisions; known reviewed facts remain immutable.
+
+The Spec axis also reproduced public components(db, None) treating unrelated
+unresolved source entries as one work. The nullable lookup now returns empty
+component arrays/missing coverage. Three distinct accepted unresolved registry
+entries remain separately identified in the accepted reader and frozen snapshot;
+the existing discovery entry/revision guard stays intact. All three findings are
+accepted; no actual source/account data is changed in these corrections.
+
+C3 corrected-head verification passes Ruff check/format, ty and 534 tests with
+one opt-in skip. All 53 changed Python files retain maximum CC8 and minimum
+MI50.270742. Native findings await independent corrected-head follow-up; actual
+typed source acceptance and whole-Epic gates remain separate controller evidence.
+
+The actual mixed-source reading-flow audit found that a flat shortlist could
+make critic ballots, performance/festival awards and preservation selections
+look like one scalar quality rank. Markdown now separates critic-list choices,
+festival/award recognition, preservation/institutional selections and other
+sources. A work appears once in the first applicable view with every reason
+retained. Section projection preserves the JSON, score values, ordering policy
+and source-relative order inside each section. The main ordering sentence is
+scoped to critic choices with known support; technical policy and missingness
+remain in the audit. A mixed/multi-type fixture checks no dropped/duplicated
+picks, all reasons, section/source order and unchanged serialized report state.
+
+C3 sectioned-reading validation passes Ruff check/format, ty and 535 tests with
+one opt-in skip. All 55 changed Python files retain maximum CC8 and minimum
+MI50.270742. Exact-head review and actual typed-source acceptance remain pending.
+
+The next Standards follow-up reproduced duplicate work cards when one legitimate
+award cohort contained several category rows for the same reviewed film. A
+shared reviewed-work coalescer now serves single-cohort suggestions, multi-cohort
+suggestions and remaining selections. It preserves all raw source entries/counts
+and every flat category/source reason, reuses the existing globally attached
+typed components, and leaves unresolved identities distinct. An actual import,
+per-category classification, independent acceptance and render regression checks
+three category rows produce one card; adding a second already-coalesced cohort
+retains six flat reasons/components and six raw candidates without nested reason
+lists or self-reference. No actual typed source/account data is changed.
+
+C3 reviewed-work correction verification passes Ruff check/format, ty and 536
+tests with one opt-in skip. All 60 changed Python files satisfy maximum CC8 and
+minimum MI50.298483. The one-level flat-reason helper matches actual producer
+contracts; no recursive/cycle machinery or component-merge framework is added.
+Native finding awaits exact-head independent follow-up before thread resolution.

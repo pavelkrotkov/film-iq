@@ -57,6 +57,10 @@ def _accept_synthetic(db):
     (entry_id,) = db.execute(
         "SELECT entry_id FROM entry_observation WHERE revision_id=?", (revision,)
     ).fetchone()
+    db.execute(
+        "INSERT INTO entry_recognition VALUES (?,?,'critic_selection','[]',NULL)",
+        (entry_id, revision),
+    )
     return revision, entry_id
 
 

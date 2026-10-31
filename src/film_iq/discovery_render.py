@@ -2,7 +2,9 @@
 
 from film_iq.discovery_cards import card, personal, source_reason, text, title
 from film_iq.discovery_order import public_support
+from film_iq.discovery_sections import ordering_sentence, suggestion_sections
 from film_iq.discovery_selection import remaining
+from film_iq.recognition.discovery import audit_components
 
 
 def _audit(report):
@@ -19,7 +21,14 @@ def _audit(report):
         f"- {text(item['raw_title'])} — source director {text(item['director'])}, source year {text(item['year'])}: {source_reason(item)}; locator {text(item['locator'])}; published {text(item['published_at'])}; eligibility date {text(item['eligibility_date'])}; source completeness {text(item['source_completeness'])}; lineage {text(item['source_lineage_kind'])}: {text(item['source_lineage'])}; eligibility {text(item['source_eligibility'])}; edition {text(item['edition'])}; tie {text(item['tie'])}; reviewed evidence groups {text(public_support(item))}; catalog {text(item.get('display'))}."
         for item in report["candidates"]
     )
-    lines.extend(["", "</details>"])
+    lines.extend(audit_components(report["candidates"]))
+    lines.extend(
+        [
+            "",
+            f"Reviewed catalog release cohorts: {report.get('release_cohorts', 'not supplied')}",
+            "</details>",
+        ]
+    )
     return lines
 
 
@@ -47,9 +56,7 @@ def markdown(report: dict) -> str:
     if "ordering" in report:
         lines.extend(
             [
-                "Sorted by published source support; ties keep list order."
-                if report["ordering"]["policy"] == "public-support"
-                else "Shown in source list order.",
+                ordering_sentence(report["suggested_unwatched"], report["ordering"]["policy"]),
                 "",
             ]
         )
@@ -57,8 +64,7 @@ def markdown(report: dict) -> str:
         lines.append(
             "No verified unwatched picks are ready yet. Source selections and review items are below."
         )
-    for item in report["suggested_unwatched"]:
-        lines.extend(["", *card(item)])
+    lines.extend(suggestion_sections(report["suggested_unwatched"]))
     lines.extend(
         [
             "",

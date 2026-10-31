@@ -17,12 +17,13 @@ def accepted_row(db: sqlite3.Connection | None, revision: str | None, position: 
         l.lineage AS accepted_lineage, l.eligibility AS accepted_eligibility,
         o.raw_title, o.listed_year AS year, o.director, o.position, o.rank, o.tie, o.locator,
         l.edition, l.author AS ballot_scope, l.source_id,
-        d.url AS source_url, d.published_at
+        d.url AS source_url, d.published_at, o.entry_id, o.revision_id, coalesce(t.kind,'unknown') AS evidence_kind
         FROM current_extraction c
         JOIN extraction_revision r ON r.id=c.revision_id AND r.acceptance_state='accepted'
         JOIN published_list l ON l.id=c.list_id
         JOIN source_document d ON d.id=r.document_id
         JOIN entry_observation o ON o.revision_id=r.id AND o.extraction_decision='accepted'
+        LEFT JOIN entry_recognition t ON t.entry_id=o.entry_id AND t.revision_id=o.revision_id
         LEFT JOIN current_match m ON m.entry_id=o.entry_id AND m.revision_id=o.revision_id
         LEFT JOIN film_index f ON f.id=m.film_id
         WHERE r.id=? AND o.position=?""",

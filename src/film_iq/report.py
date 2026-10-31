@@ -11,6 +11,7 @@ from film_iq.planning.models import Access, Film, Plan
 from film_iq.planning.monthly import compare
 from film_iq.planning.personal import apply_personal
 from film_iq.planning.report_offers import _offers
+from film_iq.recognition.reader import current_components
 from film_iq.scoring import Score, score
 from film_iq.scoring.a1 import load_evidence
 
@@ -89,6 +90,7 @@ def build_report(
         "mode": "dry-run",
         "crosswalk": _crosswalk(catalog),
         "evidence": [asdict(result) for result in results],
+        "public_evidence_components": current_components(db),
         "offers": observations,
         "assertions": assertions,
         "plans": [asdict(plan) for plan in plans],

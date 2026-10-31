@@ -3,6 +3,7 @@
 import json
 
 from film_iq.discovery import build_discovery
+from film_iq.discovery_works import coalesce_works
 
 
 def build_discoveries(cohorts, snapshot=None, *, db=None, refresh_status=None):
@@ -52,12 +53,7 @@ def _totals(reports):
 
 
 def _suggestions(reports):
-    works = {}
-    for report in reports:
-        for row in report["suggested_unwatched"]:
-            work = works.setdefault(row["tmdb_id"], {**row, "source_reasons": []})
-            work["source_reasons"].append(row)
-    return list(works.values())
+    return coalesce_works(row for report in reports for row in report["suggested_unwatched"])
 
 
 def _coverage(cohort, report):

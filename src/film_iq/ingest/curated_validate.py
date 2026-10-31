@@ -27,3 +27,8 @@ def _validate_identity(row: CuratedRow) -> None:
     assertions = (row.identity_reviewer, row.identity_evidence)
     if row.tmdb_id and not all(value and value.strip() for value in assertions):
         raise ValueError("TMDB ID requires explicit identity reviewer and evidence")
+
+
+def _required_strings(data: dict) -> None:
+    if not all(isinstance(value, str) and value.strip() for value in data.values()):
+        raise ValueError("explicit source, scope, lineage and rights metadata required")

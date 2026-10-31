@@ -3,6 +3,8 @@
 from film_iq.discovery_cohort import validate_cohort
 from film_iq.discovery_evidence import accepted_row, recognition
 from film_iq.discovery_personal import fresh_snapshot, personal_index
+from film_iq.discovery_works import coalesce_works
+from film_iq.recognition.discovery import attach_components
 
 SOURCE_FIELDS = (
     "source_id",
@@ -27,6 +29,9 @@ def _candidate(row, accepted, personal, scores, snapshot_available):
     watched = state.get("watched", False) if snapshot_available and tmdb else None
     return {
         **{key: facts[key] for key in SOURCE_FIELDS},
+        "entry_id": facts.get("entry_id"),
+        "revision_id": facts.get("revision_id"),
+        "evidence_kind": facts.get("evidence_kind", "unknown"),
         "source_completeness": facts.get("accepted_completeness"),
         "source_lineage_kind": facts.get("accepted_lineage_kind"),
         "source_lineage": facts.get("accepted_lineage"),
@@ -58,7 +63,9 @@ def build_discovery(cohort: dict, snapshot: dict | None = None, *, db=None, refr
         )
         for row in validate_cohort(cohort, db)
     ]
-    suggestions = [row for row in candidates if _suggested(row, stale)]
+    candidates = attach_components(candidates, db)
+    # Keep raw source entries intact; only reviewed viewing cards coalesce.
+    suggestions = coalesce_works(row for row in candidates if _suggested(row, stale))
     return {
         "mode": "read-only discovery",
         "last_successful_refresh": snapshot["last_successful_refresh"] if snapshot else None,

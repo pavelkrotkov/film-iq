@@ -30,6 +30,7 @@ def test_acceptance_reaches_scoring(evidence_db):
         "INSERT INTO current_match (entry_id, revision_id, decision_id, film_id) "
         "VALUES ('entry', 'new', 'match', 42)"
     )
+    db.execute("INSERT INTO entry_recognition VALUES ('entry','new','critic_selection','[]',NULL)")
     assert score(load_evidence(db)) == ()
 
     accept(db, "new", AUDIT, previous_revision_id="rev")

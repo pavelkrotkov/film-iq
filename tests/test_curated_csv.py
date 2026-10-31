@@ -35,6 +35,7 @@ MANIFEST = CuratedList(
     "synthetic fixture",
     "local research",
     3,
+    "critic_selection",
 )
 
 

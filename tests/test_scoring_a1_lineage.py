@@ -51,6 +51,9 @@ def test_derivative_and_corrected_list_context_survive_snapshot(evidence_db):
         "INSERT INTO current_match (entry_id, revision_id, decision_id, film_id) VALUES ('entry2', 'rev2', 'match2', 42)"
     )
 
+    db.execute(
+        "INSERT INTO entry_recognition VALUES ('entry2','rev2','critic_selection','[]',NULL)"
+    )
     initialize(db)
     evidence = load_evidence(db)
     snapshot_id = save(db, evidence, "now")

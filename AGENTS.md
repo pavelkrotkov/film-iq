@@ -36,6 +36,7 @@ Adapted from the general-purpose engineering practices in [pavelkrotkov/utils](h
 
 1. Start from current `main` in a separate branch and worktree for implementation tasks; one issue or coherent change per PR.
 2. Open a draft PR early; include scope, linked issue, tests, evidence and any impact on ADRs.
+   For partial deliveries, use `Refs #N` or `Related #N` in PR text and commits. GitHub recognizes issue-closing keywords even inside negated sentences, so avoid those combinations. Inspect `closingIssuesReferences` after editing the PR and again before merge; close an issue manually only when its acceptance evidence is complete.
 3. Follow `utils`' review discipline: allow bot reviews to arrive, address or evidence-based rebut every finding, and run another review cycle after corrections when available.
 4. Do not merge with red/unverified required CI or unresolved review threads.
 5. If a green CI missed a defect, add a regression assertion.
