@@ -16,14 +16,14 @@ def read_state(db: sqlite3.Connection, scope: Fetch, now: datetime) -> dict:
         return {"latest_attempt": None, "current": None, "events": [], "first_seen_by_us": []}
     identifier, checked = scope_key(scope), timestamp(now)
     latest = db.execute(
-        "SELECT payload FROM offer_fetch WHERE scope=? AND expires_at>? "
+        "SELECT payload FROM offer_fetch WHERE scope=? AND checked_at<=? AND expires_at>? "
         "ORDER BY checked_at DESC,rowid DESC LIMIT 1",
-        (identifier, checked),
+        (identifier, checked, checked),
     ).fetchone()
     current = db.execute(
         "SELECT f.payload FROM offer_current c JOIN offer_fetch f ON f.id=c.fetch_id "
-        "WHERE c.scope=? AND f.expires_at>?",
-        (identifier, checked),
+        "WHERE c.scope=? AND f.checked_at<=? AND f.expires_at>?",
+        (identifier, checked, checked),
     ).fetchone()
     return {
         "latest_attempt": json.loads(latest[0]) if latest else None,
@@ -40,8 +40,8 @@ def current_opportunities(db: sqlite3.Connection, now: datetime):
 
     rows = db.execute(
         "SELECT f.source,f.payload FROM offer_current c JOIN offer_fetch f ON f.id=c.fetch_id "
-        "WHERE f.expires_at>?",
-        (timestamp(now),),
+        "WHERE f.checked_at<=? AND f.expires_at>?",
+        (timestamp(now), timestamp(now)),
     )
     assertions = tuple(
         assertion
@@ -55,7 +55,8 @@ def current_opportunities(db: sqlite3.Connection, now: datetime):
 def _first_seen(db, scope, now):
     seen = {}
     rows = db.execute(
-        "SELECT payload FROM offer_fetch WHERE scope=? AND expires_at>?", (scope, now)
+        "SELECT payload FROM offer_fetch WHERE scope=? AND checked_at<=? AND expires_at>?",
+        (scope, now, now),
     )
     for row in rows:
         for assertion in decode_fetch(row[0]).assertions:

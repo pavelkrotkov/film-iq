@@ -2266,3 +2266,38 @@ provider adoption, unrestricted retention or invented personal opinions. No live
 personal writes, provider requests or B4 changes occurred. Private artifacts stay
 in the selected project's ignored storage; [operations evidence](docs/operations-recovery.md#authorized-complete-movary-recovery--2026-10-31)
 records the bounded procedure. This PR changes documentation only.
+
+### C4 provider-neutral ledger to discovery — implementation follow-up
+
+Related #22: normalized Fetch import already enforced explicit registered source
+policy, retention, idempotence and failed/partial no-removal semantics, but stored
+observations had no actual discovery-report consumer. Discovery now joins
+permitted US source states by reviewed work identity automatically from its
+explicit local database. One assessment time is sampled per report; zero matching
+permitted records preserve the previous unknown-access output.
+
+The reader retains latest attempt separately from the comparable baseline, so
+unknown-plan and partial positive claims remain visible without absence events
+or a refreshed old timestamp. Shared readers withhold future latest/current/
+first-seen observations. Human cards show source/date/links and uncertainty;
+JSON/collapsed audit preserve all source price/quality/add-on/cut variants and
+registered attribution without private rights notes. No provider, policy grant,
+client/poller, personal input, live request, job or production adoption is added.
+Fixtures import/reopen through the real command/report seam and cover variants,
+unknown tier, partial/unknown attempts, US/identity restrictions, denial,
+termination, expiry, future observations, attribution and the zero-policy case.
+
+C4 controller review identified two presentation gaps before independent review:
+registered source credits were only in the collapsed audit, and known provider
+start/expiry bounds were absent beside visible links. Deduplicated attribution
+is now visible in the viewing section, while known source-supplied bounds qualify
+the corresponding links without filtering variants or inventing missing dates.
+Focused tests require credits and ended/future bounds before the audit collapse;
+private rights evidence remains hidden.
+
+Both independent C4 review axes reproduced a cached-assertion presentation defect:
+a later Fetch wrapper could make an older assertion look freshly checked in the
+card. Links now show each assertion's original check time; the enclosing wrapper
+is labelled only as the attempt's recorded time. Actual import/reopen/report
+regressions cover a reused old assertion and a mixed-age batch, preserving source
+facts, windows and the existing frozen-input retention behavior.
