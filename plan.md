@@ -1904,3 +1904,7 @@ receipts/archive remain ignored; archive copies inherit source/catalog rights
 and expiry. This is bounded evidence for that selected schema10 installation,
 not a claim about later schema/input changes, production provider acceptance or
 the separately authorized complete Movary restore still pending.
+
+After rebasing status reporting onto reviewed typed-recognition main `fdba280`,
+Ruff check/format and ty pass; 544 tests pass with one opt-in skip. All twelve
+status-change Python files retain maximum CC8 and minimum MI50.625676.
