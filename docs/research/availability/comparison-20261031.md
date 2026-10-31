@@ -15,12 +15,12 @@ contains exactly one observation per accepted film/provider pair. The manifest
 hash matches the frozen accepted 60-film both-ID cohort; no cohort expansion or
 extra discovery request was made by this pass.
 
-| Provider | Actual UTC observation window | Requests / HTTP200 | Complete US responses | Unknown | Source offer rows: Oct30 → Oct31 |
+| Provider | UTC observation timestamp range | Requests / HTTP 200 | Complete US responses | Unknown | Source offer rows: Oct30 → Oct31 |
 | --- | --- | ---: | ---: | ---: | ---: |
 | TMDB / JustWatch | 14:00:00.238122–14:00:11.633715 | 60 / 60 | 53 | 7 | 529 → 529 |
 | Movie of the Night native | 14:00:00.386625–14:00:11.707326 | 60 / 60 | 49 | 11 | 274 → 284 |
 
-All responses were HTTP200, but missing usable US data still remains unknown.
+All responses were HTTP 200, but missing usable US data still remains unknown.
 No quota headers were reported. A successful request does not establish remaining
 allowance, account plan, charges or unlimited use. The source-row granularities
 differ: native rows can represent quality/price variants; raw row counts do not

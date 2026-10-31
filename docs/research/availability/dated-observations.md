@@ -66,16 +66,16 @@ local jobs after the experiment; preserve source evidence and project files.
 ## Date-two execution inspected — 2026-10-31
 
 The [second dated report](comparison-20261031.md) verifies the Oct31 job completed
-one run with exit0: 120 observations/requests, all HTTP200, from 14:00:00 to
+one run with exit 0: 120 observations/requests, all HTTP 200, from 14:00:00 to
 14:00:11 UTC using the unchanged accepted manifest. TMDB has 53 complete US
-responses/seven unknown; native has49 complete/11 unknown. Complete-pair native
+responses/seven unknown; native has 49 complete/11 unknown. Complete-pair native
 source opportunity sets changed for five film keys (nine present/two absent),
-while12 keys changed in the broader detail comparison. These are source claims,
+while 12 keys changed in the broader detail comparison. These are source claims,
 not independently confirmed removals or measured change latency. No quota headers
-were returned. Native source rows changed274→284; variant rows and deduplicated
+were returned. Native source rows changed 274→284; variant rows and deduplicated
 opportunities are different units.
 
-At14:58UTC, the Nov1 job still had zero runs and no result file. Date three and
+At 14:58 UTC, the Nov1 job still had zero runs and no result file. Date three and
 final reviewed B4/B8 adjudication remain pending. Jobs, cohort, credentials and
 source captures were not changed by this inspection; public discovery still
 needs no consumer sign-in. Original rights/deletion deadlines remain in force.
