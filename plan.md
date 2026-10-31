@@ -2266,3 +2266,23 @@ provider adoption, unrestricted retention or invented personal opinions. No live
 personal writes, provider requests or B4 changes occurred. Private artifacts stay
 in the selected project's ignored storage; [operations evidence](docs/operations-recovery.md#authorized-complete-movary-recovery--2026-10-31)
 records the bounded procedure. This PR changes documentation only.
+
+### C4 provider-neutral ledger to discovery — implementation follow-up
+
+Related #22: normalized Fetch import already enforced explicit registered source
+policy, retention, idempotence and failed/partial no-removal semantics, but stored
+observations had no actual discovery-report consumer. Discovery now joins
+permitted US source states by reviewed work identity automatically from its
+explicit local database. One assessment time is sampled per report; zero matching
+permitted records preserve the previous unknown-access output.
+
+The reader retains latest attempt separately from the comparable baseline, so
+unknown-plan and partial positive claims remain visible without absence events
+or a refreshed old timestamp. Shared readers withhold future latest/current/
+first-seen observations. Human cards show source/date/links and uncertainty;
+JSON/collapsed audit preserve all source price/quality/add-on/cut variants and
+registered attribution without private rights notes. No provider, policy grant,
+client/poller, personal input, live request, job or production adoption is added.
+Fixtures import/reopen through the real command/report seam and cover variants,
+unknown tier, partial/unknown attempts, US/identity restrictions, denial,
+termination, expiry, future observations, attribution and the zero-policy case.

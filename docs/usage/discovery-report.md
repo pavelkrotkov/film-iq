@@ -128,3 +128,25 @@ and explicit `--order` choices/default. These are report options, never forwarde
 to personal export/refresh commands. Retain display snapshots privately under
 their recorded attribution/expiry and the source/provider terms; no new provider
 feed, model, purchase, watchlist write or web interface is introduced.
+
+## Permitted local offer observations
+
+With an explicit evidence database, discovery automatically includes retained
+US offer observations already imported under a registered allowed source policy.
+No extra flag, provider selection, personal plan or live request is required.
+A database with no permitted matching observations keeps the existing unknown
+access output. Only reviewed film identities receive offer details.
+
+Cards distinguish earlier reported options from an incomplete/inconclusive latest
+check, with source, checked date and service links. Complete unknown-tier claims
+and partial positive claims remain exploratory; an unsuccessful check never
+removes or refreshes the prior comparable snapshot. JSON and the collapsed audit
+retain both states, all price/quality/add-on/cut variants, unknowns, original
+source times and registered display attribution. Private rights-review notes are
+not exposed. Report exports inherit source permissions and retention deadlines.
+
+Future observations and denied, expired or terminated retention policies are
+hidden before presentation. These are source claims, not verified access,
+account entitlement or purchase advice; recheck applicable price/tier/expiry with
+the service. This bridge does not acquire data, grant rights, adopt a provider,
+configure polling or bypass B4/B8.

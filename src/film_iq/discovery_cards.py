@@ -3,6 +3,7 @@
 from film_iq.discovery_display_card import display_details
 from film_iq.discovery_display_card import text as text
 from film_iq.discovery_display_card import title as title
+from film_iq.discovery_offer_render import offer_lines
 from film_iq.recognition.discovery import award_reasons
 
 
@@ -41,6 +42,7 @@ def card(item: dict) -> list[str]:
     lines = [f"### {title(item)}", "", *display_details(item), "", "Why consider it:"]
     lines.extend(f"- {source_reason(reason)}" for reason in reasons)
     lines.extend(award_reasons(item))
+    lines.extend(offer_lines(item))
     if rating := personal(item):
         lines.extend(["", rating])
     if item["identity_status"] != "reviewed":
