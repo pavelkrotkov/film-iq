@@ -12,8 +12,9 @@ from film_iq.sync_cli import _required_env
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    for name in ("database", "cohort", "snapshot", "report", "backups", "status"):
+    for name in ("database", "snapshot", "report", "backups", "status"):
         parser.add_argument(f"--{name}", type=Path, required=True)
+    parser.add_argument("--cohort", type=Path, action="append", required=True)
     for name in ("ratings", "history"):
         group = parser.add_mutually_exclusive_group(required=True)
         group.add_argument(f"--{name}-csv", type=Path)

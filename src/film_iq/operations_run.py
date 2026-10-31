@@ -21,7 +21,7 @@ def run_once(
     client: MovaryClient,
     *,
     database: Path,
-    cohort: Path,
+    cohort: Path | list[Path],
     snapshot: Path,
     report: Path,
     backups: Path,
