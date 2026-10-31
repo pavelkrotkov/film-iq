@@ -9,10 +9,10 @@ from film_iq.cli_parser import build_parser
 
 def main(argv: Sequence[str] | None = None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
-    if argv and argv[0] == "status":
-        from film_iq.status_command import main as status_main
+    if argv and argv[0] in {"changes", "status"}:
+        from importlib import import_module
 
-        return status_main(argv[1:])
+        return import_module(f"film_iq.{argv[0]}_command").main(argv[1:])
     if argv and argv[0] in {"discover", "import-list", "refresh-movary", "acquisition-status"}:
         from film_iq.discovery_cli import main as discovery_main
 
