@@ -21,8 +21,8 @@ def test_registered_source_credit_is_visible_without_rights_notes(evidence_db, t
     )
     import_observation(tmp_path, observation())
     output = report(tmp_path, output_format="markdown")
-    assert "Offer source credits: [Fixture API](https://example.test/api)" in output
+    assert "Credits: [Fixture API](https://example.test/api)" in output
     assert "PRIVATE synthetic rights note" not in output
 
-    assert output.index("Offer source credits:") < output.index("<details>")
-    assert output.count("Offer source credits:") == 1
+    assert output.index("Credits:") < output.index("<details>")
+    assert output.count("Credits:") == 1

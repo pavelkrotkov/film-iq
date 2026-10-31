@@ -39,7 +39,13 @@ def _parse(raw: dict) -> tuple[int, Assertion]:
     if type(identifier) is not int or identifier <= 0:
         raise ValueError("assertion provider IDs must be positive integers")
     data["opportunity"] = Opportunity(**data["opportunity"])
-    for field in ("checked_at", "asserted_added_on", "asserted_expires_at"):
+    for field in (
+        "checked_at",
+        "asserted_added_on",
+        "asserted_expires_at",
+        "provider_detected_at",
+        "provider_last_day_at",
+    ):
         if data.get(field) is not None:
             data[field] = datetime.fromisoformat(data[field])
     assertion = Assertion(**data)

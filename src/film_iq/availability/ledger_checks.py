@@ -29,7 +29,7 @@ def _baseline(fetch):
     return (
         fetch.status == "complete"
         and fetch.work_reviewed
-        and fetch.plan_scope is not None
+        and fetch.has_comparison_scope
         and all(item.work_status == "reviewed" for item in fetch.assertions)
     )
 

@@ -47,13 +47,17 @@ def _link(item: dict) -> str:
     plan = offer["plan"]
     if plan is None and offer["kind"] in {"subscription", "add-on"}:
         plan = "tier unknown"
-    tier = " / ".join(filter(None, (offer["service"], plan, offer["add_on"])))
+    service = item.get("service_name") or f"service ID {offer['service']}"
+    addon = item.get("addon_name") or (f"add-on ID {offer['add_on']}" if offer["add_on"] else None)
+    tier = " / ".join(filter(None, (service, plan, addon)))
     bounds = [f"claim checked {_when(item['checked_at'])}"]
     bounds.extend(
         f"{label} {item[key]}"
         for key, label in (
             ("asserted_added_on", "source says starts"),
             ("asserted_expires_at", "source says expires"),
+            ("provider_detected_at", "provider detected"),
+            ("provider_last_day_at", "provider says last day"),
         )
         if item.get(key) is not None
     )
@@ -81,13 +85,6 @@ def access_note(report: dict) -> str:
     if "offer_assessed_at" in report:
         return "Source-reported access is exploratory: recheck price, freshness, expiry and applicable account plan. Your scores appear only where available."
     return "Rental and streaming availability, price and plan entitlement have not been verified. Your scores appear only where available."
-
-
-def offer_credits(items: list[dict]) -> list[str]:
-    credits = sorted(
-        {state["attribution"] for item in items for state in item.get("offer_states", [])}
-    )
-    return ["Offer source credits: " + "; ".join(credits)] if credits else []
 
 
 def _when(value: str) -> str:

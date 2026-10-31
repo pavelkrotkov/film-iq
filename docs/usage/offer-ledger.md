@@ -30,8 +30,11 @@ tier/add-on, quality/cut, price/currency, entitlement, work uncertainty and
 provider-asserted addition/expiry separately. Missing facts remain null. A
 request error is an `unknown` fetch, never a complete empty catalog result.
 
-Only complete reviewed work with an explicit plan scope updates the comparison
-baseline. Partial, unknown, unknown-plan and unresolved-work observations remain
+Only complete reviewed work with an explicit account-plan scope or declared
+`catalog_scope: "public_country"` updates its separate comparison baseline. The
+public context compares that source's country catalog, not account entitlement,
+and cannot be combined with a specific plan scope. Partial, unknown, unscoped
+and unresolved-work observations remain
 inspectable attempts and cannot create disappearance. Events mean
 `source_first_seen` or `source_absent` within that one source/work/country/plan;
 they do not prove global availability or a provider's release date. Identical
