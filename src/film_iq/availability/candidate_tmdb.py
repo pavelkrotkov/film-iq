@@ -24,6 +24,10 @@ def normalize(work: ReviewedWork, payload: dict, checked_at: datetime) -> Fetch:
     )
     if type(payload.get("id")) is not int:
         return empty
+    try:
+        link(payload["results"]["US"]["link"])
+    except (ValueError, TypeError, KeyError, AttributeError):
+        return empty
     observed = tmdb_normalize(work.tmdb_id, payload, checked_at)
     assertions, partial = [], observed.status == "partial"
     for row in observed.offers:

@@ -2371,3 +2371,12 @@ check/format and ty pass; 691 tests pass with one opt-in skip. Request-cap, dry-
 rights, auth/quota stop, secret-redaction, exact money, producer/name/window,
 public-catalog presence/absence and legacy hash/key regressions all pass. Frozen
 B4 observer files, jobs, actual policy/data and credentials are untouched.
+
+Candidate Spec review reproduced a malformed-empty TMDB frame bypass: locator
+validation happened only for positive rows, so an invalid US link with zero
+rows could replace the baseline and emit absence. The mapper now validates the
+public country-frame locator before accepting empty or positive observations.
+Actual producer/two-import regressions cover malformed, HTTP, userinfo, credential-
+query and null locators; prior valid snapshots/events survive. The valid HTTPS
+explicit-empty transition remains covered and produces only source-specific
+absence. No provider request or frozen-study change was made.
