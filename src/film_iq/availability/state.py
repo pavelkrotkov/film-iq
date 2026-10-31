@@ -75,9 +75,9 @@ def retained_events(
     rows = db.execute(
         "SELECT e.id,f.source,e.payload FROM offer_event e JOIN offer_fetch f ON e.fetch_id=f.id "
         "LEFT JOIN offer_fetch p ON p.id=e.previous_fetch_id "
-        "WHERE f.expires_at>? AND (p.id IS NULL OR p.expires_at>?) "
+        "WHERE f.checked_at<=? AND f.expires_at>? AND (p.id IS NULL OR p.expires_at>?) "
         "AND (? IS NULL OR f.scope=?) ORDER BY f.checked_at,e.id",
-        (checked, checked, scope, scope),
+        (checked, checked, checked, scope, scope),
     )
     return [
         {"id": identifier, "change": json.loads(payload)}
