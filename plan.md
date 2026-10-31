@@ -2286,3 +2286,11 @@ client/poller, personal input, live request, job or production adoption is added
 Fixtures import/reopen through the real command/report seam and cover variants,
 unknown tier, partial/unknown attempts, US/identity restrictions, denial,
 termination, expiry, future observations, attribution and the zero-policy case.
+
+C4 controller review identified two presentation gaps before independent review:
+registered source credits were only in the collapsed audit, and known provider
+start/expiry bounds were absent beside visible links. Deduplicated attribution
+is now visible in the viewing section, while known source-supplied bounds qualify
+the corresponding links without filtering variants or inventing missing dates.
+Focused tests require credits and ended/future bounds before the audit collapse;
+private rights evidence remains hidden.
