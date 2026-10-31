@@ -46,6 +46,10 @@ def components_for(db: sqlite3.Connection | None, tmdb_id: int | None) -> dict:
     rows = (
         [] if db is None else [row for row in current_components(db) if row["tmdb_id"] == tmdb_id]
     )
+    return group_components(rows)
+
+
+def group_components(rows: list[dict]) -> dict:
     grouped = {kind: [] for kind in KINDS}
     grouped["unclassified"] = []
     for row in rows:
