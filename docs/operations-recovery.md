@@ -256,6 +256,8 @@ operator-selected project. Restore the installation archive first, then use
 its captured `uv.lock`; do not resolve a new dependency set during recovery.
 
 ```sh
+(
+set -e
 FILMIQ_PROJECT=/absolute/path/to/selected/project
 FILMIQ_RESTORE="$FILMIQ_PROJECT/.cache/recovery/isolated-restore"
 FILMIQ_APP="$FILMIQ_RESTORE/application"
@@ -267,8 +269,6 @@ export UV_PROJECT_ENVIRONMENT="$FILMIQ_APP/.venv"
 mkdir -p "$UV_CACHE_DIR" "$TMPDIR" "$FILMIQ_APP/.cache"
 cp "$FILMIQ_RESTORE/inputs/uv.lock" "$FILMIQ_APP/uv.lock"
 uv sync --project "$FILMIQ_APP" --frozen --offline --dev --python "$FILMIQ_PYTHON"
-(
-  set -e
   cd "$FILMIQ_APP" || exit 1
   unset MOVARY_INTEGRATION
   uv run --frozen --offline ruff check .
