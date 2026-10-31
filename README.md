@@ -1,10 +1,15 @@
 # film-iq
 
+Personal ratings, merit comments and viewing plans are optional. Discovery and
+core deployment work without them; the planner accepts private budget/time inputs
+only when voluntarily invoked. No personal entries, edits or actual spending
+decision are required to finish development or release.
+
 **An open-source, evidence-driven film discovery and streaming-planning companion to [Movary](https://github.com/leepeuker/movary).**
 
 **Status:** Gate A's narrow POC is validated through real API reads, a sourced report and a user-approved watchlist round trip. Source/provider research and production release remain open; see [the evidence and limits](docs/a7-live-validation.md).
 
-film-iq connects critics' lists, polls, festivals, awards, film identity, personal viewing history and US viewing availability. It explains **why a film matters**, distinguishes critical recognition from predicted personal enjoyment, and proposes realistic viewing bundles and optional monthly streaming-service choices. It is not another watch-history application.
+film-iq connects critics' lists, polls, festivals, awards, film identity, personal viewing history and US viewing availability. It explains **why a film matters**, distinguishes critical recognition from optional personal judgments, and proposes realistic viewing bundles and optional monthly streaming-service choices. It is not another watch-history application.
 
 ## Start here
 

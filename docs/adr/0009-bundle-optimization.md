@@ -15,3 +15,14 @@ Planner is auditable but utility trade-offs are a user policy, not a mathematica
 ## Validation / reconsideration
 Gate: choose a transparent heuristic and sensitivity-test alternative utility mappings against actual decisions.
 
+
+## User decision — optional invocation (2026-10-31)
+
+A personal viewing plan, budget, time allowance and utility preference are optional
+inputs supplied only when the user chooses to invoke planning. Core discovery,
+reports, deployment and release work without them. Test the planner's constraint
+and uncertainty contract with declared fixtures; do not ask the user to disclose
+private habits or accept a real spending plan to finish development. No inferred
+budget/schedule, automatic purchase or default charge follows from the baseline.
+The existing declared utility sensitivity is not a learned preference or optimality
+claim; provider rights and verified offer qualification remain separate gates.

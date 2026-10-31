@@ -1,12 +1,28 @@
 # film-iq — product, research and implementation plan
 
+## Current user decision — optional personal inputs (2026-10-31)
+
+The [explicit user-directed amendment](https://github.com/pavelkrotkov/film-iq/issues/3#issuecomment-6545430122)
+sets the current scope: personal ratings, artistic-merit comments, viewing habits,
+budgets and schedules are private optional inputs. Development, deployment and release must not depend
+on the user supplying them, and agents must not request entries/edits for testing.
+The user may add them whenever they choose. Core discovery, reports and recovery
+work with null scores and without a viewing plan. Historical live-rating and
+personal-plan acceptance gates below are superseded by this explicit decision;
+fixture evidence must never be relabelled as genuine live score verification.
+
+Existing watched-state reads may exclude watched films when supplied; missing
+personal state remains unknown. The separate planning command accepts constraints
+only when invoked voluntarily, with no invented budget, schedule or charge. No
+personal model or upstream Movary change is required for core release.
+
 **Version:** 1.1 (implementation reference) · **Date:** 2026-10-29 · **Status:** approved direction, empirical decisions pending  
 **Source:** Film Intelligence white paper v1.0 plus 2026-10-29 architecture/research audit.  
 **Policy:** ADRs specify decisions; tracked issues implement them. This document defines scope, expected behavior, milestones and exit criteria, not a claim that implementation exists.
 
 ## 1. Why build this?
 
-An individual film viewer wants a durable, explainable way to discover important cinema worldwide (including shorts, documentaries, animation, experimental and less-distributed films) through influential critics' polls, annual lists, festivals and awards. Recommendation quality should improve from ratings recorded in Movary. A separate planning layer should identify legal US viewing options and, when advantageous, a rotating streaming subscription that enables a feasible month of approximately 5–8 films.
+An individual film viewer wants a durable, explainable way to discover important cinema worldwide (including shorts, documentaries, animation, experimental and less-distributed films) through influential critics' polls, annual lists, festivals and awards. Optional future personal-fit work may use voluntarily entered Movary ratings; public-evidence discovery does not require them. When requested, a separate planning layer identifies legal US viewing options under explicitly supplied constraints, including optional subscription comparisons.
 
 Existing trackers, popularity lists, document search and availability websites each address fragments. The distinctive product is **the provenance-preserving join**: critical selection → correctly identified work → independent evidence and uncertainty → personalized priority → verified offer → chosen viewing plan.
 
@@ -2191,3 +2207,37 @@ C2 #20's bounded manual delivery is now accepted and closed after PR89 and the
 [explicit source/use decisions](https://github.com/pavelkrotkov/film-iq/pull/89#issuecomment-6545209723);
 earlier pending-status paragraphs are historical. Broader bulk ingestion and a
 human-throughput estimate remain conditional on undertaking that broader work.
+
+### Acceptance reconciliation — optional private inputs (2026-10-31)
+
+The current user decision replaces earlier requests for genuine rating/merit edits
+and an actual personal viewing-plan demonstration. The existing code already
+supports nullable scores, complete empty exports, source-led discovery without
+planning inputs, and an independently invoked planner. No runtime change is
+needed; stale snapshots, uncertain identities and unknown offers keep their
+existing safeguards. Full recovery and provider rights/date gates remain separate.
+
+| Issue | Current acceptance scope / proposed native tracker update |
+| --- | --- |
+| #58 | Accept complete API/CSV replacement reads, nullable separate scores, watched exclusion, rated-only/conflict/edit/delete fixture semantics, private provenance and stale/failure protection. Existing real history/null-score readback plus deterministic fixtures can establish core acceptance; genuine personal-score entries/edits are optional future observations, never a required user task. |
+| #25 | Accept the real source/history multi-film report, null-score handling, freshness and local deduplicated changes. Remove the mandatory 5–15 rated films and changed/deleted enjoyment/merit demonstration; preserve source, identity, offer and approval safeguards. No viewing-plan declaration is needed to use discovery. |
+| #23 | Validate the optional planner against declared fixture constraints, utility sensitivity, union/overlap, costs, entitlement and expiry. A user's real budget/schedule, actual purchase or preferred utility trade-off is not a development/release gate; invocation assumptions remain explicit, with no invented preferences or charge. Production offer adoption remains separately gated in #22. |
+| #24 | Optional future model: not planned for core delivery. Without voluntarily supplied adequate data, do not fit a model, infer negative labels or claim personalized lift. Reconsider only for a later requested task with an appropriate time-ordered evaluation. |
+| #27 | No upstream implementation is presently justified: stock API/CLI exports and deterministic optional merit-token mapping satisfy the selected integration. Record a not-planned outcome unless a concrete future interface deficiency is observed; do not wait for private entries to demonstrate friction. |
+| Epic #3 | Core release requires the selected source/report/offer/recovery contracts, not personal ratings, merit edits or a viewing plan. Optional model/upstream work may be explicitly recorded as not planned; retain the actual provider and full-recovery gates. |
+
+These are acceptance-scope corrections, not issue-closure assertions. The controller
+will reconcile native issue bodies after independent review. Earlier evidence
+statements remain historical; no genuine score, preference or user satisfaction
+is invented or claimed verified.
+
+A credential-free synthetic smoke check exercised the existing real CLI/module
+paths without runtime patches: complete empty CSV exports, local refresh/report/
+backup with no budget or dates, discovery suggestions with both scores null,
+source reports with absent personal state kept unknown, and an optionally invoked
+planner with explicitly supplied fixture constraints and null scores. No account,
+network, personal entry/edit, model training or live recovery action was involved.
+
+Validation: Ruff check/format and ty pass; 599 tests pass with one opt-in skip.
+This correction changes documentation/acceptance only; no Python complexity
+surface, runtime dependency or private user record is changed.

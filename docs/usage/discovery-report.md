@@ -1,5 +1,11 @@
 # First-use private discovery report
 
+Discovery needs no personal ratings, budget, schedule or viewing-plan declaration.
+Both score fields may remain null. A supplied fresh complete history snapshot
+supports watched exclusion independently of ratings; without it, source evidence
+is still reported and watched status stays unknown. Historical live-rating/edit
+acceptance requests below are optional evidence gaps, not release prerequisites.
+
 Use `film-iq discover` for a bounded read-only multi-film report. It joins a
 complete curated-import preview with the current accepted revision and reviewed
 TMDB matches in SQLite, then optionally joins a private Movary snapshot. It does
