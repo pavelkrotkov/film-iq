@@ -1650,3 +1650,22 @@ Genuine nonempty personal rating/merit edits and deletion acceptance remain open
 no user opinions are manufactured to satisfy the gate. B4's actual later-date
 measurements remain scheduled and untouched; production provider adoption waits
 for their reviewed outcome.
+
+### C4 permitted durable offer runtime (2026-10-31)
+
+Migration 010 connects C4's provider-neutral Fetch/Assertion/reconciliation and
+C8's explicit CachePolicy to durable SQLite observations, exact-plan scoped
+complete baselines and source-specific events. Every observation freezes its
+permission/attribution/deadline; renewals cannot extend old retained data.
+Registration is explicit review input, with no provider rights inferred. Denied,
+expired or terminated policies immediately suppress reads; named-source purge
+previews and explicitly deletes affected snapshots/baselines/events. Partial,
+unknown and unreviewed observations do not overwrite complete comparable state
+or produce absence. Identical replay is idempotent; contradictory complete
+same-time observations fail visibly. Atomic rollback/restart is tested.
+
+The local policy/import/state/purge entrypoint and current-opportunity reader
+make these contracts executable without a production provider or network call.
+See docs/usage/offer-ledger.md. B4/B8 selection, actual provider-specific quota/
+rights/retention assessment, account-plan checks and ongoing live monitoring
+remain finish gates; no scheduled B4 job, Movary state or live offer is changed.
