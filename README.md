@@ -35,7 +35,8 @@ exclusion even with no ratings. No budget or schedule is requested. See the
 ## Architecture at a glance
 
 Sources → validated, versioned evidence → SQLite → public recognition → discovery/report.
-Optional inputs and commands add Movary history/ratings, availability and planning.
+Movary history supports watched exclusion; personal ratings and planning are optional.
+Availability integration retains its separate production-provider gate.
 
 Movary remains authoritative for watched films, dates, personal ratings and explicit watchlist entries. The companion reads that data and writes only **user-approved** watchlist additions. TMDB IDs are operational movie identity, not substitutes for preserved raw source observations.
 
