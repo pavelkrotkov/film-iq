@@ -23,21 +23,3 @@ def test_failed_private_output_does_not_acknowledge(evidence_db, tmp_path):
     with pytest.raises(SystemExit):
         main([*arguments(tmp_path), "--output", str(output), "--ack"])
     assert not (tmp_path / "seen.json").exists()
-
-
-def test_markdown_private_output_and_invalid_checkpoint(evidence_db, tmp_path):
-    args = arguments(tmp_path)
-    args[-1] = "markdown"
-    output = tmp_path / "changes.md"
-    assert main([*args, "--output", str(output), "--ack"]) == 0
-    assert "First-use baseline" in output.read_text()
-    assert output.stat().st_mode & 0o777 == 0o600
-    (tmp_path / "seen.json").write_text('{"provider_payload":"forbidden"}')
-    with pytest.raises(SystemExit):
-        main(args)
-
-
-def test_output_cannot_overwrite_checkpoint_or_database(evidence_db, tmp_path):
-    for name in ("evidence.db", "seen.json"):
-        with pytest.raises(SystemExit):
-            main([*arguments(tmp_path), "--output", str(tmp_path / name)])

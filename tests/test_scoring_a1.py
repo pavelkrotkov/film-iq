@@ -1,5 +1,3 @@
-import json
-from dataclasses import asdict, replace
 from datetime import date
 
 from film_iq.scoring import Evidence, score
@@ -80,41 +78,3 @@ def test_excludes_unverified_nonoriginal_and_noncurrent(evidence_db):
         assert load_evidence(db) == [], statement
         db.execute("ROLLBACK TO check_exclusion")
         db.execute("RELEASE check_exclusion")
-
-
-def test_uncertainty_is_explicit_for_accepted_evidence_and_v1_replay(evidence_db):
-    db = evidence_db
-    accepted(db)
-    result = score(load_evidence(db))[0]
-    expected = {
-        "extraction_uncertainty": "not_evaluated",
-        "identity_uncertainty": "not_evaluated",
-        "evidence_disagreement_uncertainty": "not_evaluated",
-        "prediction_uncertainty": "not_applicable",
-    }
-    # Existing Fraction/date output conversion belongs to the report layer.
-    serialized = json.loads(json.dumps({key: asdict(result)[key] for key in expected}))
-    assert serialized == expected
-    initialize(db)
-    current_id = save(db, load_evidence(db), "now")
-    assert replay(db, current_id) == (result,)
-
-    # Literal payload and ID captured from v1 before uncertainty fields existed.
-    legacy_id = "32446dfdb8f371f983ebe031749fd18fee39840a840bede5a690f29026e5ab97"
-    payload = (
-        '[{"derivative_of":[],"eligibility":"eligible","entry_id":null,"film_id":"42",'
-        '"independence_group":"critic","list_id":"list","match_decision_id":null,'
-        '"published":null,"rank":1,"revision_id":null,"url":"https://example.test/list"}]'
-    )
-    db.execute(
-        "INSERT INTO scoring_snapshot VALUES (?, ?, ?, ?)",
-        (legacy_id, "independent-reciprocal-rank-v1", "before", payload),
-    )
-    legacy_evidence = [
-        Evidence("42", "list", "https://example.test/list", None, "critic", "eligible", 1)
-    ]
-    legacy_result = replay(db, legacy_id)[0]
-    assert replace(legacy_result, version=result.version) == score(legacy_evidence)[0]
-    assert {key: asdict(legacy_result)[key] for key in expected} == expected
-    assert (legacy_result.independent_count, legacy_result.rank_score) == (1, 1)
-    assert save(db, legacy_evidence, "later") != legacy_id

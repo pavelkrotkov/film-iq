@@ -43,15 +43,29 @@ def test_assertions_produce_separate_verified_plan_and_preserve_source(evidence_
     data = report_inputs()
     data["assertions"] = [assertion(asserted_expires_at="2026-11-30T00:00:00+00:00")]
     result = build_report(evidence_db, data)
-    assert result["verified_plans"][0]["choices"][0]["film"]["id"] == 1
-    assert result["assertions"][0]["source"] == "official-test"
+    assert (
+        result["verified_plans"][0]["choices"][0]["film"]["id"],
+        result["assertions"][0]["source"],
+    ) == (1, "official-test")
     assert "power=2" in result["plans"][0]["assumptions"]
+    data["assertions"] = [assertion()]
+    unknown_expiry = build_report(evidence_db, data)
+    exploratory = unknown_expiry["plans"][0]
+    assert (
+        exploratory["feasibility"],
+        exploratory["choices"][0]["offer"]["entitlement"],
+        exploratory["choices"][0]["offer"]["expires"],
+        bool(unknown_expiry["verified_plans"][0]["choices"]),
+    ) == ("tentative", "confirmed", None, False)
     data["assertions"] = [
         assertion(entitlement="unconfirmed", asserted_expires_at="2026-11-30T00:00:00+00:00")
     ]
     result = build_report(evidence_db, data)
     assert result["plans"][0]["feasibility"] == "tentative"
     assert not result["verified_plans"][0]["choices"]
+    data["dates"] = ["2026-10-01"]
+    with pytest.raises(ValueError, match="on or after the assessment"):
+        build_report(evidence_db, data)
 
 
 @pytest.mark.parametrize(

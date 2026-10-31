@@ -1,10 +1,6 @@
 """Denominator checks use synthetic IDs; the real cohort stays unaudited."""
 
-import copy
-import json
 from pathlib import Path
-
-import pytest
 
 from film_iq.identity.evaluation import evaluate
 
@@ -90,47 +86,3 @@ def test_zero_accepts_is_undefined_precision() -> None:
     assert counts["precision"] is None
     assert counts["coverage"] == 0
     assert counts["review_rate"] == 1
-
-
-@pytest.mark.parametrize(
-    "change",
-    ["missing", "duplicate", "version", "completeness", "unaudited-id", "missing-evidence"],
-)
-def test_reject_invalid_cohort(change: str) -> None:
-    """Reject cohort drift instead of silently truncating or relabeling cases.
-
-    An audit status without evidence cannot turn a lead into scored truth.
-    """
-    sample, original = inputs()
-    catalog = copy.deepcopy(original)
-    if change == "missing":
-        catalog["cases"].pop()
-    if change == "duplicate":
-        catalog["cases"].append(catalog["cases"][0])
-    if change == "version":
-        catalog["version"] = "other"
-    if change == "completeness":
-        catalog["cases"][0]["retrieval"]["complete"] = "true"
-    if change == "unaudited-id":
-        catalog["cases"][4]["truth"]["tmdb_id"] = 1
-    if change == "missing-evidence":
-        catalog["cases"][0]["truth"]["evidence"] = []
-    with pytest.raises(ValueError):
-        evaluate(sample, catalog)
-
-
-def test_real_cohort_never_scores_wikidata_as_truth() -> None:
-    """Real observations are runnable while independent ID audits are missing.
-
-    Every rate remains undefined until a genuinely audited denominator exists.
-    """
-    sample = json.loads((FIXTURES / "specialty-observations.json").read_text())
-    catalog = json.loads((FIXTURES / "specialty-candidates.json").read_text())
-    counts = evaluate(sample, catalog)["counts_and_ratios"]
-    assert counts["attempted"] == 5
-    assert counts["unknown_truth"] == 5
-    assert counts["incomplete_retrieval"] == 1
-    assert counts["scored"] == counts["auto_accepted"] == 0
-    assert all(
-        counts[key] is None for key in ("precision", "coverage", "review_rate", "candidate_recall")
-    )

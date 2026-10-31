@@ -1,17 +1,21 @@
 """TMDB candidates reuse partial-safe normalization without inventing tier or price."""
 
-import pytest
-from candidate_support import WORK
-from offer_store_support import NOW
+from candidate_support import WORK, permit
+from discovery_offer_support import configure, report
+from offer_store_support import NOW, fetch
 
 from film_iq.availability.candidate_tmdb import normalize
+from film_iq.availability.codec import decode_fetch, encode, key, scope_key
+from film_iq.availability.ledger import save_fetch
 
 
 def payload(us):
     return {"id": 123, "results": {"US": us}}
 
 
-def test_tmdb_valid_row_is_unconfirmed_and_price_plan_cut_unknown():
+def test_tmdb_valid_row_is_unconfirmed_and_price_plan_cut_unknown(evidence_db, tmp_path):
+    configure(evidence_db, tmp_path)
+    permit(evidence_db, "tmdb")
     result = normalize(
         WORK,
         payload(
@@ -32,36 +36,21 @@ def test_tmdb_valid_row_is_unconfirmed_and_price_plan_cut_unknown():
         None,
     )
     assert item.entitlement == "unconfirmed"
-
-
-@pytest.mark.parametrize(
-    "value",
-    [
-        None,
-        {"id": True, "results": {"US": {}}},
-        {"id": 999, "results": {}},
-        {"id": 123, "results": {}},
-    ],
-)
-def test_bad_work_or_missing_us_never_means_complete_empty(value):
-    assert normalize(WORK, value or {}, NOW).status == "unknown"
-
-
-def test_explicit_empty_and_partial_invalid_row_are_distinct():
+    save_fetch(evidence_db, result, NOW)
     assert (
-        normalize(WORK, payload({"link": "https://example.test/watch"}), NOW).status == "complete"
+        "[Fixture / tier unknown — subscription]"
+        in report(tmp_path, output_format="markdown").split("<details>", 1)[0]
     )
-    result = normalize(
-        WORK,
-        payload(
-            {
-                "link": "https://example.test/watch",
-                "rent": [
-                    {"provider_id": 7, "provider_name": "Fixture"},
-                    {"provider_id": False, "provider_name": "Bad"},
-                ],
-            }
-        ),
-        NOW,
+
+    # New optional provider fields preserve identities of already retained observations.
+    assert (
+        key(encode(fetch())),
+        decode_fetch(encode(fetch())),
+        scope_key(fetch()),
+        scope_key(fetch(plan=None)),
+    ) == (
+        "fea9ed9b27a2a10ae70a604d09b76186662c3230c3ea3a90f33f49741ed8ce97",
+        fetch(),
+        "8e3fb1c59221f971adf4dde8a7731318b19f8e6e09704efea29cff34f360a423",
+        "0809f41fd4d6b4b63e213b54b5163a2f3cb547c26c4f4e6a50cdb247d507107b",
     )
-    assert result.status == "partial" and len(result.assertions) == 1

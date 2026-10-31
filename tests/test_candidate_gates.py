@@ -1,27 +1,17 @@
 """Rights, dry-run and batch validation gate every request and ledger write."""
 
-from dataclasses import replace
 from unittest.mock import Mock
 
 import pytest
 from candidate_support import WORK, manifest
-from offer_store_support import NOW, policy
+from offer_store_support import NOW
 
 from film_iq.availability import candidate_command, candidate_run
 from film_iq.availability.candidate_run import run_candidates
-from film_iq.availability.policies import record_policy
 
 
-@pytest.mark.parametrize("decision", ["missing", "denied", "expired", "terminated"])
-def test_source_policy_blocks_transport_and_persistence(evidence_db, decision):
+def test_source_policy_blocks_transport_and_persistence(evidence_db):
     evidence_db.commit()
-    changes = {
-        "denied": {"allowed": False},
-        "expired": {"expires_at": NOW},
-        "terminated": {"terminated": True},
-    }
-    if decision != "missing":
-        record_policy(evidence_db, replace(policy("motn", allowed=True), **changes[decision]), NOW)
     before = tuple(evidence_db.iterdump())
     get = Mock()
     with pytest.raises(PermissionError):

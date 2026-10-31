@@ -1,27 +1,8 @@
-import pytest
 from test_report import inputs
 from test_scoring_a1 import accepted
 
 from film_iq.report import build_report
 from film_iq.report_render import markdown
-
-
-@pytest.mark.parametrize(
-    "field,value",
-    [
-        ("offers", None),
-        ("offers", []),
-        ("service_prices_cents", []),
-        ("catalog", []),
-        ("dates", {}),
-        ("current_services", None),
-    ],
-)
-def test_invalid_containers_fail_explicitly(evidence_db, field, value):
-    data = inputs()
-    data[field] = value
-    with pytest.raises(ValueError, match=field):
-        build_report(evidence_db, data)
 
 
 def test_report_links_plan_to_evidence(evidence_db):

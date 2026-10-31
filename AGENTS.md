@@ -31,6 +31,7 @@ Adapted from the general-purpose engineering practices in [pavelkrotkov/utils](h
 - Avoid speculative dependencies; document necessity in the corresponding issue and ADR when material.
 - New source adapters must define input/rights, validation, lineage, error handling, completeness checks and fixture tests.
 - Tests must exercise idempotence, correct rank/tie semantics, source lineage, uncertain film matches, entitlement uncertainty and failed API response handling when those features are implemented.
+- Keep default pytest collection at or below 200 cases, including parameterized cases and opt-in tests. Prefer one meaningful workflow check over repeated validation permutations; do not hide cases behind skips, collection exclusions or replacement input loops.
 - Use environment variables or locally ignored config for secrets. Integrations requiring credentials are opt-in in CI.
 
 ## Workflow

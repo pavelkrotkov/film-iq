@@ -13,11 +13,12 @@ def plans(films, offers, **kwargs):
 
 
 def test_subscription_plus_rental_is_distinct_and_not_double_counted():
-    films = [Film(1, "Subscription", 90, 8), Film(2, "Rental", 90, 7)]
+    films = [Film(1, "Subscription", 90, 8), Film(2, "Rental", 90, 7), Film(3, "Expired", 90, 100)]
     offers = [
         Access(1, 1, "subscription", "confirmed", expires=date(2026, 11, 30)),
         Access(1, 2, "rent", "confirmed", 200, date(2026, 11, 30)),
         Access(2, 2, "rent", "confirmed", 300, date(2026, 11, 30)),
+        Access(3, 1, "subscription", "confirmed", expires=date(2026, 10, 31)),
     ]
     hybrid = plans(films, offers)[-1]
     assert (hybrid.option, hybrid.utility, hybrid.cost_cents) == ("service 1 + rentals", 15, 800)
@@ -35,3 +36,10 @@ def test_verified_search_preserves_lower_utility_confirmed_option():
     verified = plans(films, offers, verified_only=True)[-1]
     assert tentative.utility == 15 and tentative.feasibility == "tentative"
     assert verified.utility == 7 and verified.feasibility == "verified"
+    addons = [
+        Access(1, 2, "add-on", "confirmed"),
+        Access(2, 2, "add-on", "unconfirmed"),
+    ]
+    assert not plans(films, addons)[0].choices
+    existing = compare(films, addons, {2}, [DAY], 90, 1, 0, {})[0]
+    assert [choice.film.id for choice in existing.choices] == [1]

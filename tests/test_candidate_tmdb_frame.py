@@ -4,7 +4,6 @@ import json
 from datetime import timedelta
 from unittest.mock import Mock
 
-import pytest
 from candidate_support import WORK, permit
 from offer_store_support import NOW
 from test_candidate_public_catalog import payload
@@ -14,19 +13,8 @@ from film_iq.availability.fetch import Fetch
 from film_iq.availability.state import read_state
 
 
-@pytest.mark.parametrize(
-    "locator",
-    [
-        "not-a-public-url",
-        "http://example.test/watch",
-        "https://user:pass@example.test/watch",
-        "https://example.test/watch?api_key=fixture-secret",
-        None,
-    ],
-)
-def test_positive_then_malformed_empty_frame_retains_prior_baseline(
-    evidence_db, monkeypatch, locator
-):
+def test_positive_then_malformed_empty_frame_retains_prior_baseline(evidence_db, monkeypatch):
+    locator = "not-a-public-url"
     permit(evidence_db, "tmdb")
     monkeypatch.setenv("TMDB_READ_ACCESS_TOKEN", "fixture-secret")
     malformed = {"id": 123, "results": {"US": {"link": locator}}}

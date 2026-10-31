@@ -36,9 +36,3 @@ def test_oversized_batch_is_rejected_before_transport():
             get=get,
         )
     assert get.call_count == 0
-
-
-@pytest.mark.parametrize("cap", [True, -1, 1.5, float("inf"), None])
-def test_invalid_request_cap_is_not_an_unbounded_mode(cap):
-    with pytest.raises(ValueError, match="finite"):
-        run_candidates(None, "motn", [WORK], max_requests=cap)

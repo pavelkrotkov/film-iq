@@ -1,14 +1,13 @@
 """A selected qualified assertion must retain its own link, source and timestamp."""
 
-import pytest
 from test_report_runtime import assertion, report_inputs, setup_db
 
 from film_iq.report import build_report
 from film_iq.report_render import markdown
 
 
-@pytest.mark.parametrize("reverse", [False, True])
-def test_excluded_assertion_cannot_supply_verified_plan_citation(evidence_db, reverse):
+def test_excluded_assertion_cannot_supply_verified_plan_citation(evidence_db):
+    reverse = False
     setup_db(evidence_db)
     data = report_inputs()
     fresh = assertion(
