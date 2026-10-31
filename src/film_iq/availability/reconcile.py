@@ -6,7 +6,11 @@ from .opportunity import Change, Opportunity
 
 def changes(previous: Fetch, current: Fetch) -> tuple[Change, ...]:
     """Compare only reviewed complete same-plan scopes; absence is source-specific."""
-    if previous.scope != current.scope or previous.plan_scope != current.plan_scope:
+    if (previous.scope, previous.plan_scope, previous.catalog_scope) != (
+        current.scope,
+        current.plan_scope,
+        current.catalog_scope,
+    ):
         raise ValueError("fetch scopes differ")
     if current.checked_at < previous.checked_at:
         raise ValueError("fetch time moved backwards")
@@ -27,7 +31,7 @@ def _comparable(previous: Fetch, current: Fetch) -> bool:
         previous.status == current.status == "complete"
         and _reviewed(previous)
         and _reviewed(current)
-        and current.plan_scope is not None
+        and current.has_comparison_scope
     )
 
 

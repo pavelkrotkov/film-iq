@@ -19,9 +19,11 @@ def timestamp(value: datetime) -> str:
 
 def encode(value) -> str:
     data = asdict(value)
-    # New optional provider-date fields must not change legacy observation hashes.
+    if data.get("catalog_scope") is None:
+        data.pop("catalog_scope", None)
+    # New optional provider fields must not change legacy observation hashes.
     for item in data.get("assertions", (data,)):
-        for field in ("provider_detected_at", "provider_last_day_at"):
+        for field in ("provider_detected_at", "provider_last_day_at", "service_name", "addon_name"):
             if item.get(field) is None:
                 item.pop(field, None)
     return json.dumps(data, sort_keys=True, ensure_ascii=False, default=timestamp)
@@ -32,7 +34,10 @@ def key(value: str) -> str:
 
 
 def scope_key(fetch: Fetch) -> str:
-    return key(json.dumps((*fetch.scope, fetch.plan_scope)))
+    parts = (*fetch.scope, fetch.plan_scope)
+    if fetch.catalog_scope is not None:
+        parts += (fetch.catalog_scope,)
+    return key(json.dumps(parts))
 
 
 def decode_fetch(payload: str) -> Fetch:

@@ -22,7 +22,15 @@ def observe(
     checked_at: datetime,
     get: Callable[[Request], Response],
 ) -> tuple[Fetch, str | None, dict[str, int]]:
-    unknown = Fetch(provider, work.tmdb_id, "US", checked_at, "unknown", work_reviewed=True)
+    unknown = Fetch(
+        provider,
+        work.tmdb_id,
+        "US",
+        checked_at,
+        "unknown",
+        work_reviewed=True,
+        catalog_scope="public_country",
+    )
     quota = {}
     try:
         status, body, headers = get(request)

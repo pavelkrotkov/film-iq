@@ -17,7 +17,7 @@ WORK = ReviewedWork(
 def native_row(**changes):
     return {
         "type": "rent",
-        "service": {"id": "fixture"},
+        "service": {"id": "fixture", "name": "Fixture Cinema"},
         "link": "https://example.test/film",
         "quality": "hd",
         "price": {"amount": "4.99", "currency": "USD"},

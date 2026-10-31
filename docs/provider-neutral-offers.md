@@ -21,16 +21,20 @@ This is a qualification check, not independent proof of a provider's claim.
 scope and work-review assertion. Generic subscription presence cannot fill a
 known plan scope. `reconcile.changes` only compares complete, reviewed, matching
 source/work/country/plan scopes in time order. Unknown, partial, unreviewed or
-unknown-plan comparisons produce no events. `source_absent` means absence from
+unknown-comparison-scope observations produce no events. An explicit
+`catalog_scope: "public_country"` permits complete reviewed public-source
+comparisons independently of account tiers; it is mutually exclusive with a
+specific `plan_scope`. Source presence/absence never proves personal access. `source_absent` means absence from
 that one qualified source snapshot; it does not assert absence from another
 source or account. Repeating an unchanged complete snapshot yields no event.
 Callers must retain their last successful complete snapshot on failed/partial
 requests rather than replacing it. These pure functions write no cache or event
 ledger and send no alerts.
 
-All checks use synthetic observations. No new feed adapter, provider selection,
-polling cadence, live acquisition, retention grant or production history is
-introduced. Existing tentative TMDB normalization is unchanged. Stable service
+The [candidate-fetch path](usage/candidate-fetch.md) is implemented and tested
+with synthetic responses only. It selects/enables no production provider,
+polling cadence, retention grant or live history. Existing tentative TMDB
+normalization is reused unchanged. Stable service
 and plan IDs still require reviewed provider mapping; equal labels alone are
 not identity evidence. C1/C8 persistence, policy expiry and recovery integration
 remain production prerequisites. Rights must be resolved for the exact intended

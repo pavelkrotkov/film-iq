@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Literal
 
 from .opportunity import Opportunity
-from .validation import aware, code, price, required
+from .validation import aware, code, optional_names, price, required
 
 
 @dataclass(frozen=True)
@@ -23,6 +23,8 @@ class Assertion:
     # Provider detection/last-watch-day facts are not effective start/expiry instants.
     provider_detected_at: datetime | None = None
     provider_last_day_at: datetime | None = None
+    service_name: str | None = None
+    addon_name: str | None = None
 
     def __post_init__(self) -> None:
         aware(self.checked_at)
@@ -35,6 +37,7 @@ class Assertion:
             if value is not None:
                 aware(value)
         required(self.source, self.url)
+        optional_names((self.service_name, self.addon_name))
         price(self.price_minor)
         if self.entitlement not in {"confirmed", "unconfirmed", "unavailable_on_plan"}:
             raise ValueError("unsupported entitlement")

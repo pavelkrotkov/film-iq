@@ -36,4 +36,6 @@ def test_access_or_known_exhaustion_stops_and_retains_baseline(
     assert (result["requests"], get.call_count) == (1, 1)
     assert result["results"][1]["status"] == "not_requested_after_stop"
     assert read_state(evidence_db, prior, NOW)["current"]["assertions"]
-    assert evidence_db.execute("SELECT count(*) FROM offer_event").fetchone() == (1,)
+    assert evidence_db.execute(
+        "SELECT count(*) FROM offer_event WHERE json_extract(payload, '$.kind')='source_absent'"
+    ).fetchone() == (0,)

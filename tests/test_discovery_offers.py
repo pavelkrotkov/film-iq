@@ -34,5 +34,5 @@ def test_import_reopen_discovery_preserves_all_price_quality_addon_cut_variants(
     assert claims[2]["opportunity"]["add_on"] == "Fixture add-on"
     assert claims[0]["opportunity"]["cut"] == "original"
     output = report(tmp_path, output_format="markdown")
-    assert "[Fixture cinema / Standard — rent](https://example.test/film)" in output
+    assert "[service ID Fixture cinema / Standard — rent](https://example.test/film)" in output
     assert "Reported options; verify with the service" in output

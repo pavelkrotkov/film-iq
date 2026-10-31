@@ -16,6 +16,10 @@ class ReviewedWork:
 
     def __post_init__(self) -> None:
         positive_id(self.tmdb_id)
+        if not all(
+            isinstance(value, str) for value in (self.imdb_id, self.reviewer, self.evidence)
+        ):
+            raise ValueError("review identity and provenance must be explicit strings")
         required(self.reviewer, self.evidence)
         if not re.fullmatch(r"tt[0-9]+", self.imdb_id) or self.independent is not True:
             raise ValueError("an independently reviewed TMDB/IMDb work crosswalk is required")

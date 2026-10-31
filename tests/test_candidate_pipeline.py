@@ -16,7 +16,9 @@ def test_native_candidate_preserves_variants_and_provider_date_semantics(
     rows = [
         native_row(),
         native_row(quality="sd", price={"amount": "2.99", "currency": "USD"}),
-        native_row(type="addon", addon={"id": "fixture-extra"}, price=None),
+        native_row(
+            type="addon", addon={"id": "fixture-extra", "name": "Fixture Extra"}, price=None
+        ),
     ]
     get = response(native_payload(rows))
     result = run_candidates(
@@ -29,7 +31,10 @@ def test_native_candidate_preserves_variants_and_provider_date_semantics(
     assert [a["price_minor"] for a in claims] == [499, 299, None]
     assert claims[2]["opportunity"]["add_on"] == "fixture-extra"
     assert (claims[0]["asserted_added_on"], claims[0]["asserted_expires_at"]) == (None, None)
-    assert state["current"] is None
+    assert (state["current"]["plan_scope"], state["current"]["catalog_scope"]) == (
+        None,
+        "public_country",
+    )
     rendered = report(tmp_path, output_format="markdown").split("<details>", 1)[0]
     assert "provider says last day 2026-01-03T00:00:00+00:00" in rendered
     assert (

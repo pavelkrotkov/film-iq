@@ -32,12 +32,17 @@ unrequested work is labelled skipped, not absence. There is no rolling-quota
 scheduler or claim that unknown account allowance is unlimited.
 
 TMDB reuses the existing pure normalizer and validates the exact reviewed integer
-work ID. Native requires exact `movie/TMDB-ID`, IMDb ID and `showType: movie`.
+work ID. Native requires exact `movie/TMDB-ID`, IMDb ID and `showType: movie`. All60
+retained date-one native primary responses used that prefixed `tmdbId` form; it
+is not inferred merely from request syntax.
 Missing/invalid US data, HTTP/decode/transport failures remain unknown. Explicit
 valid empty US containers can be complete; invalid rows make a partial response
 while preserving valid positive variants. No mapper invents `plan_scope`, plan,
-cut, price or personal entitlement; unknown-plan observations cannot advance a
-comparison baseline or generate removal events. The existing guarded ledger and
+cut, price or personal entitlement. Every attempt carries the explicit requested
+`catalog_scope: "public_country"`; only complete reviewed responses advance that
+source/work/country catalog baseline. Source presence/absence events do not
+assert account access or global availability. Missing US, partial and failed
+attempts remain in the same context without advancing/removing its baseline. The existing guarded ledger and
 discovery reader preserve source/time/quality/add-on/currency variants and rights.
 
 Native price strings convert exactly with `Decimal` and integer ratios, never
@@ -48,10 +53,12 @@ amounts reject that row as partial rather than guessing.
 
 The native [OpenAPI](https://github.com/movieofthenight/streaming-availability-api/blob/main/openapi.yaml)
 defines `availableSince` as detection time and `expiresOn` as last day to watch.
-Their exact integer Unix seconds are preserved as `provider_detected_at` and
+The supplied dates' exact integer Unix seconds are preserved as `provider_detected_at` and
 `provider_last_day_at` in UTC, **not** effective addition or exact expiry instants.
-The existing `asserted_added_on`/`asserted_expires_at` remain unknown. New nullable
-fields are omitted from legacy canonical encoding when absent, preserving old
+The existing `asserted_added_on`/`asserted_expires_at` remain unknown. Source-provided
+service/add-on names are optional assertion display metadata; stable IDs remain
+unchanged for identity/deduplication and no aliases are invented. New nullable
+date/name fields are omitted from legacy canonical encoding when absent, preserving old
 observation hashes/replay. Visible credits use the named providers' required
 public credit/link and TMDB logo/notice; operator notes grant no license or
 compliance exemption. JSON and text use still require the reviewed intended-use

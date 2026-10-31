@@ -2345,9 +2345,29 @@ Candidate native mapping retains exact reviewed work IDs and all valid source
 variants. Provider detection and last-watch-day timestamps remain distinct from
 effective addition/exact expiry, with legacy None-field hash compatibility.
 TMDB reuses its pure normalizer. Prices use exact Decimal/integer-ratio minor
-units and a bounded verified currency set. Header-only credentials, no redirects/
+units and a bounded verified currency set. Credentials stay in outbound requests only, with no redirects/
 retries, and access/quota stops keep the operational path bounded. Named-provider
 credits, approved TMDB logo and notices are visible without private rights notes.
-Initial synthetic end-to-end/crosswalk fixtures pass; full checks and boundary
-regressions remain in progress in the draft. No actual provider request, account,
+Synthetic end-to-end, crosswalk and request-boundary fixtures pass. No actual provider request, account,
 policy registration or job change occurred.
+
+Candidate integration review exposed a real monitoring gap: unknown account plans
+prevented even complete public catalog responses from comparing. An explicit
+nullable `catalog_scope: "public_country"` now marks that requested source/work/
+country context on every attempt. Only complete reviewed snapshots advance it;
+failed/partial/missing-US attempts preserve its prior baseline. Account-plan
+scope remains null, entitlement unconfirmed, and public source absence is never
+global absence or an account-access assertion. Legacy absent markers retain
+their exact canonical hashes and scope keys; ambiguous public/plan scopes reject.
+
+Source-provided service/add-on display names now accompany stable IDs without
+alias inference. TMDB Bearer authentication retains the existing v3-key fallback
+only in outbound requests; no authenticated URL/exception text enters artifacts.
+Visible required named-provider credits include the approved small linked TMDB
+logo/notice and JustWatch attribution where applicable. No provider is activated.
+
+Validation after rebasing onto retained-copy acceptance main `1686f06`: Ruff
+check/format and ty pass; 691 tests pass with one opt-in skip. Request-cap, dry-run,
+rights, auth/quota stop, secret-redaction, exact money, producer/name/window,
+public-catalog presence/absence and legacy hash/key regressions all pass. Frozen
+B4 observer files, jobs, actual policy/data and credentials are untouched.

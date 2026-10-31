@@ -47,7 +47,9 @@ def _link(item: dict) -> str:
     plan = offer["plan"]
     if plan is None and offer["kind"] in {"subscription", "add-on"}:
         plan = "tier unknown"
-    tier = " / ".join(filter(None, (offer["service"], plan, offer["add_on"])))
+    service = item.get("service_name") or f"service ID {offer['service']}"
+    addon = item.get("addon_name") or (f"add-on ID {offer['add_on']}" if offer["add_on"] else None)
+    tier = " / ".join(filter(None, (service, plan, addon)))
     bounds = [f"claim checked {_when(item['checked_at'])}"]
     bounds.extend(
         f"{label} {item[key]}"

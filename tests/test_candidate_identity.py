@@ -24,7 +24,7 @@ def test_missing_or_invalid_us_is_unknown(options):
     assert normalize(WORK, payload, NOW).status == "unknown"
 
 
-def test_explicit_empty_us_is_complete_but_unknown_plan_never_creates_comparison_scope():
+def test_explicit_empty_us_is_complete_without_inventing_an_account_plan():
     observed = normalize(WORK, native_payload([]), NOW)
     assert observed.status == "complete" and observed.assertions == ()
     assert observed.plan_scope is None

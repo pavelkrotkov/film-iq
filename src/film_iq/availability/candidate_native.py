@@ -1,5 +1,6 @@
 """Pure native-v4 candidate mapping; no provider choice, request or rights grant."""
 
+from dataclasses import replace
 from datetime import datetime
 
 from film_iq.availability.assertion import Assertion
@@ -10,7 +11,15 @@ from film_iq.availability.opportunity import Opportunity
 
 
 def normalize(work: ReviewedWork, payload: dict, checked_at: datetime) -> Fetch:
-    empty = Fetch("motn", work.tmdb_id, "US", checked_at, "unknown", work_reviewed=True)
+    empty = Fetch(
+        "motn",
+        work.tmdb_id,
+        "US",
+        checked_at,
+        "unknown",
+        work_reviewed=True,
+        catalog_scope="public_country",
+    )
     if (payload.get("tmdbId"), payload.get("imdbId"), payload.get("showType")) != (
         f"movie/{work.tmdb_id}",
         work.imdb_id,
@@ -29,15 +38,7 @@ def normalize(work: ReviewedWork, payload: dict, checked_at: datetime) -> Fetch:
             assertions.append(_assertion(work, row, checked_at))
         except (ValueError, TypeError, KeyError, AttributeError, OverflowError):
             partial = True
-    return Fetch(
-        "motn",
-        work.tmdb_id,
-        "US",
-        checked_at,
-        "partial" if partial else "complete",
-        tuple(assertions),
-        work_reviewed=True,
-    )
+    return replace(empty, status="partial" if partial else "complete", assertions=tuple(assertions))
 
 
 def _assertion(work: ReviewedWork, row: dict, checked_at: datetime) -> Assertion:
@@ -57,6 +58,8 @@ def _assertion(work: ReviewedWork, row: dict, checked_at: datetime) -> Assertion
         price,
         currency,
         work_status="reviewed",
+        service_name=row["service"].get("name"),
+        addon_name=row["addon"].get("name") if kind == "add-on" else None,
         provider_detected_at=seconds(row.get("availableSince")),
         provider_last_day_at=seconds(row.get("expiresOn")),
     )
