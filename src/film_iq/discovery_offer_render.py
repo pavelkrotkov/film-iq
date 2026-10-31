@@ -34,7 +34,7 @@ def _record_lines(role: str, record: dict) -> list[str]:
     links = dict.fromkeys(_link(item) for item in record["assertions"] if _reviewed(record, item))
     details = "; ".join(links) or "no reviewed links supplied; availability stays unknown"
     return [
-        f"- {role} by {record['source']} (checked {datetime.fromisoformat(record['checked_at']).strftime('%Y-%m-%d %H:%M %Z')}): {details}. Reported options; verify with the service."
+        f"- {role} by {record['source']} (attempt recorded {_when(record['checked_at'])}): {details}. Reported options; verify with the service."
     ]
 
 
@@ -48,7 +48,8 @@ def _link(item: dict) -> str:
     if plan is None and offer["kind"] in {"subscription", "add-on"}:
         plan = "tier unknown"
     tier = " / ".join(filter(None, (offer["service"], plan, offer["add_on"])))
-    bounds = "; ".join(
+    bounds = [f"claim checked {_when(item['checked_at'])}"]
+    bounds.extend(
         f"{label} {item[key]}"
         for key, label in (
             ("asserted_added_on", "source says starts"),
@@ -56,7 +57,7 @@ def _link(item: dict) -> str:
         )
         if item.get(key) is not None
     )
-    return f"[{tier} — {offer['kind']}]({item['url']})" + (f" ({bounds})" if bounds else "")
+    return f"[{tier} — {offer['kind']}]({item['url']}) ({'; '.join(bounds)})"
 
 
 def audit_offers(items: list[dict]) -> list[str]:
@@ -87,3 +88,7 @@ def offer_credits(items: list[dict]) -> list[str]:
         {state["attribution"] for item in items for state in item.get("offer_states", [])}
     )
     return ["Offer source credits: " + "; ".join(credits)] if credits else []
+
+
+def _when(value: str) -> str:
+    return datetime.fromisoformat(value).strftime("%Y-%m-%d %H:%M %Z")

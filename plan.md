@@ -2294,3 +2294,10 @@ is now visible in the viewing section, while known source-supplied bounds qualif
 the corresponding links without filtering variants or inventing missing dates.
 Focused tests require credits and ended/future bounds before the audit collapse;
 private rights evidence remains hidden.
+
+Both independent C4 review axes reproduced a cached-assertion presentation defect:
+a later Fetch wrapper could make an older assertion look freshly checked in the
+card. Links now show each assertion's original check time; the enclosing wrapper
+is labelled only as the attempt's recorded time. Actual import/reopen/report
+regressions cover a reused old assertion and a mixed-age batch, preserving source
+facts, windows and the existing frozen-input retention behavior.

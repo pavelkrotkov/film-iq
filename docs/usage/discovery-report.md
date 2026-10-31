@@ -150,3 +150,8 @@ hidden before presentation. These are source claims, not verified access,
 account entitlement or purchase advice; recheck applicable price/tier/expiry with
 the service. This bridge does not acquire data, grant rights, adopt a provider,
 configure polling or bypass B4/B8.
+
+Each linked claim shows its own source-check time. The enclosing batch/attempt
+record time is labelled separately: importing cached assertions in a newer batch
+does not refresh their source timestamps or retention deadlines. Mixed-age
+claims retain their distinct times in both the card and detailed audit.
