@@ -1809,3 +1809,24 @@ legacy schema10 upgrade, canonical component snapshots, historical critic replay
 and fresh reviewed release-cohort context. Actual permitted typed-cohort import,
 independent exact-head reviews and final acceptance for #21 remain controller
 work; no live/personal source contents are invented or changed by these tests.
+
+C3's combined Standards/controller review reproduced a routine typed-ingest
+replay failure: an unchanged unknown manifest attempted to retract its separately
+reviewed award/reception annotation. The source declaration now preserves that
+reviewed annotation and original review on semantic replay. Actual shared-CLI
+regressions cover award and reception import, independent classification, source
+acceptance and identical reimport with one semantic revision and successful
+second acquisition cursor. Explicit kind/content corrections remain pending
+new revisions; known reviewed facts remain immutable.
+
+The Spec axis also reproduced public components(db, None) treating unrelated
+unresolved source entries as one work. The nullable lookup now returns empty
+component arrays/missing coverage. Three distinct accepted unresolved registry
+entries remain separately identified in the accepted reader and frozen snapshot;
+the existing discovery entry/revision guard stays intact. All three findings are
+accepted; no actual source/account data is changed in these corrections.
+
+C3 corrected-head verification passes Ruff check/format, ty and 534 tests with
+one opt-in skip. All 53 changed Python files retain maximum CC8 and minimum
+MI50.270742. Native findings await independent corrected-head follow-up; actual
+typed source acceptance and whole-Epic gates remain separate controller evidence.

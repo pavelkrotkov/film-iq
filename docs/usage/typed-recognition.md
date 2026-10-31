@@ -24,6 +24,10 @@ timezone-aware review time. These are recorded assertions, not a rights grant.
 An initial unreviewed unknown declaration can be explicitly classified; known
 classifications are immutable. Changed known facts need a new extraction revision
 and independently accepted replacement, preserving current accepted evidence.
+An unchanged unknown manifest replay preserves any separately reviewed typed
+annotation and its original review; the placeholder is not a request to retract
+the annotation. Changed source content or an explicit manifest kind still creates
+a new pending revision.
 
 A same-kind tuple can hold several metrics/outcomes from one original source
 entry without manufacturing extra entries. Canonical payloads deduplicate exact
@@ -43,7 +47,9 @@ introduced. Rights-uncleared real reception data must remain absent/unknown.
 `recognition.components(db, tmdb_id)` reads current accepted observations
 through accepted work identities. Unresolved source facts remain per-entry in
 component snapshots and discovery review cards; they never establish a film
-match or merge distinct unknown films. It exposes separate component arrays, unknown
+match or merge distinct unknown films. A public lookup with a null TMDB ID
+returns empty component arrays and missing coverage; unresolved facts must be
+addressed by their explicit entry/revision elsewhere. It exposes separate component arrays, unknown
 classifications and explicit missing coverage alongside source/document/revision/
 match links, publication/measurement dates and lineage. Detailed classification
 rights/auditor assertions remain in the database instead of cluttering reports.

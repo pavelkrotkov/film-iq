@@ -45,8 +45,11 @@ def _decode(row: dict) -> dict:
 
 
 def components_for(db: sqlite3.Connection | None, tmdb_id: int | None) -> dict:
+    """A missing work ID returns missing coverage, never a shared NULL-work lookup."""
     rows = (
-        [] if db is None else [row for row in current_components(db) if row["tmdb_id"] == tmdb_id]
+        []
+        if db is None or tmdb_id is None
+        else [row for row in current_components(db) if row["tmdb_id"] == tmdb_id]
     )
     return group_components(rows)
 

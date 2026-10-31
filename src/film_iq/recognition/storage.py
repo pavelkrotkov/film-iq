@@ -17,6 +17,14 @@ def encode(value) -> str:
 
 def declare_selection(db, entry: str, revision: str, selection: Selection) -> None:
     """A manifest declares its type before the independent extraction audit."""
+    if (
+        selection.kind == "unknown"
+        and db.execute(
+            "SELECT 1 FROM entry_recognition WHERE entry_id=? AND revision_id=? AND review IS NOT NULL",
+            (entry, revision),
+        ).fetchone()
+    ):
+        return  # An unchanged unknown manifest does not retract its reviewed annotation.
     _record(db, entry, revision, selection, None)
 
 
