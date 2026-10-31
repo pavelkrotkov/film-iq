@@ -2011,3 +2011,13 @@ Fixtures cover baseline/preview/ack, repeated runs and replay, accepted source
 replacement followed by failed acquisition, partial offer attempts, denied and
 terminated policies, old-input expiry, purge/renewal and broken output. Required
 checks and final complexity evidence are recorded in the PR.
+
+C7 combined review reproduced future observations being emitted/acknowledged by
+an earlier explicit assessment. The shared retained-event query now bounds the
+canonical UTC fetch timestamp before returning event IDs, preserving policy and
+both-input expiry guards. Current source revisions with known later capture or
+audited acceptance instants are withheld without changing the prior checkpoint;
+aware offset timestamps are compared as instants. Legacy unparseable/undated
+labels remain unknown, without inventing an acceptance time or reconstructing
+historical current pointers. Before/exact/after and first-baseline fixtures cover
+both source and offer paths; acknowledgement then suppresses repeat delivery.
