@@ -19,6 +19,8 @@ def test_reviewed_display_alias_retains_raw_source_facts(evidence_db, tmp_path):
     rendered = markdown(output)
     assert "Reviewed English title" in rendered and "Catalog release: 2025-01-29" in rendered
     assert "Source-listed year: unknown" in rendered and "Unchanged title" in rendered
+    assert "Reviewed director" in rendered
+    assert "source director unknown, source year unknown" in rendered
 
 
 def test_catalog_never_establishes_a_provisional_work_identity(tmp_path):

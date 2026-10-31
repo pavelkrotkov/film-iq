@@ -13,7 +13,7 @@ def _audit(report):
         f"Declared selection scope: {report['completeness']}. Declared lineage: {report['lineage']}",
     ]
     lines.extend(
-        f"- {text(item['raw_title'])}: {source_reason(item)}; locator {text(item['locator'])}; published {text(item['published_at'])}; eligibility date {text(item['eligibility_date'])}; source completeness {text(item['source_completeness'])}; lineage {text(item['source_lineage_kind'])}: {text(item['source_lineage'])}; eligibility {text(item['source_eligibility'])}."
+        f"- {text(item['raw_title'])} — source director {text(item['director'])}, source year {text(item['year'])}: {source_reason(item)}; locator {text(item['locator'])}; published {text(item['published_at'])}; eligibility date {text(item['eligibility_date'])}; source completeness {text(item['source_completeness'])}; lineage {text(item['source_lineage_kind'])}: {text(item['source_lineage'])}; eligibility {text(item['source_eligibility'])}."
         for item in report["candidates"]
     )
     lines.extend(["", "</details>"])

@@ -1741,3 +1741,15 @@ assertions, not independently verified country/format truth; genre labels are
 not a short/experimental taxonomy. The unresolved work, unmeasured exposure,
 source-permission limits and actual human review throughput remain explicit.
 No private account contents or counts are added to public findings.
+
+Integrated usability validation is based on reviewed schema10 main `33182877`:
+Ruff check/format and ty pass;500 tests pass with one opt-in skip. All295 tracked/
+new Python files satisfy maximum CC8 and minimum MI50.025032. Regressions exercise
+reviewed metadata freshness/expiry/provenance and identity boundaries, unchanged
+raw source facts, unknown-support slots and stable unranked ties, CLI/scheduler
+option forwarding, and keeping report options out of personal export arguments.
+A private actual five-cohort preview uses the existing authorized snapshot,
+read-only evidence DB and42-work reviewed catalog; DB/snapshot/catalog byte
+hashes remain unchanged. The actual scheduler migration/run after merge belongs
+to controller verification. User satisfaction, genuine score/comment edits and
+provider/whole-epic finish gates are not declared verified by these tests.
