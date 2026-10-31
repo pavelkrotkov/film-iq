@@ -43,7 +43,7 @@ def _evidence(report: dict) -> list[str]:
 
 def _offer_key(offer: dict) -> tuple:
     """Use the shared identity in planner access and normalized source offers."""
-    return offer["film_id"], offer["provider_id"], offer["kind"]
+    return offer["film_id"], offer["provider_id"], offer["kind"], offer.get("assertion_index")
 
 
 def _choice(choice: dict, offers: dict) -> str:
@@ -66,6 +66,7 @@ def _choice(choice: dict, offers: dict) -> str:
 def _assertion_offers(report: dict) -> list[dict]:
     return [
         {
+            "assertion_index": index,
             "film_id": item["opportunity"]["film_id"],
             "provider_id": item["provider_id"],
             "kind": item["opportunity"]["kind"],
@@ -83,7 +84,7 @@ def _assertion_offers(report: dict) -> list[dict]:
             "checked_at": item["checked_at"],
             "source": item["source"],
         }
-        for item in report.get("assertions", [])
+        for index, item in enumerate(report.get("assertions", []))
     ]
 
 

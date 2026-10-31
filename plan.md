@@ -1483,3 +1483,11 @@ unknown fees are excluded, and asserted expiry constrains viewing dates.
 The command stays read-only. See docs/usage/planning-report.md. Actual user
 budgets/slots, provider rights and live price/entitlement evidence are inputs to
 verify before accepting a production plan; fixtures do not supply those facts.
+
+C5 combined Standards/Spec review reproduced a source-binding defect: a stale or
+otherwise excluded assertion could replace the selected qualified assertion's
+link/source/check time in Markdown. The correction carries the exact assertion
+index with each planner Access and joins presentation to that identity. Both
+input orders retain the fresh qualified citation; all raw assertions remain
+available for audit. Full local validation passes 455 tests with one opt-in skip
+and Ruff/format/ty. Exact-head follow-up and CI precede merge.

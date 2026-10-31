@@ -1,0 +1,27 @@
+"""A selected qualified assertion must retain its own link, source and timestamp."""
+
+import pytest
+from test_report_runtime import assertion, report_inputs, setup_db
+
+from film_iq.report import build_report
+from film_iq.report_render import markdown
+
+
+@pytest.mark.parametrize("reverse", [False, True])
+def test_excluded_assertion_cannot_supply_verified_plan_citation(evidence_db, reverse):
+    setup_db(evidence_db)
+    data = report_inputs()
+    fresh = assertion(source="fresh-official", url="https://example.test/qualified")
+    stale = assertion(
+        source="stale-decoy",
+        url="https://example.test/excluded",
+        checked_at="2026-10-20T12:00:00+00:00",
+        entitlement="unconfirmed",
+    )
+    data["assertions"] = [stale, fresh] if reverse else [fresh, stale]
+    report = build_report(evidence_db, data)
+    selected = report["verified_plans"][0]["choices"][0]["offer"]
+    assert report["assertions"][selected["assertion_index"]]["source"] == "fresh-official"
+    rendered = markdown(report)
+    assert "https://example.test/qualified" in rendered and "fresh-official" in rendered
+    assert "stale-decoy" not in rendered and "https://example.test/excluded" not in rendered

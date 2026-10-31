@@ -22,13 +22,13 @@ def assertion_access(inputs: dict) -> tuple[list[dict], list[Access]]:
         raise ValueError("offer_max_age_hours must be nonnegative")
     age = timedelta(hours=hours)
     observations, access, plans = [], [], {}
-    for raw in inputs["assertions"]:
+    for index, raw in enumerate(inputs["assertions"]):
         identifier, assertion = _parse(raw)
         _plan(plans, identifier, assertion.opportunity)
         _subscription_price(inputs, identifier, assertion)
         observations.append({"provider_id": identifier, **asdict(assertion)})
         if _eligible(assertion, now, age):
-            access.append(_access(identifier, assertion, now, age))
+            access.append(_access(identifier, assertion, now, age, index))
     return observations, access
 
 
@@ -63,7 +63,7 @@ def _eligible(item: Assertion, now: datetime, age: timedelta) -> bool:
     )
 
 
-def _access(identifier: int, item: Assertion, now: datetime, age: timedelta) -> Access:
+def _access(identifier: int, item: Assertion, now: datetime, age: timedelta, index: int) -> Access:
     kind = item.opportunity.kind
     if kind == "library":
         raise ValueError("library borrowing is not a priced planner option")
@@ -80,6 +80,7 @@ def _access(identifier: int, item: Assertion, now: datetime, age: timedelta) -> 
         entitlement,
         item.price_minor if item.currency == "USD" else None,
         expires,
+        index,
     )
 
 
