@@ -2,7 +2,7 @@
 
 from datetime import UTC, datetime
 from decimal import Decimal, InvalidOperation
-from urllib.parse import urlsplit
+from urllib.parse import parse_qsl, urlsplit
 
 # Bounded ISO4217 subset, verified against SIX List One; unsupported codes reject.
 EXPONENTS = {"USD": 2, "EUR": 2, "GBP": 2, "CAD": 2, "AUD": 2, "JPY": 0, "KWD": 3}
@@ -39,4 +39,9 @@ def link(value: str) -> str:
     parsed = urlsplit(value)
     if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
         raise ValueError("public HTTPS source locator required")
+    if any(
+        key.lower() in {"api_key", "access_token", "token", "authorization"}
+        for key, _ in parse_qsl(parsed.query)
+    ):
+        raise ValueError("authenticated source locators cannot be retained")
     return value

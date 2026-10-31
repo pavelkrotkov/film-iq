@@ -2,7 +2,7 @@
 
 TMDB_LOGO = "https://www.themoviedb.org/assets/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg"
 CANONICAL = {
-    "tmdb": f'<img src="{TMDB_LOGO}" alt="TMDB" width="120"> This product uses the TMDB API but is not endorsed or certified by TMDB.',
+    "tmdb": f'<a href="https://www.themoviedb.org/"><img src="{TMDB_LOGO}" alt="TMDB" width="120"></a> This product uses the TMDB API but is not endorsed or certified by TMDB.',
     "motn": "[Streaming Availability API by Movie of the Night](https://www.movieofthenight.com/about/api)",
 }
 

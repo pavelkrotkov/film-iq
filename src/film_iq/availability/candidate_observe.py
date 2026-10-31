@@ -4,7 +4,7 @@ import json
 from collections.abc import Callable
 from datetime import datetime
 from http.client import HTTPException
-from urllib.error import URLError
+from urllib.error import HTTPError, URLError
 from urllib.request import Request
 
 from film_iq.availability import candidate_native, candidate_tmdb
@@ -45,8 +45,8 @@ def observe(
         KeyError,
         AttributeError,
         OverflowError,
-    ):
-        return unknown, "request_or_validation_error", quota
+    ) as error:
+        return unknown, _failure(error), quota
 
 
 def _quota(headers: dict[str, str]) -> dict[str, int]:
@@ -56,3 +56,8 @@ def _quota(headers: dict[str, str]) -> dict[str, int]:
         for key, value in headers.items()
         if key.lower() in names and value.isdecimal()
     }
+
+
+def _failure(error: Exception) -> str:
+    # Exception text can contain authenticated URLs; retain only a numeric HTTP code.
+    return f"http_{error.code}" if isinstance(error, HTTPError) else "request_or_validation_error"

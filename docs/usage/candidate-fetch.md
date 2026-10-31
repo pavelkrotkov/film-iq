@@ -23,9 +23,10 @@ are rejected, never silently truncated.
 Only a future explicitly authorized `--live` invocation can call the network.
 It also requires an existing `--database` with that exact provider source's
 registered, currently allowed finite `CachePolicy`. This command never registers
-or grants a policy or creates a database in dry-run mode. Header-only credentials
-are `TMDB_READ_ACCESS_TOKEN` and `MOVIE_OF_THE_NIGHT_API_KEY`; no key enters a URL,
-report or exception. Requests have a 30-second timeout, no redirects or retries.
+or grants a policy or creates a database in dry-run mode. Credentials use `TMDB_READ_ACCESS_TOKEN` (preferred Bearer), the existing
+`TMDB_API_KEY` fallback or native `MOVIE_OF_THE_NIGHT_API_KEY`. The v3 key appears
+only in the necessary outbound authenticated Request query; no authenticated URL,
+key, request object or exception text enters stored provenance, reports or logs. Requests have a 30-second timeout, no redirects or retries.
 401/403/429 or explicit zero supported remaining-quota headers stop the run;
 unrequested work is labelled skipped, not absence. There is no rolling-quota
 scheduler or claim that unknown account allowance is unlimited.

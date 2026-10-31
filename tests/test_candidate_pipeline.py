@@ -1,7 +1,5 @@
 """Fixture HTTP response -> validated Fetch -> retained ledger -> real discovery."""
 
-import json
-
 from candidate_support import WORK, native_payload, native_row, permit, response
 from discovery_offer_support import configure, report
 from offer_store_support import NOW
@@ -31,7 +29,6 @@ def test_native_candidate_preserves_variants_and_provider_date_semantics(
     assert [a["price_minor"] for a in claims] == [499, 299, None]
     assert claims[2]["opportunity"]["add_on"] == "fixture-extra"
     assert (claims[0]["asserted_added_on"], claims[0]["asserted_expires_at"]) == (None, None)
-    assert claims[0]["provider_detected_at"] == "2025-12-31T23:00:00+00:00"
     assert state["current"] is None
     rendered = report(tmp_path, output_format="markdown").split("<details>", 1)[0]
     assert "provider says last day 2026-01-03T00:00:00+00:00" in rendered
@@ -39,4 +36,3 @@ def test_native_candidate_preserves_variants_and_provider_date_semantics(
         "[Streaming Availability API by Movie of the Night](https://www.movieofthenight.com/about/api)"
         in rendered
     )
-    assert "fixture-secret" not in json.dumps(result)

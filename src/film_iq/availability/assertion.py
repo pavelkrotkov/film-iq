@@ -20,6 +20,7 @@ class Assertion:
     work_status: Literal["reviewed", "unresolved", "cut_uncertain"] = "unresolved"
     asserted_added_on: datetime | None = None
     asserted_expires_at: datetime | None = None
+    # Provider detection/last-watch-day facts are not effective start/expiry instants.
     provider_detected_at: datetime | None = None
     provider_last_day_at: datetime | None = None
 

@@ -1,7 +1,8 @@
-"""One header-authenticated request; no redirects, retries or secret-bearing URLs."""
+"""One authenticated outbound request; no redirects/retries or persisted secret URLs."""
 
 import os
 from urllib.error import HTTPError
+from urllib.parse import urlencode
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 from film_iq.availability.candidate_models import ReviewedWork
@@ -24,6 +25,11 @@ def request(provider: str, work: ReviewedWork) -> Request:
     env, header = credentials[provider]
     token = os.getenv(env)
     if not token:
+        if provider == "tmdb" and (key := os.getenv("TMDB_API_KEY")):
+            return Request(
+                endpoints[provider] + "?" + urlencode({"api_key": key}),
+                headers={"Accept": "application/json"},
+            )
         raise ValueError("selected provider credential is not configured")
     value = f"Bearer {token}" if provider == "tmdb" else token
     return Request(endpoints[provider], headers={"Accept": "application/json", header: value})
