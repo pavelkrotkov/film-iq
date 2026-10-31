@@ -2070,3 +2070,9 @@ fallback as caller-declared, prefer a known selected assertion price, and retain
 unknown/sunk existing fees. No billing interval, new entitlement or extra
 per-film fee is inferred. Both findings are accepted for correction and native
 follow-up; actual data and operational jobs remain untouched.
+
+After rebasing both corrections onto reviewed C7 main `eedd73b`, Ruff check/
+format and ty pass; 593 tests pass with one opt-in skip. The fifteen changed
+Python files meet maximum CC8 and minimum MI51.688272; all 358 tracked Python
+files meet maximum CC8 and minimum MI50.025032. Exact-head follow-up remains
+required before review-thread resolution and merge.
