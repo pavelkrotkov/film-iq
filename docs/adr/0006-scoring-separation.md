@@ -30,3 +30,12 @@ Do not substitute RT positivity for an average rating, equate categorical
 audience grades with votes, impute missing evidence as zero or promote a
 weighted blend as optimal. Separation remains accepted; weights remain
 provisional, with calibration questions handed to C3 #21.
+
+## User decision — 2026-10-31
+
+Both personal dimensions are optional, nullable user inputs. Core development,
+deployment and release require neither ratings nor a trained personal model.
+Public evidence remains usable without them; missing scores never become zero,
+negative preference or an inferred artistic judgment. Any later requested model
+needs voluntarily available data and appropriate evaluation, without delaying core
+delivery or asking the user to create training/acceptance records.

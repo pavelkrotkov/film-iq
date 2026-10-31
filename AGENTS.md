@@ -8,6 +8,7 @@ Adapted from the general-purpose engineering practices in [pavelkrotkov/utils](h
 - `docs/adr/` records accepted decisions and decisions gated on POC evidence; do not quietly turn hypotheses into final commitments.
 - Consult the relevant open epic and acceptance tests before expanding scope.
 - Movary owns personal watched history, ratings, and intentional watchlist. Never write its underlying DB directly.
+- Personal ratings, merit comments, viewing schedules and budgets are optional user inputs, never development, deployment or release prerequisites. Do not ask the user to enter or edit them to satisfy acceptance; missing values remain unknown.
 - Reuse existing OSS and built-in facilities before creating new infrastructure; document licensing and retention constraints.
 
 ## Engineering approach

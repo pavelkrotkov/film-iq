@@ -1,10 +1,15 @@
 # film-iq
 
+Personal ratings, merit comments and viewing plans are optional. Discovery and
+core deployment work without them; the planner accepts private budget/time inputs
+only when voluntarily invoked. No personal entries, edits or actual spending
+decision are required to finish development or release.
+
 **An open-source, evidence-driven film discovery and streaming-planning companion to [Movary](https://github.com/leepeuker/movary).**
 
 **Status:** Gate A's narrow POC is validated through real API reads, a sourced report and a user-approved watchlist round trip. Source/provider research and production release remain open; see [the evidence and limits](docs/a7-live-validation.md).
 
-film-iq connects critics' lists, polls, festivals, awards, film identity, personal viewing history and US viewing availability. It explains **why a film matters**, distinguishes critical recognition from predicted personal enjoyment, and proposes realistic viewing bundles and optional monthly streaming-service choices. It is not another watch-history application.
+film-iq connects critics' lists, polls, festivals, awards, film identity, personal viewing history and US viewing availability. It explains **why a film matters**, distinguishes critical recognition from optional personal judgments, and proposes realistic viewing bundles and optional monthly streaming-service choices. It is not another watch-history application.
 
 ## Start here
 
@@ -13,9 +18,25 @@ film-iq connects critics' lists, polls, festivals, awards, film identity, person
 - [GitHub Issues](https://github.com/pavelkrotkov/film-iq/issues) — three epics: POC, source exploration, and final implementation.
 - [AGENTS.md](AGENTS.md) — contributor and coding-agent workflow.
 
+## Read a discovery report
+
+Use selected accepted cohort previews and an existing private snapshot:
+
+```sh
+uv run film-iq discover --cohort path/to/accepted-cohort.json --database path/to/evidence.db --snapshot path/to/private/snapshot.json --catalog path/to/reviewed-catalog.json
+```
+
+Repeat `--cohort` for more editions. `--catalog` is optional reviewed display
+metadata; omit `--snapshot` to leave personal/watched state unknown. History and
+both scores may be absent; a fresh complete history snapshot supports watched
+exclusion even with no ratings. No budget or schedule is requested. See the
+[discovery workflow](docs/usage/discovery-report.md) and [optional planner](docs/usage/planning-report.md).
+
 ## Architecture at a glance
 
-Sources → validated, versioned evidence → SQLite → critical and personal scoring → availability offers → monthly plan.
+Sources → validated, versioned evidence → SQLite → public recognition → discovery/report.
+Movary history supports watched exclusion; personal ratings and planning are optional.
+Availability integration retains its separate production-provider gate.
 
 Movary remains authoritative for watched films, dates, personal ratings and explicit watchlist entries. The companion reads that data and writes only **user-approved** watchlist additions. TMDB IDs are operational movie identity, not substitutes for preserved raw source observations.
 
@@ -106,7 +127,7 @@ revisions as new endorsements. Historical revisions and their observations remai
 ## Project boundaries
 
 - Worldwide film discovery, including shorts, animation, experimental work and documentaries.
-- US viewing offers and an initially single-user 5–8-film/month planning capacity.
+- US viewing offers; optional single-user planning uses capacity supplied at invocation, never inferred viewing habits.
 - No automatic subscription transactions, proprietary dataset mirroring, or unapproved bulk Movary watchlist changes.
 - All findings and forecast outputs must distinguish verified observations, assumptions and unresolved hypotheses.
 

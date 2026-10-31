@@ -1,5 +1,12 @@
 # Private Movary personal snapshot (C0a #58)
 
+Current user decision (2026-10-31): enjoyment and artistic merit are optional.
+Complete empty ratings exports and null scores are valid; nobody needs to enter
+or edit personal data for development, deployment or release. The live-score
+demonstrations described below are historical optional evidence gaps, superseded
+as acceptance blockers. Read-only history and deterministic fixture semantics
+remain valid acceptance evidence; no unobserved live score behavior is claimed.
+
 Run `python -m film_iq.refresh_movary` through `uv run` with `MOVARY_URL`,
 `MOVARY_USERNAME` and `MOVARY_TOKEN` in the process environment. It reads all
 played/history/watchlist pages; it never calls a write endpoint. Keep the output

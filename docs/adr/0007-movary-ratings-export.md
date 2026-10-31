@@ -26,3 +26,14 @@ the empty live account does not verify those nonempty cases. No test rating was
 created. [Gate A evidence](../a7-live-validation.md) records these limits. The
 decision remains accepted for POC; no upstream API enhancement was required.
 
+
+## User decision and current acceptance — 2026-10-31
+
+The complete replacement-read contract includes header-only ratings exports and
+null personal scores. Nonempty live rating/edit/deletion demonstrations are
+optional observations, never development/deployment/release prerequisites. Real
+history reads and deterministic fixture coverage can establish the core read-only
+integration while those private values are absent. Existing unknown/conflict,
+replacement and failure/staleness semantics remain required. The installed stock
+API/CLI and optional explicit merit-token mapping require no upstream change or
+fork; revisit only a concrete later interface deficiency, not absent user input.

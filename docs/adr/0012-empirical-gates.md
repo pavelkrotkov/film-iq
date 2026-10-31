@@ -38,3 +38,15 @@ B8 and the epic remain open until the required later observations and
 issue-specific acceptance are recorded, or an explicit scope change is accepted.
 No Epic A closure or consumer subscription is a prerequisite. This clarification
 preserves the accepted decision and does not accept Gate B.
+
+## User decision — release inputs (2026-10-31)
+
+Personal ratings, merit comments and viewing-plan constraints are voluntary private
+inputs, not empirical experiments the user must perform for developers. Core
+acceptance uses available read-only history/null-score evidence and deterministic
+fixtures; live personal edit demonstrations are optional, with their unverified
+status reported honestly. Missing personal data cannot delay development,
+deployment or release. Optional personalization and speculative upstream changes
+are outside the core completion path. This explicit scope decision preserves
+source accuracy, failed-fetch safety, actual provider rights/date evidence and
+complete recovery requirements; it does not invent those external observations.

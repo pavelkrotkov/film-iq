@@ -1,5 +1,11 @@
 # Viewing-plan report
 
+This is an optional planning command, separate from `film-iq discover` and core
+deployment. Supply a budget, dates and time/film limits only when choosing to
+request a plan; no such private inputs or actual spending decision are required
+for development or release. The command does not invent them or charge anything.
+Both personal scores remain optional and do not drive the declared source utility.
+
 `film-iq report --database evidence.db --inputs private-inputs.json --snapshot private-snapshot.json`
 reads current accepted evidence and the complete Movary snapshot. Its sibling
 `.status` file must identify the same successful refresh. Watched films are
