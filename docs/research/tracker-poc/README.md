@@ -5,6 +5,8 @@ Movary remains the source of truth for real watched history, ratings, and the
 intentional watchlist. The user authorized a separate local import of existing
 candidate records and a read-only watched-history view. Use fictional records
 and users for destructive, workflow, authorization, and performance tests.
+The [working comparison](comparison.md) maps the evidence and gaps to the
+requested evaluation criteria; scores remain pending.
 
 ## Evidence collected so far
 
