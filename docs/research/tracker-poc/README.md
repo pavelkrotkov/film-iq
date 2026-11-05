@@ -160,8 +160,9 @@ verified. One additional film was held for manual identity review. A readback
 matched all 78 expected links in both trackers, the original source evidence
 remained intact, and a repeat import made zero writes. The Kaneo UI has a
 direct-links view; the YouTrack field is attached for the native issue view.
-The installed newer app adds a direct-links view, but its film load was stuck
-in the initial browser attempt. Neither view has been browser-verified.
+The initial YouTrack browser attempt stalled, but later isolated Brave tests in
+both POCs displayed fictional individual-review and aggregator links with the
+expected labels. Real-film links were not opened in these tests.
 
 The detailed source checks and corroboration links remain in ignored private
 manifests. Shared review-link values use the same source-neutral shape for all

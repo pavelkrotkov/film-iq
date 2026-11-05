@@ -70,11 +70,19 @@ export function mergeLiveMetadata(previous, current) {
 }
 
 export function mergeLiveResult(previous, outcome) {
-  return outcome.data ? {data: mergeLiveMetadata(previous?.data, outcome.data), error: null} : {...previous, error: outcome.error};
+  const oldId = previous?.requestedId ?? previous?.data?.tmdb_id;
+  const requestedId = outcome.requestedId ?? outcome.data?.tmdb_id;
+  const sameId = !oldId || !requestedId || oldId === requestedId;
+  return outcome.data
+    ? {data: mergeLiveMetadata(sameId ? previous?.data : null, outcome.data), error: null, requestedId}
+    : {...(sameId ? previous : {}), ...outcome};
 }
 
 export function eligibleLiveFilms(films, results) {
-  return films.filter((film) => suppliedTmdbId(film) && !results[film.idReadable]).slice(0, LIVE_BATCH_LIMIT);
+  return films.filter((film) => {
+    const id = suppliedTmdbId(film), result = results[film.idReadable];
+    return id && (!result || (result.requestedId ?? result.data?.tmdb_id) !== id);
+  }).slice(0, LIVE_BATCH_LIMIT);
 }
 
 export async function runLiveBatch(host, films, active, onResult) {
@@ -85,12 +93,12 @@ export async function runLiveBatch(host, films, active, onResult) {
       const data = await readLiveMetadata(host, film);
       if (!active()) break;
       succeeded++;
-      onResult(film, {data});
+      onResult(film, {data, requestedId: suppliedTmdbId(film)});
     } catch (error) {
       rateLimited = error instanceof LiveRateLimited;
       if (active()) {
         failed++;
-        onResult(film, {error: rateLimited ? "TMDB rate limit reached. Wait and reload the page before trying again." : "Live metadata is unavailable. No automatic retry was made."});
+        onResult(film, {requestedId: suppliedTmdbId(film), error: rateLimited ? "TMDB rate limit reached. Wait and reload the page before trying again." : "Live metadata is unavailable. No automatic retry was made."});
       }
       break; // The Host API does not guarantee an error shape, so unknown failures stop too.
     }

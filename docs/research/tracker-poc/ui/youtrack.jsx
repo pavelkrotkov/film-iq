@@ -312,11 +312,11 @@ function App() {
     liveRequest.current = true; setLiveBusy(true);
     try {
       const data = await readLiveMetadata(host, target);
-      if (projectRef.current === targetProject) setLiveResults((previous) => ({...previous, [target.idReadable]: mergeLiveResult(previous[target.idReadable], {data})}));
+      if (projectRef.current === targetProject) setLiveResults((previous) => ({...previous, [target.idReadable]: mergeLiveResult(previous[target.idReadable], {data, requestedId: suppliedTmdbId(target)})}));
     } catch (error) {
       const limited = error instanceof LiveRateLimited;
       if (limited) setLiveRateLimited(true);
-      if (projectRef.current === targetProject) setLiveResults((previous) => ({...previous, [target.idReadable]: mergeLiveResult(previous[target.idReadable], {error: limited ? "TMDB rate limit reached. Wait and reload the page before trying again." : "Live metadata is unavailable. No automatic retry was made."})}));
+      if (projectRef.current === targetProject) setLiveResults((previous) => ({...previous, [target.idReadable]: mergeLiveResult(previous[target.idReadable], {requestedId: suppliedTmdbId(target), error: limited ? "TMDB rate limit reached. Wait and reload the page before trying again." : "Live metadata is unavailable. No automatic retry was made."})}));
     } finally { liveRequest.current = false; setLiveBusy(false); }
   }
   async function loadNextLiveBatch() {
@@ -340,7 +340,8 @@ function App() {
   const sourceLinks = Array.isArray(evidence?.links) ? evidence.links.filter((item) => item && typeof item === "object") : [];
   const reviews = film ? directReviews(film) : null;
   const staleReviews = film && reviews?.length && !reviewsMatchTitle(reviews, film.summary);
-  const liveEntry = film ? liveResults[film.idReadable] : null;
+  const savedLiveEntry = film ? liveResults[film.idReadable] : null;
+  const liveEntry = savedLiveEntry && (savedLiveEntry.requestedId ?? savedLiveEntry.data?.tmdb_id) === suppliedTmdbId(film) ? savedLiveEntry : null;
   const live = liveEntry?.data?.tmdb_id === suppliedTmdbId(film) ? liveEntry.data : null;
   const liveMatches = liveMetadataMatches(film, live);
   const observation = film ? providerObservation(liveMatches ? {...film, live} : film) : null;

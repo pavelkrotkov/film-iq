@@ -488,9 +488,7 @@ function App() {
         <div className="intro">
           <div>
             <h1>
-              Stories worth
-              <br />
-              <em>finding.</em>
+              Stories worth <em>finding.</em>
             </h1>
             <p>
               A local experimental view of films stored in your Kaneo project.
@@ -528,8 +526,8 @@ function App() {
         {projectList && !projectList.length && !projectListError && <p>No accessible active projects found.</p>}
         <p className="notice">{movary?.status === "available" ? `Movary watched snapshot observed ${movary.observed_at}. Missing films remain unknown.` : "Movary watched snapshot unavailable for this user or project."}</p>
         {!!eligible && <section>
-          <p>Live metadata is optional and stays only in this open page. Each film can use up to three TMDB requests. {unattempted} of {eligible} supplied IDs have not been attempted. Results are not identity verification. Cancel stops further requests; an in-flight request may finish.</p>
-          <button type="button" disabled={!!batch || !pending.length} onClick={() => startLiveBatch(pending)}>Fetch next {pending.length} films (up to {pending.length * 3} requests)</button>{" "}
+          <p>Live film details stay available until you close or reload this page. {unattempted} of {eligible} films have not been loaded yet.</p>
+          <button type="button" disabled={!!batch || !pending.length} onClick={() => startLiveBatch(pending)}>Load live details for next {pending.length} films</button>{" "}
           {!!retries.length && <button type="button" disabled={!!batch} onClick={() => startLiveBatch(retries)}>Retry up to {BATCH_LIMIT} failed</button>}{" "}
           {batch && <><span role="status">Fetching {batch.done} of {batch.total} films. </span><button type="button" onClick={() => batchController.current?.abort()}>Cancel</button></>}
           {batchSummary && <p role="status">{batchSummary}</p>}

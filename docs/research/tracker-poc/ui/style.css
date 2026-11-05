@@ -78,7 +78,7 @@ a:hover {
 main {
   max-width: 1500px;
   margin: auto;
-  padding: 68px max(5vw, 24px);
+  padding: 40px max(5vw, 24px);
 }
 .eyebrow,
 .card-meta {
@@ -93,7 +93,7 @@ main {
   align-items: flex-end;
   gap: 20px;
   border-bottom: 1px solid #3a3c3d;
-  padding: 22px 0 38px;
+  padding: 12px 0 28px;
 }
 h1,
 h2,
@@ -105,7 +105,7 @@ h2 {
   font-family: "DM Serif Display", Georgia, serif;
 }
 h1 {
-  font-size: clamp(52px, 7vw, 94px);
+  font-size: clamp(48px, 6vw, 76px);
   line-height: 0.96;
   margin: 0;
 }
@@ -169,7 +169,7 @@ form label {
   justify-content: space-between;
   gap: 20px;
   align-items: end;
-  margin: 65px 0 25px;
+  margin: 40px 0 25px;
 }
 .section-head h2 {
   font-size: 38px;

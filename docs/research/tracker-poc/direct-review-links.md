@@ -45,7 +45,8 @@ matched all links. A repeat made zero writes. The Kaneo film view can display
 these links, and the YouTrack field is attached for the native issue view. A
 newer embedded app with a direct-links view showed text-labeled cards but their
 controls remained disabled during the browser observation. A subsequent
-navigation fix is installed but has not been browser-tested, so the direct-links
-display has not been verified. Both
-custom views hide links when the current title differs from the reviewed source
-title, pending revalidation. Neither links display has been verified in a browser.
+navigation fix was followed by isolated Brave walkthroughs in both POCs. Each
+showed a fictional individual-review link and a fictional aggregator link with
+the expected distinct labels; the links were not opened. Both custom views hide
+links when the current title differs from the reviewed source title, pending
+revalidation. Real-film link rendering has not been checked in the browser.

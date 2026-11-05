@@ -43,7 +43,7 @@ unfinished browser, recovery and upgrade checks have been resolved.
 
 | Criterion and weight | Kaneo evidence | YouTrack evidence | Remaining evidence |
 | --- | --- | --- | --- |
-| Custom UI freedom, 30% | A separate React UI uses the logged-in Kaneo session and local APIs. An isolated Brave session opened a fictional film and persisted a synopsis, lifecycle and interest score through reload. Source is available for a fork, but this experiment did not require one. | The latest main-menu iframe rendered 763 active fictional cards. A Brave walkthrough created and edited a fictional film, persisted an interest score, and exercised archive filtering. The iframe omits `allow-forms`, requiring direct button handlers; the YouTrack sidebar remains visible. | Verify live metadata and posters in YouTrack, deep links and remaining navigation. Test standalone YouTrack authentication in a browser. |
+| Custom UI freedom, 30% | A separate React UI uses the logged-in Kaneo session and local APIs. An isolated Brave session opened a fictional film and persisted a synopsis, lifecycle and interest score through reload. Source is available for a fork, but this experiment did not require one. | The latest main-menu iframe rendered 763 active fictional cards. A Brave walkthrough created and edited a fictional film, persisted interest and watched status, opened a direct link and exercised archive filtering. The iframe omits `allow-forms`, requiring direct button handlers; the YouTrack sidebar remains visible. | Verify live metadata and posters in YouTrack and remaining navigation. Test standalone YouTrack authentication in a browser. |
 | Data model, 15% | Numeric and multiselect task fields were read and written. Per-user data uses a small separate SQLite bridge and is not native task-field data. Current task-wide provenance is neutral, but the original import named the personal source and historical storage exposure is unassessed. | Typed issue fields and a separate lifecycle field were exercised; shared provenance was sanitized. A fictional preference and watched snapshot passed live single-user tests, and the real watched snapshot was read back. Deleting the app also deletes its extension properties. | Assess old Kaneo provenance in history/backups, and verify deletion and recovery behavior and practical per-user size limits. |
 | API and agents, 15% | The running OpenAPI document and REST endpoints were inspected; a synthetic external worker repeats without duplicate creation in sequential tests. | A token-authenticated external worker created and updated fictional issues. A local import contains 130 canonical records, with validated source identity and sanitized field provenance. | Test narrow credentials and signed-in permissions. Measure upgrade stability and repeat behavior with the complete app. |
 | Search and sorting, 10% | Board pagination returned 1,000 synthetic tasks. The observed broad native search was capped at 50; the UI joins preferences and sorts them numerically. | A typed global critic-score sort returned 1,000 synthetic issues through paginated REST. Per-user interest sorting is performed by the proposed UI, not that native query. | Exercise identical provider, interest, genre and freshness filters in both browsers, including unknown data and 1,000-film rendering. |
@@ -84,6 +84,19 @@ existing measurements are local API timings and cannot predict production
 capacity or ongoing maintenance. The provisional scores above should be revisited
 after the same end-to-end workload on both candidates and the outstanding
 recovery and upgrade checks.
+
+For a safe future recovery rehearsal, create separate fictional-only instances
+with their own bind directories, ports and credentials. Changing the Compose
+project name alone does not isolate the existing POC's configured mounts and
+ports. A Kaneo rehearsal should restore a PostgreSQL dump into a new empty test
+database and separately check its preference store and any attachments. A
+YouTrack rehearsal should restore a fictional backup into a new instance and
+check the app and its extension properties, as well as issues and attachments.
+Neither rehearsal has been performed. See the official [PostgreSQL 16 dump
+documentation](https://www.postgresql.org/docs/16/app-pgdump.html) and
+[YouTrack Docker restore guide](https://www.jetbrains.com/help/youtrack/server/restore-docker-image-installation.html).
+The current Compose file does not establish automatic startup after a host
+reboot; Hermes has not been tested.
 
 For a narrower CPU-only check, the two client filtering functions were run
 separately in warmed Node processes against the same 1,000 fictional films.

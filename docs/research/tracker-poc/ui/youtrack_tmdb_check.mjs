@@ -65,6 +65,11 @@ const merged = mergeLiveMetadata(result, incomplete);
 assert.equal(merged.availability.status, "complete");
 assert.equal(merged.availability_attempt, "partial");
 assert.equal(mergeLiveResult({data: result}, {error: "unavailable"}).data, result, "a failed refresh retains prior page-memory data");
+const changedIdFilm = {...film, customFields: [{name: "FilmIQ TMDB ID", value: 124}]};
+assert.deepEqual(eligibleLiveFilms([changedIdFilm], {"FILMPOC-2": {data: result}}), [changedIdFilm], "a changed ID must be eligible for a fresh lookup");
+const changedFailure = mergeLiveResult({data: result, requestedId: 123}, {requestedId: 124, error: "unavailable"});
+assert.equal(changedFailure.data, undefined, "a failed lookup for a new ID must not retain old film metadata");
+assert.deepEqual(eligibleLiveFilms([changedIdFilm], {"FILMPOC-2": changedFailure}), [], "a failed lookup for the current ID is not retried automatically");
 let attempts = 0;
 const limited = {fetchYouTrack: async () => {attempts++; throw Object.assign(new Error("429"), {status: 429});}};
 await assert.rejects(readLiveMetadata(limited, film), LiveRateLimited);
@@ -74,7 +79,7 @@ await assert.rejects(readLiveMetadata(host, {...film, customFields: []}), /ident
 assert.equal(calls, 1, "missing IDs must never issue a request");
 function missingLive() { return {availability: {status: "unknown", checked_at: null, offers: []}}; }
 const films = Array.from({length: 35}, (_, index) => ({idReadable: `FILMPOC-${index + 1}`, customFields: [{name: "FilmIQ TMDB ID", value: 101 + index}]}));
-const candidates = eligibleLiveFilms(films, {"FILMPOC-1": {data: raw}, "FILMPOC-2": {error: "failed"}});
+const candidates = eligibleLiveFilms(films, {"FILMPOC-1": {data: {...raw, tmdb_id: 101}}, "FILMPOC-2": {requestedId: 102, error: "failed"}});
 assert.equal(candidates.length, 30);
 assert.equal(candidates[0].idReadable, "FILMPOC-3", "completed and failed attempts are not automatically retried");
 const requested = [], recorded = [];
