@@ -70,8 +70,9 @@ synthetic project, `kaneo_smoke.py` created a task with a synthetic identifier,
 updated its description and column, wrote a numeric custom field and a JSON
 multiselect, and read the results back. A nonnumeric update returned HTTP 400;
 an unauthenticated description update was rejected, and the prior description
-remained intact. A second run reused the same fixture. This is not a test of a
-logged-in user with insufficient permissions or concurrent imports.
+remained intact. A second run reused the same fixture. A separate synthetic
+viewer could read the film but received HTTP 403 when editing it; the existing
+description remained unchanged. Concurrent imports have not been tested.
 
 The 30-record seed added 29 tasks after the smoke test created the first. The
 1,000-record seed added 970 tasks in 17.71 seconds, and a repeat added zero.
@@ -142,6 +143,7 @@ sequentially but is **not safe for simultaneous seeders**.
 ```sh
 POC_PROJECT_ID='<printed project ID>'
 python3 docs/research/tracker-poc/kaneo_smoke.py --project "$POC_PROJECT_ID" --cookie-file .cache/tracker-poc/kaneo-cookies.txt
+python3 docs/research/tracker-poc/kaneo_viewer_check.py --directory .cache/tracker-poc
 python3 docs/research/tracker-poc/kaneo_seed.py --project "$POC_PROJECT_ID" --cookie-file .cache/tracker-poc/kaneo-cookies.txt --count 1000
 python3 docs/research/tracker-poc/kaneo_benchmark.py --project "$POC_PROJECT_ID" --cookie-file .cache/tracker-poc/kaneo-cookies.txt
 cd docs/research/tracker-poc/ui
@@ -169,8 +171,8 @@ one-time token are shown in the container logs. No YouTrack score is justified.
 ## Outstanding
 
 The complete comparison, equivalent applications, multiuser preference
-isolation, enrichment, browser demonstrations, authorization tests for two
-roles, YouTrack setup and measurements, upgrade assessment, weighted scores,
+isolation, enrichment, browser demonstrations, equivalent YouTrack permission
+tests, YouTrack setup and measurements, upgrade assessment, weighted scores,
 and recommendation remain outstanding. Do not score or recommend either
 product from the current evidence. Docker Desktop's external runtime storage
 under `/var/lib/docker` was approved by the user on 2026-11-05.
