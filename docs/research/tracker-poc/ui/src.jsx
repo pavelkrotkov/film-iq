@@ -5,7 +5,7 @@ import {
   providers,
   syntheticAvailability,
 } from "./film_filters.js";
-import { BATCH_LIMIT, chooseBatch, chooseRemaining, fetchLiveMovie, mergeResult, runBatch, runRemainingBatch, safeImdbTitleUrl, tmdbId } from "./live_batch.js";
+import { BATCH_LIMIT, chooseBatch, chooseRemaining, fetchLiveMovie, mergeResult, refreshNotice, runBatch, runRemainingBatch, safeImdbTitleUrl, tmdbId } from "./live_batch.js";
 import { fetchRatings } from "./mdblist_ui.js";
 import { evidenceExplanation, evidenceLabel, sourceLabel } from "./source_evidence.js";
 import { clearSavedDraft, currentComments, setCommentDraft } from "./comment_drafts.js";
@@ -27,8 +27,8 @@ function ProviderBadges({ film }) {
   if (services === null) return <span>Availability unknown</span>;
   if (film.live?.availability?.status === "partial" && !services.length)
     return <span>Availability incomplete</span>;
-  if (!services.length) return <><span>No subscriptions reported</span>{film.live?.availability_attempt && <span>Latest check incomplete</span>}</>;
-  return <>{services.map((name) => <span key={name}>{name}</span>)}{film.live?.availability?.status === "partial" && <span>Partial</span>}{film.live?.availability_attempt && <span>Latest check incomplete</span>}</>;
+  if (!services.length) return <span>No subscriptions reported</span>;
+  return <>{services.map((name) => <span key={name}>{name}</span>)}{film.live?.availability?.status === "partial" && <span>Partial</span>}</>;
 }
 
 function SourceEvidence({ film }) {
@@ -969,6 +969,7 @@ function App() {
                       <div className="badges">
                         <ProviderBadges film={item} />
                       </div>
+                      {refreshNotice(liveResults[item.id], tmdbId(item), item.live) && <p>{refreshNotice(liveResults[item.id], tmdbId(item), item.live)}</p>}
                       <p>
                         Critic score:{" "}
                         {item.fields["POC Critic Score"] || "Unknown"}

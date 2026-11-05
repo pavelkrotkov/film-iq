@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { BATCH_LIMIT, chooseBatch, chooseRemaining, fetchLiveMovie, mergeResult, RateLimitError, runBatch, runRemainingBatch, safeImdbTitleUrl } from "./live_batch.js";
+import { BATCH_LIMIT, chooseBatch, chooseRemaining, fetchLiveMovie, mergeResult, refreshNotice, RateLimitError, runBatch, runRemainingBatch, safeImdbTitleUrl } from "./live_batch.js";
 
 const films = Array.from({length: 35}, (_, index) => ({
   id: `task-${index}`,
@@ -28,6 +28,12 @@ const preserved = mergeResult(prior, {data: {tmdb_id: 2, availability: {status: 
 assert.deepEqual(preserved.data.availability, prior.data.availability);
 assert.equal(preserved.data.availability_attempt, "unknown");
 assert.deepEqual(mergeResult(prior, {error: "failed"}).data, prior.data);
+assert.equal(refreshNotice(preserved, 2, preserved.data), "Latest provider check incomplete; previous availability shown.");
+const failedRefresh = mergeResult(prior, {requestedId: 2, error: "failed"});
+assert.equal(refreshNotice(failedRefresh, 2, failedRefresh.data), "Latest refresh failed; previous data shown.");
+assert.equal(refreshNotice(failedRefresh, 2, null), "Latest refresh failed.");
+assert.equal(refreshNotice(failedRefresh, 3, failedRefresh.data), null);
+assert.equal(refreshNotice({requestedId: 2, data: prior.data, error: null}, 2, prior.data), null);
 const calls = [], limitedEvents = [];
 const limited = await runBatch(chosen, (id, signal) => fetchLiveMovie(id, signal, async () => {
   calls.push(id);

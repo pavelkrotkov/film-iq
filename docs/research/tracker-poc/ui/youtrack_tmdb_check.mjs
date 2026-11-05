@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { attachMatchedLive, eligibleLiveFilms, failedLiveFilms, remainingLiveFilms, LiveRateLimited, liveMetadataMatches, mergeLiveMetadata, mergeLiveResult, readLiveMetadata, runLiveBatch, runRemainingLive, safePosterUrl, sameNormalizedTitle, suppliedTmdbId } from "./youtrack_tmdb.js";
+import {refreshNotice} from "./live_batch.js";
 import { filterYoutrackFilms, providerFreshness, providerObservation } from "./youtrack_filters.js";
 
 const film = {idReadable: "FILMPOC-2", customFields: [{name: "FilmIQ TMDB ID", value: 123}]};
@@ -75,6 +76,10 @@ const merged = mergeLiveMetadata(result, incomplete);
 assert.equal(merged.availability.status, "complete");
 assert.equal(merged.availability_attempt, "partial");
 assert.equal(mergeLiveResult({data: result}, {error: "unavailable"}).data, result, "a failed refresh retains prior page-memory data");
+const failedRefresh = mergeLiveResult({data: result}, {requestedId: 123, error: "unavailable"});
+assert.equal(refreshNotice(failedRefresh, 123, result), "Latest refresh failed; previous data shown.");
+const partialRefresh = mergeLiveResult({data: result}, {requestedId: 123, data: incomplete});
+assert.equal(refreshNotice(partialRefresh, 123, partialRefresh.data), "Latest provider check incomplete; previous availability shown.");
 const changedIdFilm = {...film, customFields: [{name: "FilmIQ TMDB ID", value: 124}]};
 assert.deepEqual(eligibleLiveFilms([changedIdFilm], {"FILMPOC-2": {data: result}}), [changedIdFilm], "a changed ID must be eligible for a fresh lookup");
 const changedFailure = mergeLiveResult({data: result, requestedId: 123}, {requestedId: 124, error: "unavailable"});

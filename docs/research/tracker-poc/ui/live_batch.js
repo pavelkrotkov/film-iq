@@ -24,6 +24,15 @@ export function tmdbId(film) {
     Number(value) <= 2147483647 ? Number(value) : null;
 }
 
+// Only report on the current ID; displayed is already gated by the title match.
+export function refreshNotice(result, expectedId, displayed) {
+  if (!expectedId || (result?.requestedId ?? result?.data?.tmdb_id) !== expectedId) return null;
+  const previousShown = !!displayed && displayed === result?.data;
+  if (result?.error) return previousShown ? "Latest refresh failed; previous data shown." : "Latest refresh failed.";
+  if (previousShown && displayed.availability_attempt) return "Latest provider check incomplete; previous availability shown.";
+  return null;
+}
+
 export function chooseRemaining(films, results, retry = false) {
   return films
     .filter((film) => {

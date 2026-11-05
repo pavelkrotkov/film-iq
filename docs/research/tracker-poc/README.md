@@ -670,6 +670,10 @@ browser checks did not contact TMDB or exercise real film data.
 YouTrack also offers an explicit retry for failed films in the current project,
 including those hidden by filters. A fictional browser test confirmed a retry
 preserved an earlier success; no automatic retry is made.
+Both discovery grids now identify a failed latest refresh while retaining the
+previous observation, and distinguish that case from a partial provider check.
+Isolated fictional browser checks exercised both outcomes without external
+requests. This remains page-memory data and is not persistent enrichment.
 
 An isolated YouTrack browser test activated a fictional metadata lookup with a
 trusted keyboard click. The main-menu widget reached the real local fixture app
