@@ -74,7 +74,9 @@ current or original title as a display guard; this comparison uses slightly
 different normalization and neither establishes identity. No
 provider response bodies were retained, and this is not a completed enrichment.
 Both film-detail pages can now also read limited facts from the existing
-reviewed catalog without copying it into either tracker or contacting TMDB.
+reviewed catalog without copying it into either tracker or making a TMDB API
+request. The shared credits component requests TMDB's generic logo without a
+film referrer when catalog facts are displayed.
 A supplied-input check found 95 eligible title/ID matches among 130 films;
 both local endpoints returned facts for one accessible, approved film each.
 Fictional browser checks verified the display and reload with mocked endpoint

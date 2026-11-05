@@ -216,7 +216,7 @@ match independently verifies identity. Unmatched data remains withheld.
 
 Both trackers can also read title, original title, release year, directors and
 runtime from an existing reviewed, time-limited project catalog. This is a
-separate local read, not a TMDB request or a tracker-field write. A read-only
+separate local read, not a TMDB API request or a tracker-field write. A read-only
 check found 95 of the 130 supplied records matched that catalog's ID and title
 guard. Each tracker bridge was then checked for one accessible, approved film;
 these checks did not print the film or establish identity independently. Missing,
@@ -226,6 +226,9 @@ persist synopsis, artwork or availability, or establish a purge procedure for
 the pre-existing catalog and backup copies. Isolated fictional browser checks
 for both film pages showed catalog facts and attribution through reload using
 mocked catalog responses; the real-film browser path remains unverified.
+When catalog facts are shown, the shared credits component requests TMDB's
+generic logo without a film referrer; it does not include a film identifier in
+that request. The fictional browser checks blocked that external logo request.
 
 The pinned Kaneo `2.49.0` image and PostgreSQL `16.15` ran locally on
 2026-11-05. The running `/api/openapi` document was inspected. In a private
@@ -319,6 +322,9 @@ unknown dates and repeated entries preserved. History-export dates remain a
 separate observation and are not added to play counts. An isolated fictional
 browser check verified the display through reload with a mocked snapshot; the
 app update left the administrator's existing snapshot unchanged.
+YouTrack cards also distinguish local watchlisted, not watchlisted, unknown
+and unavailable states. These POC preferences do not change Movary's
+authoritative watchlist.
 
 The separate `enrichment.py` worker uses a backend protocol and the existing
 FilmIQ availability normalizer. Its only source is explicitly fictional, with
@@ -354,6 +360,17 @@ An isolated browser test against a newly created fictional Kaneo task saved,
 reloaded, cleared and reloaded both fields while preserving source-listed
 year and director. Kaneo represents these clears as empty strings. A failed
 multi-request save can be partial and is reported as such.
+
+Both editors now accept multiple stored genres, one per line. They preserve
+legacy single-value fields until explicitly edited, and represent new multi-value
+edits as a versioned JSON array inside the existing text field. Clearing the
+field makes genre unknown. The POC interfaces filter exact individual labels;
+the underlying trackers still see text rather than a native multivalue field.
+Live fictional API checks in both trackers verified save, readback, filtering
+and clear without modifying existing films. Isolated fictional browser checks
+against both running tracker backends also passed save, reload, filtering by a
+second genre, clear and reload. The Kaneo check mocked project-picker and
+preference responses; neither check accessed real films or external services.
 
 An isolated Kaneo Brave walkthrough with fictional data verified that
 canceling browser Back or reload preserves an unsaved film draft, and that
