@@ -18,8 +18,8 @@ class MovieActions:
 
     def watchlist(self) -> str:
         result = sync_one(self.preview, self.backend, execute=True, approved=True)
-        movie = self.backend.find_movie(self.preview.tmdb_id)
-        if movie is None or not self.backend.on_watchlist(movie):
+        current = api_movies({"watchlist": self.client.read("watchlist")})
+        if self.preview.tmdb_id not in current:
             raise ValueError("Movary watchlist result not verified")
         return result.capitalize() + " in Movary."
 
@@ -27,12 +27,10 @@ class MovieActions:
         # Complete API reads are authoritative; cached history cannot justify a write.
         collections = {name: self.client.read(name) for name in ("played", "watchlist")}
         crosswalk = api_movies(collections)
-        movie = self.backend.find_movie(self.preview.tmdb_id)
-        known = crosswalk.get(self.preview.tmdb_id)
-        if known and known["movary_id"] != movie:
-            raise ValueError("Movary film identity changed")
         if recorded(collections["played"], self.preview.tmdb_id, day):
             return "Watch date already recorded in Movary."
+        known = crosswalk.get(self.preview.tmdb_id)
+        movie = known["movary_id"] if known else self.backend.find_movie(self.preview.tmdb_id)
         if movie is None:
             movie = self.backend.add_movie(self.preview.tmdb_id, approved=True)
         path = self.backend.watchlist.replace("watchlist/movies", "played/movies")

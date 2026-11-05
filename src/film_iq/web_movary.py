@@ -47,6 +47,6 @@ class MovaryControls:
         signature = self.signature(item, action, day)
         if phase == "preview":
             return "200 OK", confirmation(item, action, day, signature, csrf), "text/html"
-        if not hmac.compare_digest(signature, values.get("signature", "")):
+        if not hmac.compare_digest(signature.encode(), values.get("signature", "").encode()):
             raise PermissionError("Movary confirmation does not match its preview")
         return execute_result(item, action, day, self.settings, self.snapshot, self.exports)
