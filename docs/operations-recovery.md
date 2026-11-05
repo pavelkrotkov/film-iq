@@ -410,3 +410,11 @@ and a user-owned sentinel. Backup/restore and identical reimport preserve the
 original observation expiry despite a later policy deadline. This is tested
 readiness for an explicit inventory, not a claim that real copies were purged or
 that a production provider policy has been adopted.
+
+## Recommendation website
+
+The [UI usage and deployment guide](usage/recommendation-ui.md) describes the
+private loopback/SSH/Tailscale serving path, project-local native jobs, restart,
+update and recovery. UI deployment does not activate a production availability
+provider or change B4 observation jobs. Back up before the local-disposition
+schema migration; keep Movary's personal database outside FilmIQ's write path.

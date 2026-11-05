@@ -98,3 +98,98 @@ empty catalog. Fix inputs and retry; the UI does not repair or overwrite them.
 The website exposes no raw snapshots, private comments, API
 credentials or private rights-review notes. Source text is escaped and external
 links are restricted to HTTP(S). It never exposes unresolved film-action routes.
+
+## Private native deployment
+
+Keep code, SQLite, private inputs, process configuration, and logs inside the
+attached project. The selected deployment uses Waitress bound to Mac loopback,
+a native supervised SSH reverse tunnel, and Hermes's existing Tailscale Serve
+HTTPS proxy. No project data is copied to Hermes. No public listener or Funnel
+is needed. The service requires the Mac to be awake and its user session active.
+
+Project-local configuration lives in `.cache/ui-build/runtime/`:
+
+- `com.filmiq.ui.plist`: `uv run --offline --env-file` starts `film-iq serve`
+  with absolute installation paths, loopback binding, and project-local caches.
+- `com.filmiq.ui.tunnel.plist`: SSH forwards Hermes `127.0.0.1:8770` to the
+  Mac's `127.0.0.1:8770`, using existing SSH authentication. Batch mode and
+  failure-on-forwarding-error prevent a stalled password prompt or false start.
+- UI/tunnel stdout and stderr logs are private files in the same directory.
+
+Both jobs use native `KeepAlive` and bounded restart throttling. Store plists
+with mode 0600 and logs/configuration under a mode-0700 private directory.
+Do not print credentials or raw personal snapshots when inspecting failures.
+
+Register the project-local plists directly, after checking both loopback ports
+are free and the merged application is installed:
+
+```sh
+launchctl bootstrap gui/$(id -u) /Users/pavel/dev/film-iq/.cache/ui-build/runtime/com.filmiq.ui.plist
+launchctl bootstrap gui/$(id -u) /Users/pavel/dev/film-iq/.cache/ui-build/runtime/com.filmiq.ui.tunnel.plist
+ssh hermes 'tailscale serve --bg --yes --https=8450 http://127.0.0.1:8770'
+```
+
+The intended endpoint is `https://hermes.tail377b2a.ts.net:8450/`. Preserve every
+existing Serve route; never use `tailscale serve reset`. An added Serve route
+alone does not prove the UI is running. Verify the HTTPS response, native process
+state, loopback listener, and existing Movary service before reporting success.
+Registration by absolute project path persists process restarts within the user
+session; after logout/login, bootstrap these project-local jobs again. No
+login-startup installation or reboot persistence is implied by this procedure.
+
+## Refresh, restart, and update
+
+The existing `com.filmiq.discovery.daily` job refreshes the personal snapshot
+through supported read APIs and complete native CSV exports, then writes the
+report and a SQLite online backup. It performs no Movary writes or production
+provider polling. Preserve its existing selected cohorts and exporter commands.
+The separate B4 observation jobs are not UI jobs and must not be repurposed.
+
+Inspect or restart only the selected UI jobs:
+
+```sh
+launchctl print gui/$(id -u)/com.filmiq.ui
+launchctl print gui/$(id -u)/com.filmiq.ui.tunnel
+launchctl kickstart -k gui/$(id -u)/com.filmiq.ui
+launchctl kickstart -k gui/$(id -u)/com.filmiq.ui.tunnel
+```
+
+For an application update, stop the UI before changing its installed revision.
+Use only reviewed merged code, run `uv sync --dev`, preserve a pre-migration
+online backup, then bootstrap the UI again and verify browse/detail and saved
+state. The tunnel may remain registered while the application is stopped.
+Stop the jobs without deleting their configuration or data:
+
+```sh
+launchctl bootout gui/$(id -u)/com.filmiq.ui
+launchctl bootout gui/$(id -u)/com.filmiq.ui.tunnel
+```
+
+If deliberately withdrawing the endpoint, remove only the dedicated route with
+`ssh hermes 'tailscale serve --https=8450 off'`. Do not alter Movary's port 8449
+or unrelated private services.
+
+## Backup and recovery
+
+Back up SQLite through its online backup API before a schema migration; never
+copy only the live main file while WAL is active. Save the selected Git revision,
+lockfile, private service configuration, cohort/catalog inputs, personal
+snapshot/status, and local dispositions under their existing privacy and source
+retention rules. Restoring metadata does not extend its original retention lease.
+
+Use the [existing recovery procedure](../operations-recovery.md), restoring into
+a new project-local database first. Verify integrity, foreign keys, schema,
+accepted evidence, and saved/dismissed state before switching a stopped service
+to the restored path. A backup restores only its captured state; preserve the
+original database for diagnosis. Do not edit Movary's database or manufacture
+personal actions to test recovery.
+
+## Deployment acceptance
+
+The deployment issue [#102](https://github.com/pavelkrotkov/film-iq/issues/102)
+records dated operational evidence. Preparation, process registration, HTTP
+checks, browser checks, and user satisfaction are separate claims. Record actual
+checks and remaining limitations before accepting the integrated UI. In
+particular, verify the refreshed Plex history, keyboard/mobile layout, original
+source links, filters, local save/dismiss/restore, honest stale/error states,
+and restart persistence without live personal-state writes.
