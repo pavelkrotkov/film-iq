@@ -3,8 +3,9 @@
 Browse accepted reviewed films, search titles/directors, filter recognition and
 watch history, then open a film to inspect its original evidence. Ratings and
 viewing plans are optional. Save, dismiss and restore controls keep a local
-recommendation shortlist. Movary actions and persistent private deployment are
-separate slices under [UI epic #98](https://github.com/pavelkrotkov/film-iq/issues/98).
+recommendation shortlist. Optional Movary controls preview deliberate personal
+actions. The private deployment and its operational evidence are tracked under
+[UI epic #98](https://github.com/pavelkrotkov/film-iq/issues/98).
 
 ## Start locally
 
@@ -64,6 +65,34 @@ rechecks accepted reviewed film identity server-side, writes only the local
 disposition, then redirects to the updated film page. Repeated actions do not
 add duplicate state or change evidence.
 
+## Optional Movary controls
+
+Open **Movary history and watchlist · optional** on a film. **Preview watchlist
+addition** shows the exact film before **Confirm this Movary change** adds it to
+Movary's intentional watchlist. **Cancel** makes no Movary request. A FilmIQ
+**Save** remains a separate local recommendation choice.
+
+**Preview watch date** requires an explicit date and the same confirmation.
+Logging an already recorded positive-play date is a no-op; a new date is added
+without replacing other dates, plays, ratings or comments. Movary may remove the
+film from its watchlist according to its settings, as disclosed in the preview.
+No repeated-viewing count editor or automatic suggestion promotion is provided.
+
+**Edit enjoyment rating in Movary** opens the native film page only when the
+private snapshot supplies its validated Movary ID. The installed bearer API has
+no rating-write endpoint; enjoyment and artistic merit remain separate. Return
+and use **Refresh history and ratings**, which performs only complete read APIs
+and CSV exports. A failed refresh preserves prior values and marks them stale.
+A verified personal write followed by failed refresh is reported as saved with
+stale FilmIQ state; uncertainty is not reported as an automatic rollback.
+
+To enable controls, supply `--snapshot`, both `--ratings-command` and
+`--history-command` JSON argument arrays, and `MOVARY_URL`, `MOVARY_USERNAME`,
+`MOVARY_TOKEN` through the private server environment. Each exporter must emit
+its complete CSV to stdout; reuse the installation's existing read-only exporter
+arrays from [the personal-refresh workflow](personal-refresh.md). Never put
+credentials in these arguments. Missing configuration leaves browsing available.
+
 ## What the pages mean
 
 The default view excludes films known watched after a successful personal refresh.
@@ -104,17 +133,19 @@ links are restricted to HTTP(S). It never exposes unresolved film-action routes.
 
 Keep code, SQLite, private inputs, process configuration, and logs inside the
 attached project. The selected deployment uses Waitress bound to Mac loopback,
-a native supervised SSH reverse tunnel, and the tailnet server's existing Tailscale Serve
-HTTPS proxy. No project data is copied to the tailnet server. No public listener or Funnel
-is needed. The service requires the Mac to be awake and its user session active.
+a native supervised SSH reverse tunnel, and the tailnet server's existing
+Tailscale Serve HTTPS proxy. No project data is copied to the tailnet server.
+No public listener or Funnel is needed. The service requires the Mac to be awake and its user session active.
 
 Project-local configuration lives in `.cache/ui-build/runtime/`:
 
 - `com.filmiq.ui.plist`: `uv run --offline --env-file` starts `film-iq serve`
   with absolute installation paths, loopback binding, and project-local caches.
   Its `--public-origin` must match the configured browser HTTPS origin and port.
-- `com.filmiq.ui.tunnel.plist`: SSH forwards the tailnet server’s `127.0.0.1:8770` to the
-  Mac's `127.0.0.1:8770`, using existing SSH authentication. Batch mode and
+  The selected installation also supplies both complete exporter arrays for
+  optional Movary controls; credentials are loaded privately from its environment.
+- `com.filmiq.ui.tunnel.plist`: SSH forwards the tailnet server’s loopback port8770
+  to the Mac's `127.0.0.1:8770`, using existing SSH authentication. Batch mode and
   failure-on-forwarding-error prevent a stalled password prompt or false start.
 - UI/tunnel stdout and stderr logs are private files in the same directory.
 
