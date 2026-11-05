@@ -5,6 +5,7 @@ from urllib.parse import urlencode
 
 from web_movary_dates import inspect_dates, inspect_failure
 from web_movary_stub import MovaryStub
+from web_rating_checks import inspect_rating
 from web_support import request
 
 from film_iq import web_movary_api, web_movary_refresh
@@ -48,6 +49,7 @@ def inspect_movary(app, root, monkeypatch):
         assert "PRIVATE" not in page
         inspect_watchlist(app, stub)
         inspect_dates(app, stub, post, approve)
+        inspect_rating(app, stub, patch, post, approve)
         inspect_failure(app, stub, patch, post, approve)
 
 

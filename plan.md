@@ -32,6 +32,21 @@ completed bot-review disposition, independent GPT-6.1 Sol high Standards/Spec
 reviews and green CI; their obsolete worktrees are removed. UI4 completed the same review/CI discipline in merged PR #104, and #102 is
 closed. All four slices are delivered; the UI epic records final closure.
 
+### Follow-up: rate and mark watched
+
+The user requested a visible combined rating/watch action, tracked in
+[#109](https://github.com/pavelkrotkov/film-iq/issues/109). Cards/details link to
+an optional 1–10 enjoyment rating and editable watch date. The existing preview
+binds the exact film, date and rating before explicit save. Blank preserves the
+current score. Movary remains authoritative: an operator-configured JSON-stdin
+bridge invokes its installed native rating service, with readback and the
+existing complete snapshot refresh. No fork, session automation, direct SQL,
+remote project storage or new dependency is needed. This supersedes the earlier
+native-editor-only limitation; the editor stays as fallback. Existing dates,
+plays/comments and unrelated ratings survive; partial success is retained and
+truthfully reported. Review, validation and deployment evidence are recorded in
+#109 and its PR. No user-entered rating is required as an acceptance fixture.
+
 ### UI behavior and boundaries
 
 - Browse accepted reviewed candidates even with missing/stale personal history;
@@ -2727,3 +2742,22 @@ Final UI4 local validation: `uv sync --dev`, Ruff check/format and ty pass;
 199 tests pass with one existing opt-in skip (200 collected). No Python runtime
 changes or test cases were added by the deployment/documentation delivery.
 Final-head GitHub CI, bot disposition and independent reviews remain required.
+
+### Rate-and-watched follow-up validation — 2026-11-04
+
+Related #109. The combined form is visible from cards/details; its optional score
+is included in the existing signed preview and exact-film confirmation. The
+command bridge invokes the installed Movary application service used by the
+native controller, resolves the configured user and TMDB film, and verifies the
+saved score. JSON values travel on stdin. PHP syntax and service availability
+were checked read-only against the installed container; no real personal rating
+was entered for testing. A blank score skips the bridge and preserves the rating.
+
+The existing web journey now covers score-field rendering, no-I/O preview,
+score-tamper rejection, verified rating/watch save, repeated-date preservation,
+blank-rating preservation and a failed rating after a verified watch followed by
+safe retry. Ruff, formatting, ty and the full suite pass: 200 collected, 199
+passed, one existing opt-in skip. All 346 tracked Python files satisfy CC≤8 and
+MI≥50 (minimum 50.025032). The small PHP bridge has two conditional guards and
+passes native PHP lint; it delegates rating validation and persistence to Movary.
+Review/deployment results are recorded with #109 and its PR.

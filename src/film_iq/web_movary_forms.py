@@ -27,14 +27,25 @@ def panel(item: dict, snapshot, settings, enabled: bool, csrf: str) -> str:
     )
 
 
-def confirmation(item: dict, action: str, day: str, signature: str, csrf: str) -> str:
+def confirmation(
+    item: dict, action: str, day: str, signature: str, csrf: str, rating: int | None = None
+) -> str:
     target = f"{title(item)} (TMDB {item['tmdb_id']})"
     if action == "watchlist":
         description = f"Add {target} to your intentional Movary watchlist."
     else:
-        description = f"Log a watch of {target} on {day}. Existing dates, plays, ratings and comments remain. Movary may remove this film from your watchlist according to your settings."
-    fields = hidden("date", day) + hidden("signature", signature)
-    approve = form(item, f"{action}/confirm", fields, "Confirm this Movary change", csrf)
+        description = f"Log a watch of {target} on {day}. Existing dates, plays and comments remain. Movary may remove this film from your watchlist according to your settings."
+    if rating is not None:
+        description += f" Set your enjoyment rating to {rating}/10."
+    fields = (
+        hidden("date", day)
+        + hidden("rating", str(rating) if rating is not None else "")
+        + hidden("signature", signature)
+    )
+    caption = (
+        "Save rating & mark watched" if action == "rated-watched" else "Confirm this Movary change"
+    )
+    approve = form(item, f"{action}/confirm", fields, caption, csrf)
     body = f'<section class="empty"><h1>Preview Movary change</h1><p>{text(description)}</p><p>No Movary request has been made. Confirm only if this is the film and action you intend.</p>{approve}<a href="/films/{item["tmdb_id"]}">Cancel</a></section>'
     return layout("Confirm Movary action", body)
 

@@ -19,6 +19,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--history-command", type=_command, help="JSON argv emitting complete history CSV"
     )
+    parser.add_argument(
+        "--rating-command", type=_command, help="JSON argv reading a rating request on stdin"
+    )
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8770)
     parser.add_argument("--public-origin", help="Browser-facing origin, including HTTPS proxy port")

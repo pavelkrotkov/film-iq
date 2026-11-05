@@ -13,6 +13,7 @@ class MovaryStub:
             {"date": "2026-01-01", "plays": 2, "comment": "PRIVATE KEEP COMMENT"}
         ]
         self.watchlisted, self.uncertain = False, False
+        self.rating = 7
 
     def read(self, collection):
         return {
@@ -47,7 +48,9 @@ class MovaryStub:
     def refresh(self, client, snapshot, **exports):
         assert all(exports.values())
         ratings, history = self.root / "ratings.csv", self.root / "history.csv"
-        ratings.write_text("title,year,tmdbId,imdbId,userRating\nSynthetic Film,2025,123,,7\n")
+        ratings.write_text(
+            f"title,year,tmdbId,imdbId,userRating\nSynthetic Film,2025,123,,{self.rating}\n"
+        )
         with history.open("w", newline="") as output:
             writer = csv.writer(output)
             writer.writerow(

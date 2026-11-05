@@ -27,7 +27,8 @@ def actions(item: dict, csrf_token: str) -> str:
     )
     return f'''<section class="local-actions" aria-label="FilmIQ recommendation controls"><p>FilmIQ shortlist · {STATES[state]}</p>
 <form class="film-actions" method="post" action="/films/{item["tmdb_id"]}/disposition">
-<input type="hidden" name="csrf_token" value="{text(csrf_token)}">{buttons}</form></section>'''
+<input type="hidden" name="csrf_token" value="{text(csrf_token)}">{buttons}</form>
+<a class="rate-link" href="/films/{item["tmdb_id"]}#rate-watched">Rate &amp; mark watched</a></section>'''
 
 
 def submit(database, item, values):

@@ -36,7 +36,11 @@ discovery means neither disposition. Save/dismiss/restore are reversible and
 idempotent. Resolve actions against accepted reviewed identities server-side.
 Use CSRF protection and safe external links at the actual web trust boundary.
 Use the existing approved-watchlist adapter and supported watched-date API;
-Movary retains ownership under ADR 0001.
+Movary retains ownership under ADR 0001. The user-requested combined rating/watch
+form uses the existing preview/confirmation boundary and an optional native
+application-service command for rating updates. Values stay on stdin, the exact
+score is bound to the preview, and retries preserve watch counts. Partial writes
+are reported honestly; the command's local service readback precedes full refresh.
 
 ## Consequences / acceptance
 
