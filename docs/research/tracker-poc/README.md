@@ -28,7 +28,9 @@ requested evaluation criteria; scores remain pending.
   separate candidate adds title editing, source-neutral direct-review display,
   a known-watched exclusion filter and critic information. Build it with
   `python3 docs/research/tracker-poc/build_youtrack.py --candidate`; this leaves
-  the earlier pending ZIP unchanged. A local non-browser check parsed all 43
+  the earlier pending ZIP unchanged. Comparing those prepared ZIPs showed only
+  the film widget bundle changed; the backend handlers and workflow files were
+  identical. A local non-browser check parsed all 43
   stored direct-review fields in that candidate. Installation, actual rendering
   and per-user behavior remain unverified.
   The candidate uses an in-widget preference confirmation and provides a
