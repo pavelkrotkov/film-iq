@@ -6,6 +6,17 @@ intentional watchlist. Use synthetic films and users for these experiments.
 
 ## Evidence collected so far
 
+* The local YouTrack `2026.2.19728` instance completed initial setup and its
+  API returned HTTP 200. Its Docker base URL was corrected to
+  `http://localhost:18180` using JetBrains' documented `configure` command.
+  The administrator sign-in and the application itself still need verification.
+  See [changing the base URL](https://www.jetbrains.com/help/youtrack/server/change-base-url-listen-port.html).
+* A preliminary full-page React widget package can be built with
+  `python3 docs/research/tracker-poc/build_youtrack.py` after installing the UI
+  dependencies. It uses `host.fetchYouTrack` for issue reads and synopsis edits,
+  and builds a ZIP under `.cache/tracker-poc/`. It has not been installed or
+  tested, does not yet implement the common schema or preference controls, and
+  is not evidence of a working YouTrack POC.
 * Kaneo source inspected: release `v2.49.0`, commit
   `e0ebc61748654f4e33e713dcb441be726ec1cfc4`. Its custom-field schema
   supports text, number, date, dropdown, boolean, and multiselect. Values are
