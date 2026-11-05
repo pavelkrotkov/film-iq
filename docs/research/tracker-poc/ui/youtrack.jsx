@@ -75,6 +75,7 @@ function App() {
   const [movary, setMovary] = useState(null), [movaryOnly, setMovaryOnly] = useState(false), [excludeMovaryWatched, setExcludeMovaryWatched] = useState(false);
   const [error, setError] = useState(""), [notice, setNotice] = useState(""), [busy, setBusy] = useState(false), [loadingFilms, setLoadingFilms] = useState(false);
   const [query, setQuery] = useState(""), [stateFilter, setStateFilter] = useState(""), [minimum, setMinimum] = useState("");
+  const [showArchived, setShowArchived] = useState(false);
   const [watchlistOnly, setWatchlistOnly] = useState(false), [sortInterest, setSortInterest] = useState(false);
   const [localWatched, setLocalWatched] = useState("");
   const [provider, setProvider] = useState(""), [genre, setGenre] = useState(""), [freshness, setFreshness] = useState("");
@@ -203,7 +204,7 @@ function App() {
     return observation?.status !== "unknown" ? observation?.subscription || [] : [];
   }))].sort();
   const genres = [...new Set(shownFilms.flatMap((item) => [field(item, "FilmIQ Genre"), ...(item.live?.genres || [])]).filter((value) => typeof value === "string" && value))].sort();
-  const visible = useMemo(() => filterYoutrackFilms(shownFilms, {preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness, localWatched}), [shownFilms, preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness, localWatched]);
+  const visible = useMemo(() => filterYoutrackFilms(shownFilms, {preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness, localWatched, showArchived}), [shownFilms, preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness, localWatched, showArchived]);
   async function saveFilm(event) {
     event.preventDefault(); if (!film || editBaseline?.issueId !== film.id) return; setWorking(true); setError("");
     let submitting = false;
@@ -395,7 +396,8 @@ function App() {
       </section> : <section>
         <div className="filters">
           <label>Search<input value={query} onChange={(e) => setQuery(e.target.value)} /></label>
-          <label>Lifecycle<select value={stateFilter} onChange={(e) => setStateFilter(e.target.value)}><option value="">All</option>{states.map((s) => <option key={s}>{s}</option>)}</select></label>
+          <label>Lifecycle<select value={stateFilter} onChange={(e) => setStateFilter(e.target.value)}><option value="">{showArchived ? "All states" : "Active states"}</option>{states.map((s) => <option key={s}>{s}</option>)}</select></label>
+          <label><input type="checkbox" checked={showArchived} onChange={(e) => setShowArchived(e.target.checked)} /> Show archived</label>
           <label>Genre<select value={genre} onChange={(e) => setGenre(e.target.value)}><option value="">All genres</option>{genres.map((g) => <option key={g}>{g}</option>)}</select></label>
           <label>Provider<select value={provider} onChange={(e) => setProvider(e.target.value)}><option value="">All providers</option>{providers.map((p) => <option key={p}>{p}</option>)}</select></label>
           <label>Availability freshness<select value={freshness} onChange={(e) => setFreshness(e.target.value)}><option value="">Any freshness</option><option value="recent">Checked within 7 days</option><option value="stale">Older than 7 days</option><option value="unknown">Unknown</option></select></label>

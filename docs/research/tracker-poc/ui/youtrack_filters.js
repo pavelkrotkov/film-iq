@@ -42,9 +42,10 @@ export function providerFreshness(observation, now = Date.now()) {
   return age <= 7 * 24 * 60 * 60 * 1000 ? "recent" : "stale";
 }
 
-export function filterYoutrackFilms(films, {preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness, localWatched}) {
+export function filterYoutrackFilms(films, {preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness, localWatched, showArchived}) {
   const matching = films.filter((item) => {
     const personal = preferences?.[item.idReadable];
+    if (!showArchived && stateFilter !== "Archived" && field(item, "FilmIQ Lifecycle")?.name === "Archived") return false;
     if (query && !item.summary.toLowerCase().includes(query.toLowerCase())) return false;
     if (stateFilter && field(item, "FilmIQ Lifecycle")?.name !== stateFilter) return false;
     if (genre && field(item, "FilmIQ Genre") !== genre && !item.live?.genres?.includes(genre)) return false;

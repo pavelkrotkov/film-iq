@@ -41,14 +41,16 @@ requested evaluation criteria; scores remain pending.
   observation. A subsequent installed fix releases film navigation as soon as the
   canonical records arrive while keeping preferences unavailable until their
   read succeeds. The served widget asset matches the approved package, and
-  synthetic stalled-request checks pass; browser behavior and per-user isolation
-  remain unverified. The cards do not yet show poster images.
+  synthetic stalled-request checks pass; the latest browser behavior and
+  per-user isolation remain unverified. The updated widget can request posters
+  on demand, but their display has not been checked in a browser.
   The candidate uses an in-widget preference confirmation and provides a
   selectable URL if an external link cannot open. JetBrains documents a
   [sandboxed iframe](https://www.jetbrains.com/help/youtrack/devportal/app-architecture.html)
   and host navigation, but the actual popup permissions and interaction of this
-  local build have not been verified. Browser Back/Forward and reload can still
-  discard unsaved drafts; the in-app navigation guard has not been tested live.
+  local build have not been verified. The updated app-route Back/Forward guard
+  has synthetic checks but no live browser verification; leaving or reloading
+  the app can still discard unsaved drafts.
 * Kaneo source inspected: release `v2.49.0`, commit
   `e0ebc61748654f4e33e713dcb441be726ec1cfc4`. Its custom-field schema
   supports text, number, date, dropdown, boolean, and multiselect. Values are
@@ -232,13 +234,13 @@ The paginated board traversal above is a different endpoint.
 An initial React UI builds and is served locally. It reads board pages and custom
 fields using the current Kaneo browser session; it can submit a synopsis or
 column change through the API. The server accepted authenticated requests with
-the UI origin and returned the correct CORS headers. **The actual browser has
-not been tested** because a separate browser surface was unavailable and the
-user's Brave session was in use. The private project includes source-identified
-real records, and metadata read-through is optional and nonpersistent. Synthetic
-add, archive, comment and preference controls are wired to the APIs but have not
-yet been verified in a browser. Its rendering at 1,000 films has not been
-measured. Do not represent it as the completed Kaneo POC.
+the UI origin and returned the correct CORS headers. An isolated Brave session
+later verified a fictional film's synopsis, lifecycle and interest edit across
+reload; its approximately 1,000-card rendering was observed informally, as
+described below. The private project includes source-identified real records,
+and metadata read-through is optional and nonpersistent. Synthetic add and
+comment interactions still need browser verification. Do not represent
+this as the completed Kaneo POC.
 
 Fixture representation: task title and description hold title and synopsis;
 `POC Fixture ID`, `POC Year`, `POC Genre`, and `POC Subscription Providers`
@@ -274,8 +276,9 @@ A live check joined all 1,001 Kaneo tasks to both users' preferences and ran the
 same UI filter code: Netflix with interest at least eight returned fixture IDs
 0008 and 0028 for user A, and 0004, 0016 and 0024 for user B. Numeric ordering
 placed scores of ten first. A separate deterministic fixture check covers
-numeric sort and availability freshness. The React controls, visual layout and
-1,000-film rendering remain unverified in a browser.
+numeric sort and availability freshness. A later isolated Brave walkthrough
+verified the interest control and minimum filter on fictional data and observed
+approximately 1,000 cards; it was not a controlled benchmark.
 
 The updated YouTrack app's personal preference preview stores only the fields
 needed to bind the confirmation, not draft notes. Its cancel action discards
@@ -510,6 +513,20 @@ on readback. After the YouTrack widget update, the 27-film Movary snapshot was
 identical on readback. These checks do not establish browser rendering or
 server-enforced ID uniqueness; the draft guard does not establish protection
 when leaving or reloading the entire app.
+
+An isolated headless Brave walkthrough used the fictional Kaneo project and
+blocked non-local requests. It opened a film, changed its synopsis and
+lifecycle, reloaded, saved interest 8 through the preview, reloaded again and
+found it using the minimum-interest filter. The original fictional values were
+restored and verified after another reload. About 1,003 fictional cards rendered
+in roughly 0.9–1.9 seconds across informal runs; this is not a controlled
+performance benchmark. A subsequent run verified that an archived fictional
+film disappeared from the default grid after reload and reappeared with Show
+archived; its initial lifecycle was restored. Both UIs now hide archived films
+by default, but YouTrack's updated control has only synthetic component checks.
+An isolated YouTrack browser reached the Hub sign-in
+page, but an API token did not establish a browser session, so the newer widget
+was not verified in that browser.
 
 The [comparison](comparison.md) includes provisional weighted scores and a
 conditional recommendation. The richer applications, live metadata controls

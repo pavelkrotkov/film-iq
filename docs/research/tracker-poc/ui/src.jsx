@@ -162,6 +162,7 @@ function App() {
     [lifecycle, setLifecycle] = useState(""),
     [watched, setWatched] = useState(""),
     [freshnessFilter, setFreshnessFilter] = useState("");
+  const [showArchived, setShowArchived] = useState(false);
   const [filmDraft, setFilmDraft] = useState({title: "", description: "", status: "", tmdb: ""}),
     [detailReady, setDetailReady] = useState(false);
   const {title, description, status, tmdb} = filmDraft;
@@ -311,6 +312,7 @@ function App() {
         minimum,
         genre,
         lifecycle,
+        showArchived,
         watched,
         freshnessFilter,
         sortInterest,
@@ -332,6 +334,7 @@ function App() {
       minimum,
       genre,
       lifecycle,
+      showArchived,
       watched,
       freshnessFilter,
     ],
@@ -830,13 +833,14 @@ function App() {
                   value={lifecycle}
                   onChange={(e) => setLifecycle(e.target.value)}
                 >
-                  <option value="">All states</option>
+                  <option value="">{showArchived ? "All states" : "Active states"}</option>
                   {Object.entries(states).map(([value, label]) => (
                     <option key={value} value={value}>
                       {label}
                     </option>
                   ))}
                 </select>
+                <label><input type="checkbox" checked={showArchived} onChange={(e) => setShowArchived(e.target.checked)} /> Show archived</label>
                 <select
                   aria-label="Filter by POC watched status"
                   value={watched}
