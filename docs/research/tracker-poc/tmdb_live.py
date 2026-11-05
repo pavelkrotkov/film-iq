@@ -9,7 +9,7 @@ import json
 from urllib.parse import urlparse
 
 from preferences import current_user
-from tmdb_readonly import TMDbError, read_movie
+from tmdb_readonly import TMDbError, TMDbRateLimited, read_movie
 from waitress import serve
 
 ALLOWED_ORIGINS = {"http://localhost:15174"}
@@ -58,6 +58,10 @@ def app(reader=read_movie, authenticate=current_user):
             return response(start, "401 Unauthorized", {"error": "Kaneo session required"}, origin)
         try:
             movie = reader(int(path[2]))
+        except TMDbRateLimited:
+            return response(
+                start, "429 Too Many Requests", {"error": "TMDB rate limit reached"}, origin
+            )
         except (TMDbError, ValueError, OSError):
             return response(start, "502 Bad Gateway", {"error": "TMDB unavailable"}, origin)
         observation = movie.availability

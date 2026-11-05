@@ -1,6 +1,19 @@
 // User-initiated, page-memory-only reads. One film may require three TMDB calls.
 export const BATCH_LIMIT = 30;
 
+export class RateLimitError extends Error {}
+
+export async function fetchLiveMovie(id, signal, fetcher = fetch) {
+  const response = await fetcher(`http://localhost:15176/movie/${id}`, {
+    cache: "no-store", credentials: "include", signal,
+  });
+  if (response.status === 429) throw new RateLimitError();
+  if (!response.ok) throw new Error("Live metadata unavailable");
+  const data = await response.json();
+  if (!data.availability || !Array.isArray(data.availability.offers)) throw new Error("Invalid metadata response");
+  return data;
+}
+
 export function tmdbId(film) {
   const value = film.fields["POC TMDB ID"];
   return typeof value === "string" && /^[1-9][0-9]{0,9}$/.test(value) &&
@@ -25,7 +38,7 @@ export function mergeResult(previous, result) {
 }
 
 export async function runBatch(films, fetchMovie, signal, onResult) {
-  let succeeded = 0, failed = 0;
+  let succeeded = 0, failed = 0, rateLimited = false;
   for (const film of films.slice(0, BATCH_LIMIT)) {
     if (signal.aborted) break;
     try {
@@ -34,11 +47,13 @@ export async function runBatch(films, fetchMovie, signal, onResult) {
       if (data.tmdb_id !== tmdbId(film)) throw new Error("TMDB identity mismatch");
       succeeded++;
       onResult(film.id, { data, error: null }, succeeded + failed);
-    } catch {
+    } catch (error) {
       if (signal.aborted) break;
       failed++;
-      onResult(film.id, { error: "Live metadata unavailable; retry when ready." }, succeeded + failed);
+      rateLimited = error instanceof RateLimitError;
+      onResult(film.id, { error: rateLimited ? "TMDB rate limit reached; wait before retrying." : "Live metadata unavailable; retry when ready." }, succeeded + failed);
+      if (rateLimited) break;
     }
   }
-  return { succeeded, failed, cancelled: signal.aborted };
+  return { succeeded, failed, cancelled: signal.aborted, rateLimited };
 }

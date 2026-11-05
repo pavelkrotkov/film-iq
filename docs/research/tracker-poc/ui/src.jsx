@@ -5,10 +5,11 @@ import {
   providers,
   syntheticAvailability,
 } from "./film_filters.js";
-import { BATCH_LIMIT, chooseBatch, mergeResult, runBatch, tmdbId } from "./live_batch.js";
+import { BATCH_LIMIT, chooseBatch, fetchLiveMovie, mergeResult, runBatch, tmdbId } from "./live_batch.js";
 import { fetchRatings } from "./mdblist_ui.js";
 import { clearSavedDraft, currentComments, setCommentDraft } from "./comment_drafts.js";
 import { emptyPreference, markPreferenceSaved, mergeFilmDraft, syncPreferenceDraft } from "./preference_draft.js";
+import { missingLinkedFilm, unavailableFilterSources } from "./availability_state.js";
 
 const api = "http://localhost:15173/api";
 function ProviderBadges({ film }) {
@@ -117,7 +118,8 @@ function App() {
   );
   const [films, setFilms] = useState([]),
     [error, setError] = useState(""),
-    [busy, setBusy] = useState(false);
+    [busy, setBusy] = useState(false),
+    [loaded, setLoaded] = useState(false);
   const [states, setStates] = useState({}),
     [defaultState, setDefaultState] = useState("");
   const [selected, setSelected] = useState(selectedId),
@@ -154,6 +156,7 @@ function App() {
     try {
       const result = await load(project);
       setFilms(result.films);
+      setLoaded(true);
       setStates(result.states);
       setDefaultState(result.defaultState);
       try {
@@ -168,6 +171,7 @@ function App() {
         setMovary(null);
       }
     } catch (e) {
+      setLoaded(false);
       setError(e.message);
     } finally {
       setBusy(false);
@@ -254,6 +258,7 @@ function App() {
       active = false;
     };
   }, [film]);
+  const unavailableSources = unavailableFilterSources({preferences, movary, minimum, watched, watchlistOnly, sortInterest, movaryOnly});
   const filtered = useMemo(
     () =>
       filterFilms(shownFilms, {
@@ -386,19 +391,11 @@ function App() {
     setBatch({total: items.length, done: 0});
     setBatchSummary("");
     try {
-      const result = await runBatch(items, async (id, signal) => {
-        const response = await fetch(`http://localhost:15176/movie/${id}`, {
-          cache: "no-store", credentials: "include", signal,
-        });
-        if (!response.ok) throw new Error("Live metadata unavailable");
-        const data = await response.json();
-        if (!data.availability || !Array.isArray(data.availability.offers)) throw new Error("Invalid metadata response");
-        return data;
-      }, controller.signal, (id, result, done) => {
+      const result = await runBatch(items, fetchLiveMovie, controller.signal, (id, result, done) => {
         setLiveResults((previous) => ({ ...previous, [id]: mergeResult(previous[id], result) }));
         setBatch({total: items.length, done});
       });
-      setBatchSummary(`${result.cancelled ? "Cancelled" : "Finished"}: ${result.succeeded} loaded, ${result.failed} failed. No results were saved to Kaneo.`);
+      setBatchSummary(`${result.rateLimited ? "Stopped: TMDB rate limit reached. Wait before retrying failed films or fetching the remainder." : result.cancelled ? "Cancelled." : "Finished."} ${result.succeeded} loaded, ${result.failed} failed. No results were saved to Kaneo.`);
     } finally {
       batchController.current = null;
       setBatch(null);
@@ -713,7 +710,7 @@ function App() {
               <div>
                 <div className="eyebrow">THE COLLECTION</div>
                 <h2>
-                  Explore films <small>{filtered.length}</small>
+                  Explore films <small>{unavailableSources.length ? "—" : filtered.length}</small>
                 </h2>
               </div>
               <div className="filters">
@@ -812,8 +809,11 @@ function App() {
                 </label>
               </div>
             </div>
+            {missingLinkedFilm(selected, film, loaded, busy) && <p role="alert">The linked film is unavailable in this project. It may have been removed or you may not have access. <a href="#">Clear film link</a></p>}
             {busy ? (
               <p>Loading records…</p>
+            ) : unavailableSources.length ? (
+              <p role="alert">Cannot apply filters: {unavailableSources.join(" and ")} unavailable. <button type="button" onClick={() => {setMinimum(""); setWatched(""); setWatchlistOnly(false); setSortInterest(false); setMovaryOnly(false);}}>Clear personal filters</button></p>
             ) : (
               <div className="grid">
                 {filtered.map((item) => (

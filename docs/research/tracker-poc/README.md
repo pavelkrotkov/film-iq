@@ -121,7 +121,10 @@ not been validated. One prior example-ID read succeeded; no user entitlement
 was established. The restarted reader requires a Kaneo session and the local UI
 origin: an anonymous request returned 401 and a signed-in synthetic user
 received 200 for TMDB's example ID. It is a local POC, not a multi-host
-credential gateway.
+credential gateway. Synthetic checks verify that a TMDB 429 from details,
+configuration or providers stops the current batch, preserves previous
+page-memory observations and permits an explicit later retry; no live 429 was
+induced.
 
 An aggregate, non-retaining coverage check on 2026-11-05 requested details for
 all 130 supplied IDs: 130 responses returned the requested ID and a title, and
@@ -319,6 +322,18 @@ The user selected local YouTrack Server for this evaluation and identified
 Hermes as a possible eventual host. No Hermes installation, deployment, data
 transfer, resource measurement or operating-cost test has been performed; the
 current POC runs on the Mac. Cloud remains a documented alternative above.
+
+On 2026-11-05 around 15:03 UTC, four `docker stats --no-stream` samples on this
+Mac showed Kaneo at 188.6–189.1 MiB, PostgreSQL at 56.38–56.72 MiB, and
+YouTrack at about 2.07 GiB. CPU fluctuated across the brief samples and is not a
+load measurement. These figures exclude browser memory, Docker VM and image
+overhead, and the separate local UI and bridges; four Python UI/bridge processes
+each showed approximately 20–26 MiB RSS, with shared memory possibly counted
+more than once. `du` reported 68 MiB for the PostgreSQL data directory and
+49 MiB for YouTrack data plus 7.1 MiB logs; the YouTrack backup directory was
+empty. Both contain synthetic and private POC data, but the contents and
+activity are not identical. This is one local snapshot, not a sizing guide,
+backup test, like-for-like performance benchmark or Hermes projection.
 
 The pinned `2026.2.19728` server runs at `http://localhost:18180/`. Database,
 configuration, logs and backup directories are bind-mounted under

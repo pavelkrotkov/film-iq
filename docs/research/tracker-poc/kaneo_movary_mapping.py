@@ -9,7 +9,7 @@ import argparse
 import http.cookiejar
 import json
 import urllib.request
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
@@ -106,6 +106,19 @@ def mapping(snapshot: dict, status: dict) -> dict:
 def merge(existing: dict | None, project: str, user: str, observation: dict) -> dict:
     if not project or not user:
         raise ValueError("project and user are required")
+
+    def observed_at(value: dict) -> datetime:
+        try:
+            instant = datetime.fromisoformat(value["observed_at"])
+            if instant.utcoffset() is None:
+                raise ValueError
+            return instant
+        except (KeyError, TypeError, ValueError):
+            raise ValueError("invalid Movary observation timestamp") from None
+
+    if observation.get("source") != "Movary":
+        raise ValueError("invalid preference source")
+    current_time = observed_at(observation)
     if existing is None:
         existing = {"version": VERSION, "project_id": project, "users": {}}
     if (
@@ -117,6 +130,8 @@ def merge(existing: dict | None, project: str, user: str, observation: dict) -> 
     prior = existing["users"].get(user)
     if prior is not None and (not isinstance(prior, dict) or prior.get("source") != "Movary"):
         raise ValueError("refusing to replace a different preference source")
+    if prior is not None and current_time < observed_at(prior):
+        raise ValueError("refusing to replace a newer Movary observation")
     return {**existing, "users": {**existing["users"], user: observation}}
 
 

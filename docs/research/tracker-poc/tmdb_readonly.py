@@ -32,6 +32,10 @@ class TMDbError(Exception):
     pass
 
 
+class TMDbRateLimited(TMDbError):
+    pass
+
+
 def fetch(path: str, parameters: dict | None = None) -> dict:
     token, key = os.getenv("TMDB_READ_ACCESS_TOKEN"), os.getenv("TMDB_API_KEY")
     if not token and not key:
@@ -50,6 +54,8 @@ def fetch(path: str, parameters: dict | None = None) -> dict:
         with urllib.request.build_opener(_NoRedirect).open(request, timeout=20) as response:
             result = json.load(response)
     except urllib.error.HTTPError as error:
+        if error.code == 429:
+            raise TMDbRateLimited("TMDB returned HTTP 429") from None
         raise TMDbError(f"TMDB returned HTTP {error.code}") from None
     except (urllib.error.URLError, OSError, ValueError):
         raise TMDbError("TMDB request or response failed") from None
@@ -122,10 +128,14 @@ def read_movie(tmdb_id: int, get=fetch, now: datetime | None = None) -> Movie:
     )
     try:
         poster = poster_url(details.get("poster_path"), get("configuration"))
+    except TMDbRateLimited:
+        raise
     except TMDbError:
         poster = None
     try:
         available = get(f"movie/{tmdb_id}/watch/providers")
+    except TMDbRateLimited:
+        raise
     except TMDbError:
         available = None
     synopsis = details.get("overview")

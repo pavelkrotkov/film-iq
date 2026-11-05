@@ -41,9 +41,19 @@ def main() -> None:
     assert film["history_export_dates"] == ["2020-01-02", "2020-01-02", None]
     assert "comment" not in str(observation)
     a = merge(None, "project", "user-a", observation)
-    b = merge(a, "project", "user-b", {"source": "Movary", "films": {}})
+    b = merge(a, "project", "user-b", {**observation, "films": {}})
     assert b["users"]["user-a"] == observation and b["users"]["user-b"]["films"] == {}
     assert merge(b, "project", "user-a", observation) == b
+    older = {**observation, "observed_at": "2026-11-05T06:59:59-05:00"}
+    try:
+        merge(b, "project", "user-a", older)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("older observations must not replace newer watched history")
+    assert b["users"]["user-a"] == observation
+    newer = {**observation, "observed_at": "2026-11-05T07:00:01-05:00"}
+    assert merge(b, "project", "user-a", newer)["users"]["user-a"] == newer
     bad_status = dict(status, stale=True)
     bad_snapshot = deepcopy(snapshot)
     bad_snapshot["provenance"]["api"]["played"][0]["watchDates"][0]["plays"] = 0

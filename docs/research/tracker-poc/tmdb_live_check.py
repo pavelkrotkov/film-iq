@@ -5,7 +5,7 @@ from datetime import UTC, datetime
 from io import BytesIO
 
 from tmdb_live import app
-from tmdb_readonly import Movie, TMDbError
+from tmdb_readonly import Movie, TMDbError, TMDbRateLimited
 
 from film_iq.availability.tmdb import Observation, Offer
 
@@ -63,6 +63,14 @@ def check():
     failure = invoke(app(failed, lambda _: "synthetic-user"), "/movie/12")
     assert failure["status"] == "502 Bad Gateway"
     assert failure["body"] == {"error": "TMDB unavailable"}
+
+    def limited(_):
+        raise TMDbRateLimited("secret must not be returned")
+
+    failure = invoke(app(limited, lambda _: "synthetic-user"), "/movie/12")
+    assert failure["status"] == "429 Too Many Requests"
+    assert failure["body"] == {"error": "TMDB rate limit reached"}
+    assert failure["headers"]["Cache-Control"] == "no-store"
     print(
         "Read-through uses no-store, preserves partial data, and rejects unsafe origin and failures"
     )

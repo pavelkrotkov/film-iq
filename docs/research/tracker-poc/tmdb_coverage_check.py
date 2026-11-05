@@ -1,7 +1,7 @@
 """Verify coverage counts, identity errors and rate-limit stopping with fixtures."""
 
 from tmdb_coverage import coverage
-from tmdb_readonly import TMDbError
+from tmdb_readonly import TMDbRateLimited
 
 
 def main() -> None:
@@ -15,7 +15,7 @@ def main() -> None:
     def get(path, _parameters):
         calls.append(path)
         if path.endswith("12"):
-            raise TMDbError("TMDB returned HTTP 429")
+            raise TMDbRateLimited("TMDB returned HTTP 429")
         return {
             "id": 11,
             "title": "FICTIONAL A",

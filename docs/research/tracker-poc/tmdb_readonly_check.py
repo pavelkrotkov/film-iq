@@ -1,8 +1,11 @@
 """Deterministic check for the credential-free TMDB response adapter."""
 
 from datetime import UTC, datetime
+from email.message import Message
+from unittest.mock import patch
+from urllib.error import HTTPError
 
-from tmdb_readonly import TMDbError, read_movie
+from tmdb_readonly import TMDbError, TMDbRateLimited, fetch, read_movie
 
 
 def fixture(path, parameters=None):
@@ -76,4 +79,32 @@ if __name__ == "__main__":
         pass
     else:
         raise AssertionError("invalid response identity was accepted")
+    with (
+        patch.dict("os.environ", {"TMDB_READ_ACCESS_TOKEN": "synthetic"}),
+        patch("urllib.request.build_opener") as opener,
+    ):
+        opener.return_value.open.side_effect = HTTPError(
+            "https://example.invalid/?secret", 429, "rate limit", Message(), None
+        )
+        try:
+            fetch("movie/42")
+        except TMDbRateLimited as error:
+            assert str(error) == "TMDB returned HTTP 429"
+        else:
+            raise AssertionError("HTTP 429 was not recognized")
+    for limited_path in ("movie/42", "configuration", "movie/42/watch/providers"):
+        calls = []
+
+        def limited(path, parameters=None, *, calls=calls, limited_path=limited_path):
+            calls.append(path)
+            if path == limited_path:
+                raise TMDbRateLimited("fixture")
+            return fixture(path, parameters)
+
+        try:
+            read_movie(42, limited, now)
+        except TMDbRateLimited:
+            assert calls[-1] == limited_path
+        else:
+            raise AssertionError("rate limit was swallowed")
     print("TMDB adapter parsed synthetic metadata and preserved unknown on provider failure")

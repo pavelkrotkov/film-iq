@@ -83,6 +83,7 @@ and exact play counts remain separate from history-export rows, so repeated play
 and unknown dates are not converted into invented timestamps or double-counted
 across sources. This sidecar does not write tracker records, the editable
 preference database, Movary, ratings, personal comments or watchlist state.
+It rejects an older observation for a user rather than replacing newer history.
 The fictional-only `kaneo_movary_mapping_check.py` verifies the mapping logic;
 project authorization and user-isolation tests must also pass before exposing
 any personal sidecar via the preference bridge. On 2026-11-05, after those
