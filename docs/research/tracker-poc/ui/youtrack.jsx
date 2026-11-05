@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { readDirectReviews, reviewsMatchTitle, safeReviewUrl } from "./direct_reviews.js";
 import { field, filterYoutrackFilms, providerObservation, providerFreshness } from "./youtrack_filters.js";
-import { loadFilmView } from "./youtrack_loading.js";
+import { loadFilmView, publishFilmBatch } from "./youtrack_loading.js";
 export { providerObservation, providerFreshness } from "./youtrack_filters.js";
 
 let locationListener = () => {};
@@ -67,7 +67,7 @@ function App() {
   const [project, setProject] = useState(null), [films, setFilms] = useState([]);
   const [preferences, setPreferences] = useState(null), [selected, setSelected] = useState(null);
   const [movary, setMovary] = useState(null), [movaryOnly, setMovaryOnly] = useState(false), [excludeMovaryWatched, setExcludeMovaryWatched] = useState(false);
-  const [error, setError] = useState(""), [notice, setNotice] = useState(""), [busy, setBusy] = useState(false);
+  const [error, setError] = useState(""), [notice, setNotice] = useState(""), [busy, setBusy] = useState(false), [loadingFilms, setLoadingFilms] = useState(false);
   const [query, setQuery] = useState(""), [stateFilter, setStateFilter] = useState(""), [minimum, setMinimum] = useState("");
   const [watchlistOnly, setWatchlistOnly] = useState(false), [sortInterest, setSortInterest] = useState(false);
   const [provider, setProvider] = useState(""), [genre, setGenre] = useState(""), [freshness, setFreshness] = useState("");
@@ -82,13 +82,13 @@ function App() {
   async function refresh(target = project) {
     if (!target || target !== projectRef.current) return;
     const run = ++sequence.current;
-    setBusy(true); setError("");
+    setLoadingFilms(true); setPreferences(null); setMovary(null); setError(""); setNotice("");
     try {
       const [personal, watched] = await loadFilmView({
         loadFilms: () => getFilms(target),
         loadPreferences: readPreferences,
         loadWatched: () => host.fetchApp("movary/watched", { query: { project: target } }),
-        publishFilms: (loaded) => { if (run === sequence.current) setFilms(loaded); },
+        publishFilms: (loaded) => publishFilmBatch(run, sequence, loaded, setFilms, setLoadingFilms),
       });
       if (run !== sequence.current) return;
       setPreferences(personal.status === "fulfilled" ? personal.value : null);
@@ -105,7 +105,7 @@ function App() {
       setNotice(messages.join(" "));
       return true;
     } catch (e) { if (run === sequence.current) setError(`Could not load films: ${e.message}`); return false; }
-    finally { if (run === sequence.current) setBusy(false); }
+    finally { if (run === sequence.current) setLoadingFilms(false); }
   }
   useEffect(() => {
     if (!project) return;
@@ -181,7 +181,7 @@ function App() {
     finally { setBusy(false); }
   }
   async function savePreference(event) {
-    event.preventDefault(); setBusy(true); setError(""); const target = film.idReadable;
+    event.preventDefault(); if (preferences === null || !film) return; setBusy(true); setError(""); const target = film.idReadable;
     try {
       const preview = await host.fetchApp("preferences/preview", { method: "POST", body: { issue_id: target, preference: pref } });
       if (!previewMatchesFilm(preview, target)) throw new Error("Invalid preview");
@@ -255,7 +255,7 @@ function App() {
   const reviews = film ? directReviews(film) : null;
   const staleReviews = film && reviews?.length && !reviewsMatchTitle(reviews, film.summary);
   const observation = film ? providerObservation(film) : null;
-  const locked = busy || !!pendingPreview || !!pendingNavigation;
+  const locked = busy || loadingFilms || !!pendingPreview || !!pendingNavigation;
   const preferenceLabel = (value) => value === null ? "unknown" : value === true ? "yes" : value === false ? "no" : value;
   return <>
     <header><button className="brand" type="button" disabled={locked} onClick={() => selectFilm(null)} style={{background:"transparent",color:"inherit",padding:0}}>FILM <span> / </span> LAB</button><nav>Discovery · Watchlist · Administration</nav></header>
@@ -277,7 +277,7 @@ function App() {
         <p>Changing a title does not independently verify the saved external identity or update its original source provenance.</p>
         <p>Critic score: {field(film, "FilmIQ Critic Score") ?? "Unknown"}. {field(film, "FilmIQ Critic Summary")?.text || "Critic summary unavailable."}</p>
         <h3>Personal POC preferences</h3>
-        {preferences === null ? <p>Preferences unavailable.</p> : <form onSubmit={savePreference}>
+        {preferences === null ? <p>Preferences are loading or unavailable.</p> : <form onSubmit={savePreference}>
           <label>Interest (1–10)<input type="number" min="1" max="10" disabled={locked} value={pref.interest_score ?? ""} onChange={(e) => changePreference({ interest_score: e.target.value === "" ? null : Number(e.target.value) })} /></label>
           <label>Local POC watchlist<select disabled={locked} value={pref.watchlist === null ? "unknown" : pref.watchlist ? "yes" : "no"} onChange={(e) => changePreference({ watchlist: e.target.value === "unknown" ? null : e.target.value === "yes" })}><option value="unknown">Unknown</option><option value="yes">Yes</option><option value="no">No</option></select></label>
           <label>Watched timestamp (UTC)<input type="datetime-local" disabled={locked} value={pref.watched_at ? pref.watched_at.slice(0, 16) : ""} onChange={(e) => changePreference({ watched_at: e.target.value ? new Date(`${e.target.value}Z`).toISOString() : null })} /></label>

@@ -36,9 +36,13 @@ requested evaluation criteria; scores remain pending.
   publishes films before waiting for optional personal-data reads and bounds
   those reads to five seconds; a fictional stalled-request check passes. The
   installed widget asset matched that corrected package, and the server returned
-  all 130 records. The automation view then showed a blank browser page for
-  both POCs and a simple local endpoint. The original stuck request's cause,
-  actual film rendering, and per-user behavior remain unverified.
+  all 130 records. A later browser observation showed 130 text-labeled cards
+  with placeholder artwork, but their controls remained disabled during the
+  observation. A subsequent installed fix releases film navigation as soon as the
+  canonical records arrive while keeping preferences unavailable until their
+  read succeeds. The served widget asset matches the approved package, and
+  synthetic stalled-request checks pass; browser behavior and per-user isolation
+  remain unverified. The cards do not yet show poster images.
   The candidate uses an in-widget preference confirmation and provides a
   selectable URL if an external link cannot open. JetBrains documents a
   [sandboxed iframe](https://www.jetbrains.com/help/youtrack/devportal/app-architecture.html)
@@ -459,7 +463,12 @@ extension properties have only passed mock checks and await a live test. The
 dedicated synthetic workflow issue initially lacked the fixture marker required
 by both rules; `youtrack_setup.py --workflow-fixture` now sets it only when
 empty, checks for conflicts and verifies the write. A repeated setup made no
-change. This fixes the test fixture but does not establish that either rule ran.
+change. JetBrains' `@jetbrains/youtrack-apps-tools` CLI version 1.0.3 attached
+the app to the synthetic project only. In the live server the guarded change
+  rule rejected Archived → Discovery with HTTP 400 and allowed Archived →
+  Evaluation, while the scheduled rule wrote its synthetic marker. The original
+  issue lifecycle was restored. Its marker was cleared too, but can be set again
+  by the still-enabled recurring rule.
 
 The earlier embedded widget passed an actual synopsis edit/reload. The installed
 update adds preferences, watched-history support and synthetic workflows; the

@@ -1,7 +1,24 @@
 import assert from "node:assert/strict";
-import { loadFilmView } from "./youtrack_loading.js";
+import { loadFilmView, publishFilmBatch } from "./youtrack_loading.js";
 
 const never = () => new Promise(() => {});
+let loading = true, films = null;
+const sequence = {current: 1};
+const stalledView = loadFilmView({
+  loadFilms: async () => [{id: "fictional"}],
+  loadPreferences: never,
+  loadWatched: never,
+  publishFilms: (value) => publishFilmBatch(1, sequence, value, (v) => { films = v; }, (v) => { loading = v; }),
+}, 15);
+await Promise.resolve();
+assert.equal(loading, false, "canonical cards must unlock while optional data is still pending");
+assert.deepEqual(films, [{id: "fictional"}]);
+await stalledView;
+loading = true;
+sequence.current = 2;
+publishFilmBatch(1, sequence, [{id: "stale"}], (v) => { films = v; }, (v) => { loading = v; });
+assert.equal(loading, true, "a stale response must not unlock a newer project load");
+assert.deepEqual(films, [{id: "fictional"}], "a stale response must not replace current films");
 for (const stalled of ["preferences", "watched"]) {
   let published = null;
   const promise = loadFilmView({
