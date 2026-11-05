@@ -315,9 +315,10 @@ created two fictional issues and verified creation, backfill, explicit clear,
 synopsis and lifecycle preservation. The repeatable
 `youtrack_enrich_live_check.py` leaves two new fictional issues per run. The
 page displays stored and source-listed years separately; neither establishes
-the identity of a real film. The year-label helper passed deterministic tests,
-but an isolated browser attempt timed out before checking the installed page's
-year display and genre filter; those interactions remain browser-unverified.
+the identity of a real film. The year-label helper passed deterministic tests.
+An isolated fictional Brave walkthrough filtered two title matches by genre,
+then showed the stored year on the matching card and its detail page, including
+after reload. An earlier timeout was traced to the test's exact-label selector.
 
 On 2026-11-05, two read-only requests using the existing project credential
 checked TMDB's documented example movie ID 11: both the movie-details and
