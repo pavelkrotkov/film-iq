@@ -43,7 +43,8 @@ On 2026-11-05, eight batches identified 50 eligible films with 78 links and one
 held-back identity. Both local POC imports filled empty fields, and readback
 matched all links. A repeat made zero writes. The Kaneo film view can display
 these links, and the YouTrack field is attached for the native issue view. A
-newer embedded app with a direct-links view was installed, but its initial load
-remained stuck with controls disabled during the first browser attempt. Both
+newer embedded app with a direct-links view was installed; its initial load
+remained stuck, and an updated bundle was installed but not yet visually
+verified because the browser automation view became blank. Both
 custom views hide links when the current title differs from the reviewed source
 title, pending revalidation. Neither links display has been verified in a browser.

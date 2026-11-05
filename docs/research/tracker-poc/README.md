@@ -32,11 +32,13 @@ requested evaluation criteria; scores remain pending.
   identical. A local non-browser check parsed the then-current 43 stored
   direct-review fields in that candidate. The candidate was installed and
   appeared active, but its initial browser load remained stuck with controls
-  disabled even though the server returned the film pages. A later source fix
-  publishes the films before waiting for optional personal-data reads and bounds
+  disabled even though the server returned the film pages. A subsequent update
+  publishes films before waiting for optional personal-data reads and bounds
   those reads to five seconds; a fictional stalled-request check passes. The
-  exact cause of the stuck request and the fix in the browser remain unverified.
-  Film rendering and per-user behavior remain unverified.
+  installed widget asset matched that corrected package, and the server returned
+  all 130 records. The automation view then showed a blank browser page for
+  both POCs and a simple local endpoint. The original stuck request's cause,
+  actual film rendering, and per-user behavior remain unverified.
   The candidate uses an in-widget preference confirmation and provides a
   selectable URL if an external link cannot open. JetBrains documents a
   [sandboxed iframe](https://www.jetbrains.com/help/youtrack/devportal/app-architecture.html)
