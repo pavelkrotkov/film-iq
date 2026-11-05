@@ -2,6 +2,10 @@
 const entities = require('@jetbrains/youtrack-scripting-api/entities');
 
 const same = (left, right) => JSON.stringify(left) === JSON.stringify(right);
+// Preview state need only bind the fields requiring confirmation, not draft notes.
+const guard = value => value === null ? null : ({
+  interest_score: value.interest_score, watchlist: value.watchlist, watched_at: value.watched_at
+});
 
 function preference(value) {
   if (!value || typeof value !== 'object' || Array.isArray(value) ||
@@ -102,7 +106,9 @@ exports.httpHandler = {
           let after;
           try { after = preference(input.preference); } catch (_) { return error(ctx, 400, 'Invalid preference'); }
           const preview = {issue_id: current.issue_id, before: current.preference, after};
-          ctx.currentUser.extensionProperties.filmPreferencePreview = JSON.stringify(preview);
+          ctx.currentUser.extensionProperties.filmPreferencePreview = JSON.stringify({
+            issue_id: preview.issue_id, before: guard(preview.before), after: guard(preview.after)
+          });
           ctx.response.json(preview);
         } catch (_) { error(ctx, 500, 'Could not prepare preview'); }
       }
@@ -121,8 +127,8 @@ exports.httpHandler = {
           let before;
           try { before = input.before === null ? null : preference(input.before); after = preference(input.after); }
           catch (_) { return error(ctx, 400, 'Invalid confirmation'); }
-          if (!saved || saved.issue_id !== current.issue_id || !same(saved.before, before) ||
-              !same(saved.after, after) || !same(current.preference, before)) {
+          if (!saved || saved.issue_id !== current.issue_id || !same(saved.before, guard(before)) ||
+              !same(saved.after, guard(after)) || !same(current.preference, before)) {
             return error(ctx, 409, 'Preview missing, superseded, or stale');
           }
           items = store(ctx);
@@ -133,6 +139,24 @@ exports.httpHandler = {
         ctx.currentUser.extensionProperties.filmPreferences = JSON.stringify({version: 1, items});
         ctx.currentUser.extensionProperties.filmPreferencePreview = null;
         ctx.response.json({issue_id: current.issue_id, recorded: true, preference: after});
+      }
+    },
+    {
+      scope: 'global', method: 'POST', path: '/discard',
+      handle: function(ctx) {
+        const input = body(ctx);
+        if (!ctx.currentUser || ctx.currentUser.login === 'guest' || ctx.currentUser.isBanned) {
+          return error(ctx, 401, 'Sign-in required');
+        }
+        try {
+          const raw = ctx.currentUser.extensionProperties.filmPreferencePreview;
+          const saved = raw ? JSON.parse(raw) : null;
+          if (saved && input && saved.issue_id === input.issue_id &&
+              same(saved.before, guard(input.before)) && same(saved.after, guard(input.after))) {
+            ctx.currentUser.extensionProperties.filmPreferencePreview = null;
+          }
+          ctx.response.json({discarded: true});
+        } catch (_) { error(ctx, 500, 'Could not discard preview'); }
       }
     }
   ]

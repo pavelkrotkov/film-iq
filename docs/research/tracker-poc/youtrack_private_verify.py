@@ -4,7 +4,7 @@ import json
 
 from youtrack_client import YouTrackClient, YouTrackError
 from youtrack_enrich import custom_value
-from youtrack_private_import import SOURCE, validate
+from youtrack_private_import import PROVENANCE_FIELD, SOURCE, shared_provenance, validate
 
 
 def main() -> None:
@@ -14,7 +14,7 @@ def main() -> None:
     issues = client.pages(
         "issues",
         query={
-            "fields": "id,idReadable,customFields(name,value(name,text))",
+            "fields": "id,idReadable,summary,customFields(name,value(name,text))",
             "query": "project: {FILMREAL} sort by: {issue id} asc",
         },
     )
@@ -33,6 +33,11 @@ def main() -> None:
             raise YouTrackError("A source-listed year did not survive import")
         if custom_value(issue, "FilmIQ Release Year") is not None:
             raise YouTrackError("A source-listed year was treated as canonical")
+        provenance = custom_value(issue, PROVENANCE_FIELD)
+        if not isinstance(provenance, dict) or json.loads(
+            provenance.get("text", "")
+        ) != shared_provenance(film, issue):
+            raise YouTrackError("Sanitized field provenance is missing or requires review")
         evidence = film.get("accepted_discovery_evidence") or {}
         stored = custom_value(issue, "FilmIQ Source Evidence")
         if evidence.get("links"):

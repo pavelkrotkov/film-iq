@@ -8,10 +8,11 @@ in the process environment and stop the service when testing is finished.
 import json
 from urllib.parse import urlparse
 
+from preferences import current_user
 from tmdb_readonly import TMDbError, read_movie
 from waitress import serve
 
-ALLOWED_ORIGINS = {"http://localhost:15174", "http://localhost:18180"}
+ALLOWED_ORIGINS = {"http://localhost:15174"}
 
 
 def response(start, status: str, payload: dict, origin: str):
@@ -24,6 +25,7 @@ def response(start, status: str, payload: dict, origin: str):
     ]
     if origin in ALLOWED_ORIGINS:
         headers.append(("Access-Control-Allow-Origin", origin))
+        headers.append(("Access-Control-Allow-Credentials", "true"))
     start(status, headers)
     return [body]
 
@@ -35,10 +37,10 @@ def safe_provider_link(value: str) -> str | None:
     return None
 
 
-def app(reader=read_movie):
+def app(reader=read_movie, authenticate=current_user):
     def application(environ: dict, start):
         origin = environ.get("HTTP_ORIGIN", "")
-        if origin and origin not in ALLOWED_ORIGINS:
+        if origin not in ALLOWED_ORIGINS:
             return response(start, "403 Forbidden", {"error": "Origin not allowed"}, origin)
         path = environ.get("PATH_INFO", "").split("/")
         if (
@@ -50,6 +52,10 @@ def app(reader=read_movie):
             or not 0 < int(path[2]) <= 2_147_483_647
         ):
             return response(start, "404 Not Found", {"error": "Not found"}, origin)
+        try:
+            authenticate(environ)
+        except (PermissionError, OSError, ValueError):
+            return response(start, "401 Unauthorized", {"error": "Kaneo session required"}, origin)
         try:
             movie = reader(int(path[2]))
         except (TMDbError, ValueError, OSError):

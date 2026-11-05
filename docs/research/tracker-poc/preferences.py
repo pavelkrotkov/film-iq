@@ -53,7 +53,11 @@ def validate(payload: dict) -> dict:
     watched, notes = payload["watched_at"], payload["personal_notes"]
     if score is not None and (type(score) is not int or not 1 <= score <= 10):
         raise ValueError("interest score must be 1–10 or null")
-    if type(watchlist) is not bool or not isinstance(notes, str) or len(notes) > 5000:
+    if (
+        (watchlist is not None and type(watchlist) is not bool)
+        or not isinstance(notes, str)
+        or len(notes) > 5000
+    ):
         raise ValueError("invalid watchlist or notes")
     if watched is not None and (
         not isinstance(watched, str) or datetime.fromisoformat(watched).utcoffset() is None
@@ -73,7 +77,7 @@ def load(db: sqlite3.Connection, user: str, task: str) -> dict:
 def preference_from_row(row) -> dict:
     return {
         "interest_score": row[0] if row else None,
-        "watchlist": bool(row[1]) if row else False,
+        "watchlist": None if not row or row[1] == -1 else bool(row[1]),
         "watched_at": row[2] if row else None,
         "personal_notes": row[3] if row else "",
     }
@@ -123,7 +127,7 @@ def change(environ: dict, db: sqlite3.Connection, user: str, task: str) -> dict:
             user,
             task,
             proposal["interest_score"],
-            proposal["watchlist"],
+            -1 if proposal["watchlist"] is None else proposal["watchlist"],
             proposal["watched_at"],
             proposal["personal_notes"],
         ),

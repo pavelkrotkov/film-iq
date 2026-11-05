@@ -43,7 +43,7 @@ def check():
         now,
     )
     movie = Movie(12, "Fictional", None, None, None, None, None, observed)
-    application = app(lambda _: movie)
+    application = app(lambda _: movie, lambda _: "synthetic-user")
     result = invoke(application, "/movie/12")
     assert result["status"] == "200 OK"
     assert result["headers"]["Cache-Control"] == "no-store"
@@ -54,11 +54,13 @@ def check():
         invoke(application, "/movie/12", "https://unrelated.example")["status"] == "403 Forbidden"
     )
     assert invoke(application, "/movie/12", "null")["status"] == "403 Forbidden"
+    assert invoke(application, "/movie/12", "")["status"] == "403 Forbidden"
+    assert invoke(app(lambda _: movie), "/movie/12")["status"] == "401 Unauthorized"
 
     def failed(_):
         raise TMDbError("secret must not be returned")
 
-    failure = invoke(app(failed), "/movie/12")
+    failure = invoke(app(failed, lambda _: "synthetic-user"), "/movie/12")
     assert failure["status"] == "502 Bad Gateway"
     assert failure["body"] == {"error": "TMDB unavailable"}
     print(

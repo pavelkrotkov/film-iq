@@ -29,6 +29,13 @@ def prepare(
     watched = snapshot.get("films")
     if not isinstance(observed, str) or not isinstance(watched, dict):
         raise ValueError("Movary snapshot is invalid")
+    provenance = source.get("provenance")
+    if (
+        not isinstance(provenance, dict)
+        or provenance.get("movary_refresh_complete") is not True
+        or provenance.get("movary_refresh") != observed
+    ):
+        raise ValueError("Movary snapshot is stale or its refresh is incomplete")
     films = source.get("films")
     if not isinstance(films, list):
         raise ValueError("Private source manifest is invalid")
@@ -50,6 +57,7 @@ def prepare(
         raise YouTrackError("Some watched films have no canonical YouTrack issue")
     return {
         "version": "youtrack-poc-movary-watched-v1",
+        "project": "FILMREAL",
         "source": "Movary",
         "complete": True,
         "observed_at": observed,

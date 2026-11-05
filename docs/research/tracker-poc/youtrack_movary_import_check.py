@@ -19,7 +19,10 @@ def main() -> None:
             }
         }
     }
-    source = {"films": [{"tmdb_id": 987654321, "watched": True}]}
+    source = {
+        "films": [{"tmdb_id": 987654321, "watched": True}],
+        "provenance": {"movary_refresh": "2026-11-05T12:00:00Z", "movary_refresh_complete": True},
+    }
     issue = {
         "idReadable": "FILMREAL-1",
         "customFields": [{"name": "FilmIQ TMDB ID", "value": 987654321}],
@@ -41,6 +44,14 @@ def main() -> None:
         pass
     else:
         raise AssertionError("A partial source snapshot must be rejected")
+    source["films"].pop()
+    source["provenance"]["movary_refresh"] = "2026-11-06T12:00:00Z"
+    try:
+        prepare(sidecar, source, [issue])
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("A stale snapshot with matching IDs must be rejected")
     print("Synthetic YouTrack watched mapping checks passed")
 
 

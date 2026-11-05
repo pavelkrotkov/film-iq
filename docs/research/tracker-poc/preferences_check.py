@@ -3,11 +3,13 @@
 import argparse
 import http.cookiejar
 import json
+import sqlite3
 import urllib.error
 import urllib.request
 from pathlib import Path
 
 from kaneo_smoke import call
+from preferences import load, validate
 
 ORIGIN = "http://localhost:15174"
 
@@ -46,6 +48,18 @@ def rejected(opener, path: str, method: str, body: dict, status: int):
 
 
 def check(directory: Path):
+    # A score alone must not invent a negative watchlist assertion.
+    with sqlite3.connect(":memory:") as db:
+        db.execute(
+            "CREATE TABLE preferences (user_id TEXT, task_id TEXT, interest_score INTEGER, watchlist INTEGER NOT NULL, watched_at TEXT, personal_notes TEXT)"
+        )
+        unknown = {"interest_score": 8, "watchlist": None, "watched_at": None, "personal_notes": ""}
+        assert validate(unknown) == unknown
+        assert load(db, "synthetic", "film")["watchlist"] is None
+        db.execute(
+            "INSERT INTO preferences VALUES (?,?,?,?,?,?)", ("synthetic", "film", 8, -1, None, "")
+        )
+        assert load(db, "synthetic", "film") == unknown
     ids = json.loads((directory / "kaneo-ids.json").read_text())
     first = login(directory / "kaneo-test-user.json")
     second = login(directory / "kaneo-viewer.json")

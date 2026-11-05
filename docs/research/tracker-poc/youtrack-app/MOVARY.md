@@ -7,7 +7,8 @@ editable preferences. It has only been tested with synthetic data in a Node
 harness; user isolation, permissions, app installation, and persistence have
 not yet been verified in a running YouTrack instance.
 
-The global handler offers `GET movary/watched` and `POST movary/import`.
+The global handler offers `GET movary/watched?project=FILMPOC` and
+`POST movary/import`. Both require an explicit `FILMPOC` or `FILMREAL` project.
 The POST body must have this shape (the example is fictional):
 
 ```json
@@ -16,6 +17,7 @@ The POST body must have this shape (the example is fictional):
   "source": "Movary",
   "complete": true,
   "observed_at": "2026-11-05T12:00:00+00:00",
+  "project": "FILMPOC",
   "films": {
     "FILMPOC-1": {
       "watched": true,
@@ -31,8 +33,19 @@ the handler only checks the supplied `complete` assertion. It validates all
 rows, requires a reported FILMPOC/FILMREAL issue visible to the caller for
 every entry, then performs one property write. An invalid, inaccessible, or
 wrong-project entry rejects the whole import. No ratings, notes or watchlist
-fields are accepted. An import replaces that user's previous imported snapshot;
-it does not change the underlying Movary source or personal preference data.
+fields are accepted. An import replaces that user's previous snapshot for the
+specified project and preserves snapshots for other projects; it does not change
+the underlying Movary source or personal preference data. An older `observed_at`
+is rejected with HTTP 409 for the same project; equal timestamps are accepted,
+including repeat imports. Both projects share one per-user property, so concurrent
+imports and transaction conflict handling still require live verification; the
+guard has only been checked sequentially.
+
+Legacy snapshots without a project field are read by grouping their existing
+issue IDs by project; after a successful import, the grouped snapshots are kept
+in the project-scoped format. An empty legacy snapshot has no provable project
+identity, so it is retained as unscoped and does not imply any project's status.
+Malformed legacy data fails closed and is not overwritten.
 
 GET returns only the caller's currently visible mapped issues. It preserves
 unknown dates and repeated observations; absence of a film is **unknown**, not

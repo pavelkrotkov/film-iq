@@ -16,6 +16,7 @@ FIELDS = {
     "FilmIQ Critic Score": "integer",
     "FilmIQ Critic Summary": "text",
     "FilmIQ Source Evidence": "text",
+    "FilmIQ Field Provenance": "text",
     "FilmIQ Provider Observation": "text",
     "FilmIQ POC Schedule Marker": "string",
 }

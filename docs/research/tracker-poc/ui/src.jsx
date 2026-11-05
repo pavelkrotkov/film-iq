@@ -68,7 +68,7 @@ async function preferenceRequest(path, method = "GET", body) {
 
 const emptyPreference = {
   interest_score: null,
-  watchlist: false,
+  watchlist: null,
   watched_at: null,
   personal_notes: "",
 };
@@ -297,7 +297,8 @@ function App() {
       const preview = await preferenceRequest(`/preview/${path}`, "POST", {
         preference,
       });
-      const text = `Preview synthetic preference change:\nInterest: ${preview.before.interest_score ?? "unknown"} → ${preview.after.interest_score ?? "unknown"}\nWatchlist: ${preview.before.watchlist ? "yes" : "no"} → ${preview.after.watchlist ? "yes" : "no"}\nWatched: ${preview.before.watched_at || "not marked"} → ${preview.after.watched_at || "not marked"}\nNotes before: ${preview.before.personal_notes || "(empty)"}\nNotes after: ${preview.after.personal_notes || "(empty)"}\n\nSave these changes?`;
+      const watchlistLabel = value => value === null ? "unknown" : value ? "yes" : "no";
+      const text = `Preview local preference change:\nInterest: ${preview.before.interest_score ?? "unknown"} → ${preview.after.interest_score ?? "unknown"}\nWatchlist: ${watchlistLabel(preview.before.watchlist)} → ${watchlistLabel(preview.after.watchlist)}\nWatched date: ${preview.before.watched_at || "none recorded"} → ${preview.after.watched_at || "none recorded"}\nNotes before: ${preview.before.personal_notes || "(empty)"}\nNotes after: ${preview.after.personal_notes || "(empty)"}\n\nSave these changes?`;
       if (window.confirm(text)) {
         await preferenceRequest(`/preferences/${path}`, "PUT", {
           preference,
@@ -383,7 +384,7 @@ function App() {
     try {
       const result = await runBatch(items, async (id, signal) => {
         const response = await fetch(`http://localhost:15176/movie/${id}`, {
-          cache: "no-store", credentials: "omit", signal,
+          cache: "no-store", credentials: "include", signal,
         });
         if (!response.ok) throw new Error("Live metadata unavailable");
         const data = await response.json();
@@ -579,7 +580,7 @@ function App() {
                   <button disabled={busy || !detailReady}>Save to Kaneo</button>
                 </form>
                 <form onSubmit={savePreference}>
-                  <h3>Your synthetic preferences</h3>
+                  <h3>Your local POC preferences</h3>
                   <label>
                     Interest score
                     <select
@@ -603,20 +604,17 @@ function App() {
                     </select>
                   </label>
                   <label>
-                    <span>
-                      <input
-                        type="checkbox"
-                        checked={preference.watchlist}
+                    Watchlist
+                      <select
+                        value={preference.watchlist === null ? "unknown" : preference.watchlist ? "yes" : "no"}
                         disabled={!preferences}
                         onChange={(e) =>
                           setPreference({
                             ...preference,
-                            watchlist: e.target.checked,
+                            watchlist: e.target.value === "unknown" ? null : e.target.value === "yes",
                           })
                         }
-                      />{" "}
-                      On my watchlist
-                    </span>
+                      ><option value="unknown">Unknown</option><option value="yes">Yes</option><option value="no">No</option></select>
                   </label>
                   <label>
                     <span>
@@ -633,7 +631,7 @@ function App() {
                           })
                         }
                       />{" "}
-                      Marked watched
+                      Watched timestamp recorded
                     </span>
                   </label>
                   <label>
@@ -846,7 +844,7 @@ function App() {
                           : "Unavailable"}{" "}
                         ·{" "}
                         {preferences
-                          ? !preferences[item.id]
+                          ? !preferences[item.id] || preferences[item.id].watchlist === null
                             ? "Watchlist unknown"
                             : preferences[item.id].watchlist
                             ? "Watchlisted"

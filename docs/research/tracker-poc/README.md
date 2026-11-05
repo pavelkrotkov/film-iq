@@ -116,7 +116,10 @@ writing responses into tracker history. Page-memory batches are limited to 30
 films at a time and are explicitly initiated. Required credits and unknown
 states are included in the UI, but visual rendering and provider accuracy have
 not been validated. One prior example-ID read succeeded; no user entitlement
-was established.
+was established. The restarted reader requires a Kaneo session and the local UI
+origin: an anonymous request returned 401 and a signed-in synthetic user
+received 200 for TMDB's example ID. It is a local POC, not a multi-host
+credential gateway.
 
 The pinned Kaneo `2.49.0` image and PostgreSQL `16.15` ran locally on
 2026-11-05. The running `/api/openapi` document was inspected. In a private
@@ -164,12 +167,13 @@ rentals and checked timestamps have not been persisted for the full seeded datas
 The first 30 films also have synthetic critic scores and summaries; reseeding
 fills only missing critic fields and preserved the existing smoke-test score.
 
-### Synthetic per-user preference bridge
+### Per-user preference bridge
 
 Kaneo custom fields are task-wide, so the POC uses one small SQLite file at
 `.cache/tracker-poc/preferences.sqlite3` for `(Kaneo user ID, task ID)` scores,
-watchlist flags, watched timestamps and notes. It is for synthetic data only;
-Movary remains authoritative for real personal state. The loopback-only bridge
+watchlist flags, watched timestamps and notes. Test it with synthetic data;
+Movary remains authoritative for real personal state. A missing watchlist value
+remains unknown rather than being inferred from an interest score. The loopback-only bridge
 resolves the current user through Kaneo's session and checks the user's task
 read access before writes. Preference reads return only that user's rows; a user
 who later loses access to a task can still retrieve their own stored preference
@@ -190,6 +194,12 @@ same UI filter code: Netflix with interest at least eight returned fixture IDs
 placed scores of ten first. A separate deterministic fixture check covers
 numeric sort and availability freshness. The React controls, visual layout and
 1,000-film rendering remain unverified in a browser.
+
+The updated YouTrack app's personal preference preview stores only the fields
+needed to bind the confirmation, not draft notes. Its cancel action discards
+the pending preview. The code and fictional checks have not yet been installed
+or validated in the YouTrack runtime. YouTrack's per-project Movary snapshot
+handler likewise has synthetic checks only; concurrent imports are unverified.
 
 The separate `enrichment.py` worker uses a backend protocol and the existing
 FilmIQ availability normalizer. Its only source is explicitly fictional, with
@@ -300,6 +310,10 @@ token, stored only in the ignored project cache. The `FILMPOC` project is for
 fictional tests; `FILMREAL` holds the 130 authorized canonical film records.
 Repeated canonical imports created no duplicates and never copied personal
 ratings, notes, watchlist state, or TMDB API response bodies into issues.
+The 130 records now have a sanitized source-provenance field, backfilled only
+where missing; exact input provenance remains in the ignored private manifest.
+A repeat backfill changed zero records. Source evidence IDs and links are
+validated before any import writes, and source-listed years remain assertions.
 Anonymous issue access returned HTTP 401; signed-in low-privilege access to
 the real project has not been tested.
 

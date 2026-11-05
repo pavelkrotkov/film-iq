@@ -52,6 +52,11 @@ assert.equal(call('alice', 'POST', '/confirm', {issue_id: issue.id, before: null
 const preview = call('alice', 'POST', '/preview', {issue_id: issue.id, preference: rated});
 assert.equal(preview.status, 200);
 assert.deepEqual(preview.value, {issue_id: issue.id, before: null, after: rated});
+assert.equal(users.alice.extensionProperties.filmPreferencePreview.includes(rated.personal_notes), false);
+assert.equal(call('alice', 'POST', '/discard', preview.value).status, 200);
+assert.equal(users.alice.extensionProperties.filmPreferencePreview, null);
+assert.equal(call('alice', 'POST', '/confirm', preview.value).status, 409);
+call('alice', 'POST', '/preview', {issue_id: issue.id, preference: rated});
 assert.equal(call('bob', 'POST', '/confirm', preview.value).status, 409);
 assert.equal(call('alice', 'POST', '/confirm', {...preview.value, before: blank}).status, 409);
 assert.equal(call('alice', 'POST', '/confirm', {...preview.value, after: {...rated, watchlist: false}}).status, 409);
