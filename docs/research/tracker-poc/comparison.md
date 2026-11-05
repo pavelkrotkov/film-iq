@@ -6,8 +6,8 @@ deployment or Cloud instance has been tested. The detailed evidence and
 reproduction instructions are in [README.md](README.md).
 
 These scores are provisional: the latest YouTrack interface has passed a
-fictional browser walkthrough, but live metadata there, upgrades and recovery
-still need verification. The user
+fictional browser walkthrough, but live metadata there, upgrades and complete
+recovery still need verification. The user
 prioritized the single-user workflow over additional multi-account tests. An
 attractive API or a passing mock is not evidence that the complete workflow
 works.
@@ -48,7 +48,7 @@ unfinished browser, recovery and upgrade checks have been resolved.
 | API and agents, 15% | The running OpenAPI document and REST endpoints were inspected; a synthetic external worker repeats without duplicate creation in sequential tests. | A token-authenticated external worker created and updated fictional issues. A local import contains 130 canonical records, with validated source identity and sanitized field provenance. | Test narrow credentials and signed-in permissions. Measure upgrade stability and repeat behavior with the complete app. |
 | Search and sorting, 10% | Board pagination returned 1,000 synthetic tasks. The observed broad native search was capped at 50; the UI joins preferences and sorts them numerically. | A typed global critic-score sort returned 1,000 synthetic issues through paginated REST. Per-user interest sorting is performed by the proposed UI, not that native query. | Exercise identical provider, interest, genre and freshness filters in both browsers, including unknown data and 1,000-film rendering. |
 | Lifecycle and automation, 10% | Fictional tasks moved through columns; synthetic archive/restore and history were checked via API. External orchestration is still needed for the demonstrated enrichment. | Typed lifecycle updates and history were checked through REST. The installed on-change rule rejected one transition and allowed another on its guarded fictional issue; the scheduled rule wrote its marker. | Verify workflow history and the user-facing lifecycle experience in both browsers. |
-| Deployment and operations, 10% | Docker and PostgreSQL run locally along with the separate UI and preference and optional enrichment bridges. Four point-in-time samples showed about 245 MiB combined container memory, excluding those bridges and Docker overhead. | The local Docker server uses its integrated database and one app package; the external enrichment path remains separate. The same brief sample showed about 2.07 GiB container memory. Cloud is documented but untested. | Measure controlled startup and load, recovery and backup, secret rotation, and the cost of a Hermes deployment. The sampled workloads and data are not identical. |
+| Deployment and operations, 10% | Docker and PostgreSQL run locally with separate bridges. A fictional database dump restored a record, field and comment into a separate Kaneo instance and survived its restart. Four point-in-time samples showed about 245 MiB combined container memory, excluding bridges and Docker overhead. | The local Docker server uses its integrated database and one app package; the external enrichment path remains separate. The same brief sample showed about 2.07 GiB container memory. Cloud is documented but untested. | Test YouTrack recovery and Kaneo attachments/preferences; measure controlled startup, secret rotation and Hermes. The sampled workloads and data are not identical. |
 | Upgrades and maintenance, 10% | The separate UI avoids an upstream source fork but depends on version-specific API behavior and separate bridge maintenance. | Official app and host APIs avoid modifying private UI internals, but app updates, iframe constraints and app-owned data lifecycle need verification. | Perform a pinned-version upgrade rehearsal and record actual merge and migration work. |
 
 ## Shared data and enrichment
@@ -92,7 +92,9 @@ ports. A Kaneo rehearsal should restore a PostgreSQL dump into a new empty test
 database and separately check its preference store and any attachments. A
 YouTrack rehearsal should restore a fictional backup into a new instance and
 check the app and its extension properties, as well as issues and attachments.
-Neither rehearsal has been performed. See the official [PostgreSQL 16 dump
+The isolated [Kaneo fictional database rehearsal](kaneo-recovery-rehearsal.md)
+passed for its small fixture; YouTrack recovery and Kaneo attachments and
+preferences remain untested. See the official [PostgreSQL 16 dump
 documentation](https://www.postgresql.org/docs/16/app-pgdump.html) and
 [YouTrack Docker restore guide](https://www.jetbrains.com/help/youtrack/server/restore-docker-image-installation.html).
 The current Compose file does not establish automatic startup after a host
