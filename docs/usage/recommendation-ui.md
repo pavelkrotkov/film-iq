@@ -3,8 +3,9 @@
 Browse accepted reviewed films, search titles/directors, filter recognition and
 watch history, then open a film to inspect its original evidence. Ratings and
 viewing plans are optional. Save, dismiss and restore controls keep a local
-recommendation shortlist. Movary actions and persistent private deployment are
-separate slices under [UI epic #98](https://github.com/pavelkrotkov/film-iq/issues/98).
+recommendation shortlist. Optional Movary controls preview deliberate personal
+actions. The private deployment and its operational evidence are tracked under
+[UI epic #98](https://github.com/pavelkrotkov/film-iq/issues/98).
 
 ## Start locally
 
@@ -51,9 +52,10 @@ and Host. Restarting the service invalidates an open old form; reload it before
 retrying. The browser-facing URL is explicit when using the private HTTPS proxy:
 
 ```sh
+FILMIQ_ORIGIN="https://your-tailnet-host:8450"
 uv run film-iq serve --database path/to/evidence.db \
   --cohort path/to/accepted-cohort.json \
-  --public-origin https://hermes.tail377b2a.ts.net:8450
+  --public-origin "$FILMIQ_ORIGIN"
 ```
 
 Keep the backend on loopback and preserve the original public Host through the
@@ -62,6 +64,34 @@ CLI derives the expected local HTTP origin from its host/port. Each action
 rechecks accepted reviewed film identity server-side, writes only the local
 disposition, then redirects to the updated film page. Repeated actions do not
 add duplicate state or change evidence.
+
+## Optional Movary controls
+
+Open **Movary history and watchlist · optional** on a film. **Preview watchlist
+addition** shows the exact film before **Confirm this Movary change** adds it to
+Movary's intentional watchlist. **Cancel** makes no Movary request. A FilmIQ
+**Save** remains a separate local recommendation choice.
+
+**Preview watch date** requires an explicit date and the same confirmation.
+Logging an already recorded positive-play date is a no-op; a new date is added
+without replacing other dates, plays, ratings or comments. Movary may remove the
+film from its watchlist according to its settings, as disclosed in the preview.
+No repeated-viewing count editor or automatic suggestion promotion is provided.
+
+**Edit enjoyment rating in Movary** opens the native film page only when the
+private snapshot supplies its validated Movary ID. The installed bearer API has
+no rating-write endpoint; enjoyment and artistic merit remain separate. Return
+and use **Refresh history and ratings**, which performs only complete read APIs
+and CSV exports. A failed refresh preserves prior values and marks them stale.
+A verified personal write followed by failed refresh is reported as saved with
+stale FilmIQ state; uncertainty is not reported as an automatic rollback.
+
+To enable controls, supply `--snapshot`, both `--ratings-command` and
+`--history-command` JSON argument arrays, and `MOVARY_URL`, `MOVARY_USERNAME`,
+`MOVARY_TOKEN` through the private server environment. Each exporter must emit
+its complete CSV to stdout; reuse the installation's existing read-only exporter
+arrays from [the personal-refresh workflow](personal-refresh.md). Never put
+credentials in these arguments. Missing configuration leaves browsing available.
 
 ## What the pages mean
 
@@ -98,3 +128,105 @@ empty catalog. Fix inputs and retry; the UI does not repair or overwrite them.
 The website exposes no raw snapshots, private comments, API
 credentials or private rights-review notes. Source text is escaped and external
 links are restricted to HTTP(S). It never exposes unresolved film-action routes.
+
+## Private native deployment
+
+Keep code, SQLite, private inputs, process configuration, and logs inside the
+attached project. The selected deployment uses Waitress bound to Mac loopback,
+a native supervised SSH reverse tunnel, and the tailnet server's existing
+Tailscale Serve HTTPS proxy. No project data is copied to the tailnet server.
+No public listener or Funnel is needed. The service requires the Mac to be awake and its user session active.
+
+Project-local configuration lives in `.cache/ui-build/runtime/`:
+
+- `com.filmiq.ui.plist`: `uv run --offline --env-file` starts `film-iq serve`
+  with absolute installation paths, loopback binding, and project-local caches.
+  Its `--public-origin` must match the configured browser HTTPS origin and port.
+  The selected installation also supplies both complete exporter arrays for
+  optional Movary controls; credentials are loaded privately from its environment.
+- `com.filmiq.ui.tunnel.plist`: SSH forwards the tailnet server’s loopback port8770
+  to the Mac's `127.0.0.1:8770`, using existing SSH authentication. Batch mode and
+  failure-on-forwarding-error prevent a stalled password prompt or false start.
+- UI/tunnel stdout and stderr logs are private files in the same directory.
+
+Both jobs use native `KeepAlive` and bounded restart throttling. Store plists
+with mode 0600 and logs/configuration under a mode-0700 private directory.
+Do not print credentials or raw personal snapshots when inspecting failures.
+
+Register the project-local plists directly, after checking both loopback ports
+are free and the merged application is installed. Run from the attached project
+root and set the existing SSH alias and the private URL selected for this installation:
+
+```sh
+FILMIQ_PROJECT="$(pwd -P)"
+FILMIQ_SSH_HOST="your-existing-ssh-alias"
+FILMIQ_ORIGIN="https://your-tailnet-host:8450"
+launchctl bootstrap gui/$(id -u) "$FILMIQ_PROJECT/.cache/ui-build/runtime/com.filmiq.ui.plist"
+launchctl bootstrap gui/$(id -u) "$FILMIQ_PROJECT/.cache/ui-build/runtime/com.filmiq.ui.tunnel.plist"
+ssh "$FILMIQ_SSH_HOST" 'tailscale serve --bg --yes --https=8450 http://127.0.0.1:8770'
+```
+
+Open the configured `$FILMIQ_ORIGIN/` after verifying it. Preserve every
+existing Serve route; never use `tailscale serve reset`. An added Serve route
+alone does not prove the UI is running. Verify the HTTPS response, native process
+state, loopback listener, and existing Movary service before reporting success.
+Registration by absolute project path persists process restarts within the user
+session; after logout/login, bootstrap these project-local jobs again. No
+login-startup installation or reboot persistence is implied by this procedure.
+
+## Refresh, restart, and update
+
+The existing `com.filmiq.discovery.daily` job refreshes the personal snapshot
+through supported read APIs and complete native CSV exports, then writes the
+report and a SQLite online backup. It performs no Movary writes or production
+provider polling. Preserve its existing selected cohorts and exporter commands.
+The separate B4 observation jobs are not UI jobs and must not be repurposed.
+
+Inspect or restart only the selected UI jobs:
+
+```sh
+launchctl print gui/$(id -u)/com.filmiq.ui
+launchctl print gui/$(id -u)/com.filmiq.ui.tunnel
+launchctl kickstart -k gui/$(id -u)/com.filmiq.ui
+launchctl kickstart -k gui/$(id -u)/com.filmiq.ui.tunnel
+```
+
+For an application update, stop the UI before changing its installed revision.
+Use only reviewed merged code, run `uv sync --dev`, preserve a pre-migration
+online backup, then bootstrap the UI again and verify browse/detail and saved
+state. The tunnel may remain registered while the application is stopped.
+Stop the jobs without deleting their configuration or data:
+
+```sh
+launchctl bootout gui/$(id -u)/com.filmiq.ui
+launchctl bootout gui/$(id -u)/com.filmiq.ui.tunnel
+```
+
+If deliberately withdrawing the endpoint, remove only the dedicated route with
+`ssh "$FILMIQ_SSH_HOST" 'tailscale serve --https=8450 off'`. Do not alter Movary's existing route
+or unrelated private services.
+
+## Backup and recovery
+
+Back up SQLite through its online backup API before a schema migration; never
+copy only the live main file while WAL is active. Save the selected Git revision,
+lockfile, private service configuration, cohort/catalog inputs, personal
+snapshot/status, and local dispositions under their existing privacy and source
+retention rules. Restoring metadata does not extend its original retention lease.
+
+Use the [existing recovery procedure](../operations-recovery.md), restoring into
+a new project-local database first. Verify integrity, foreign keys, schema,
+accepted evidence, and saved/dismissed state before switching a stopped service
+to the restored path. A backup restores only its captured state; preserve the
+original database for diagnosis. Do not edit Movary's database or manufacture
+personal actions to test recovery.
+
+## Deployment acceptance
+
+The deployment issue [#102](https://github.com/pavelkrotkov/film-iq/issues/102)
+records dated operational evidence. Preparation, process registration, HTTP
+checks, browser checks, and user satisfaction are separate claims. Record actual
+checks and remaining limitations before accepting the integrated UI. In
+particular, verify the refreshed Plex history, keyboard/mobile layout, original
+source links, filters, local save/dismiss/restore, honest stale/error states,
+and restart persistence without live personal-state writes.

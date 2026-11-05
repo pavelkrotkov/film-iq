@@ -7,7 +7,7 @@ decision are required to finish development or release.
 
 **An open-source, evidence-driven film discovery and streaming-planning companion to [Movary](https://github.com/leepeuker/movary).**
 
-**Status:** Gate A's narrow POC is validated through real API reads, a sourced report and a user-approved watchlist round trip. Source/provider research and production release remain open; see [the evidence and limits](docs/a7-live-validation.md).
+**Status:** The recommendation UI provides browsing, original-source evidence, a persistent local shortlist and deliberate Movary actions. Private HTTPS deployment has passed browser/recovery checks; its final review is tracked in [PR #104](https://github.com/pavelkrotkov/film-iq/pull/104). Production streaming-provider adoption remains separate.
 
 film-iq connects critics' lists, polls, festivals, awards, film identity, personal viewing history and US viewing availability. It explains **why a film matters**, distinguishes critical recognition from optional personal judgments, and proposes realistic viewing bundles and optional monthly streaming-service choices. FilmIQ is the recommendation interface; Movary remains the personal-history backend.
 
@@ -18,7 +18,7 @@ film-iq connects critics' lists, polls, festivals, awards, film identity, person
 - [GitHub Issues](https://github.com/pavelkrotkov/film-iq/issues) — three epics: POC, source exploration, and final implementation.
 - [AGENTS.md](AGENTS.md) — contributor and coding-agent workflow.
 
-## Read a discovery report
+## Browse recommendations
 
 The [recommendation website](docs/usage/recommendation-ui.md) now provides
 searchable film cards and original-evidence details using the same inputs:
@@ -28,9 +28,14 @@ uv run film-iq serve --database path/to/evidence.db --cohort path/to/accepted-co
 ```
 
 Open `http://127.0.0.1:8770/`. Personal history and reviewed display metadata are
-optional. Local Save/Dismiss/Restore controls persist recommendation choices;
-Movary actions and the private persistent deployment are
-tracked separately in [UI epic #98](https://github.com/pavelkrotkov/film-iq/issues/98).
+optional. Save/Dismiss/Restore keeps a FilmIQ shortlist. Optional Movary controls
+preview and explicitly confirm watchlist additions or a dated watch; rating edits
+use the native Movary page. Read-only refresh brings those values back. See the
+[website guide](docs/usage/recommendation-ui.md) for configuration and the private
+HTTPS deployment. Its Mac host must remain awake and logged in; process restart
+supervision does not imply automatic login/reboot startup.
+
+## Read a discovery report
 
 Use selected accepted cohort previews and an existing private snapshot:
 
@@ -50,7 +55,7 @@ Sources → validated, versioned evidence → SQLite → public recognition → 
 Movary history supports watched exclusion; personal ratings and planning are optional.
 Availability integration retains its separate production-provider gate.
 
-Movary remains authoritative for watched films, dates, personal ratings and explicit watchlist entries. The companion reads that data and writes only **user-approved** watchlist additions. TMDB IDs are operational movie identity, not substitutes for preserved raw source observations.
+Movary remains authoritative for watched films, dates, personal ratings and explicit watchlist entries. FilmIQ reads that data and writes only explicitly previewed and confirmed watchlist additions or watch dates through supported APIs. TMDB IDs are operational movie identity, not substitutes for preserved raw source observations.
 
 Implementation: Python 3.12+, local SQLite, CLI/reports and a server-rendered recommendation UI ([build epic](https://github.com/pavelkrotkov/film-iq/issues/98)). HTTP parsing first; Crawl4AI, LangExtract and dlt only after measurements. TMDB/JustWatch is the availability baseline; compare Movie of the Night on specialty-film coverage and plan entitlement before adoption. Avoid graph databases, vector indexes, microservices and speculative frontend infrastructure.
 

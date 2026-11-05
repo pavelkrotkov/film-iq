@@ -14,20 +14,23 @@ Neither provider research nor personal ratings/plans blocks this build.
 
 ### UI delivery plan and dependencies
 
-| Slice | User-visible result | Actual dependency |
+| Slice | Delivered behavior | Dependency and delivery |
 |---|---|---|
-| [#99 UI1](https://github.com/pavelkrotkov/film-iq/issues/99) | Browse/search/filter accepted films and open rich original-source evidence | Architecture amendment; no provider/personal-input gate |
-| [#100 UI2](https://github.com/pavelkrotkov/film-iq/issues/100) | Save, dismiss, revisit and undo with persistent FilmIQ dispositions | UI1; parallel with UI3 |
-| [#101 UI3](https://github.com/pavelkrotkov/film-iq/issues/101) | Preview/confirm Movary watchlist promotion, log a watch date, see ratings and open native rating editor | UI1; parallel with UI2 |
-| [#102 UI4](https://github.com/pavelkrotkov/film-iq/issues/102) | Persistent private HTTPS website with current Plex-imported history and verified browser journey | Final acceptance after UI1–3; preparation may start earlier |
+| [#99 UI1](https://github.com/pavelkrotkov/film-iq/issues/99) | Browse/search/filter and original-source film evidence | Merged [PR #105](https://github.com/pavelkrotkov/film-iq/pull/105); issue closed |
+| [#100 UI2](https://github.com/pavelkrotkov/film-iq/issues/100) | Persistent local Save/Dismiss/Restore | After UI1; merged [PR #107](https://github.com/pavelkrotkov/film-iq/pull/107); issue closed |
+| [#101 UI3](https://github.com/pavelkrotkov/film-iq/issues/101) | Movary preview/confirmation, dated watch, native rating link and read-only refresh | Backend parallel with UI2, final forms integration after it; merged [PR #106](https://github.com/pavelkrotkov/film-iq/pull/106); issue closed |
+| [#102 UI4](https://github.com/pavelkrotkov/film-iq/issues/102) | Private HTTPS, refreshed Plex history and verified integrated browser/recovery journey | UI1–3 integrated; observed checks complete, [PR #104](https://github.com/pavelkrotkov/film-iq/pull/104) awaits final review/CI and merge |
 
-All slices can be implemented autonomously without another user decision and
-use separate branches/worktrees inside this project.
+Implementation used separate branches/worktrees inside this project without
+requiring personal ratings, a viewing plan or a provider decision.
 Native GitHub sub-issue and blocked-by relationships mirror these actual
 acceptance dependencies. Each implementation PR needs bot-review time,
 independent GPT-6.1 Sol high Standards/Spec reviews posted to GitHub, disposition
 of every finding and resolved conversations, passing CI, and worktree cleanup
-following merge. Record findings and exact acceptance evidence here as work lands.
+following merge. Planning PR #103 and implementation PRs #105/#107/#106 have
+completed bot-review disposition, independent GPT-6.1 Sol high Standards/Spec
+reviews and green CI; their obsolete worktrees are removed. UI4 final review
+and closure of #102/#98 follow the same discipline.
 
 ### UI behavior and boundaries
 
@@ -2629,3 +2632,98 @@ journey also passes. All 14 changed Python modules, including migration/version
 fixtures and workflow helpers, have CC≤8 and MI≥50 (minimum MI 50.426156).
 Bot review, independent exact-head Standards/Spec review and verified CI precede
 merge; live activation and user satisfaction are not claimed by these checks.
+
+### UI4 private read-only launch — 2026-11-04
+
+Related #102 and UI epic #98. The merged browse implementation at `e570dc1`
+is running from the attached project through native UI and SSH-tunnel jobs,
+with a dedicated private tailnet HTTPS route. Both backend listeners bind only
+loopback; existing Movary and other Serve routes remain intact. No project
+code/data was copied to the remote proxy host. Private installation configuration,
+logs, browser profiles, screenshots and operational receipts stay in ignored
+project-local cache; the reusable guide uses configured paths and origin.
+
+The existing complete read-only Movary refresh/export operation succeeded and
+its absent daily-job registration was restored from the original project-local
+plist. The refreshed snapshot preserves every Plex-imported latest watch date.
+No personal-state write, production-provider request or B4-job change occurred.
+The evidence database remains schema 11; no local-disposition migration has run.
+
+Actual HTTPS/browser checks exercised populated browse/detail, original evidence
+links, published rank versus unranked selection, original-language title and
+director search, preservation/watched filters, empty results, not-found response,
+visible keyboard skip navigation and source/access uncertainty. Desktop width
+1440 px and DevTools mobile width 390 px both fit without horizontal overflow. The
+configured API token is absent from browse/detail HTML; responses use no-store.
+These checks establish observed behavior, not user satisfaction.
+
+Final UI4 acceptance still requires merged local dispositions and Movary controls,
+pre-migration backup/restore, integrated action-preview/local-state/restart checks,
+full validation and independent reviews. Native jobs supervise process restarts
+inside the current GUI session. The Mac must remain awake and logged in; direct
+project-path registration is not a claim of automatic login/reboot startup.
+
+### UI4 schema 12 migration and real-form finding — 2026-11-04
+
+The native UI and daily refresh were stopped before a validated online schema 11
+backup and explicit migration to 12. Hashes/counts for all 27 preexisting tables
+are unchanged. An isolated restore of the pre-migration copy reproduces schema 11,
+then upgrades and validates successfully with an empty disposition table. Private
+backup/receipts remain inside the attached project. The UI restarted with the
+exact browser-facing public origin, and the original daily refresh registration
+was restored; B4 jobs and Movary personal state were untouched.
+
+Actual native HTTPS Save submission exposed a browser-policy defect missed by
+synthetic requests: the no-referrer response policy makes Chrome send literal
+`Origin: null`, so the exact-origin guard correctly rejects the form. No local
+row was created. The proposed correction preserves the Origin/Host/token guards
+and uses a same-origin referrer policy; external source links already suppress
+referrers individually. Real Save/Dismiss/Restore and saved-state restart checks
+remain pending the reviewed correction. This is an observed default-path failure,
+not a speculative edge-case hardening request.
+
+### UI4 integrated operational acceptance — 2026-11-04
+
+Reviewed main `ada69db` is running through the existing project-local native jobs
+and dedicated private HTTPS route. The corrected same-origin policy makes the
+original native Save submission succeed; observed browser Origin matches the
+configured public origin. Exact Origin/Host/CSRF guards and external-link
+noreferrer remain unchanged. No proxy trust or backend Host exception was needed.
+
+Real Save, repeated Save, Saved view, native process restart/reopen, rejection of
+an expired old form, Dismiss and Restore all passed. Repeated Save retained one
+row. A schema 12 online backup and isolated restore retained that saved state and
+all 27 original evidence-table hashes/counts. The temporary selected disposition
+was restored to its original absence; personal snapshot/status bytes were
+unchanged by local actions. The earlier schema 11 backup/restore/upgrade proof
+remains available privately.
+
+Native watchlist and explicit-date previews showed the exact film and disclosure;
+both were cancelled without confirmation. The native enjoyment-editor link
+matches accepted identity, the private snapshot and live Movary crosswalk; its
+target returns HTTP 200. The UI's read-only Refresh completed. Complete played/history/
+watchlist API state, all personal film values and raw export provenance compare
+unchanged before/after. No live personal write or rating edit was used for
+acceptance; API write/idempotence/failure semantics remain fixture-verified.
+
+Actual desktop 1440 px/mobile 390 px, keyboard skip navigation, search/filters, evidence,
+rank/unranked distinctions, unknown access and empty/not-found views passed.
+One isolated stale-copy view preserved all 106 accepted films with unknown watched
+state; one missing-input view showed unavailable (503) rather than an empty catalog.
+Live freshness was not changed for those checks, and the isolated server/browser
+were stopped. Current HTML excludes the configured API token and private history
+comments; no-store/same-origin headers, loopback binding, existing Movary health
+and the original daily refresh registration remain verified. Private screenshots,
+backup copies and receipts stay inside the attached project.
+
+The UI requires the Mac awake and logged in. Native process supervision and
+reopen were tested; automatic bootstrap after login/reboot is not claimed.
+Provider adoption and user satisfaction remain separate. Final documentation is
+reconciled; full validation and independent PR #104 reviews precede merge and
+closing #102/#98. The controller measured all 343 tracked Python files, including
+methods/closures: maximum CC 8, minimum MI 50.025032185536084, no failures.
+
+Final UI4 local validation: `uv sync --dev`, Ruff check/format and ty pass;
+199 tests pass with one existing opt-in skip (200 collected). No Python runtime
+changes or test cases were added by the deployment/documentation delivery.
+Final-head GitHub CI, bot disposition and independent reviews remain required.
