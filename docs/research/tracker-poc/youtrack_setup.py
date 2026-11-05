@@ -1,5 +1,6 @@
 """Create the small set of typed fields used by the local YouTrack POC."""
 
+import argparse
 from typing import Any
 from urllib.parse import quote
 
@@ -132,12 +133,78 @@ def ensure_lifecycle(client: YouTrackClient, project: str) -> None:
     )
 
 
+def ensure_workflow_fixture(client: YouTrackClient) -> bool:
+    """Set the isolated workflow marker only on the dedicated synthetic issue."""
+    issues = client.pages(
+        "issues",
+        query={
+            "fields": "id,idReadable,customFields(name,value(name))",
+            "query": "project: {FILMPOC} sort by: {issue id} asc",
+        },
+    )
+    candidates = [issue for issue in issues if issue.get("idReadable") == "FILMPOC-1"]
+    if len(candidates) != 1:
+        raise YouTrackError("Synthetic workflow issue was not found uniquely")
+    target = candidates[0]
+    for issue in issues:
+        matches = [
+            field
+            for field in issue.get("customFields", [])
+            if field.get("name") == "FilmIQ Fixture ID"
+        ]
+        if len(matches) != 1:
+            raise YouTrackError("Synthetic workflow fixture field is missing or ambiguous")
+        value = matches[0].get("value")
+        if issue.get("idReadable") == "FILMPOC-1":
+            if value is not None and (type(value) is not int or value != 91001):
+                raise YouTrackError("Synthetic workflow issue already has another fixture ID")
+        elif value == 91001:
+            raise YouTrackError("Synthetic workflow fixture ID is already assigned")
+    original = next(
+        field["value"]
+        for field in target["customFields"]
+        if field.get("name") == "FilmIQ Fixture ID"
+    )
+    if original == 91001:
+        return False
+    client.request(
+        "issues/FILMPOC-1",
+        body={
+            "customFields": [
+                {"name": "FilmIQ Fixture ID", "$type": "SimpleIssueCustomField", "value": 91001}
+            ]
+        },
+    )
+    result = client.request(
+        "issues/FILMPOC-1", query={"fields": "idReadable,customFields(name,value(name))"}
+    )
+    verified = [
+        field.get("value")
+        for field in result.get("customFields", [])
+        if field.get("name") == "FilmIQ Fixture ID"
+    ]
+    if result.get("idReadable") != "FILMPOC-1" or verified != [91001]:
+        raise YouTrackError("Synthetic workflow fixture update was not verified")
+    return True
+
+
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--workflow-fixture",
+        action="store_true",
+        help="also verify or set the existing FILMPOC-1 synthetic workflow marker",
+    )
+    args = parser.parse_args()
     client = YouTrackClient()
     project = project_id(client)
     ensure_fields(client, project)
     ensure_lifecycle(client, project)
-    print("FilmIQ POC project and typed fields are ready")
+    if args.workflow_fixture:
+        ensure_workflow_fixture(client)
+        print("FilmIQ POC project, typed fields and synthetic workflow fixture are ready")
+    else:
+        print("FilmIQ POC project and typed fields are ready")
 
 
 if __name__ == "__main__":

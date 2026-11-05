@@ -23,16 +23,20 @@ requested evaluation criteria; scores remain pending.
   rendered in a main-menu iframe, but its issue search returned HTTP 400 because
   `id` is not a valid sort field. After correction to `{issue id}`, the widget
   loaded a fictional issue, saved an edited synopsis and read it after a page
-  reload. The newer package adds a richer UI and per-user handlers, but has not
-  yet been installed or verified; it is not a complete YouTrack POC. A further
+  reload. The newer package adds a richer UI and per-user handlers. A further
   separate candidate adds title editing, source-neutral direct-review display,
   a known-watched exclusion filter and critic information. Build it with
   `python3 docs/research/tracker-poc/build_youtrack.py --candidate`; this leaves
   the earlier pending ZIP unchanged. Comparing those prepared ZIPs showed only
   the film widget bundle changed; the backend handlers and workflow files were
-  identical. A local non-browser check parsed all 43
-  stored direct-review fields in that candidate. Installation, actual rendering
-  and per-user behavior remain unverified.
+  identical. A local non-browser check parsed the then-current 43 stored
+  direct-review fields in that candidate. The candidate was installed and
+  appeared active, but its initial browser load remained stuck with controls
+  disabled even though the server returned the film pages. A later source fix
+  publishes the films before waiting for optional personal-data reads and bounds
+  those reads to five seconds; a fictional stalled-request check passes. The
+  exact cause of the stuck request and the fix in the browser remain unverified.
+  Film rendering and per-user behavior remain unverified.
   The candidate uses an in-widget preference confirmation and provides a
   selectable URL if an external link cannot open. JetBrains documents a
   [sandboxed iframe](https://www.jetbrains.com/help/youtrack/devportal/app-architecture.html)
@@ -141,15 +145,15 @@ critic selections, 17 award outcomes, and 49 registry selections. None is
 explicitly typed as an individual critic review. These are source links, not
 proof of review coverage or independent verification of every film identity.
 Separately researched direct links were then added to dedicated tracker fields
-on 43 films in each POC: 35 individual critic-review pages and 35 aggregator
+on 50 films in each POC: 39 individual critic-review pages and 39 aggregator
 title pages. Source pages were checked against available film identity
 evidence; the supplied TMDB-to-personal-film mapping was not independently
 verified. One additional film was held for manual identity review. A readback
-matched all 70 expected links in both trackers, the original source evidence
+matched all 78 expected links in both trackers, the original source evidence
 remained intact, and a repeat import made zero writes. The Kaneo UI has a
 direct-links view; the YouTrack field is attached for the native issue view.
-A newer uninstalled app candidate adds a direct-links view, but the previously
-prepared package does not. Neither view has been browser-verified.
+The installed newer app adds a direct-links view, but its film load was stuck
+in the initial browser attempt. Neither view has been browser-verified.
 
 The detailed source checks and corroboration links remain in ignored private
 manifests. Shared review-link values use the same source-neutral shape for all
@@ -269,9 +273,13 @@ numeric sort and availability freshness. The React controls, visual layout and
 
 The updated YouTrack app's personal preference preview stores only the fields
 needed to bind the confirmation, not draft notes. Its cancel action discards
-the pending preview. The code and fictional checks have not yet been installed
-or validated in the YouTrack runtime. YouTrack's per-project Movary snapshot
+the pending preview. The code is installed, but its fictional checks have not
+yet been validated in the YouTrack runtime. YouTrack's per-project Movary snapshot
 handler likewise has synthetic checks only; concurrent imports are unverified.
+Anonymous live requests to the preference and watched handlers returned 401.
+`youtrack_persona_handlers_check.py` is prepared to exercise two fictional
+accounts against the installed handlers, but has not been run with authenticated
+users because the fictional accounts do not yet have usable API credentials.
 
 The separate `enrichment.py` worker uses a backend protocol and the existing
 FilmIQ availability normalizer. Its only source is explicitly fictional, with
@@ -445,9 +453,13 @@ production capacity. The synthetic API exercise verified state values,
 comments and history, rejection of a nonnumeric integer and an invalid state,
 preservation of a user-edited synopsis and provider observation, repeat import,
 and anonymous read/write denial. The separate programmed workflow and per-user
-extension properties have only passed mock checks and await a live test.
+extension properties have only passed mock checks and await a live test. The
+dedicated synthetic workflow issue initially lacked the fixture marker required
+by both rules; `youtrack_setup.py --workflow-fixture` now sets it only when
+empty, checks for conflicts and verifies the write. A repeated setup made no
+change. This fixes the test fixture but does not establish that either rule ran.
 
-The earlier embedded widget passed an actual synopsis edit/reload. The pending
+The earlier embedded widget passed an actual synopsis edit/reload. The installed
 update adds preferences, watched-history support and synthetic workflows; the
 app's permission and data-loss behavior must be tested before real watched data
 is imported into its per-user property. MDBList read-through is implemented

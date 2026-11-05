@@ -49,7 +49,7 @@ and the seven scores justified against that evidence.
 For a narrower CPU-only check, the two client filtering functions were run
 separately in warmed Node processes against the same 1,000 fictional films.
 The Netflix-plus-interest filter and numeric sort had medians of 0.643 ms for
-Kaneo and 0.799 ms for the uninstalled YouTrack candidate. These are separate
+Kaneo and 0.799 ms for the YouTrack candidate before installation. These are separate
 runs, not a controlled browser comparison, and exclude requests, rendering and
 images. See the [Kaneo](kaneo-filter-benchmark.md) and
 [YouTrack](youtrack-filter-benchmark.md) methods and full samples.

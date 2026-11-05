@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { readDirectReviews, reviewsMatchTitle, safeReviewUrl } from "./direct_reviews.js";
 import { field, filterYoutrackFilms, providerObservation, providerFreshness } from "./youtrack_filters.js";
+import { loadFilmView } from "./youtrack_loading.js";
 export { providerObservation, providerFreshness } from "./youtrack_filters.js";
 
 let locationListener = () => {};
@@ -83,12 +84,13 @@ function App() {
     const run = ++sequence.current;
     setBusy(true); setError("");
     try {
-      const loaded = await getFilms(target);
-      const [personal, watched] = await Promise.allSettled([
-        readPreferences(), host.fetchApp("movary/watched", { query: { project: target } }),
-      ]);
+      const [personal, watched] = await loadFilmView({
+        loadFilms: () => getFilms(target),
+        loadPreferences: readPreferences,
+        loadWatched: () => host.fetchApp("movary/watched", { query: { project: target } }),
+        publishFilms: (loaded) => { if (run === sequence.current) setFilms(loaded); },
+      });
       if (run !== sequence.current) return;
-      setFilms(loaded);
       setPreferences(personal.status === "fulfilled" ? personal.value : null);
       setMovary(watched.status === "fulfilled" ? watched.value : null);
       const messages = [];
