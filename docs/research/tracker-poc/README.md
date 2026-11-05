@@ -40,6 +40,14 @@ intentional watchlist. Use synthetic films and users for these experiments.
 * The [current YouTrack pricing page](https://www.jetbrains.com/youtrack/buy/)
   describes free plans for up to ten users for Cloud and Server. Cloud includes
   30 GB; check current terms and other limitations before deployment.
+* [YouTrack Cloud](https://www.jetbrains.com/help/youtrack/cloud/about-youtrack-cloud.html)
+  is hosted, updated and backed up by JetBrains. [Custom app ZIP uploads](https://www.jetbrains.com/help/youtrack/cloud/manage-apps.html)
+  are documented for Cloud, subject to permissions and size limits. Updates are
+  rolled out by JetBrains, so record the actual tested Cloud build rather than
+  assuming it stays pinned; see the [maintenance calendar](https://www.jetbrains.com/help/youtrack/cloud/youtrack-cloud-maintenance-calendar.html).
+  [Database exports](https://www.jetbrains.com/help/youtrack/cloud/database.html)
+  are available, but Cloud restores are managed by JetBrains support. These are
+  documented capabilities, not live Cloud test results.
 * YouTrack documents `host.fetchYouTrack()` as using the current user's session,
   with REST permissions applied at the target endpoint. Widget visibility alone
   is not proof of authorization. Most collection endpoints default to at most
@@ -144,6 +152,18 @@ malformed or failed provider response preserves the previous observation. This
 is a sequential fixture test: live TMDB, concurrent imports, and the YouTrack
 adapter are not implemented. Task-wide notes are not per-user preferences.
 
+On 2026-11-05, two read-only requests using the existing project credential
+checked TMDB's documented example movie ID 11: both the movie-details and
+watch-providers endpoints returned the requested ID. The existing normalizer
+classified the US provider response as complete with 12 reported offers. No
+response body or API key was saved in the POC or committed, and no personal
+entitlement or provider accuracy was verified. The read-only `tmdb_readonly.py`
+adapter subsequently fetched the same ID's metadata, genres, director, poster
+URL and US offers; its separate deterministic check exercises unavailable
+provider handling. It does not implement or validate a live TMDB-to-tracker
+import. [Movie details](https://developer.themoviedb.org/reference/movie-details),
+[watch providers and JustWatch attribution](https://developer.themoviedb.org/reference/movie-watch-providers).
+
 ## Reproduce the isolated Kaneo experiment
 
 Use this worktree's root as the current directory. Docker Desktop stores images
@@ -184,6 +204,7 @@ POC_PROJECT_ID='<printed project ID>'
 python3 docs/research/tracker-poc/kaneo_smoke.py --project "$POC_PROJECT_ID" --cookie-file .cache/tracker-poc/kaneo-cookies.txt
 python3 docs/research/tracker-poc/kaneo_viewer_check.py --directory .cache/tracker-poc
 uv run python docs/research/tracker-poc/kaneo_enrich_check.py --directory .cache/tracker-poc
+uv run python docs/research/tracker-poc/tmdb_readonly_check.py
 python3 docs/research/tracker-poc/kaneo_seed.py --project "$POC_PROJECT_ID" --cookie-file .cache/tracker-poc/kaneo-cookies.txt --count 1000
 python3 docs/research/tracker-poc/kaneo_benchmark.py --project "$POC_PROJECT_ID" --cookie-file .cache/tracker-poc/kaneo-cookies.txt
 ```
@@ -215,6 +236,11 @@ bound to loopback; this configuration is for isolated local evaluation only.
 React and esbuild are MIT-licensed. The UI includes no service API key.
 
 ## YouTrack status
+
+The user selected local YouTrack Server for this evaluation and identified
+Hermes as a possible eventual host. No Hermes installation, deployment, data
+transfer, resource measurement or operating-cost test has been performed; the
+current POC runs on the Mac. Cloud remains a documented alternative above.
 
 The pinned `2026.2.19728` server container starts and serves the initial
 configuration wizard at `http://localhost:18180/`. Database, configuration,
