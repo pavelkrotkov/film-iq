@@ -33,6 +33,14 @@ include PostgreSQL cluster-wide roles or external files. Secret values are not
 included in the dump. The fictional credentials and fixture configuration are
 not for another deployment.
 
+Separately, `uv run python docs/research/tracker-poc/preferences_recovery_check.py`
+creates a fictional preference database in WAL mode, uses SQLite's online
+backup to make a mode-0600 archive, restores it to a second database and checks
+the exact score, unknown watchlist, watched timestamp and note through the POC
+load function. This is an offline one-record check, not a service-restart,
+concurrent-write or live-data recovery test. Its fictional files remain in a
+new ignored project-local directory.
+
 ## Repeat with fresh fictional directories
 
 Run from this worktree root. The pinned images must already be local. These

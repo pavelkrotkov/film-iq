@@ -93,8 +93,9 @@ database and separately check its preference store and any attachments. A
 YouTrack rehearsal should restore a fictional backup into a new instance and
 check the app and its extension properties, as well as issues and attachments.
 The isolated [Kaneo fictional database rehearsal](kaneo-recovery-rehearsal.md)
-passed for its small fixture; YouTrack recovery and Kaneo attachments and
-preferences remain untested. See the official [PostgreSQL 16 dump
+passed for its small fixture; a separate offline SQLite preference backup and
+restore also passed for one fictional row. YouTrack recovery, Kaneo attachments
+and live preference-service recovery remain untested. See the official [PostgreSQL 16 dump
 documentation](https://www.postgresql.org/docs/16/app-pgdump.html) and
 [YouTrack Docker restore guide](https://www.jetbrains.com/help/youtrack/server/restore-docker-image-installation.html).
 The current Compose file does not establish automatic startup after a host

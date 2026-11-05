@@ -573,7 +573,7 @@ approved-ID list.
 
 The [comparison](comparison.md) includes provisional weighted scores and a
 conditional recommendation. The YouTrack live metadata and poster controls,
-YouTrack recovery, Kaneo attachment/preference recovery and an upgrade rehearsal
+YouTrack recovery, Kaneo attachment/live preference-service recovery and an upgrade rehearsal
 remain outstanding. A [fictional Kaneo database restore and restart](kaneo-recovery-rehearsal.md)
 passed in a separate isolated instance. The user prioritized the single-user
 workflow over additional multi-account testing. These limitations make the
