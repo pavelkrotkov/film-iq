@@ -2659,3 +2659,22 @@ pre-migration backup/restore, integrated action-preview/local-state/restart chec
 full validation and independent reviews. Native jobs supervise process restarts
 inside the current GUI session. The Mac must remain awake and logged in; direct
 project-path registration is not a claim of automatic login/reboot startup.
+
+### UI4 schema12 migration and real-form finding — 2026-11-04
+
+The native UI and daily refresh were stopped before a validated online schema11
+backup and explicit migration to12. Hashes/counts for all27 preexisting tables
+are unchanged. An isolated restore of the pre-migration copy reproduces schema11,
+then upgrades and validates successfully with an empty disposition table. Private
+backup/receipts remain inside the attached project. The UI restarted with the
+exact browser-facing public origin, and the original daily refresh registration
+was restored; B4 jobs and Movary personal state were untouched.
+
+Actual native HTTPS Save submission exposed a browser-policy defect missed by
+synthetic requests: the no-referrer response policy makes Chrome send literal
+`Origin: null`, so the exact-origin guard correctly rejects the form. No local
+row was created. The proposed correction preserves the Origin/Host/token guards
+and uses a same-origin referrer policy; external source links already suppress
+referrers individually. Real Save/Dismiss/Restore and saved-state restart checks
+remain pending the reviewed correction. This is an observed default-path failure,
+not a speculative edge-case hardening request.

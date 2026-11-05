@@ -51,9 +51,10 @@ and Host. Restarting the service invalidates an open old form; reload it before
 retrying. The browser-facing URL is explicit when using the private HTTPS proxy:
 
 ```sh
+FILMIQ_ORIGIN="https://your-tailnet-host:8450"
 uv run film-iq serve --database path/to/evidence.db \
   --cohort path/to/accepted-cohort.json \
-  --public-origin https://hermes.tail377b2a.ts.net:8450
+  --public-origin "$FILMIQ_ORIGIN"
 ```
 
 Keep the backend on loopback and preserve the original public Host through the
@@ -111,6 +112,7 @@ Project-local configuration lives in `.cache/ui-build/runtime/`:
 
 - `com.filmiq.ui.plist`: `uv run --offline --env-file` starts `film-iq serve`
   with absolute installation paths, loopback binding, and project-local caches.
+  Its `--public-origin` must match the configured browser HTTPS origin and port.
 - `com.filmiq.ui.tunnel.plist`: SSH forwards the tailnet server’s `127.0.0.1:8770` to the
   Mac's `127.0.0.1:8770`, using existing SSH authentication. Batch mode and
   failure-on-forwarding-error prevent a stalled password prompt or false start.
