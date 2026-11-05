@@ -1,5 +1,67 @@
 # film-iq — product, research and implementation plan
 
+## Current user decision — recommendation UI (2026-11-04)
+
+The user explicitly prioritized a usable recommendation UI and authorized ADR
+updates, issue planning, implementation, review and merge. This supersedes the
+historical CLI/report-only and Movary-primary-interface choices below. FilmIQ
+becomes the primary interface for discovery, evidence and recommendation actions;
+Movary remains authoritative for watched history, ratings and intentional
+watchlist. See [ADR 0010](docs/adr/0010-interface-scope.md),
+[ADR 0013](docs/adr/0013-recommendation-web.md) and
+[UI epic #98](https://github.com/pavelkrotkov/film-iq/issues/98).
+Neither provider research nor personal ratings/plans blocks this build.
+
+### UI delivery plan and dependencies
+
+| Slice | User-visible result | Actual dependency |
+|---|---|---|
+| [#99 UI1](https://github.com/pavelkrotkov/film-iq/issues/99) | Browse/search/filter accepted films and open rich original-source evidence | Architecture amendment; no provider/personal-input gate |
+| [#100 UI2](https://github.com/pavelkrotkov/film-iq/issues/100) | Save, dismiss, revisit and undo with persistent FilmIQ dispositions | UI1; parallel with UI3 |
+| [#101 UI3](https://github.com/pavelkrotkov/film-iq/issues/101) | Preview/confirm Movary watchlist promotion, log a watch date, see ratings and open native rating editor | UI1; parallel with UI2 |
+| [#102 UI4](https://github.com/pavelkrotkov/film-iq/issues/102) | Persistent private HTTPS website with current Plex-imported history and verified browser journey | Final acceptance after UI1–3; preparation may start earlier |
+
+All slices are AFK and use separate branches/worktrees inside this project.
+Native GitHub sub-issue and blocked-by relationships mirror these actual
+acceptance dependencies. Each implementation PR needs bot-review time,
+independent GPT-6.1 Sol high Standards/Spec reviews posted to GitHub, disposition
+of every finding and resolved conversations, passing CI, and worktree cleanup
+following merge. Record findings and exact acceptance evidence here as work lands.
+
+### UI behavior and boundaries
+
+- Browse accepted reviewed candidates even with missing/stale personal history;
+  show watched state as unknown where appropriate. Search title/director and
+  filter evidence kind, watched status and recommendation disposition. Preserve
+  source/public-support ordering and its provisional meaning.
+- Details show original critic/poll/festival/award/preservation links, edition,
+  rank/tie/unranked distinctions, original versus reviewed display assertions,
+  independent/derivative lineage, typed recognition and source freshness. Retain
+  rights-filtered offers and unknown access rather than inventing availability.
+- Saved/Dismissed are FilmIQ recommendation states. They do not automatically
+  alter Movary's watchlist. Explicit watchlist promotion has an exact-film dry run
+  and confirmation. Watch logging uses idempotent new-date semantics, preserving
+  other dates/plays/comments, with possible Movary automatic watchlist removal
+  disclosed before confirmation.
+- Installed Movary 0.82.1 has no bearer-authenticated rating-write endpoint.
+  Show enjoyment and artistic merit separately and link to its verified native
+  film/rating editor. No session-login automation or Movary fork is required.
+  Never require user entries for validation. A verified write followed by failed
+  refresh is reported as saved with stale FilmIQ state, not rolled back.
+- Use native HTML/forms/CSS through a small WSGI application and Waitress;
+  loopback/private tailnet deployment. Escape text, restrict external links,
+  protect writes against CSRF, and keep credentials/comments/raw snapshots out
+  of responses. No frontend framework/build pipeline or duplicate personal store.
+
+Acceptance covers populated desktop/mobile and keyboard journeys, original
+provenance, missing-input and failure behavior, persistence/restart, a backed-up
+schema migration, refreshed Plex history and a stable private URL. One meaningful
+web integration journey extends the existing 199 cases to at most 200, without
+hiding test cases or recreating invalid-value matrices. Changed Python functions
+must have CC≤8 and modules MI≥50. Passing checks do not establish user satisfaction.
+Streaming-provider adoption remains independently tracked in #14/#18/#22/#26;
+the third-date receipt now exists, so the calendar date is no longer a blocker.
+
 ## Current user decision — optional personal inputs (2026-10-31)
 
 The [explicit user-directed amendment](https://github.com/pavelkrotkov/film-iq/issues/3#issuecomment-6545430122)
@@ -45,7 +107,7 @@ No weighted sum is declared globally optimal. Evaluate variants against the *rel
 | TMDB/IMDb crosswalk; unresolved-title review | A competing full movie catalog |
 | Movary history, rating and watchlist integration | Writing into Movary's database or automatically mass-adding titles |
 | US subscription/rent/buy/free/archive/library offer discovery | Automatic service purchases, cancellations and payment actions |
-| Transparent reports/CLI and optional alerts | Another general watch-history UI |
+| Recommendation web UI, reports/CLI and optional alerts | A duplicate personal-state backend |
 | Low recurring cost on existing hardware | Microservices, vector DB or knowledge graph by default |
 
 ## 2. Architecture and ownership
@@ -65,11 +127,11 @@ TMDB/JustWatch, alternative offers → normalized current offers + events
                                Movary watchlist API
 ```
 
-- **Movary** is source of truth for watched dates, repeated plays, personal ratings, and intentionally saved watchlist entries. It retains the primary interactive UI.
+- **Movary** is source of truth for watched dates, repeated plays, personal ratings, and intentionally saved watchlist entries. FilmIQ supplies the primary recommendation interface and links to unsupported native editors.
 - **film-iq** owns the source registry, original published evidence, identity decisions, scoring and versioning, provider offers, change records, feasibility and planning decisions.
 - **TMDB** is the primary external film ID; maintain Movary ID and optional IMDb ID. Never conflate identifiers.
 - Internal `radar` / `candidate` / `priority` / `dismissed` are *recommendation* states, not replacements for Movary watched/watchlist states.
-- **Runtime:** a Python 3.12+ modular monolith, Pydantic for API/observation boundaries if useful, local SQLite with WAL, scheduled single writer, CLI/reports, and optional very small HTTP layer. Python modules are not separately deployed services. Keep storage local (not WAL on a network share); back up to NAS as desired.
+- **Runtime:** a Python 3.12+ modular monolith, Pydantic for API/observation boundaries if useful, local SQLite with WAL, scheduled single writer, CLI/reports and a small server-rendered WSGI UI with Waitress. Python modules are not separately deployed services. Keep storage local (not WAL on a network share); back up to NAS as desired.
 - Require a SQLite build with the documented WAL-reset corruption fix (3.51.3 or backports 3.44.6/3.50.7, or later corrected versions). Enforce foreign keys, deterministic migrations and tested restore.
 
 ## 3. Interfaces and integration contracts
@@ -340,9 +402,9 @@ Epic C components may start as their **specific** POC or research prerequisites 
 
 ## 11. Dependency decisions and alternatives
 
-**Accepted:** Movary integration rather than rebuild/fork; operational TMDB identity with nullable unresolved matches; relational evidence store; separation of significance and taste; original source records and lineage; minimal CLI/reporting and optional approved sync; no auto-subscription transactions.
+**Accepted:** Movary integration rather than rebuild/fork; operational TMDB identity with nullable unresolved matches; relational evidence store; separation of significance and taste; original source records and lineage; recommendation UI, CLI/reporting and optional approved sync; no auto-subscription transactions.
 
-**Provisional:** Crawl4AI/LLM/dlt (choose based on extraction benchmark); Movie of the Night vs TMDB availability coverage and quotas; scoring weights or model; introduction of embeddings, UI, advanced scheduling or upstream Movary endpoints. Source registry and provenance are necessary regardless of tool selection.
+**Provisional:** Crawl4AI/LLM/dlt (choose based on extraction benchmark); Movie of the Night vs TMDB availability coverage and quotas; scoring weights or model; introduction of embeddings, advanced scheduling or upstream Movary endpoints. Source registry and provenance are necessary regardless of tool selection.
 
 **Reuse candidates:** GoodWatch (study selected code, not its operationally complex full stack), Cinemagoria (architecture; verify license before copying), Kometa/letterboxdpy (list parsing/ID conversion), Critics Lists Aggregator (scoring reference; check license), PaperSeek (evidence design), MDBList (possible supplemental feed). QMD/OpenKB/Graphiti/Cognee and Huginn are not initially needed. Never assume a hosted-only workflow can retain source and revision detail the product needs.
 
