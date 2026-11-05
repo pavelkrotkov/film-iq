@@ -2478,6 +2478,37 @@ MI≥50; observed minimum MI is 50.025032. The recurring test budget is recorded
 AGENTS.md. CI and independent final-head review dispositions are required before
 merge and will be recorded in the PR.
 
+## UI1 browse and evidence delivery — 2026-11-04
+
+Related #99/#98: the first server-rendered recommendation slice reuses discovery
+JSON through a small WSGI application and pinned Waitress 3.0.2 (ZPL-2.1).
+Native HTML/CSS supplies responsive cards, title/director search, exact evidence
+and watched filters, transparent source/public-support ordering, and film detail
+pages. Provenance leads the detail page; technical original-record fields and
+optional personal notes remain expandable. No synthetic poster/score/offer or
+personal-data requirement is added. Instructions are in
+[the website guide](docs/usage/recommendation-ui.md).
+
+Accepted reviewed candidates are coalesced independently of the CLI suggestion
+gate. Missing/stale personal history keeps films browsable while both labels and
+filters use unknown watched state. Source rank/ties/unranked semantics, original
+versus reviewed display facts, typed award recipients, lineage, rights-filtered
+viewing variants/credits and original check dates remain inspectable. Each page
+re-reads current acceptance/retention; no raw private snapshot/comments/credentials
+or rights-review text is rendered. Escaped text, restricted links, restrictive
+browser headers and no-store responses cover this read-only web boundary.
+
+One credential-free WSGI journey extends the default collection from 199 to 200:
+199 pass and the existing opt-in live check skips. It exercises accepted-source
+browsing, search/filter/details, original assertions and award recipient meaning,
+escaping, nullable/stale personal state, unresolved identity and unavailable-input
+behavior. Ruff check/format and ty pass. Changed Python modules, including tests,
+have CC≤8 and MI≥50; minimum MI is 50.113460. Desktop browse/detail pages were
+visually inspected against the actual bounded source dataset. Persistent private
+deployment/mobile acceptance belongs to UI4; no user satisfaction is inferred.
+This slice performs no writes, provider requests or scheduling changes. UI2 local
+dispositions and UI3 Movary controls may start in parallel after merge.
+
 ## UI architecture planning evidence — 2026-11-04
 
 UI epic #98 and slices #99–102 are published with native parent/dependency links.

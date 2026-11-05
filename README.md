@@ -20,6 +20,17 @@ film-iq connects critics' lists, polls, festivals, awards, film identity, person
 
 ## Read a discovery report
 
+The [recommendation website](docs/usage/recommendation-ui.md) now provides
+searchable film cards and original-evidence details using the same inputs:
+
+```sh
+uv run film-iq serve --database path/to/evidence.db --cohort path/to/accepted-cohort.json
+```
+
+Open `http://127.0.0.1:8770/`. Personal history and reviewed display metadata are
+optional; the private persistent deployment and recommendation actions are
+tracked separately in [UI epic #98](https://github.com/pavelkrotkov/film-iq/issues/98).
+
 Use selected accepted cohort previews and an existing private snapshot:
 
 ```sh
