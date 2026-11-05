@@ -2,8 +2,9 @@
 
 Browse accepted reviewed films, search titles/directors, filter recognition and
 watch history, then open a film to inspect its original evidence. Ratings and
-viewing plans are optional. Saved/dismissed controls, Movary actions and a
-persistent private deployment are separate slices under [UI epic #98](https://github.com/pavelkrotkov/film-iq/issues/98).
+viewing plans are optional. Save, dismiss and restore controls keep a local
+recommendation shortlist. Movary actions and persistent private deployment are
+separate slices under [UI epic #98](https://github.com/pavelkrotkov/film-iq/issues/98).
 
 ## Start locally
 
@@ -26,6 +27,41 @@ Waitress 3.0.2 is the only runtime dependency (ZPL-2.1); Python's reference HTTP
 servers discourage production use. The existing repository does not track its
 local uv lockfile; the runtime dependency is pinned exactly in the project.
 There is no frontend framework, bundler or separate database.
+
+## Local shortlist and migration
+
+**Save**, **Dismiss** and **Restore to discovery** are available on film cards
+and details. Saved/Dismissed navigation retains the same source evidence and
+defaults to all watch-history states, so a later logged watch does not make a
+saved film disappear. Discover excludes saved/dismissed films and defaults to
+films not known watched. Navigation counts cover current accepted films in each
+local state; search and watch/evidence filters can narrow the visible result.
+These actions never change Movary's watchlist, history or ratings.
+
+The small disposition table requires schema12. Before upgrading an existing
+schema11 installation, stop its writers, create a validated online backup using
+[the recovery procedure](../operations-recovery.md#film-iq-recovery), and call the
+existing `storage.migrate` helper on the chosen database. The UI does not silently
+migrate a live database or create a missing evidence store. Migration preserves
+prior evidence; restore a pre-upgrade backup to a new path before rollback.
+The new local table is included in ordinary SQLite backups and restore.
+
+Forms require the process's current CSRF token and the configured browser Origin
+and Host. Restarting the service invalidates an open old form; reload it before
+retrying. The browser-facing URL is explicit when using the private HTTPS proxy:
+
+```sh
+uv run film-iq serve --database path/to/evidence.db \
+  --cohort path/to/accepted-cohort.json \
+  --public-origin https://hermes.tail377b2a.ts.net:8450
+```
+
+Keep the backend on loopback and preserve the original public Host through the
+proxy. Forwarded headers do not grant authority. Without `--public-origin`, the
+CLI derives the expected local HTTP origin from its host/port. Each action
+rechecks accepted reviewed film identity server-side, writes only the local
+disposition, then redirects to the updated film page. Repeated actions do not
+add duplicate state or change evidence.
 
 ## What the pages mean
 
@@ -59,6 +95,6 @@ fresh personal history, complete source coverage, streaming entitlement or user
 satisfaction. Missing/malformed inputs return an unavailable page rather than an
 empty catalog. Fix inputs and retry; the UI does not repair or overwrite them.
 
-This slice is read-only. It exposes no raw snapshots, private comments, API
+The website exposes no raw snapshots, private comments, API
 credentials or private rights-review notes. Source text is escaped and external
 links are restricted to HTTP(S). It never exposes unresolved film-action routes.

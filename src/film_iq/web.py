@@ -3,11 +3,15 @@
 import json
 import sqlite3
 from pathlib import Path
+from secrets import token_urlsafe
 from urllib.parse import parse_qs
 
 from film_iq.discovery_command import discovery_command
+from film_iq.dispositions import attach, read
 from film_iq.web_data import films, filters, select
 from film_iq.web_detail import detail
+from film_iq.web_dispositions import VIEWS, actions, navigation, submit
+from film_iq.web_forms import normalize_origin, read_form
 from film_iq.web_render import browse, layout
 
 # Browser copies have no longer retention lease than the live evidence.
@@ -30,9 +34,12 @@ class Application:
         cohort: Path | list[Path],
         snapshot: Path | None = None,
         catalog: Path | None = None,
+        public_origin: str = "http://127.0.0.1:8770",
     ):
         self.database, self.cohort = database, cohort
         self.snapshot, self.catalog = snapshot, catalog
+        self.public_origin = normalize_origin(public_origin)
+        self.csrf_token = token_urlsafe(32)
 
     def report(self) -> dict:
         # Recheck accepted revisions and provider retention on every request.
@@ -58,17 +65,19 @@ class Application:
                 "text/html",
             )
         payload = body.encode("utf-8")
-        start_response(
-            status,
-            [
-                *HEADERS,
-                ("Content-Type", content_type + "; charset=utf-8"),
-                ("Content-Length", str(len(payload))),
-            ],
-        )
+        headers = [
+            *HEADERS,
+            ("Content-Type", content_type + "; charset=utf-8"),
+            ("Content-Length", str(len(payload))),
+        ]
+        if status == "303 See Other":
+            headers.append(("Location", body))
+        start_response(status, headers)
         return [] if environ["REQUEST_METHOD"] == "HEAD" else [payload]
 
     def get(self, environ):
+        if environ["REQUEST_METHOD"] == "POST":
+            return self.post(environ)
         if environ["REQUEST_METHOD"] not in {"GET", "HEAD"}:
             return "405 Method Not Allowed", "Use GET to browse films.", "text/plain"
         path = environ.get("PATH_INFO", "/")
@@ -81,19 +90,25 @@ class Application:
 
     def page(self, path: str, query: str, report: dict):
         try:
-            values = filters(parse_qs(query, max_num_fields=20))
+            query_fields = parse_qs(query, max_num_fields=20)
+            values = filters(query_fields)
         except ValueError:
             return "400 Bad Request", "Unknown film filters.", "text/plain"
-        items = films(report, values["order"])
-        if path == "/":
-            return (
-                "200 OK",
-                browse(report, select(items, values), values, len(items)),
-                "text/html",
-            )
+        items = attach(films(report, values["order"]), read(self.database))
+        if path in VIEWS:
+            return self.collection(path, query_fields, report, items, values)
         item = next((item for item in items if path == f"/films/{item['tmdb_id']}"), None)
         if item is not None:
-            return "200 OK", detail(report, item), "text/html"
+            return (
+                "200 OK",
+                detail(
+                    report,
+                    item,
+                    actions=actions(item, self.csrf_token),
+                    navigation=navigation(items, item["disposition"]),
+                ),
+                "text/html",
+            )
         return (
             "404 Not Found",
             layout(
@@ -102,3 +117,40 @@ class Application:
             ),
             "text/html",
         )
+
+    def collection(self, path, query_fields, report, items, values):
+        view = VIEWS[path]
+        if view != "discover" and "watched" not in query_fields:
+            values["watched"] = "all"
+        selected = select([item for item in items if item["disposition"] == view], values)
+        body = browse(
+            report,
+            selected,
+            values,
+            len(items),
+            csrf_token=self.csrf_token,
+            view=view,
+            navigation=navigation(items, view),
+        )
+        return "200 OK", body, "text/html"
+
+    def post(self, environ):
+        try:
+            values = read_form(environ, self.csrf_token, self.public_origin)
+        except PermissionError as error:
+            return "403 Forbidden", str(error), "text/plain"
+        except ValueError:
+            return "400 Bad Request", "Invalid film form.", "text/plain"
+        path = environ.get("PATH_INFO", "")
+        # Acceptance is re-read at submission; forms never grant identity authority.
+        item = next(
+            (
+                item
+                for item in films(self.report())
+                if path.startswith(f"/films/{item['tmdb_id']}/")
+            ),
+            None,
+        )
+        if item is None or path != f"/films/{item['tmdb_id']}/disposition":
+            return "404 Not Found", "No accepted film action at this address.", "text/plain"
+        return submit(self.database, item, values)

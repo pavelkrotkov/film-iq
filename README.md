@@ -28,7 +28,8 @@ uv run film-iq serve --database path/to/evidence.db --cohort path/to/accepted-co
 ```
 
 Open `http://127.0.0.1:8770/`. Personal history and reviewed display metadata are
-optional; the private persistent deployment and recommendation actions are
+optional. Local Save/Dismiss/Restore controls persist recommendation choices;
+Movary actions and the private persistent deployment are
 tracked separately in [UI epic #98](https://github.com/pavelkrotkov/film-iq/issues/98).
 
 Use selected accepted cohort previews and an existing private snapshot:
@@ -51,7 +52,7 @@ Availability integration retains its separate production-provider gate.
 
 Movary remains authoritative for watched films, dates, personal ratings and explicit watchlist entries. The companion reads that data and writes only **user-approved** watchlist additions. TMDB IDs are operational movie identity, not substitutes for preserved raw source observations.
 
-Implementation: Python 3.12+, local SQLite, CLI/reports and a planned server-rendered recommendation UI ([build epic](https://github.com/pavelkrotkov/film-iq/issues/98)). HTTP parsing first; Crawl4AI, LangExtract and dlt only after measurements. TMDB/JustWatch is the availability baseline; compare Movie of the Night on specialty-film coverage and plan entitlement before adoption. Avoid graph databases, vector indexes, microservices and speculative frontend infrastructure.
+Implementation: Python 3.12+, local SQLite, CLI/reports and a server-rendered recommendation UI ([build epic](https://github.com/pavelkrotkov/film-iq/issues/98)). HTTP parsing first; Crawl4AI, LangExtract and dlt only after measurements. TMDB/JustWatch is the availability baseline; compare Movie of the Night on specialty-film coverage and plan entitlement before adoption. Avoid graph databases, vector indexes, microservices and speculative frontend infrastructure.
 
 ## Development
 
