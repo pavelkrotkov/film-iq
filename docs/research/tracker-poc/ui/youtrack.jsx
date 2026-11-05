@@ -85,6 +85,7 @@ function App() {
   const [localWatched, setLocalWatched] = useState("");
   const [provider, setProvider] = useState(""), [genre, setGenre] = useState(""), [freshness, setFreshness] = useState("");
   const [title, setTitle] = useState(""), [synopsis, setSynopsis] = useState(""), [state, setState] = useState(""), [pref, setPref] = useState(emptyPreference);
+  const [releaseYear, setReleaseYear] = useState(""), [filmGenre, setFilmGenre] = useState("");
   const [tmdbId, setTmdbId] = useState(""), [editBaseline, setEditBaseline] = useState(null), [newTmdbId, setNewTmdbId] = useState("");
   const [prefDirty, setPrefDirty] = useState(false), [filmDirty, setFilmDirty] = useState(false);
   const [pendingPreview, setPendingPreview] = useState(null), [pendingNavigation, setPendingNavigation] = useState(null), [discardFailed, setDiscardFailed] = useState(false), [saveUncertain, setSaveUncertain] = useState(false);
@@ -181,6 +182,8 @@ function App() {
       setSynopsis(baseline.synopsis);
       setState(baseline.state);
       setTmdbId(baseline.tmdbId == null ? "" : String(baseline.tmdbId));
+      setReleaseYear(baseline.releaseYear == null ? "" : String(baseline.releaseYear));
+      setFilmGenre(baseline.genre ?? "");
       setEditBaseline(baseline);
     }
   }, [film, filmDirty]);
@@ -219,7 +222,7 @@ function App() {
     event.preventDefault(); if (!film || editBaseline?.issueId !== film.id) return; setWorking(true); setError("");
     let submitting = false;
     try {
-      const {changes, tmdbId: proposedId, idChanged} = filmChanges(editBaseline, {title, synopsis, state, tmdbId});
+      const {changes, tmdbId: proposedId, idChanged} = filmChanges(editBaseline, {title, synopsis, state, tmdbId, releaseYear, genre: filmGenre});
       if (!Object.keys(changes).length) { markFilmDirty(false); setNotice("No film changes to save."); return; }
       if (idChanged && proposedId && hasDuplicateTmdbId(await getFilms(project), proposedId, film.id)) throw new Error("That TMDB ID is already used by another visible film in this project.");
       submitting = true;
@@ -376,6 +379,7 @@ function App() {
         {liveEntry?.error && <p role="alert">{liveEntry.error}</p>}
         {live && <section>
           <p>TMDB returned: {live.title} ({live.year ?? "year unknown"}).</p>
+          {live.original_title && <p>TMDB original title: {live.original_title} (identity not independently verified).</p>}
           {!liveMatches ? <p role="alert">The returned title differs from this record. It may be a different film or an alternate title and requires verification before its artwork or availability can be used.</p> : <>
             {live.poster_url && <div className="poster"><img src={live.poster_url} alt={`TMDB poster for ${live.title}`} /></div>}
             <p>Directors: {live.directors?.join(", ") || "unknown"}; genres: {live.genres?.join(", ") || "unknown"}.</p>
@@ -390,7 +394,9 @@ function App() {
         <h3>Streaming availability</h3>
         <p>{observation ? `${observation.source} observation: ${observation.status}. Checked ${observation.checked_at || "time unknown"}.` : "Availability unknown."}</p>
         <p>Subscriptions: {providerDescription(observation, "subscription")}. Rentals: {providerDescription(observation, "rent")}.</p>
-        <form onSubmit={saveFilm} onKeyDown={(e) => submitOnEnter(e, saveFilm)}><label>Title<input value={title} required disabled={filmEditLocked} onChange={(e) => {setTitle(e.target.value); markFilmDirty(true);}} /></label><label>Supplied TMDB ID (optional)<input inputMode="numeric" value={tmdbId} disabled={filmEditLocked} onChange={(e) => {setTmdbId(e.target.value); markFilmDirty(true);}} /></label><label>Synopsis<textarea value={synopsis} disabled={filmEditLocked} onChange={(e) => {setSynopsis(e.target.value); markFilmDirty(true);}} /></label><label>Lifecycle<select value={state} disabled={filmEditLocked} onChange={(e) => {setState(e.target.value); markFilmDirty(true);}}><option value="">Unknown</option>{states.map((s) => <option key={s}>{s}</option>)}</select></label><button type="button" onClick={saveFilm} disabled={filmEditLocked}>Save film</button></form>
+        <form onSubmit={saveFilm} onKeyDown={(e) => submitOnEnter(e, saveFilm)}><label>Title<input value={title} required disabled={filmEditLocked} onChange={(e) => {setTitle(e.target.value); markFilmDirty(true);}} /></label><label>Supplied TMDB ID (optional)<input inputMode="numeric" value={tmdbId} disabled={filmEditLocked} onChange={(e) => {setTmdbId(e.target.value); markFilmDirty(true);}} /></label><label>Stored release year<input inputMode="numeric" value={releaseYear} disabled={filmEditLocked || !editBaseline?.yearEditable} onChange={(e) => {setReleaseYear(e.target.value); markFilmDirty(true);}} /></label><label>Stored genre<input value={filmGenre} disabled={filmEditLocked || !editBaseline?.genreEditable} onChange={(e) => {setFilmGenre(e.target.value); markFilmDirty(true);}} /></label><label>Synopsis<textarea value={synopsis} disabled={filmEditLocked} onChange={(e) => {setSynopsis(e.target.value); markFilmDirty(true);}} /></label><label>Lifecycle<select value={state} disabled={filmEditLocked} onChange={(e) => {setState(e.target.value); markFilmDirty(true);}}><option value="">Unknown</option>{states.map((s) => <option key={s}>{s}</option>)}</select></label><button type="button" onClick={saveFilm} disabled={filmEditLocked}>Save film</button></form>
+        {(!editBaseline?.yearEditable || !editBaseline?.genreEditable) && <p>Release year or genre cannot be edited because its project field is unavailable or invalid.</p>}
+        <p>Stored year and genre are editable fields; clearing either leaves it unknown and does not change source-listed assertions.</p>
         <p>Supplied IDs are unverified. Duplicate checks cover visible project records; live lookup remains subject to existing authorization. Clearing an existing ID is not supported in this POC.</p>
         <p>Changing a title does not independently verify the saved external identity or update its original source provenance.</p>
         <p>Critic score: {field(film, "FilmIQ Critic Score") ?? "Unknown"}. {field(film, "FilmIQ Critic Summary")?.text || "Critic summary unavailable."}</p>
