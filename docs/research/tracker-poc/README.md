@@ -207,6 +207,13 @@ paces requests and stops on authentication, permission or rate-limit errors;
 it prints aggregate counts only. The original check was a one-time read, not a
 scheduled sync.
 
+A later non-retaining check on 2026-11-05 again received valid details for all
+130 approved IDs. Its Unicode/casefold/whitespace comparison found 110 direct
+title matches and nine additional original-title matches. The UI uses an exact
+normalized comparison against the current tracker title and either TMDB title;
+its normalization differs slightly from the aggregate check, and neither
+match independently verifies identity. Unmatched data remains withheld.
+
 The pinned Kaneo `2.49.0` image and PostgreSQL `16.15` ran locally on
 2026-11-05. The running `/api/openapi` document was inspected. In a private
 synthetic project, `kaneo_smoke.py` created a task with a synthetic identifier,
@@ -319,6 +326,17 @@ the identity of a real film. The year-label helper passed deterministic tests.
 An isolated fictional Brave walkthrough filtered two title matches by genre,
 then showed the stored year on the matching card and its detail page, including
 after reload. An earlier timeout was traced to the test's exact-label selector.
+The installed YouTrack form can also edit its stored release year and single
+genre separately from source-listed assertions. A fictional browser check
+saved, reloaded, cleared and reloaded both fields without changing the source
+fields. Kaneo displays its existing source-listed director where present.
+
+An isolated Kaneo Brave walkthrough with fictional data verified that
+canceling browser Back or reload preserves an unsaved film draft, and that
+unsent comments and new-film drafts receive an unload warning. Film-to-film
+navigation retains comment drafts. An older-browser fallback restores the
+displayed URL after a canceled history traversal by replacing that target
+entry, so it does not preserve the original history stack.
 
 On 2026-11-05, two read-only requests using the existing project credential
 checked TMDB's documented example movie ID 11: both the movie-details and

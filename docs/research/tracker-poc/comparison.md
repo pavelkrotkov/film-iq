@@ -67,7 +67,11 @@ synthetic user after anonymous access was rejected. This does not establish
 accuracy, individual streaming entitlement, or rights for indefinite storage.
 An aggregate live details check returned valid records for all 130 input IDs;
 110 titles exactly matched after normalization and 20 did not. Alternate titles
-can explain differences, so those results do not settle film identity. No
+can explain differences, so those results do not settle film identity. A later
+non-retaining check found nine additional original-title matches under its
+Unicode/casefold/whitespace comparison. The UI now accepts an exact normalized
+current or original title as a display guard; this comparison uses slightly
+different normalization and neither establishes identity. No
 provider response bodies were retained, and this is not a completed enrichment.
 In later sequential non-retaining checks, both local backends read all 130
 authorized IDs: each returned 130 poster paths and 109 complete US provider
