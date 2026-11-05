@@ -528,8 +528,10 @@ archived; its initial lifecycle was restored. Both UIs now hide archived films
 by default, but YouTrack's updated control has only synthetic component checks.
 A second isolated Kaneo persona created a fictional film, opened its direct
 link after reload, added a comment, recorded and filtered local watched status,
-and archived it. Two new fictional test records remain archived; pre-existing
-fixtures and Movary were unchanged.
+and archived it. A later synthetic browser test created and edited a supplied
+ID, saved a note, reopened and restored an archived film, and confirmed a
+duplicate ID is rejected before any creation request. The new fictional test
+records were left archived; pre-existing fixtures and Movary were unchanged.
 In a separate read-only Brave check against the approved collection, one
 TMDB response had a different title and its artwork and availability were
 withheld. A second approved discovery record had a matching title; its poster
@@ -559,6 +561,15 @@ checks, and no Movary data was changed.
 Both interfaces use the same TMDB/JustWatch credits component, including the
 existing TMDB-hosted logo URL with the referrer suppressed; logo availability
 inside the YouTrack iframe has not been browser-verified.
+
+Both interfaces also offer an explicit action to load all remaining visible
+films. It takes a snapshot of the visible list, processes it sequentially in
+chunks of 30, and stops on an error or rate limit. Cancellation stops further
+requests; YouTrack may finish an already in-flight request, whose result is
+discarded. Fictional browser checks exercised progress and cancellation in both
+interfaces and resumed the YouTrack run; tests with more than 30 fixtures cover
+chunk boundaries and failures. The action does not save metadata or change the
+approved-ID list.
 
 The [comparison](comparison.md) includes provisional weighted scores and a
 conditional recommendation. The YouTrack live metadata and poster controls,

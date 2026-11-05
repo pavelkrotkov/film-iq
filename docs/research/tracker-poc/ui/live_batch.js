@@ -24,18 +24,24 @@ export function tmdbId(film) {
     Number(value) <= 2147483647 ? Number(value) : null;
 }
 
-export function chooseBatch(films, results, retry = false) {
+export function chooseRemaining(films, results, retry = false) {
   return films
     .filter((film) => {
       const id = tmdbId(film), result = results[film.id];
       const current = result && (result.requestedId ?? result.data?.tmdb_id) === id;
       return id && (retry ? current && result.error : !current);
-    })
-    .slice(0, BATCH_LIMIT);
+    });
+}
+
+export function chooseBatch(films, results, retry = false) {
+  return chooseRemaining(films, results, retry).slice(0, BATCH_LIMIT);
 }
 
 export function mergeResult(previous, result) {
-  if (!result.data) return { ...previous, ...result };
+  if (!result.data) {
+    const oldId = previous?.requestedId ?? previous?.data?.tmdb_id;
+    return { ...(oldId && result.requestedId && oldId !== result.requestedId ? {} : previous), ...result };
+  }
   const previousAvailability = previous?.data?.availability;
   const currentAvailability = result.data.availability;
   if (previous?.data?.tmdb_id === result.data.tmdb_id && previousAvailability?.status === "complete" && currentAvailability?.status !== "complete") {
@@ -45,7 +51,7 @@ export function mergeResult(previous, result) {
   return result;
 }
 
-export async function runBatch(films, fetchMovie, signal, onResult) {
+export async function runBatch(films, fetchMovie, signal, onResult, {stopOnError = false} = {}) {
   let succeeded = 0, failed = 0, rateLimited = false;
   for (const film of films.slice(0, BATCH_LIMIT)) {
     if (signal.aborted) break;
@@ -61,8 +67,28 @@ export async function runBatch(films, fetchMovie, signal, onResult) {
       failed++;
       rateLimited = error instanceof RateLimitError;
       onResult(film.id, { requestedId, error: rateLimited ? "TMDB rate limit reached; wait before retrying." : "Live metadata unavailable; retry when ready." }, succeeded + failed);
-      if (rateLimited) break;
+      if (rateLimited || stopOnError) break;
     }
   }
   return { succeeded, failed, cancelled: signal.aborted, rateLimited };
+}
+
+// Each chunk uses the existing 30-film runner; callers must invoke this explicitly.
+export async function runRemaining(films, runChunk, active, onResult) {
+  let succeeded = 0, failed = 0, rateLimited = false, done = 0;
+  for (let start = 0; start < films.length && active(); start += BATCH_LIMIT) {
+    const result = await runChunk(films.slice(start, start + BATCH_LIMIT), (...args) => {
+      if (active()) onResult(...args, ++done, films.length);
+    });
+    succeeded += result.succeeded;
+    failed += result.failed;
+    rateLimited ||= result.rateLimited;
+    if (result.failed || result.cancelled || !active()) break;
+  }
+  return {succeeded, failed, rateLimited, cancelled: !active()};
+}
+
+export function runRemainingBatch(films, fetchMovie, signal, onResult) {
+  return runRemaining(films, (chunk, report) => runBatch(chunk, fetchMovie, signal,
+    (id, result) => report(id, result), {stopOnError: true}), () => !signal.aborted, onResult);
 }

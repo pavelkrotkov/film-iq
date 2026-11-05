@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { readDirectReviews, reviewsMatchTitle, safeReviewUrl } from "./direct_reviews.js";
 import { field, filterYoutrackFilms, localWatchLabel, providerObservation, providerFreshness } from "./youtrack_filters.js";
 import { boundedRead, loadFilmView, publishFilmBatch } from "./youtrack_loading.js";
-import { attachMatchedLive, eligibleLiveFilms, liveMetadataMatches, LiveRateLimited, mergeLiveResult, readLiveMetadata, runLiveBatch, suppliedTmdbId } from "./youtrack_tmdb.js";
+import { attachMatchedLive, eligibleLiveFilms, liveMetadataMatches, LiveRateLimited, mergeLiveResult, readLiveMetadata, remainingLiveFilms, runLiveBatch, runRemainingLive, suppliedTmdbId } from "./youtrack_tmdb.js";
 import { filmBaseline, filmChanges, hasDuplicateTmdbId, parseOptionalTmdbId } from "./youtrack_edit.js";
 import { handleExternalRoute, routeLocation } from "./youtrack_navigation.js";
 import { TmdbCredits } from "./tmdb_credits.jsx";
@@ -92,7 +92,7 @@ function App() {
   const [createUncertain, setCreateUncertain] = useState(false);
   const [liveResults, setLiveResults] = useState({}), [liveBusy, setLiveBusy] = useState(false), [liveRateLimited, setLiveRateLimited] = useState(false);
   const [liveBatch, setLiveBatch] = useState(null), [liveSummary, setLiveSummary] = useState("");
-  const liveRequest = useRef(false);
+  const liveRequest = useRef(false), liveCancel = useRef(false);
   const sequence = useRef(0), selectedRef = useRef(selected), projectRef = useRef(project), restoringCount = useRef(0), guardsRef = useRef({});
   selectedRef.current = selected;
   projectRef.current = project;
@@ -210,6 +210,7 @@ function App() {
   }))].sort();
   const genres = [...new Set(shownFilms.flatMap((item) => [field(item, "FilmIQ Genre"), ...(item.live?.genres || [])]).filter((value) => typeof value === "string" && value))].sort();
   const visible = useMemo(() => filterYoutrackFilms(shownFilms, {preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness, localWatched, showArchived}), [shownFilms, preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness, localWatched, showArchived]);
+  const remainingVisible = remainingLiveFilms(visible, liveResults);
   async function saveFilm(event) {
     event.preventDefault(); if (!film || editBaseline?.issueId !== film.id) return; setWorking(true); setError("");
     let submitting = false;
@@ -319,20 +320,22 @@ function App() {
       if (projectRef.current === targetProject) setLiveResults((previous) => ({...previous, [target.idReadable]: mergeLiveResult(previous[target.idReadable], {requestedId: suppliedTmdbId(target), error: limited ? "TMDB rate limit reached. Wait and reload the page before trying again." : "Live metadata is unavailable. No automatic retry was made."})}));
     } finally { liveRequest.current = false; setLiveBusy(false); }
   }
-  async function loadNextLiveBatch() {
-    const items = eligibleLiveFilms(visible, liveResults);
+  async function loadNextLiveBatch(all = false) {
+    const items = all ? remainingVisible : eligibleLiveFilms(visible, liveResults);
     if (!items.length || liveRequest.current || liveRateLimited) return;
     const targetProject = project, run = sequence.current;
-    const active = () => projectRef.current === targetProject && sequence.current === run;
+    const sameContext = () => projectRef.current === targetProject && sequence.current === run;
+    const active = () => sameContext() && !liveCancel.current;
     let done = 0;
-    liveRequest.current = true; setLiveBusy(true); setLiveBatch({done: 0, total: items.length}); setLiveSummary("");
+    liveCancel.current = false; liveRequest.current = true; setLiveBusy(true); setLiveBatch({done: 0, total: items.length}); setLiveSummary("");
     try {
-      const result = await runLiveBatch(host, items, active, (item, outcome) => {
+      const runner = all ? runRemainingLive : runLiveBatch;
+      const result = await runner(host, items, active, (item, outcome) => {
         setLiveResults((previous) => ({...previous, [item.idReadable]: mergeLiveResult(previous[item.idReadable], outcome)}));
         setLiveBatch({done: ++done, total: items.length});
       });
-      if (result.rateLimited) setLiveRateLimited(true);
-      if (active()) setLiveSummary(`${result.rateLimited ? "Stopped after a rate limit. Wait and reload before trying again." : result.cancelled ? "Stopped." : result.failed ? "Stopped after an unavailable response." : "Finished."} ${result.succeeded} loaded; ${result.failed} unavailable. No automatic retries or tracker writes.`);
+      if (sameContext() && result.rateLimited) setLiveRateLimited(true);
+      if (sameContext()) setLiveSummary(`${result.rateLimited ? "Stopped after a rate limit. Wait and reload before trying again." : result.cancelled ? "Stopped." : result.failed ? "Stopped after an unavailable response." : "Finished."} ${result.succeeded} loaded; ${result.failed} unavailable. No automatic retries or tracker writes.`);
     } finally { liveRequest.current = false; setLiveBusy(false); setLiveBatch(null); }
   }
   function changePreference(values) { setPref((current) => ({...current, ...values})); markPrefDirty(true); }
@@ -416,7 +419,9 @@ function App() {
           <label><input type="checkbox" checked={sortInterest} disabled={preferences === null && !sortInterest} onChange={(e) => setSortInterest(e.target.checked)} /> Sort by interest</label>
         </div>
         <p>Live film details stay available until you close or reload this page.</p>
-        <button type="button" disabled={locked || liveBusy || liveRateLimited || !eligibleLiveFilms(visible, liveResults).length} onClick={loadNextLiveBatch}>{liveBatch ? `Loading ${liveBatch.done}/${liveBatch.total}…` : "Load live metadata for next 30 displayed films"}</button>
+        <button type="button" disabled={locked || liveBusy || liveRateLimited || !eligibleLiveFilms(visible, liveResults).length} onClick={() => loadNextLiveBatch()}>{liveBatch ? `Loading ${liveBatch.done}/${liveBatch.total}…` : "Load live metadata for next 30 displayed films"}</button>{" "}
+        <button type="button" disabled={locked || liveBusy || liveRateLimited || !remainingVisible.length} onClick={() => loadNextLiveBatch(true)}>Load all {remainingVisible.length} remaining visible films (up to {remainingVisible.length * 3} requests)</button>{" "}
+        {liveBatch && <button type="button" onClick={() => {liveCancel.current = true;}}>Cancel loading</button>}
         {liveSummary && <p role="status">{liveSummary}</p>}
         {preferences === null && localWatched && <p role="status">Local watched filtering is unavailable while preferences are loading or unavailable.</p>}
         <h2>Discovery · {visible.length}</h2><div className="grid">{visible.map((item) => {const metadata = item.live; const poster = metadata?.poster_url; const available = providerObservation(item); const sourceYear = field(item, "FilmIQ Source Year"); const year = sourceYear ? `Source-listed year ${sourceYear}` : metadata?.year ? `TMDB-supplied year ${metadata.year}` : "Year unknown"; return <button className="card" key={item.id} disabled={locked} onClick={() => selectFilm(item.idReadable)}><span className="poster">{poster ? <img src={poster} alt={`TMDB poster for ${metadata.title}`} loading="lazy" /> : "Artwork unavailable"}</span><strong>{item.summary}</strong><small>{year} · Interest {preferences?.[item.idReadable]?.interest_score ?? "unknown"} · Critic {field(item, "FilmIQ Critic Score") ?? "unknown"}</small><small>{field(item, "FilmIQ Lifecycle")?.name || "State unknown"} · {movary?.status === "available" && movary?.films?.[item.idReadable]?.watched ? "Watched in Movary" : "Movary watched status unknown"}</small><small>Local watched status: {localWatchLabel(preferences, item.idReadable)}</small><small>{available?.source || "Provider"} subscriptions: {providerDescription(available, "subscription")}</small>{metadata && <small>Supplied TMDB identity is unverified.</small>}</button>;})}</div>

@@ -5,7 +5,7 @@ import {
   providers,
   syntheticAvailability,
 } from "./film_filters.js";
-import { BATCH_LIMIT, chooseBatch, fetchLiveMovie, mergeResult, runBatch, safeImdbTitleUrl, tmdbId } from "./live_batch.js";
+import { BATCH_LIMIT, chooseBatch, chooseRemaining, fetchLiveMovie, mergeResult, runBatch, runRemainingBatch, safeImdbTitleUrl, tmdbId } from "./live_batch.js";
 import { fetchRatings } from "./mdblist_ui.js";
 import { evidenceExplanation, evidenceLabel, sourceLabel } from "./source_evidence.js";
 import { clearSavedDraft, currentComments, setCommentDraft } from "./comment_drafts.js";
@@ -336,6 +336,7 @@ function App() {
       freshnessFilter,
     ],
   );
+  const remainingVisible = chooseRemaining(filtered, liveResults);
   async function savePreference(event) {
     event.preventDefault();
     setBusy(true);
@@ -396,8 +397,10 @@ function App() {
     if (!newTitle.trim()) return;
     setBusy(true);
     setError("");
+    let creating = false;
     try {
       const fieldId = newTmdb ? await identityField(request, project, newTmdb) : null;
+      creating = true;
       const created = await createFilm(
         request,
         project,
@@ -414,7 +417,7 @@ function App() {
       await refresh();
       location.hash = `film=${encodeURIComponent(created.id)}`;
     } catch (e) {
-      setError(e instanceof CreatedFilmUnverified ? e.message : `Creation may be incomplete; reload before retrying: ${e.message}`);
+      setError(e instanceof CreatedFilmUnverified ? e.message : creating ? `Creation may be incomplete; reload before retrying: ${e.message}` : `Could not create film: ${e.message}`);
       setBusy(false);
     }
   }
@@ -440,18 +443,19 @@ function App() {
       setBusy(false);
     }
   }
-  async function startLiveBatch(items) {
+  async function startLiveBatch(items, all = false) {
     if (!items.length || batchController.current) return;
     const controller = new AbortController();
     batchController.current = controller;
     setBatch({total: items.length, done: 0});
     setBatchSummary("");
     try {
-      const result = await runBatch(items, fetchLiveMovie, controller.signal, (id, result, done) => {
+      const runner = all ? runRemainingBatch : runBatch;
+      const result = await runner(items, fetchLiveMovie, controller.signal, (id, result, done) => {
         setLiveResults((previous) => ({ ...previous, [id]: mergeResult(previous[id], result) }));
         setBatch({total: items.length, done});
       });
-      setBatchSummary(`${result.rateLimited ? "Stopped: TMDB rate limit reached. Wait before retrying failed films or fetching the remainder." : result.cancelled ? "Cancelled." : "Finished."} ${result.succeeded} loaded, ${result.failed} failed. No results were saved to Kaneo.`);
+      setBatchSummary(`${result.rateLimited ? "Stopped: TMDB rate limit reached. Wait before retrying failed films or fetching the remainder." : result.cancelled ? "Cancelled." : all && result.failed ? "Stopped after an unavailable response." : "Finished."} ${result.succeeded} loaded, ${result.failed} failed. No results were saved to Kaneo.`);
     } finally {
       batchController.current = null;
       setBatch(null);
@@ -528,6 +532,7 @@ function App() {
         {!!eligible && <section>
           <p>Live film details stay available until you close or reload this page. {unattempted} of {eligible} films have not been loaded yet.</p>
           <button type="button" disabled={!!batch || !pending.length} onClick={() => startLiveBatch(pending)}>Load live details for next {pending.length} films</button>{" "}
+          <button type="button" disabled={!!batch || !remainingVisible.length} onClick={() => startLiveBatch(remainingVisible, true)}>Load all {remainingVisible.length} remaining visible films (up to {remainingVisible.length * 3} requests)</button>{" "}
           {!!retries.length && <button type="button" disabled={!!batch} onClick={() => startLiveBatch(retries)}>Retry up to {BATCH_LIMIT} failed</button>}{" "}
           {batch && <><span role="status">Fetching {batch.done} of {batch.total} films. </span><button type="button" onClick={() => batchController.current?.abort()}>Cancel</button></>}
           {batchSummary && <p role="status">{batchSummary}</p>}

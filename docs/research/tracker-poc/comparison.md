@@ -112,3 +112,12 @@ displayed 763 active cards from its roughly 1,000-issue project at about 11
 seconds, and a later direct-link revisit took about 20 seconds. The workloads,
 browser sessions and measurements were not controlled; they show where to
 investigate, not comparative production capacity.
+
+A follow-up fictional YouTrack profile saw the first cards at about 24.5
+seconds on a cold browser run, with the iframe becoming ready around 23
+seconds; issue pages themselves spanned roughly 1.2 seconds. A later navigation
+in the same process took about 2 seconds. Asking for 500 issues per page reduced
+request count but did not improve the observed warm samples, so the UI retains
+the 100-row page size. The test's request interception disables the browser HTTP
+cache, which can inflate startup time; this is not a normal Brave or Hermes
+benchmark. See [Playwright's routing documentation](https://playwright.dev/docs/api/class-browsercontext#browser-context-route).

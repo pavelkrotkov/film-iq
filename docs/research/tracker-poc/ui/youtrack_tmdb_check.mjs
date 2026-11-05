@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { attachMatchedLive, eligibleLiveFilms, LiveRateLimited, liveMetadataMatches, mergeLiveMetadata, mergeLiveResult, readLiveMetadata, runLiveBatch, safePosterUrl, sameNormalizedTitle, suppliedTmdbId } from "./youtrack_tmdb.js";
+import { attachMatchedLive, eligibleLiveFilms, remainingLiveFilms, LiveRateLimited, liveMetadataMatches, mergeLiveMetadata, mergeLiveResult, readLiveMetadata, runLiveBatch, runRemainingLive, safePosterUrl, sameNormalizedTitle, suppliedTmdbId } from "./youtrack_tmdb.js";
 import { filterYoutrackFilms, providerFreshness, providerObservation } from "./youtrack_filters.js";
 
 const film = {idReadable: "FILMPOC-2", customFields: [{name: "FilmIQ TMDB ID", value: 123}]};
@@ -110,4 +110,37 @@ assert.equal(cancelled.cancelled, true, "a project change stops after the in-fli
 let normalCalls = 0;
 await runLiveBatch({fetchYouTrack: async (path) => {normalCalls++; const index = Number(path.match(/FILMPOC-(\d+)/)[1]); return {...raw, tmdb_id: 100 + index};}}, films, () => true, () => {});
 assert.equal(normalCalls, 30, "each explicit batch must stop at 30 films");
+const manyFilms = Array.from({length: 65}, (_, index) => ({idReadable: `FILMPOC-${index + 1}`, customFields: [{name: "FilmIQ TMDB ID", value: 101 + index}]}));
+const remaining = remainingLiveFilms(manyFilms, {"FILMPOC-1": {requestedId: 101, error: "failed"}});
+assert.equal(remaining.length, 64);
+let requests = 0, concurrent = 0, maxConcurrent = 0;
+const progress = [];
+const complete = await runRemainingLive({fetchYouTrack: async (path) => {
+  requests++; concurrent++; maxConcurrent = Math.max(maxConcurrent, concurrent);
+  await Promise.resolve(); concurrent--;
+  return {...raw, tmdb_id: 100 + Number(path.match(/FILMPOC-(\d+)/)[1])};
+}}, remaining, () => true, (item, outcome, done, total) => progress.push([done, total]));
+assert.equal(requests, 64);
+assert.equal(maxConcurrent, 1);
+assert.deepEqual(complete, {succeeded: 64, failed: 0, rateLimited: false, cancelled: false});
+assert.deepEqual(progress.at(-1), [64, 64]);
+for (const rateLimited of [true, false]) {
+  let count = 0;
+  const result = await runRemainingLive({fetchYouTrack: async (path) => {
+    count++;
+    if (count === 32) throw rateLimited ? Object.assign(new Error("rate limit"), {status: 429}) : new Error("opaque failure");
+    return {...raw, tmdb_id: 100 + Number(path.match(/FILMPOC-(\d+)/)[1])};
+  }}, manyFilms, () => true, () => {});
+  assert.equal(count, 32);
+  assert.deepEqual(result, {succeeded: 31, failed: 1, rateLimited, cancelled: false});
+}
+let currentProject = true, projectRequests = 0, projectResults = 0;
+const interrupted = await runRemainingLive({fetchYouTrack: async (path) => {
+  projectRequests++;
+  if (projectRequests === 32) currentProject = false;
+  return {...raw, tmdb_id: 100 + Number(path.match(/FILMPOC-(\d+)/)[1])};
+}}, manyFilms, () => currentProject, () => projectResults++);
+assert.equal(projectRequests, 32);
+assert.equal(projectResults, 31);
+assert.equal(interrupted.cancelled, true);
 console.log("Synthetic YouTrack live metadata identity, URL, unknown and rate-limit checks passed");

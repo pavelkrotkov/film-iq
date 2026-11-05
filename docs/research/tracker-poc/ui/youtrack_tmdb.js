@@ -1,4 +1,5 @@
 import { field } from "./youtrack_filters.js";
+import { runRemaining } from "./live_batch.js";
 
 export class LiveRateLimited extends Error {}
 export const LIVE_BATCH_LIMIT = 30;
@@ -78,11 +79,15 @@ export function mergeLiveResult(previous, outcome) {
     : {...(sameId ? previous : {}), ...outcome};
 }
 
-export function eligibleLiveFilms(films, results) {
+export function remainingLiveFilms(films, results) {
   return films.filter((film) => {
     const id = suppliedTmdbId(film), result = results[film.idReadable];
     return id && (!result || (result.requestedId ?? result.data?.tmdb_id) !== id);
-  }).slice(0, LIVE_BATCH_LIMIT);
+  });
+}
+
+export function eligibleLiveFilms(films, results) {
+  return remainingLiveFilms(films, results).slice(0, LIVE_BATCH_LIMIT);
 }
 
 export async function runLiveBatch(host, films, active, onResult) {
@@ -104,6 +109,10 @@ export async function runLiveBatch(host, films, active, onResult) {
     }
   }
   return {succeeded, failed, rateLimited, cancelled: !active()};
+}
+
+export function runRemainingLive(host, films, active, onResult) {
+  return runRemaining(films, (chunk, report) => runLiveBatch(host, chunk, active, report), active, onResult);
 }
 
 export async function readLiveMetadata(host, film) {
