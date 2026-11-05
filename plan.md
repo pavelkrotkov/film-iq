@@ -2629,3 +2629,33 @@ journey also passes. All 14 changed Python modules, including migration/version
 fixtures and workflow helpers, have CC≤8 and MI≥50 (minimum MI 50.426156).
 Bot review, independent exact-head Standards/Spec review and verified CI precede
 merge; live activation and user satisfaction are not claimed by these checks.
+
+### UI4 private read-only launch — 2026-11-04
+
+Related #102 and UI epic #98. The merged browse implementation at `e570dc1`
+is running from the attached project through native UI and SSH-tunnel jobs,
+with a dedicated private tailnet HTTPS route. Both backend listeners bind only
+loopback; existing Movary and other Serve routes remain intact. No project
+code/data was copied to the remote proxy host. Private installation configuration,
+logs, browser profiles, screenshots and operational receipts stay in ignored
+project-local cache; the reusable guide uses configured paths and origin.
+
+The existing complete read-only Movary refresh/export operation succeeded and
+its absent daily-job registration was restored from the original project-local
+plist. The refreshed snapshot preserves every Plex-imported latest watch date.
+No personal-state write, production-provider request or B4-job change occurred.
+The evidence database remains schema11; no local-disposition migration has run.
+
+Actual HTTPS/browser checks exercised populated browse/detail, original evidence
+links, published rank versus unranked selection, original-language title and
+director search, preservation/watched filters, empty results, not-found response,
+visible keyboard skip navigation and source/access uncertainty. Desktop width
+1440 and DevTools mobile width390 both fit without horizontal overflow. The
+configured API token is absent from browse/detail HTML; responses use no-store.
+These checks establish observed behavior, not user satisfaction.
+
+Final UI4 acceptance still requires merged local dispositions and Movary controls,
+pre-migration backup/restore, integrated action-preview/local-state/restart checks,
+full validation and independent reviews. Native jobs supervise process restarts
+inside the current GUI session. The Mac must remain awake and logged in; direct
+project-path registration is not a claim of automatic login/reboot startup.
