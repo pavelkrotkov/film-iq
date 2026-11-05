@@ -96,7 +96,9 @@ def safe_poster(value: object) -> str | None:
     return None
 
 
-def app(config: Config, load_allowlist: Callable[[], object], reader: Callable):
+def app(
+    config: Config, load_allowlist: Callable[[], object], reader: Callable, catalog_reader=None
+):
     """The reader is injected so tests can never accidentally use live fetch."""
 
     def application(environ, start):
@@ -119,17 +121,25 @@ def app(config: Config, load_allowlist: Callable[[], object], reader: Callable):
             or not hmac.compare_digest(auth, "Bearer " + config.bridge_token)
         ):
             return send("401 Unauthorized", {"error": "Unauthorized"})
-        if environ.get("REQUEST_METHOD") != "POST" or environ.get("PATH_INFO") != "/metadata":
+        path = environ.get("PATH_INFO")
+        if environ.get("REQUEST_METHOD") != "POST" or path not in {"/metadata", "/catalog"}:
             return send("404 Not Found", {"error": "Not found"})
         try:
             length = int(environ.get("CONTENT_LENGTH") or 0)
-            if not 0 < length <= 128:
+            if not 0 < length <= 2048:
                 raise ValueError("Invalid request")
             value = json.loads(environ["wsgi.input"].read(length))
-            if not isinstance(value, dict) or set(value) != {"tmdb_id"}:
+            expected = {"tmdb_id", "title"} if path == "/catalog" else {"tmdb_id"}
+            if not isinstance(value, dict) or set(value) != expected:
                 raise ValueError("Invalid request")
             ident = value["tmdb_id"]
             if type(ident) is not int or not 0 < ident <= 2147483647:
+                raise ValueError("Invalid request")
+            if path == "/catalog" and (
+                not isinstance(value["title"], str)
+                or not value["title"].strip()
+                or len(value["title"]) > 500
+            ):
                 raise ValueError("Invalid request")
         except (ValueError, UnicodeDecodeError):
             return send("400 Bad Request", {"error": "Invalid request"})
@@ -139,6 +149,14 @@ def app(config: Config, load_allowlist: Callable[[], object], reader: Callable):
             return send("503 Service Unavailable", {"error": "Approval configuration unavailable"})
         if ident not in allowed:
             return send("403 Forbidden", {"error": "Film not approved"})
+        if path == "/catalog":
+            try:
+                facts = catalog_reader(ident, value["title"]) if catalog_reader else None
+            except (OSError, ValueError, TypeError, KeyError):
+                return send("503 Service Unavailable", {"error": "Reviewed catalog unavailable"})
+            return send(
+                "200 OK", {"status": "available", "film": facts} if facts else {"status": "unknown"}
+            )
         try:
             movie = reader(ident)
             if type(movie.tmdb_id) is not int or movie.tmdb_id != ident:
@@ -164,6 +182,15 @@ def main():
 
     try:
         config = config_from_env(os.environ)
+        catalog = os.environ.get("FILMIQ_REVIEWED_CATALOG")
+        catalog_path = Path(catalog) if catalog and Path(catalog).is_absolute() else None
+        if catalog_path:
+            from reviewed_catalog import catalog_facts
+
+            def read_reviewed(ident, title):
+                return catalog_facts(catalog_path, ident, title)
+        else:
+            read_reviewed = None
 
         def load():
             return decode_allowlist(ALLOWLIST_PATH.read_text(encoding="utf-8"))
@@ -172,7 +199,10 @@ def main():
     except (OSError, ValueError, TypeError):
         raise SystemExit("Live bridge configuration unavailable") from None
     with make_server(
-        "127.0.0.1", 15178, app(config, load, read_movie), handler_class=QuietHandler
+        "127.0.0.1",
+        15178,
+        app(config, load, read_movie, read_reviewed),
+        handler_class=QuietHandler,
     ) as server:
         server.serve_forever()
 

@@ -18,8 +18,10 @@ from tmdb_readonly import TMDbRateLimited, read_movie
 TOKEN = "fixture-token-" + "x" * 32
 
 
-def invoke(application, ident, token=TOKEN):
-    payload = json.dumps({"tmdb_id": ident}).encode()
+def invoke(application, ident, token=TOKEN, *, path="/metadata", title=None):
+    payload = json.dumps(
+        {"tmdb_id": ident, **({"title": title} if path == "/catalog" else {})}
+    ).encode()
     result = {}
 
     def start(status, headers):
@@ -30,7 +32,7 @@ def invoke(application, ident, token=TOKEN):
             application(
                 {
                     "REQUEST_METHOD": "POST",
-                    "PATH_INFO": "/metadata",
+                    "PATH_INFO": path,
                     "CONTENT_LENGTH": str(len(payload)),
                     "HTTP_AUTHORIZATION": "Bearer " + token,
                     "wsgi.input": BytesIO(payload),
@@ -124,6 +126,30 @@ def check():
     assert invoke(application, 101, "incorrect")["status"] == "401 Unauthorized"
     assert invoke(application, 999)["status"] == "403 Forbidden"
     assert calls == []
+
+    catalog_calls = []
+
+    def catalog_reader(ident, title):
+        catalog_calls.append((ident, title))
+        return {"tmdb_id": ident, "title": "Fictional"} if title == "Fictional" else None
+
+    catalog_app = app(config_from_env(env), lambda: policy, reader, catalog_reader)
+    assert (
+        invoke(catalog_app, 101, "incorrect", path="/catalog", title="Fictional")["status"]
+        == "401 Unauthorized"
+    )
+    assert invoke(catalog_app, 999, path="/catalog", title="Fictional")["status"] == "403 Forbidden"
+    assert invoke(catalog_app, 101, path="/catalog", title=" ")["status"] == "400 Bad Request"
+    assert catalog_calls == [] and calls == []
+    result = invoke(catalog_app, 101, path="/catalog", title="Fictional")
+    assert result["status"] == "200 OK" and result["body"]["status"] == "available"
+    assert result["body"]["film"]["tmdb_id"] == 101 and calls == []
+    assert invoke(catalog_app, 101, path="/catalog", title="Different")["body"] == {
+        "status": "unknown"
+    }
+    assert invoke(application, 101, path="/catalog", title="Fictional")["body"] == {
+        "status": "unknown"
+    }
 
     def missing_allowlist():
         raise FileNotFoundError("fixture path must not leak")

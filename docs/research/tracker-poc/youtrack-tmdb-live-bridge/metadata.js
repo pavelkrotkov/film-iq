@@ -34,6 +34,28 @@ exports.httpHandler = {
         return reply(ctx, 200, data);
       } catch (_) { return reply(ctx, 502, {error: 'TMDB unavailable'}); }
     }
+  }, {
+    scope: 'issue', method: 'GET', path: '/catalog',
+    handle: function(ctx) {
+      const issue = ctx.issue, user = ctx.currentUser;
+      if (!user || user.login === 'guest' || user.isBanned) return reply(ctx, 401, {error: 'Sign-in required'});
+      if (!issue || !issue.project || !['FILMPOC', 'FILMREAL'].includes(issue.project.key) || !issue.isReported || !issue.isVisibleTo(user)) {
+        return reply(ctx, 404, {error: 'Film unavailable'});
+      }
+      const id = issue.fields['FilmIQ TMDB ID'], title = issue.summary;
+      if (!Number.isSafeInteger(id) || id <= 0 || id > 2147483647 || typeof title !== 'string' || !title.trim() || title.length > 500) return reply(ctx, 400, {error: 'Film identity unavailable'});
+      try {
+        const connection = new http.Connection(URL);
+        connection.bearerAuth(ctx.settings.bridgeToken);
+        connection.addHeader('Content-Type', 'application/json');
+        const response = connection.postSync('/catalog', null, JSON.stringify({tmdb_id: id, title}));
+        if (response.code === 403) return reply(ctx, 403, {error: 'Film not approved'});
+        if (response.code !== 200) return reply(ctx, 503, {error: 'Reviewed catalog unavailable'});
+        const data = response.json();
+        if (!data || !['unknown', 'available'].includes(data.status) || (data.status === 'available' && (!data.film || data.film.tmdb_id !== id))) return reply(ctx, 503, {error: 'Reviewed catalog unavailable'});
+        return reply(ctx, 200, data);
+      } catch (_) { return reply(ctx, 503, {error: 'Reviewed catalog unavailable'}); }
+    }
   }],
   requirements: { filmId: { type: entities.Field.integerType, name: 'FilmIQ TMDB ID' } }
 };
