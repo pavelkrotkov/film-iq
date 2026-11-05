@@ -593,7 +593,12 @@ and offer an explicit project-wide lookup. The control states the film count,
 maximum TMDB requests and inclusion of hidden and archived films; it uses the
 same approval checks and stop/cancel behavior. Archived cards remain hidden by
 default. Synthetic checks cover hidden matches and unknown freshness; this
-does not persist the returned metadata.
+does not persist the returned metadata. An isolated Kaneo browser check with
+fictional, locally mocked metadata verified the notice, request count, hidden
+match and archived-card behavior. An isolated YouTrack browser check using
+trusted keyboard activation and mocked metadata likewise verified the notice,
+request bound and hidden match; its archive control remained unchecked. These
+browser checks did not contact TMDB or exercise real film data.
 YouTrack also offers an explicit retry for failed films in the current project,
 including those hidden by filters. A fictional browser test confirmed a retry
 preserved an earlier success; no automatic retry is made.
