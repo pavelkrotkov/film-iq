@@ -230,6 +230,12 @@ When catalog facts are shown, the shared credits component requests TMDB's
 generic logo without a film referrer; it does not include a film identifier in
 that request. The fictional browser checks blocked that external logo request.
 
+On 2026-11-05, `catalog_coverage.py` checked all 130 approved records through
+both authenticated local catalog endpoints. Each returned facts for the same
+95 films, with zero availability disagreements. It prints aggregate counts only,
+makes no provider requests and changes no records. This verifies endpoint
+coverage, not real-film browser rendering or identity independently.
+
 The pinned Kaneo `2.49.0` image and PostgreSQL `16.15` ran locally on
 2026-11-05. The running `/api/openapi` document was inspected. In a private
 synthetic project, `kaneo_smoke.py` created a task with a synthetic identifier,
