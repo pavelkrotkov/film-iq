@@ -91,6 +91,21 @@ def run(base: str, project: str, cookie_file: Path):
     assert record["status"] == "in-progress"
     assert values[score] == "8" and json.loads(values[streaming]) == ["Netflix"]
     assert matching_tasks(opener, base, project, identifier) == [task]
+    comments = call(opener, base, f"/comment/{task}")
+    marker = "Synthetic POC comment"
+    if not any(row["content"] == marker for row in comments):
+        call(opener, base, f"/comment/{task}", {"content": marker})
+    assert any(row["content"] == marker for row in call(opener, base, f"/comment/{task}"))
+    call(opener, base, f"/task/status/{task}", {"status": "archived"}, "PUT")
+    try:
+        assert call(opener, base, f"/task/{task}")["status"] == "archived"
+        assert call(opener, base, f"/task/{task}")["description"] == "Updated synthetic synopsis."
+        archived = {
+            row["fieldId"]: row["value"] for row in call(opener, base, f"/custom-field/task/{task}")
+        }
+        assert archived[score] == "8" and json.loads(archived[streaming]) == ["Netflix"]
+    finally:
+        call(opener, base, f"/task/status/{task}", {"status": "in-progress"}, "PUT")
     try:
         call(
             opener,

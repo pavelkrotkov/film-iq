@@ -24,6 +24,8 @@ def generate(count: int) -> dict:
                 "title": f"Fictional Film {index:04d}",
                 "release_year": 1950 + index % 75,
                 "synopsis": f"Synthetic synopsis for fixture {index}.",
+                "critic_score": 40 + index % 56,
+                "critic_summary": f"Synthetic critic summary for fixture {index}.",
                 "genres": [genres[index % len(genres)]],
                 "streaming_providers": [provider] if provider else [],
                 "rental_providers": ["Example Rental"] if index % 3 == 0 else [],

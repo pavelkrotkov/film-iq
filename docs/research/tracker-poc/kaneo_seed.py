@@ -1,7 +1,8 @@
 """Seed fictional films in a dedicated Kaneo test project, never TMDB.
 
-Reruns skip existing fixture IDs. This does not store per-user preferences and
-is not safe for simultaneous seeders; stop if duplicate IDs are found.
+Reruns reuse existing fixture IDs and fill missing synthetic critic fields.
+This does not store per-user preferences and is not safe for simultaneous
+seeders; stop if duplicate IDs are found.
 """
 
 import argparse
@@ -22,6 +23,8 @@ def seed(base: str, project: str, cookie_file: Path, count: int):
     identity = ensure_field(opener, base, project, "POC Fixture ID", "text")
     year = ensure_field(opener, base, project, "POC Year", "number")
     genre = ensure_field(opener, base, project, "POC Genre", "text")
+    critic = ensure_field(opener, base, project, "POC Critic Score", "number")
+    summary = ensure_field(opener, base, project, "POC Critic Summary", "text")
     providers = ensure_field(
         opener,
         base,
@@ -34,7 +37,8 @@ def seed(base: str, project: str, cookie_file: Path, count: int):
     ids = [row["value"] for row in values if row["fieldId"] == identity]
     if len(ids) != len(set(ids)):
         raise ValueError("duplicate fixture IDs; refusing to seed")
-    present = set(ids)
+    present = {row["value"]: row["taskId"] for row in values if row["fieldId"] == identity}
+    populated = {(row["taskId"], row["fieldId"]) for row in values if row["value"]}
     states = {
         "Discovery": "to-do",
         "Evaluation": "in-progress",
@@ -43,14 +47,31 @@ def seed(base: str, project: str, cookie_file: Path, count: int):
     }
     started = time.monotonic()
     added = 0
+    updated = 0
     for film in generate(count)["films"]:
         if film["fixture_id"] in present:
+            task = present[film["fixture_id"]]
+            for field, value in (
+                (critic, str(film["critic_score"])),
+                (summary, film["critic_summary"]),
+            ):
+                if (task, field) not in populated:
+                    call(
+                        opener,
+                        base,
+                        "/custom-field/value",
+                        {"taskId": task, "fieldId": field, "value": value},
+                        "PUT",
+                    )
+                    updated += 1
             continue
         fields = [
             {"fieldId": identity, "value": film["fixture_id"]},
             {"fieldId": year, "value": str(film["release_year"])},
             {"fieldId": genre, "value": film["genres"][0]},
             {"fieldId": providers, "value": json.dumps(film["streaming_providers"])},
+            {"fieldId": critic, "value": str(film["critic_score"])},
+            {"fieldId": summary, "value": film["critic_summary"]},
         ]
         call(
             opener,
@@ -65,7 +86,9 @@ def seed(base: str, project: str, cookie_file: Path, count: int):
             },
         )
         added += 1
-    print(f"Created {added} of {count} fixtures in {time.monotonic() - started:.2f}s")
+    print(
+        f"Created {added} fixtures and filled {updated} missing critic fields in {time.monotonic() - started:.2f}s"
+    )
 
 
 if __name__ == "__main__":

@@ -80,7 +80,9 @@ multiselect, and read the results back. A nonnumeric update returned HTTP 400;
 an unauthenticated description update was rejected, and the prior description
 remained intact. A second run reused the same fixture. A separate synthetic
 viewer could read the film but received HTTP 403 when editing it; the existing
-description remained unchanged. Concurrent imports have not been tested.
+description remained unchanged. The same test archived and restored the record
+without losing its synopsis or custom fields, and created/read a synthetic
+comment. Concurrent imports have not been tested.
 
 The 30-record seed added 29 tasks after the smoke test created the first. The
 1,000-record seed added 970 tasks in 17.71 seconds, and a repeat added zero.
@@ -102,9 +104,9 @@ column change through the API. The server accepted authenticated requests with
 the UI origin and returned the correct CORS headers. **The actual browser has
 not been tested**: the initial Mac lock and the later YouTrack setup handoff
 prevented it. The UI uses fixture IDs,
-not TMDB IDs, and does not implement real posters, reviews, comments, live TMDB
-enrichment, or real-film creation. Preference controls are wired to the bridge
-described below, but have not yet been verified in a browser.
+not TMDB IDs, and does not implement real posters, reviews, live TMDB enrichment,
+or real-film creation. Synthetic add, archive, comment and preference controls
+are wired to the APIs but have not yet been verified in a browser.
 Its filters and rendering at 1,000 films have not been measured. Do not use it
 for personal data or represent it as the completed Kaneo POC.
 
@@ -114,6 +116,8 @@ are task-wide custom fields. `to-do`, `in-progress`, `in-review`, and `done`
 are used as approximate fixture columns; `done` is not Kaneo's archive feature.
 The UI labels missing provider data as unknown. The generated preferences,
 rentals and checked timestamps have not been persisted for the full seeded dataset.
+The first 30 films also have synthetic critic scores and summaries; reseeding
+fills only missing critic fields and preserved the existing smoke-test score.
 
 ### Synthetic per-user preference bridge
 

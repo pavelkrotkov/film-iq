@@ -12,6 +12,7 @@ const states = {
   "in-progress": "Evaluation",
   "in-review": "Watchlist",
   done: "Done",
+  archived: "Archived",
 };
 
 async function request(path, method = "GET", body) {
@@ -98,6 +99,9 @@ function App() {
   const [description, setDescription] = useState(""),
     [status, setStatus] = useState(""),
     [detailReady, setDetailReady] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
+  const [comments, setComments] = useState(null),
+    [newComment, setNewComment] = useState("");
   async function refresh() {
     setBusy(true);
     setError("");
@@ -140,6 +144,7 @@ function App() {
   useEffect(() => {
     let active = true;
     setDetailReady(false);
+    setComments(null);
     if (film)
       request(`/task/${encodeURIComponent(film.id)}`)
         .then((detail) => {
@@ -155,6 +160,14 @@ function App() {
         })
         .catch((e) => {
           if (active) setError(e.message);
+        });
+    if (film)
+      request(`/comment/${encodeURIComponent(film.id)}`)
+        .then((rows) => {
+          if (active) setComments(rows);
+        })
+        .catch((e) => {
+          if (active) setError(`Comments unavailable: ${e.message}`);
         });
     return () => {
       active = false;
@@ -229,6 +242,51 @@ function App() {
       setBusy(false);
     }
   }
+  async function addFilm(event) {
+    event.preventDefault();
+    if (!newTitle.trim()) return;
+    setBusy(true);
+    setError("");
+    try {
+      const created = await request(
+        `/task/${encodeURIComponent(project)}`,
+        "POST",
+        {
+          title: newTitle.trim(),
+          description: "",
+          priority: "no-priority",
+          status: "to-do",
+        },
+      );
+      setNewTitle("");
+      await refresh();
+      location.hash = `film=${encodeURIComponent(created.id)}`;
+    } catch (e) {
+      setError(
+        `Creation may have failed; reload before retrying: ${e.message}`,
+      );
+      setBusy(false);
+    }
+  }
+  async function addComment(event) {
+    event.preventDefault();
+    if (!newComment.trim()) return;
+    setBusy(true);
+    setError("");
+    try {
+      await request(`/comment/${encodeURIComponent(film.id)}`, "POST", {
+        content: newComment.trim(),
+      });
+      setNewComment("");
+      setComments(await request(`/comment/${encodeURIComponent(film.id)}`));
+    } catch (e) {
+      setError(
+        `Comment may have been saved; reload before retrying: ${e.message}`,
+      );
+    } finally {
+      setBusy(false);
+    }
+  }
   function choose(event) {
     event.preventDefault();
     const value = new FormData(event.currentTarget).get("project").trim();
@@ -292,6 +350,21 @@ function App() {
           Synthetic data only. Preferences use a separate local POC store; they
           do not change Movary.
         </p>
+        {project && (
+          <form className="project" onSubmit={addFilm}>
+            <label>
+              Add a synthetic film
+              <input
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+                maxLength="200"
+                placeholder="Film title"
+                required
+              />
+            </label>
+            <button disabled={busy}>Add film</button>
+          </form>
+        )}
         {error && (
           <p className="error" role="alert">
             {error}
@@ -424,6 +497,12 @@ function App() {
                 <p>
                   Critic score: {film.fields["POC Critic Score"] || "Unknown"}
                 </p>
+                {film.fields["POC Critic Summary"] && (
+                  <p>
+                    Synthetic critic summary:{" "}
+                    {film.fields["POC Critic Summary"]}
+                  </p>
+                )}
                 {syntheticAvailability(film) && (
                   <p>
                     Synthetic rentals:{" "}
@@ -433,6 +512,36 @@ function App() {
                     {syntheticAvailability(film).checked_at || "Unknown"}.
                   </p>
                 )}
+                <section>
+                  <h3>Comments</h3>
+                  {comments === null ? (
+                    <p>Comments unavailable or loading.</p>
+                  ) : comments.length ? (
+                    comments.map((item) => (
+                      <p key={item.id}>
+                        <strong>{item.user?.name || "Unknown author"}:</strong>{" "}
+                        {item.content}
+                      </p>
+                    ))
+                  ) : (
+                    <p>No comments.</p>
+                  )}
+                  <form onSubmit={addComment}>
+                    <label>
+                      Add a synthetic comment
+                      <textarea
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                        rows="3"
+                        maxLength="10000"
+                        required
+                      />
+                    </label>
+                    <button disabled={busy || comments === null}>
+                      Add comment
+                    </button>
+                  </form>
+                </section>
               </div>
             </div>
           </section>
