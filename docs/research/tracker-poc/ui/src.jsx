@@ -12,7 +12,7 @@ import { clearSavedDraft, currentComments, setCommentDraft } from "./comment_dra
 import { emptyPreference, markPreferenceSaved, mergeFilmDraft, syncPreferenceDraft } from "./preference_draft.js";
 import { missingLinkedFilm, unavailableFilterSources } from "./availability_state.js";
 import { accessibleProjects, projectUrl } from "./project_picker.js";
-import { confirmNavigation } from "./navigation_guard.js";
+import { confirmNavigation, guardSameDocumentNavigation, hasCommentDrafts, sameTabClick, selectedFromUrl } from "./navigation_guard.js";
 import { readDirectReviews, reviewsMatchTitle, safeReviewUrl } from "./direct_reviews.js";
 import { createFilm, CreatedFilmUnverified, identityField, matchedLive } from "./kaneo_identity.js";
 import { TmdbCredits } from "./tmdb_credits.jsx";
@@ -41,6 +41,7 @@ function SourceEvidence({ film }) {
     {film.fields["POC Identity Provenance"] && <p>Identity provenance: {film.fields["POC Identity Provenance"]}</p>}
     <p>Imported provenance describes the original source assertion. If a title is edited, revalidate it against the saved external identity and tracker history; editing does not update or independently verify provenance.</p>
     {film.fields["POC Source Year"] && <p>Source-listed year: {film.fields["POC Source Year"]} (not independently verified).</p>}
+    {film.fields["POC Source Director"] && <p>Source-listed director: {film.fields["POC Source Director"]} (not independently verified).</p>}
     {links.length ? <ul>{links.map((item, index) => {
       let url;
       try { const parsed = new URL(item?.url); if ((parsed.protocol === "https:" || parsed.protocol === "http:") && !parsed.username && !parsed.password) url = parsed.href; } catch { /* Invalid source links stay unavailable. */ }
@@ -170,6 +171,8 @@ function App() {
     [commentDrafts, setCommentDrafts] = useState({});
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
+  const detailDirty = useRef(false), preferenceDirty = useRef(false), skipHashPrompt = useRef(false);
+  preferenceDirty.current = preferenceDraft.dirty && preferenceDraft.filmId === selected;
   const [liveResults, setLiveResults] = useState({}),
     [batch, setBatch] = useState(null),
     [batchSummary, setBatchSummary] = useState("");
@@ -219,14 +222,34 @@ function App() {
     if (project) refresh();
   }, [project]);
   useEffect(() => {
-    const listener = () => setSelected(selectedId());
+    const confirm = (message) => window.confirm(message);
+    const navigate = (event) => {
+      if (skipHashPrompt.current) { skipHashPrompt.current = false; return; }
+      guardSameDocumentNavigation(event, selectedRef.current, detailDirty.current, preferenceDirty.current, confirm);
+    };
+    const listener = (event) => {
+      const next = selectedId();
+      if (!window.navigation && next !== selectedRef.current && !skipHashPrompt.current &&
+          !confirmNavigation(detailDirty.current, preferenceDirty.current, confirm)) {
+        history.replaceState(history.state, "", event.oldURL);
+        return;
+      }
+      skipHashPrompt.current = false;
+      setSelected(next);
+    };
+    window.navigation?.addEventListener("navigate", navigate);
     window.addEventListener("hashchange", listener);
-    return () => window.removeEventListener("hashchange", listener);
+    return () => { window.navigation?.removeEventListener("navigate", navigate); window.removeEventListener("hashchange", listener); };
   }, []);
+  useEffect(() => {
+    if (!detailDirty.current && !preferenceDirty.current && !hasCommentDrafts(commentDrafts) && !newTitle.trim() && !newTmdb.trim()) return;
+    const listener = (event) => { event.preventDefault(); event.returnValue = ""; };
+    window.addEventListener("beforeunload", listener);
+    return () => window.removeEventListener("beforeunload", listener);
+  });
   useEffect(() => () => batchController.current?.abort(), []);
   const film = films.find((item) => item.id === selected);
   const preference = preferenceDraft.filmId === film?.id ? preferenceDraft.value : emptyPreference;
-  const detailDirty = useRef(false);
   function setPreference(value) {
     setPreferenceDraft({filmId: film.id, value, dirty: true});
   }
@@ -468,12 +491,14 @@ function App() {
     return confirmNavigation(detailDirty.current, preferenceDraft.dirty && preferenceDraft.filmId === selected, (message) => window.confirm(message));
   }
   function guardNavigation(event) {
+    if (!sameTabClick(event)) return;
     if (!mayNavigate()) event.preventDefault();
+    else if (selectedFromUrl(event.currentTarget.href) !== selectedRef.current) skipHashPrompt.current = true;
   }
   function choose(event) {
     event.preventDefault();
     const value = chosenProject;
-    if (!value || !mayNavigate()) return;
+    if (!value || value === project) return;
     location.href = projectUrl(location.href, value);
   }
   return (
@@ -595,6 +620,7 @@ function App() {
                     {liveMovie && (
                       <div>
                         <p>TMDB: {liveMovie.title} ({liveMovie.year || "year unknown"})</p>
+                        {liveMovie.original_title && <p>TMDB original title: {liveMovie.original_title}</p>}
                         {liveMovie.synopsis && <p>{liveMovie.synopsis}</p>}
                         <p>Genres: {liveMovie.genres?.join(", ") || "Unknown"}. Directors: {liveMovie.directors?.join(", ") || "Unknown"}.</p>
                         {safeImdbTitleUrl(liveMovie.imdb_title_url) ? <p><a href={safeImdbTitleUrl(liveMovie.imdb_title_url)} target="_blank" rel="noreferrer">IMDb title page ↗</a> · IMDb ID supplied by TMDB; match not independently verified. IMDb ratings are audience ratings.</p> : <p>IMDb title link unknown; TMDB did not supply a usable ID.</p>}
@@ -606,7 +632,7 @@ function App() {
                     )}
                   </section>
                 )}
-                {film.fields["POC Evidence"] && <SourceEvidence film={film} />}
+                {(film.fields["POC Evidence"] || film.fields["POC Source Director"] || film.fields["POC Source Year"] || film.fields["POC Identity Provenance"]) && <SourceEvidence film={film} />}
                 <DirectReviews film={film} />
                 {mdbId && <section>
                   <h3>Ratings from MDBList</h3>

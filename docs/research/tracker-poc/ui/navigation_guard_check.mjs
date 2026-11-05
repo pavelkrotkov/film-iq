@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { confirmNavigation } from "./navigation_guard.js";
+import { confirmNavigation, guardSameDocumentNavigation, hasCommentDrafts, sameTabClick, selectedFromUrl } from "./navigation_guard.js";
 let calls = 0;
 const cancel = () => { calls++; return false; };
 const accept = () => { calls++; return true; };
@@ -9,4 +9,20 @@ assert.equal(confirmNavigation(true, false, cancel), false, "cancel preserves a 
 assert.equal(confirmNavigation(false, true, cancel), false, "cancel preserves a preference draft");
 assert.equal(confirmNavigation(true, true, accept), true, "accept allows navigation");
 assert.equal(calls, 3);
-console.log("Kaneo in-app navigation confirmation checks passed");
+assert.equal(selectedFromUrl("http://localhost:15174/?project=fictional#film=fake-1"), "fake-1");
+assert.equal(sameTabClick({button:0}), true);
+assert.equal(sameTabClick({button:0,metaKey:true}), false, "opening a new tab must not bypass a later draft guard");
+assert.equal(sameTabClick({button:1}), false);
+assert.equal(hasCommentDrafts({a:" \n",b:""}), false);
+assert.equal(hasCommentDrafts({a:" ",b:"draft"}), true);
+let prevented = 0;
+const event = {navigationType:"traverse", cancelable:true, destination:{sameDocument:true,url:"http://localhost:15174/?project=fictional"},preventDefault(){prevented++;}};
+guardSameDocumentNavigation(event, "fake-1", true, false, cancel);
+assert.equal(prevented, 1, "cancel keeps the current history entry");
+guardSameDocumentNavigation(event, "fake-1", false, true, accept);
+assert.equal(prevented, 1, "accept lets browser history move");
+guardSameDocumentNavigation({...event, destination:{...event.destination,sameDocument:false}}, "fake-1", true, false, cancel);
+assert.equal(prevented, 1, "cross-document navigation is handled by beforeunload");
+guardSameDocumentNavigation({...event, navigationType:"push"}, "fake-1", true, false, cancel);
+assert.equal(prevented, 2, "a different pasted film URL must not discard a draft");
+console.log("Kaneo navigation confirmation checks passed");
