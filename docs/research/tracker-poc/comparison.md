@@ -75,7 +75,10 @@ responses; 21 provider results were unknown. An isolated Kaneo browser check
 confirmed a matching film's poster loaded and provider information appeared;
 another returned title differed, so the interface withheld that artwork and
 availability. The new YouTrack widget can request live data on demand, but its browser integration and image caching remain
-unverified. The optional MDBList endpoint returned HTTP 403, so no live MDBList enrichment
+unverified for real films. A trusted-keyboard browser check reached the actual
+fictional fixture handler and rendered its title and synopsis; the provider
+and poster were locally mocked. The fixture's HTTP 429 also produced a visible
+rate-limit message and prevented another request. The optional MDBList endpoint returned HTTP 403, so no live MDBList enrichment
 is claimed. Source-list links remain labeled by their actual source and lineage;
 they are not automatically independent critic reviews.
 

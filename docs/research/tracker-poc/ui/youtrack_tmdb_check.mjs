@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { attachMatchedLive, eligibleLiveFilms, remainingLiveFilms, LiveRateLimited, liveMetadataMatches, mergeLiveMetadata, mergeLiveResult, readLiveMetadata, runLiveBatch, runRemainingLive, safePosterUrl, sameNormalizedTitle, suppliedTmdbId } from "./youtrack_tmdb.js";
+import { attachMatchedLive, eligibleLiveFilms, failedLiveFilms, remainingLiveFilms, LiveRateLimited, liveMetadataMatches, mergeLiveMetadata, mergeLiveResult, readLiveMetadata, runLiveBatch, runRemainingLive, safePosterUrl, sameNormalizedTitle, suppliedTmdbId } from "./youtrack_tmdb.js";
 import { filterYoutrackFilms, providerFreshness, providerObservation } from "./youtrack_filters.js";
 
 const film = {idReadable: "FILMPOC-2", customFields: [{name: "FilmIQ TMDB ID", value: 123}]};
@@ -113,6 +113,21 @@ assert.equal(normalCalls, 30, "each explicit batch must stop at 30 films");
 const manyFilms = Array.from({length: 65}, (_, index) => ({idReadable: `FILMPOC-${index + 1}`, customFields: [{name: "FilmIQ TMDB ID", value: 101 + index}]}));
 const remaining = remainingLiveFilms(manyFilms, {"FILMPOC-1": {requestedId: 101, error: "failed"}});
 assert.equal(remaining.length, 64);
+const retryResults = {"FILMPOC-1": {requestedId: 101, error: "failed"}, "FILMPOC-2": {requestedId: 102, data: {...raw, tmdb_id: 102}}, "FILMPOC-3": {requestedId: 999, error: "stale ID"}};
+const retryFilms = failedLiveFilms(manyFilms, retryResults);
+assert.deepEqual(retryFilms.map(item => item.idReadable), ["FILMPOC-1"], "retry includes only failures for the current ID");
+assert.deepEqual(filterYoutrackFilms(retryFilms.map(item => ({...item, summary: "Fictional"})), {...options, provider: "Fictional Stream", genre: "", freshness: ""}), [], "the failed film may be hidden by the provider filter");
+const savedSuccess = retryResults["FILMPOC-2"];
+const retryRequests = [];
+const retryResult = await runRemainingLive({fetchYouTrack: async path => {
+  retryRequests.push(path);
+  return {...raw, tmdb_id: 101};
+}}, retryFilms, () => true, (item, outcome) => {retryResults[item.idReadable] = mergeLiveResult(retryResults[item.idReadable], outcome);});
+assert.equal(retryRequests.length, 1, "retry requires an explicit run and calls only failed records");
+assert.equal(retryResult.succeeded, 1);
+assert.equal(retryResults["FILMPOC-1"].error, null);
+assert.equal(retryResults["FILMPOC-2"], savedSuccess, "unrelated successful results are preserved");
+assert.deepEqual(failedLiveFilms(manyFilms, retryResults), [], "successful retry leaves no current-ID failure");
 let requests = 0, concurrent = 0, maxConcurrent = 0;
 const progress = [];
 const complete = await runRemainingLive({fetchYouTrack: async (path) => {

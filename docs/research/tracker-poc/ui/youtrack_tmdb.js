@@ -90,6 +90,13 @@ export function eligibleLiveFilms(films, results) {
   return remainingLiveFilms(films, results).slice(0, LIVE_BATCH_LIMIT);
 }
 
+export function failedLiveFilms(films, results) {
+  return films.filter((film) => {
+    const id = suppliedTmdbId(film), result = results[film.idReadable];
+    return id && result?.error && (result.requestedId ?? result.data?.tmdb_id) === id;
+  });
+}
+
 export async function runLiveBatch(host, films, active, onResult) {
   let succeeded = 0, failed = 0, rateLimited = false;
   for (const film of films.slice(0, LIVE_BATCH_LIMIT)) {

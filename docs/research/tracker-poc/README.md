@@ -570,6 +570,17 @@ discarded. Fictional browser checks exercised progress and cancellation in both
 interfaces and resumed the YouTrack run; tests with more than 30 fixtures cover
 chunk boundaries and failures. The action does not save metadata or change the
 approved-ID list.
+YouTrack also offers an explicit retry for failed films in the current project,
+including those hidden by filters. A fictional browser test confirmed a retry
+preserved an earlier success; no automatic retry is made.
+
+An isolated YouTrack browser test activated a fictional metadata lookup with a
+trusted keyboard click. The main-menu widget reached the real local fixture app
+and displayed its fictional title and synopsis; provider data and poster bytes
+were substituted locally by the test. This verifies the fixture route and UI
+rendering, not a real-film lookup or the synthetic pointer path. A second
+trusted-keyboard check received a fixture 429, showed a rate-limit message and
+prevented a second request.
 
 The [comparison](comparison.md) includes provisional weighted scores and a
 conditional recommendation. The YouTrack live metadata and poster controls,
