@@ -92,7 +92,8 @@ An initial React UI builds and is served locally. It reads board pages and custo
 fields using the current Kaneo browser session; it can submit a synopsis or
 column change through the API. The server accepted authenticated requests with
 the UI origin and returned the correct CORS headers. **The actual browser has
-not been tested**: the Mac was locked during this run. The UI uses fixture IDs,
+not been tested**: the initial Mac lock and the later YouTrack setup handoff
+prevented it. The UI uses fixture IDs,
 not TMDB IDs, and does not implement real posters, reviews, comments, live TMDB
 enrichment, or real-film creation. Preference controls are wired to the bridge
 described below, but have not yet been verified in a browser.
@@ -218,8 +219,9 @@ React and esbuild are MIT-licensed. The UI includes no service API key.
 The pinned `2026.2.19728` server container starts and serves the initial
 configuration wizard at `http://localhost:18180/`. Database, configuration,
 logs and backup directories are bind-mounted under `.cache/tracker-poc/`.
-The wizard, app installation, API calls, workflows, UI and permissions have not
-been completed or tested. Follow JetBrains' [installation guide](https://www.jetbrains.com/help/youtrack/server/youtrack-docker-installation.html)
+The wizard reached administrator password setup and was handed to the user; app
+installation, API calls, workflows, UI and permissions have not been completed
+or tested. Follow JetBrains' [installation guide](https://www.jetbrains.com/help/youtrack/server/youtrack-docker-installation.html)
 to finish configuration and review the license; the initial wizard URL and
 one-time token are shown in the container logs. No YouTrack score is justified.
 
