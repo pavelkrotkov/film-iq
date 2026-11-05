@@ -77,8 +77,8 @@ Both film-detail pages can now also read limited facts from the existing
 reviewed catalog without copying it into either tracker or making a TMDB API
 request. The shared credits component requests TMDB's generic logo without a
 film referrer when catalog facts are displayed.
-A supplied-input check found 95 eligible title/ID matches among 130 films;
-both local endpoints returned facts for one accessible, approved film each.
+A collection-wide local check of all 130 approved records found that both
+tracker endpoints returned facts for the same 95 films, with no disagreements.
 Fictional browser checks verified the display and reload with mocked endpoint
 responses. Catalog expiry is enforced; synopsis, posters and providers remain
 outside this restart-safe read path. See [the POC README](README.md).
