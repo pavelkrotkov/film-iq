@@ -6,6 +6,7 @@ import {
   syntheticAvailability,
 } from "./film_filters.js";
 import { BATCH_LIMIT, chooseBatch, mergeResult, runBatch, tmdbId } from "./live_batch.js";
+import { fetchRatings } from "./mdblist_ui.js";
 
 const api = "http://localhost:15173/api";
 function ProviderBadges({ film }) {
@@ -147,6 +148,8 @@ function App() {
   const [liveResults, setLiveResults] = useState({}),
     [batch, setBatch] = useState(null),
     [batchSummary, setBatchSummary] = useState("");
+  const [mdbResults, setMdbResults] = useState({}),
+    [mdbPending, setMdbPending] = useState(false);
   const batchController = useRef(null);
   async function refresh() {
     setBusy(true);
@@ -189,10 +192,25 @@ function App() {
   const shownFilm = shownFilms.find((item) => item.id === selected);
   const liveMovie = film ? liveResults[film.id]?.data : null;
   const liveError = film ? liveResults[film.id]?.error : null;
+  const mdbId = film ? tmdbId(film) : null;
+  const mdbResult = mdbId ? mdbResults[mdbId] : null;
   const pending = chooseBatch(films, liveResults);
   const retries = chooseBatch(films, liveResults, true);
   const eligible = films.filter((item) => tmdbId(item)).length;
   const unattempted = films.filter((item) => tmdbId(item) && !liveResults[item.id]).length;
+  async function loadMdbRatings() {
+    if (!mdbId || mdbPending) return;
+    const id = mdbId;
+    setMdbPending(true);
+    try {
+      const ratings = await fetchRatings(id);
+      setMdbResults((current) => ({ ...current, [id]: { ratings, error: null } }));
+    } catch (error) {
+      setMdbResults((current) => ({ ...current, [id]: { ratings: null, error: error.message } }));
+    } finally {
+      setMdbPending(false);
+    }
+  }
   const genres = [
     ...new Set(shownFilms.flatMap((item) => [item.fields["POC Genre"], ...(item.live?.genres || [])]).filter(Boolean)),
   ].sort();
@@ -514,6 +532,23 @@ function App() {
                   </section>
                 )}
                 {film.fields["POC Evidence"] && <SourceEvidence film={film} />}
+                {mdbId && <section>
+                  <h3>Ratings from MDBList</h3>
+                  <p>Fetches one result on request. Data stays in this page and is not saved to the tracker.</p>
+                  <button type="button" onClick={loadMdbRatings} disabled={mdbPending}>
+                    {mdbPending ? "Fetching ratings…" : "Fetch or refresh ratings"}
+                  </button>
+                  {mdbResult?.error && <p role="alert">{mdbResult.error}</p>}
+                  {mdbResult?.ratings && (mdbResult.ratings.length ? <ul>
+                    {mdbResult.ratings.map((row, index) => <li key={`${row.source}-${index}`}>
+                      {row.source_name} · {row.kind === "unknown" ? "rating type unknown" : row.kind} ·{" "}
+                      {row.score_100 === null ? "Score unknown" : `${row.score_100}/100`}
+                      {row.votes !== null ? ` · ${row.votes} ratings` : ""}
+                      {row.url && <> · <a href={row.url} target="_blank" rel="noreferrer">Source link ↗</a></>}
+                    </li>)}
+                  </ul> : <p>Ratings unknown; none were returned.</p>)}
+                  {mdbResult?.ratings && <p>Source: MDBList. These are reported values; links and scores are not independently verified.</p>}
+                </section>}
                 <div className="badges">
                   <ProviderBadges film={shownFilm || film} />
                 </div>

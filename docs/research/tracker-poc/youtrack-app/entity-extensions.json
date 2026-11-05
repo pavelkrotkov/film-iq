@@ -1,0 +1,12 @@
+{
+  "entityTypeExtensions": [
+    {
+      "entityType": "User",
+      "properties": {
+        "filmPreferences": {"type": "string"},
+        "filmPreferencePreview": {"type": "string"},
+        "filmMovarySnapshot": {"type": "string"}
+      }
+    }
+  ]
+}

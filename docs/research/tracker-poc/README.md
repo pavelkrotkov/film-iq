@@ -2,7 +2,9 @@
 
 This is an isolated evaluation, not a change to FilmIQ's accepted architecture.
 Movary remains the source of truth for real watched history, ratings, and the
-intentional watchlist. Use synthetic films and users for these experiments.
+intentional watchlist. The user authorized a separate local import of existing
+candidate records and a read-only watched-history view. Use fictional records
+and users for destructive, workflow, authorization, and performance tests.
 
 ## Evidence collected so far
 
@@ -17,16 +19,16 @@ intentional watchlist. Use synthetic films and users for these experiments.
   dependencies. It uses `host.fetchYouTrack` for issue reads and synopsis edits,
   and builds a ZIP under `.cache/tracker-poc/`. The first version installed and
   rendered in a main-menu iframe, but its issue search returned HTTP 400 because
-  `id` is not a valid sort field. The code now uses the documented `{issue id}`
-  field; that revision has not yet been installed or verified. The app does not
-  yet implement the common schema or preference controls, and is not evidence
-  of a working YouTrack POC.
+  `id` is not a valid sort field. After correction to `{issue id}`, the widget
+  loaded a fictional issue, saved an edited synopsis and read it after a page
+  reload. The newer package adds a richer UI and per-user handlers, but has not
+  yet been installed or verified; it is not a complete YouTrack POC.
 * Kaneo source inspected: release `v2.49.0`, commit
   `e0ebc61748654f4e33e713dcb441be726ec1cfc4`. Its custom-field schema
   supports text, number, date, dropdown, boolean, and multiselect. Values are
   stored as strings; multiselect values are JSON arrays. A value is keyed by
-  task and field, not by task, field, and user. This is source inspection, not
-  a running API test. See [schema](https://github.com/usekaneo/kaneo/blob/v2.49.0/apps/api/src/custom-field/schema.ts),
+  task and field, not by task, field, and user. Numeric and multiselect fields
+  were also verified against the running API. See [schema](https://github.com/usekaneo/kaneo/blob/v2.49.0/apps/api/src/custom-field/schema.ts),
   [validation](https://github.com/usekaneo/kaneo/blob/v2.49.0/apps/api/src/custom-field/controllers/set-custom-field-value.ts),
   and [migration](https://github.com/usekaneo/kaneo/blob/v2.49.0/apps/api/drizzle/0045_fantastic_princess_powerful.sql).
 * Kaneo's source configures credentialed CORS with explicitly configured
@@ -92,6 +94,30 @@ seeder loaded 30 films for each synthetic user, with a second run adding zero.
 
 ## Kaneo experiment
 
+The user-authorized private input was rebuilt from a fresh read-only Movary
+snapshot and accepted discovery evidence: 103 reviewed unwatched candidates and
+27 watched records with supplied TMDB IDs. Watched-only IDs are Movary-supplied
+and were not independently reverified here. Source-listed years are not treated
+as verified release years. The input and real-data outputs remain in the ignored
+private cache; see [private input preparation](private-inputs.md).
+
+An isolated Kaneo workspace contains 130 canonical records, with zero created on
+a repeat import. An unrelated signed-in viewer could not access the project.
+A separate, project- and user-gated Movary sidecar contains 27 watched records,
+including repeat observations and unknown dates; it does not alter Movary or
+Kaneo's canonical fields or editable preferences. Two-user and denial checks
+passed for the sidecar, but its actual rendering in the browser has not been
+verified. The real-data import contains source-list assertions and links, not
+TMDB API response bodies. Source terms and upstream provenance still govern
+retention; this experiment does not establish unrestricted reuse.
+
+The optional local TMDB reader fetches metadata and offers on demand without
+writing responses into tracker history. Page-memory batches are limited to 30
+films at a time and are explicitly initiated. Required credits and unknown
+states are included in the UI, but visual rendering and provider accuracy have
+not been validated. One prior example-ID read succeeded; no user entitlement
+was established.
+
 The pinned Kaneo `2.49.0` image and PostgreSQL `16.15` ran locally on
 2026-11-05. The running `/api/openapi` document was inspected. In a private
 synthetic project, `kaneo_smoke.py` created a task with a synthetic identifier,
@@ -122,13 +148,12 @@ An initial React UI builds and is served locally. It reads board pages and custo
 fields using the current Kaneo browser session; it can submit a synopsis or
 column change through the API. The server accepted authenticated requests with
 the UI origin and returned the correct CORS headers. **The actual browser has
-not been tested**: the initial Mac lock and the later YouTrack setup handoff
-prevented it. The UI uses fixture IDs,
-not TMDB IDs, and does not implement real posters, reviews, live TMDB enrichment,
-or real-film creation. Synthetic add, archive, comment and preference controls
-are wired to the APIs but have not yet been verified in a browser.
-Its filters and rendering at 1,000 films have not been measured. Do not use it
-for personal data or represent it as the completed Kaneo POC.
+not been tested** because a separate browser surface was unavailable and the
+user's Brave session was in use. The private project includes source-identified
+real records, and metadata read-through is optional and nonpersistent. Synthetic
+add, archive, comment and preference controls are wired to the APIs but have not
+yet been verified in a browser. Its rendering at 1,000 films has not been
+measured. Do not represent it as the completed Kaneo POC.
 
 Fixture representation: task title and description hold title and synopsis;
 `POC Fixture ID`, `POC Year`, `POC Genre`, and `POC Subscription Providers`
@@ -173,8 +198,10 @@ repeats the import, and verifies that a user-edited synopsis, genre and note
 survive. It stores complete synthetic subscription/rental/purchase observations
 and their checked timestamp together in a single text field. A missing,
 malformed or failed provider response preserves the previous observation. This
-is a sequential fixture test: live TMDB, concurrent imports, and the YouTrack
-adapter are not implemented. Task-wide notes are not per-user preferences.
+is a sequential fixture test. A corresponding YouTrack adapter also passes a
+synthetic repeat, lifecycle and failure-preservation check. Neither adapter
+persists live TMDB responses, and concurrent imports are not tested. Task-wide
+notes are not per-user preferences.
 
 On 2026-11-05, two read-only requests using the existing project credential
 checked TMDB's documented example movie ID 11: both the movie-details and
@@ -266,20 +293,38 @@ Hermes as a possible eventual host. No Hermes installation, deployment, data
 transfer, resource measurement or operating-cost test has been performed; the
 current POC runs on the Mac. Cloud remains a documented alternative above.
 
-The pinned `2026.2.19728` server container starts and serves the initial
-configuration wizard at `http://localhost:18180/`. Database, configuration,
-logs and backup directories are bind-mounted under `.cache/tracker-poc/`.
-The wizard reached administrator password setup and was handed to the user; app
-installation, API calls, workflows, UI and permissions have not been completed
-or tested. Follow JetBrains' [installation guide](https://www.jetbrains.com/help/youtrack/server/youtrack-docker-installation.html)
-to finish configuration and review the license; the initial wizard URL and
-one-time token are shown in the container logs. No YouTrack score is justified.
+The pinned `2026.2.19728` server runs at `http://localhost:18180/`. Database,
+configuration, logs and backup directories are bind-mounted under
+`.cache/tracker-poc/`. The user completed setup and granted a local integration
+token, stored only in the ignored project cache. The `FILMPOC` project is for
+fictional tests; `FILMREAL` holds the 130 authorized canonical film records.
+Repeated canonical imports created no duplicates and never copied personal
+ratings, notes, watchlist state, or TMDB API response bodies into issues.
+Anonymous issue access returned HTTP 401; signed-in low-privilege access to
+the real project has not been tested.
+
+The common synthetic dataset created 30 issues, then 970 more in 26.990 seconds.
+A single local read traversed and numerically sorted 1,000 issues by a typed
+global critic-score field in 0.348 seconds. These do not establish native
+per-user interest queries, browser rendering, concurrent performance, or
+production capacity. The synthetic API exercise verified state values,
+comments and history, rejection of a nonnumeric integer and an invalid state,
+preservation of a user-edited synopsis and provider observation, repeat import,
+and anonymous read/write denial. The separate programmed workflow and per-user
+extension properties have only passed mock checks and await a live test.
+
+The earlier embedded widget passed an actual synopsis edit/reload. The pending
+update adds preferences, watched-history support and synthetic workflows; the
+app's permission and data-loss behavior must be tested before real watched data
+is imported into its per-user property. MDBList read-through is implemented
+without retention, but the live API returned HTTP 403 for an unknown reason.
+No product score or recommendation is justified yet.
 
 ## Outstanding
 
 The complete comparison, equivalent applications, browser-level multiuser
-preference isolation, live enrichment, browser demonstrations, equivalent YouTrack permission
-tests, YouTrack setup and measurements, upgrade assessment, weighted scores,
+preference isolation, usable live enrichment across both frontends, browser demonstrations,
+signed-in YouTrack permission tests, upgrade assessment, weighted scores,
 and recommendation remain outstanding. Do not score or recommend either
 product from the current evidence. Docker Desktop's external runtime storage
 under `/var/lib/docker` was approved by the user on 2026-11-05.

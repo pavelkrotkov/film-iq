@@ -13,8 +13,19 @@ OUTPUT = ROOT / ".cache/tracker-poc/youtrack-app"
 def main() -> None:
     widget = OUTPUT / "widgets/films"
     widget.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(POC / "youtrack-app/manifest.json", OUTPUT / "manifest.json")
+    app = POC / "youtrack-app"
+    app_files = (
+        "manifest.json",
+        "entity-extensions.json",
+        "preferences.js",
+        "movary.js",
+        "poc_lifecycle_guard.js",
+        "poc_scheduled_marker.js",
+    )
+    for name in app_files:
+        shutil.copy2(app / name, OUTPUT / name)
     shutil.copy2(POC / "youtrack-app/widgets/films/index.html", widget / "index.html")
+    shutil.copy2(POC / "youtrack-app/widgets/films/youtrack.css", widget / "youtrack.css")
     shutil.copy2(POC / "ui/style.css", widget / "style.css")
     subprocess.run(
         [
@@ -30,7 +41,7 @@ def main() -> None:
     )
     archive = OUTPUT.parent / "youtrack-app.zip"
     with ZipFile(archive, "w", ZIP_DEFLATED) as package:
-        for path in (OUTPUT / "manifest.json", *sorted(widget.iterdir())):
+        for path in (*(OUTPUT / name for name in app_files), *sorted(widget.iterdir())):
             package.write(path, path.relative_to(OUTPUT))
     print(f"Built {archive}")
 
