@@ -1,4 +1,5 @@
 import { field } from "./youtrack_filters.js";
+import {decodeStoredGenres, genreEdit, storedGenreText} from "./stored_genres.js";
 
 export function parseOptionalTmdbId(value) {
   if (typeof value !== "string") throw new Error("TMDB ID must be a positive integer.");
@@ -13,8 +14,9 @@ export function filmBaseline(film) {
   const years = fields("FilmIQ Release Year"), genres = fields("FilmIQ Genre");
   const year = years[0]?.value, genre = genres[0]?.value;
   const yearEditable = years.length === 1 && (year === null || (Number.isInteger(year) && year > 0 && year <= 9999));
-  const genreEditable = genres.length === 1 && (genre === null || (typeof genre === "string" && (genre === "" || !!genre.trim())));
-  return {issueId: film.id, title: film.summary || "", synopsis: film.description || "", state: field(film, "FilmIQ Lifecycle")?.name || "", tmdbId: field(film, "FilmIQ TMDB ID"), releaseYear: yearEditable ? year : null, genre: genreEditable && genre !== "" ? genre : null, yearEditable, genreEditable};
+  const genreStatus = decodeStoredGenres(genre).status;
+  const genreEditable = genres.length === 1 && Object.hasOwn(genres[0], "value") && genreStatus !== "invalid";
+  return {issueId: film.id, title: film.summary || "", synopsis: film.description || "", state: field(film, "FilmIQ Lifecycle")?.name || "", tmdbId: field(film, "FilmIQ TMDB ID"), releaseYear: yearEditable ? year : null, genre: genreEditable ? storedGenreText(genre) : "", genreRaw: genre, genreStatus, yearEditable, genreEditable};
 }
 
 export function filmChanges(baseline, draft) {
@@ -35,9 +37,8 @@ export function filmChanges(baseline, draft) {
     if (year !== baseline.releaseYear) customFields.push({name: "FilmIQ Release Year", $type: "SimpleIssueCustomField", value: year});
   }
   if (baseline.genreEditable) {
-    const genre = draft.genre === "" ? null : draft.genre;
-    if (genre !== null && !genre.trim()) throw new Error("Genre cannot contain only whitespace.");
-    if (genre !== baseline.genre) customFields.push({name: "FilmIQ Genre", $type: "SimpleIssueCustomField", value: genre});
+    const result = genreEdit(baseline.genreRaw, draft.genre, null, draft.genreReset === true);
+    if (result.changed) customFields.push({name: "FilmIQ Genre", $type: "SimpleIssueCustomField", value: result.value});
   }
   if (customFields.length) changes.customFields = customFields;
   return {changes, tmdbId, idChanged: tmdbId !== baseline.tmdbId};

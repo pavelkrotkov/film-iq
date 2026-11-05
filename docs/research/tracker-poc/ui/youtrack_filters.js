@@ -1,3 +1,5 @@
+import {hasStoredGenre} from "./stored_genres.js";
+
 // Pure extraction of YouTrack's existing client-side filtering logic.
 export const field = (film, name) => film.customFields?.find((item) => item.name === name)?.value ?? null;
 
@@ -23,6 +25,12 @@ export function localWatchLabel(preferences, issueId) {
   if (!preferences) return "Unavailable";
   const status = localWatchStatus(preferences, issueId);
   return status === "watched" ? "Watched timestamp recorded" : status === "not_recorded" ? "No watched timestamp recorded" : "Unknown";
+}
+
+export function localWatchlistLabel(preferences, issueId) {
+  if (!preferences) return "Local watchlist unavailable";
+  const value = preferences[issueId]?.watchlist;
+  return value === true ? "On local watchlist" : value === false ? "Not on local watchlist" : "Local watchlist unknown";
 }
 
 export function providerObservation(film) {
@@ -59,7 +67,7 @@ export function filterYoutrackFilms(films, {preferences, query, stateFilter, min
     if (!showArchived && stateFilter !== "Archived" && field(item, "FilmIQ Lifecycle")?.name === "Archived") return false;
     if (query && !item.summary.toLowerCase().includes(query.toLowerCase())) return false;
     if (stateFilter && field(item, "FilmIQ Lifecycle")?.name !== stateFilter) return false;
-    if (genre && field(item, "FilmIQ Genre") !== genre && !item.live?.genres?.includes(genre)) return false;
+    if (genre && !hasStoredGenre(field(item, "FilmIQ Genre"), genre) && !item.live?.genres?.includes(genre)) return false;
     if (provider || freshness) {
       const observation = providerObservation(item);
       if (provider && (observation?.status === "unknown" || !observation?.subscription?.includes(provider))) return false;

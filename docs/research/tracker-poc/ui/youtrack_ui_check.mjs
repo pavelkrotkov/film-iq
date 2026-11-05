@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { build } from "esbuild";
-import { filmYearLabel } from "./youtrack_filters.js";
+import { filmYearLabel, localWatchlistLabel } from "./youtrack_filters.js";
 
 let onLocationChange;
 globalThis.YTApp = {register: async (callbacks) => {
@@ -53,4 +53,10 @@ assert.equal(filmYearLabel(years(null, 2002)), "Source-listed year 2002");
 assert.equal(filmYearLabel(years(null, null), 2003), "TMDB-supplied year 2003");
 assert.equal(filmYearLabel(years(null, null)), "Year unknown");
 assert.equal(filmYearLabel(years("2001", 0)), "Year unknown");
+assert.equal(localWatchlistLabel(null, "FILMPOC-1"), "Local watchlist unavailable");
+assert.equal(localWatchlistLabel({}, "FILMPOC-1"), "Local watchlist unknown");
+assert.equal(localWatchlistLabel({"FILMPOC-1":{watchlist:null}}, "FILMPOC-1"), "Local watchlist unknown");
+assert.equal(localWatchlistLabel({"FILMPOC-1":{watchlist:true}}, "FILMPOC-1"), "On local watchlist");
+assert.equal(localWatchlistLabel({"FILMPOC-1":{watchlist:false}}, "FILMPOC-1"), "Not on local watchlist");
+assert.equal(localWatchlistLabel({"FILMPOC-1":{watchlist:0}}, "FILMPOC-1"), "Local watchlist unknown");
 console.log("YouTrack route parsing and synthetic provider unknown/partial/freshness checks passed");

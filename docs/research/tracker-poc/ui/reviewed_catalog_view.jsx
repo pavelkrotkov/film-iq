@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {readReviewedCatalog, reviewedCatalog} from "./reviewed_catalog.js";
+import {TmdbCredits} from "./tmdb_credits.jsx";
 
 // The read is local and read-only. Recheck expiry on a timer and when returning
 // to a backgrounded page; no catalog response is stored by the UI.
@@ -38,6 +39,7 @@ export function ReviewedCatalog({source, filmId, tmdbId, trackerTitle, host}) {
       <p>Source: {record.source} · Observed: {record.observed_at} · Expires: {record.expires_at}.</p>
       <p>{record.attribution}</p>
       <p>A matching title and supplied ID do not independently verify film identity. These facts do not establish streaming availability.</p>
+      <TmdbCredits />
     </> : <p>Reviewed catalog facts unavailable.</p>}
   </section>;
 }

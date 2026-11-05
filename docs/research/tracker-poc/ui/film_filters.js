@@ -1,3 +1,5 @@
+import {hasStoredGenre} from "./stored_genres.js";
+
 export function syntheticAvailability(film) {
   try {
     const value = JSON.parse(
@@ -68,7 +70,7 @@ export function filterFilms(films, options) {
         (!excludeMovaryWatched || (movary?.status === "available" && movary?.films?.[item.fields["POC TMDB ID"]]?.watched !== true)) &&
         (!minimum ||
           (preferences?.[item.id]?.interest_score ?? 0) >= Number(minimum)) &&
-        (!genre || item.fields["POC Genre"] === genre || item.live?.genres?.includes(genre)) &&
+        (!genre || hasStoredGenre(item.fields["POC Genre"], genre) || item.live?.genres?.includes(genre)) &&
         (!lifecycle || item.status === lifecycle) &&
         (!watched ||
           (preferences?.[item.id] &&

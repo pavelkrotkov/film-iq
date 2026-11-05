@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { readDirectReviews, reviewsMatchTitle, safeReviewUrl } from "./direct_reviews.js";
-import { field, filmYearLabel, filterYoutrackFilms, localWatchLabel, providerObservation, providerFreshness } from "./youtrack_filters.js";
+import { field, filmYearLabel, filterYoutrackFilms, localWatchLabel, localWatchlistLabel, providerObservation, providerFreshness } from "./youtrack_filters.js";
 import { boundedRead, loadFilmView, publishFilmBatch } from "./youtrack_loading.js";
 import { attachMatchedLive, eligibleLiveFilms, failedLiveFilms, liveMetadataMatches, LiveRateLimited, mergeLiveResult, readLiveMetadata, remainingLiveFilms, runLiveBatch, runRemainingLive, suppliedTmdbId } from "./youtrack_tmdb.js";
 import { filmBaseline, filmChanges, hasDuplicateTmdbId, parseOptionalTmdbId } from "./youtrack_edit.js";
@@ -10,6 +10,7 @@ import { TmdbCredits } from "./tmdb_credits.jsx";
 import { filterMayExcludeUnknown } from "./metadata_filter_coverage.js";
 import { movaryHistory } from "./movary_history.js";
 import { ReviewedCatalog } from "./reviewed_catalog_view.jsx";
+import {storedGenreDisplay, storedGenreLabels} from "./stored_genres.js";
 export { providerObservation, providerFreshness } from "./youtrack_filters.js";
 
 let locationListener = () => {};
@@ -91,6 +92,7 @@ function App() {
   const [provider, setProvider] = useState(""), [genre, setGenre] = useState(""), [freshness, setFreshness] = useState("");
   const [title, setTitle] = useState(""), [synopsis, setSynopsis] = useState(""), [state, setState] = useState(""), [pref, setPref] = useState(emptyPreference);
   const [releaseYear, setReleaseYear] = useState(""), [filmGenre, setFilmGenre] = useState("");
+  const [genreReset, setGenreReset] = useState(false);
   const [tmdbId, setTmdbId] = useState(""), [editBaseline, setEditBaseline] = useState(null), [newTmdbId, setNewTmdbId] = useState("");
   const [prefDirty, setPrefDirty] = useState(false), [filmDirty, setFilmDirty] = useState(false);
   const [pendingPreview, setPendingPreview] = useState(null), [pendingNavigation, setPendingNavigation] = useState(null), [discardFailed, setDiscardFailed] = useState(false), [saveUncertain, setSaveUncertain] = useState(false);
@@ -189,6 +191,7 @@ function App() {
       setTmdbId(baseline.tmdbId == null ? "" : String(baseline.tmdbId));
       setReleaseYear(baseline.releaseYear == null ? "" : String(baseline.releaseYear));
       setFilmGenre(baseline.genre ?? "");
+      setGenreReset(false);
       setEditBaseline(baseline);
     }
   }, [film, filmDirty]);
@@ -217,7 +220,7 @@ function App() {
     const observation = providerObservation(item);
     return observation?.status !== "unknown" ? observation?.subscription || [] : [];
   }))].sort();
-  const genres = [...new Set(shownFilms.flatMap((item) => [field(item, "FilmIQ Genre"), ...(item.live?.genres || [])]).filter((value) => typeof value === "string" && value))].sort();
+  const genres = [...new Set(shownFilms.flatMap((item) => [...storedGenreLabels(field(item, "FilmIQ Genre")), ...(item.live?.genres || [])]).filter((value) => typeof value === "string" && value))].sort();
   const visible = useMemo(() => filterYoutrackFilms(shownFilms, {preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness, localWatched, showArchived}), [shownFilms, preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness, localWatched, showArchived]);
   const remainingVisible = remainingLiveFilms(visible, liveResults);
   const remainingProject = remainingLiveFilms(films, liveResults);
@@ -227,7 +230,7 @@ function App() {
     event.preventDefault(); if (!film || editBaseline?.issueId !== film.id) return; setWorking(true); setError("");
     let submitting = false;
     try {
-      const {changes, tmdbId: proposedId, idChanged} = filmChanges(editBaseline, {title, synopsis, state, tmdbId, releaseYear, genre: filmGenre});
+      const {changes, tmdbId: proposedId, idChanged} = filmChanges(editBaseline, {title, synopsis, state, tmdbId, releaseYear, genre: filmGenre, genreReset});
       if (!Object.keys(changes).length) { markFilmDirty(false); setNotice("No film changes to save."); return; }
       if (idChanged && proposedId && hasDuplicateTmdbId(await getFilms(project), proposedId, film.id)) throw new Error("That TMDB ID is already used by another visible film in this project.");
       submitting = true;
@@ -407,7 +410,7 @@ function App() {
         <h3>Streaming availability</h3>
         <p>{observation ? `${observation.source} observation: ${observation.status}. Checked ${observation.checked_at || "time unknown"}.` : "Availability unknown."}</p>
         <p>Subscriptions: {providerDescription(observation, "subscription")}. Rentals: {providerDescription(observation, "rent")}.</p>
-        <form onSubmit={saveFilm} onKeyDown={(e) => submitOnEnter(e, saveFilm)}><label>Title<input value={title} required disabled={filmEditLocked} onChange={(e) => {setTitle(e.target.value); markFilmDirty(true);}} /></label><label>Supplied TMDB ID (optional)<input inputMode="numeric" value={tmdbId} disabled={filmEditLocked} onChange={(e) => {setTmdbId(e.target.value); markFilmDirty(true);}} /></label><label>Stored release year<input inputMode="numeric" value={releaseYear} disabled={filmEditLocked || !editBaseline?.yearEditable} onChange={(e) => {setReleaseYear(e.target.value); markFilmDirty(true);}} /></label><label>Stored genre<input value={filmGenre} disabled={filmEditLocked || !editBaseline?.genreEditable} onChange={(e) => {setFilmGenre(e.target.value); markFilmDirty(true);}} /></label><label>Synopsis<textarea value={synopsis} disabled={filmEditLocked} onChange={(e) => {setSynopsis(e.target.value); markFilmDirty(true);}} /></label><label>Lifecycle<select value={state} disabled={filmEditLocked} onChange={(e) => {setState(e.target.value); markFilmDirty(true);}}><option value="">Unknown</option>{states.map((s) => <option key={s}>{s}</option>)}</select></label>{filmDirty && <DraftExitWarning kind="film edits" />}<button type="button" onClick={saveFilm} disabled={filmEditLocked}>Save film</button></form>
+        <form onSubmit={saveFilm} onKeyDown={(e) => submitOnEnter(e, saveFilm)}><label>Title<input value={title} required disabled={filmEditLocked} onChange={(e) => {setTitle(e.target.value); markFilmDirty(true);}} /></label><label>Supplied TMDB ID (optional)<input inputMode="numeric" value={tmdbId} disabled={filmEditLocked} onChange={(e) => {setTmdbId(e.target.value); markFilmDirty(true);}} /></label><label>Stored release year<input inputMode="numeric" value={releaseYear} disabled={filmEditLocked || !editBaseline?.yearEditable} onChange={(e) => {setReleaseYear(e.target.value); markFilmDirty(true);}} /></label><label>Stored genres (one per line)<textarea value={filmGenre} disabled={filmEditLocked || !editBaseline?.genreEditable} onChange={(e) => {setFilmGenre(e.target.value); setGenreReset(false); markFilmDirty(true);}} /></label>{editBaseline?.genreStatus === "known" && editBaseline.genre === "" && filmGenre === "" && <p>No stored genres. <button type="button" disabled={filmEditLocked || !editBaseline.genreEditable} onClick={() => {setGenreReset(true); markFilmDirty(true);}}>Set genres to unknown</button>{genreReset && " Will reset when saved."}</p>}<label>Synopsis<textarea value={synopsis} disabled={filmEditLocked} onChange={(e) => {setSynopsis(e.target.value); markFilmDirty(true);}} /></label><label>Lifecycle<select value={state} disabled={filmEditLocked} onChange={(e) => {setState(e.target.value); markFilmDirty(true);}}><option value="">Unknown</option>{states.map((s) => <option key={s}>{s}</option>)}</select></label>{filmDirty && <DraftExitWarning kind="film edits" />}<button type="button" onClick={saveFilm} disabled={filmEditLocked}>Save film</button></form>
         {(!editBaseline?.yearEditable || !editBaseline?.genreEditable) && <p>Release year or genre cannot be edited because its project field is unavailable or invalid.</p>}
         <p>Stored year and genre are editable fields; clearing either leaves it unknown and does not change source-listed assertions.</p>
         <p>Supplied IDs are unverified. Duplicate checks cover visible project records; live lookup remains subject to existing authorization. Clearing an existing ID is not supported in this POC.</p>
@@ -449,7 +452,7 @@ function App() {
         {liveBatch && <button type="button" onClick={() => {liveCancel.current = true;}}>Cancel loading</button>}
         {liveSummary && <p role="status">{liveSummary}</p>}
         {preferences === null && localWatched && <p role="status">Local watched filtering is unavailable while preferences are loading or unavailable.</p>}
-        <h2>Discovery · {visible.length}</h2><div className="grid">{visible.map((item) => {const metadata = item.live; const poster = metadata?.poster_url; const available = providerObservation(item); const year = filmYearLabel(item, metadata?.year); return <button className="card" key={item.id} disabled={locked} onClick={() => selectFilm(item.idReadable)}><span className="poster">{poster ? <img src={poster} alt={`TMDB poster for ${metadata.title}`} loading="lazy" /> : "Artwork unavailable"}</span><strong>{item.summary}</strong><small>{year} · Interest {preferences?.[item.idReadable]?.interest_score ?? "unknown"} · Critic {field(item, "FilmIQ Critic Score") ?? "unknown"}</small><small>{field(item, "FilmIQ Lifecycle")?.name || "State unknown"} · {movary?.status === "available" && movary?.films?.[item.idReadable]?.watched ? "Watched in Movary" : "Movary watched status unknown"}</small><small>Local watched status: {localWatchLabel(preferences, item.idReadable)}</small><small>{available?.source || "Provider"} subscriptions: {providerDescription(available, "subscription")}</small>{metadata && <small>Supplied TMDB identity is unverified.</small>}</button>;})}</div>
+        <h2>Discovery · {visible.length}</h2><div className="grid">{visible.map((item) => {const metadata = item.live; const poster = metadata?.poster_url; const available = providerObservation(item); const year = filmYearLabel(item, metadata?.year); return <button className="card" key={item.id} disabled={locked} onClick={() => selectFilm(item.idReadable)}><span className="poster">{poster ? <img src={poster} alt={`TMDB poster for ${metadata.title}`} loading="lazy" /> : "Artwork unavailable"}</span><strong>{item.summary}</strong><small>{storedGenreDisplay(field(item, "FilmIQ Genre")) ?? (metadata?.genres?.join(", ") || "Genre unknown")}</small><small>{year} · Interest {preferences?.[item.idReadable]?.interest_score ?? "unknown"} · Critic {field(item, "FilmIQ Critic Score") ?? "unknown"}</small><small>{field(item, "FilmIQ Lifecycle")?.name || "State unknown"} · {movary?.status === "available" && movary?.films?.[item.idReadable]?.watched ? "Watched in Movary" : "Movary watched status unknown"}</small><small>{localWatchlistLabel(preferences, item.idReadable)} · Local watched status: {localWatchLabel(preferences, item.idReadable)}</small><small>{available?.source || "Provider"} subscriptions: {providerDescription(available, "subscription")}</small>{metadata && <small>Supplied TMDB identity is unverified.</small>}</button>;})}</div>
         {Object.values(liveResults).some((item) => item.data) && <TmdbCredits />}
         <form onSubmit={addFilm} onKeyDown={(e) => submitOnEnter(e, addFilm)}><label>Add film title<input disabled={locked} value={newTitle} onChange={(e) => setNewTitle(e.target.value)} /></label><label>Supplied TMDB ID (optional)<input inputMode="numeric" disabled={locked} value={newTmdbId} onChange={(e) => setNewTmdbId(e.target.value)} /></label><p>IDs are unverified. Duplicate checks cover visible project records; live lookup remains subject to existing authorization.</p>{(newTitle.trim() || newTmdbId.trim()) && <DraftExitWarning kind="new-film details" />}<button type="button" onClick={addFilm} disabled={locked || !project || createUncertain}>Add film</button></form>
       </section>}

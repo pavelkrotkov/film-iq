@@ -19,6 +19,7 @@ import { TmdbCredits } from "./tmdb_credits.jsx";
 import { filterMayExcludeUnknown } from "./metadata_filter_coverage.js";
 import { metadataChanges, storedMetadata } from "./kaneo_metadata.js";
 import { ReviewedCatalog } from "./reviewed_catalog_view.jsx";
+import {storedGenreDisplay, storedGenreLabels} from "./stored_genres.js";
 
 const api = "http://localhost:15173/api";
 function ProviderBadges({ film }) {
@@ -180,7 +181,7 @@ function App() {
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
   const detailDirty = useRef(false), preferenceDirty = useRef(false), skipHashPrompt = useRef(false);
-  const metadataDirty = useRef({year: false, genre: false});
+  const metadataDirty = useRef({year: false, genre: false, genreReset: false});
   preferenceDirty.current = preferenceDraft.dirty && preferenceDraft.filmId === selected;
   const [liveResults, setLiveResults] = useState({}),
     [batch, setBatch] = useState(null),
@@ -292,7 +293,7 @@ function App() {
     }
   }
   const genres = [
-    ...new Set(shownFilms.flatMap((item) => [item.fields["POC Genre"], ...(item.live?.genres || [])]).filter(Boolean)),
+    ...new Set(shownFilms.flatMap((item) => [...storedGenreLabels(item.fields["POC Genre"]), ...(item.live?.genres || [])]).filter(Boolean)),
   ].sort();
   const services = [
     ...new Set(shownFilms.flatMap((item) => providers(item) || [])),
@@ -300,7 +301,7 @@ function App() {
   useEffect(() => {
     setPreferenceDraft((current) => syncPreferenceDraft(current, film?.id, preferences));
   }, [film?.id, preferences]);
-  useEffect(() => { detailDirty.current = false; metadataDirty.current = {year: false, genre: false}; }, [film?.id]);
+  useEffect(() => { detailDirty.current = false; metadataDirty.current = {year: false, genre: false, genreReset: false}; }, [film?.id]);
   useEffect(() => {
     let active = true;
     setDetailReady(false);
@@ -426,7 +427,7 @@ function App() {
       for (const {fieldId: metadataField, value} of metadata)
         await request("/custom-field/value", "PUT", {taskId: film.id, fieldId: metadataField, value});
       detailDirty.current = false;
-      metadataDirty.current = {year: false, genre: false};
+      metadataDirty.current = {year: false, genre: false, genreReset: false};
       await refresh();
     } catch (e) {
       setError(submitting ? `Update may be partial. Reload to check: ${e.message}` : `Could not save: ${e.message}`);
@@ -613,7 +614,7 @@ function App() {
               </div>
               <div>
                 <div className="eyebrow">
-                  {film.fields["POC Genre"] || "GENRE UNKNOWN"} ·{" "}
+                  {storedGenreDisplay(film.fields["POC Genre"]) ?? "GENRE UNKNOWN"} ·{" "}
                   {film.fields["POC Year"] || "YEAR UNKNOWN"}
                 </div>
                 <h2>{film.title}</h2>
@@ -678,7 +679,8 @@ function App() {
                   <label>Supplied TMDB ID (not independently verified)<input inputMode="numeric" value={tmdb} onChange={(e) => {detailDirty.current = true; setFilmDraft({...filmDraft, tmdb: e.target.value});}} disabled={!detailReady || busy} /></label>
                   <p>Changing this ID does not verify the match. Live lookup is optional and uses your authenticated Kaneo session.</p>
                   <label>Stored release year<input inputMode="numeric" value={year} onChange={(e) => {detailDirty.current = true; metadataDirty.current.year = true; setFilmDraft({...filmDraft, year: e.target.value});}} disabled={!detailReady || busy} readOnly={!film.metadata.year.editable} /></label>
-                  <label>Stored genre<input value={filmGenre} onChange={(e) => {detailDirty.current = true; metadataDirty.current.genre = true; setFilmDraft({...filmDraft, genre: e.target.value});}} disabled={!detailReady || busy} readOnly={!film.metadata.genre.editable} /></label>
+                  <label>Stored genres (one per line)<textarea value={filmGenre} onChange={(e) => {detailDirty.current = true; metadataDirty.current.genre = true; metadataDirty.current.genreReset = false; setFilmDraft({...filmDraft, genre: e.target.value});}} disabled={!detailReady || busy} readOnly={!film.metadata.genre.editable} /></label>
+                  {film.metadata.genre.status === "known" && film.metadata.genre.value === "" && filmGenre === "" && <p>No stored genres. <button type="button" disabled={!detailReady || busy || !film.metadata.genre.editable} onClick={() => {detailDirty.current = true; metadataDirty.current.genre = true; metadataDirty.current.genreReset = true; setFilmDraft({...filmDraft, genre: ""});}}>Set genres to unknown</button>{metadataDirty.current.genreReset && " Will reset when saved."}</p>}
                   {(!film.metadata.year.editable || !film.metadata.genre.editable) && <p>Release year or genre cannot be edited because its project field is unavailable or invalid.</p>}
                   <p>Stored year and genre are editable fields; clearing either leaves it unknown and does not change source-listed assertions.</p>
                   <label>
@@ -959,7 +961,7 @@ function App() {
                     </div>
                     <div className="card-body">
                       <div className="card-meta">
-                        {item.fields["POC Genre"] || item.live?.genres?.join(", ") || "UNKNOWN GENRE"} ·{" "}
+                        {storedGenreDisplay(item.fields["POC Genre"]) ?? (item.live?.genres?.join(", ") || "UNKNOWN GENRE")} ·{" "}
                         {item.fields["POC Year"] || item.live?.year || "UNKNOWN YEAR"}
                       </div>
                       <h3>{item.title}</h3>

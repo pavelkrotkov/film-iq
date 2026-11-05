@@ -1,0 +1,20 @@
+import assert from "node:assert/strict";
+import {filterFilms} from "./film_filters.js";
+import {filterYoutrackFilms} from "./youtrack_filters.js";
+import {encodeStoredGenres, storedGenreDisplay} from "./stored_genres.js";
+
+const values = ["Drama", encodeStoredGenres(["Drama", "Comedy, dark"]), "filmiq-genres-v1:broken", null, encodeStoredGenres([])];
+const kaneo = values.map((value, id) => ({id:String(id), title:`Fictional ${id}`, status:"to-do", fields:{"POC Genre":value}}));
+const youtrack = values.map((value, id) => ({id:String(id), idReadable:`FILMPOC-${id + 1}`, summary:`Fictional ${id}`, customFields:[{name:"FilmIQ Genre", value}]}));
+const filterK = (genre) => filterFilms(kaneo, {query:"", genre}).map((film) => film.id);
+const filterY = (genre) => filterYoutrackFilms(youtrack, {query:"", genre}).map((film) => film.id);
+assert.deepEqual(filterK("Drama"), ["0", "1"]);
+assert.deepEqual(filterY("Drama"), ["0", "1"]);
+assert.deepEqual(filterK("Comedy, dark"), ["1"]);
+assert.deepEqual(filterY("Comedy, dark"), ["1"]);
+assert.deepEqual(filterK("Comedy"), [], "genre matching must not use substrings");
+assert.deepEqual(filterY("comedy, dark"), [], "genre matching must not change case");
+assert.equal(storedGenreDisplay(null), null);
+assert.equal(storedGenreDisplay(encodeStoredGenres([])), "No stored genres");
+assert.equal(storedGenreDisplay("filmiq-genres-v1:broken"), "Stored genres invalid");
+console.log("Both tracker filters match stored genres exactly and preserve unknown states");
