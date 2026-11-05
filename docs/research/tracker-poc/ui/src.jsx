@@ -22,6 +22,15 @@ import { ReviewedCatalog } from "./reviewed_catalog_view.jsx";
 import {storedGenreDisplay, storedGenreLabels} from "./stored_genres.js";
 
 const api = "http://localhost:15173/api";
+const cacheFixture = typeof __FILMIQ_CACHE_FIXTURE__ !== "undefined" && __FILMIQ_CACHE_FIXTURE__;
+const fixtureProject = cacheFixture ? __FILMIQ_FIXTURE_PROJECT__ : "";
+const fixtureIds = new Set([900000001, 900000002]);
+async function fixtureMovie(item, signal) {
+  if (!item || !fixtureIds.has(tmdbId(item))) throw new Error("Fictional ID required");
+  const response = await fetch(`http://localhost:15179/cache/${encodeURIComponent(item.id)}`, {credentials: "include", cache: "no-store", signal});
+  if (!response.ok) throw new Error("Fictional cache unavailable");
+  return response.json();
+}
 function ProviderBadges({ film }) {
   const services = providers(film);
   if (services === null) return <span>Availability unknown</span>;
@@ -144,7 +153,7 @@ function selectedId() {
 
 function App() {
   const [project, setProject] = useState(
-    new URLSearchParams(location.search).get("project") || "",
+    fixtureProject || new URLSearchParams(location.search).get("project") || "",
   );
   const [projectList, setProjectList] = useState(null),
     [projectListError, setProjectListError] = useState(""),
@@ -194,17 +203,19 @@ function App() {
     setError("");
     try {
       const result = await load(project);
-      setFilms(result.films);
+      setFilms(cacheFixture ? result.films.filter((item) => fixtureIds.has(tmdbId(item))) : result.films);
       setLoaded(true);
       setStates(result.states);
       setDefaultState(result.defaultState);
       try {
+        if (cacheFixture) throw new Error("Preferences disabled in fixture build");
         setPreferences((await preferenceRequest("/preferences")).preferences);
       } catch (e) {
         setPreferences(null);
         setError(`Preferences are unavailable: ${e.message}`);
       }
       try {
+        if (cacheFixture) throw new Error("Movary disabled in fixture build");
         setMovary(await preferenceRequest(`/movary/${encodeURIComponent(project)}`));
       } catch {
         setMovary(null);
@@ -217,6 +228,7 @@ function App() {
     }
   }
   async function refreshProjects() {
+    if (cacheFixture) { setProjectList([{id: fixtureProject, name: "Fictional", workspace: "Fixture"}]); return; }
     setProjectList(null); setProjectListError("");
     try {
       const result = await accessibleProjects(request);
@@ -231,6 +243,15 @@ function App() {
   useEffect(() => {
     if (project) refresh();
   }, [project]);
+  useEffect(() => {
+    if (!cacheFixture) return;
+    let active = true;
+    const controller = new AbortController();
+    for (const item of films) fixtureMovie(item, controller.signal).then((data) => {
+      if (active && data.tmdb_id === tmdbId(item)) setLiveResults((previous) => ({...previous, [item.id]: {data, requestedId: data.tmdb_id}}));
+    }).catch(() => {});
+    return () => { active = false; controller.abort(); };
+  }, [films]);
   useEffect(() => {
     const confirm = (message) => window.confirm(message);
     const navigate = (event) => {
@@ -280,7 +301,7 @@ function App() {
     return id && (!result || (result.requestedId ?? result.data?.tmdb_id) !== id);
   }).length;
   async function loadMdbRatings() {
-    if (!mdbId || mdbPending) return;
+    if (cacheFixture || !mdbId || mdbPending) return;
     const id = mdbId;
     setMdbPending(true);
     try {
@@ -493,7 +514,8 @@ function App() {
     setBatchSummary("");
     try {
       const runner = all ? runRemainingBatch : runBatch;
-      const result = await runner(items, fetchLiveMovie, controller.signal, (id, result, done) => {
+      const fetcher = cacheFixture ? (id, signal) => fixtureMovie(items.find((item) => tmdbId(item) === id), signal) : fetchLiveMovie;
+      const result = await runner(items, fetcher, controller.signal, (id, result, done) => {
         setLiveResults((previous) => ({ ...previous, [id]: mergeResult(previous[id], result) }));
         setBatch({total: items.length, done});
       });
@@ -532,6 +554,7 @@ function App() {
         <span className="flag">ISOLATED POC</span>
       </header>
       <main>
+        {cacheFixture && <p role="status"><strong>Offline fictional cache test.</strong> All films, metadata and services shown here are synthetic; this does not exercise live enrichment.</p>}
         <div className="eyebrow">FILM DISCOVERY / KANEO EXPERIMENT</div>
         <div className="intro">
           <div>
@@ -550,7 +573,7 @@ function App() {
         <form className="project" onSubmit={choose}>
           <label>
             Project{" "}
-            <select value={chosenProject} onChange={(event) => setChosenProject(event.target.value)}>
+            <select disabled={cacheFixture} value={chosenProject} onChange={(event) => setChosenProject(event.target.value)}>
               <option value="">{projectList === null ? "Loading projects…" : "Choose an accessible project"}</option>
               {project && !projectList?.some((item) => item.id === project) && <option value={project}>Current project (not in project list)</option>}
               {(projectList || []).map((item) => <option key={item.id} value={item.id}>{item.workspace} / {item.name}</option>)}
@@ -582,7 +605,7 @@ function App() {
           {!!retries.length && <button type="button" disabled={!!batch} onClick={() => startLiveBatch(retries)}>Retry up to {BATCH_LIMIT} failed</button>}{" "}
           {batch && <><span role="status">Fetching {batch.done} of {batch.total} films. </span><button type="button" onClick={() => batchController.current?.abort()}>Cancel</button></>}
           {batchSummary && <p role="status">{batchSummary}</p>}
-          {Object.values(liveResults).some((result) => result.data) && <TmdbCredits />}
+          {!cacheFixture && Object.values(liveResults).some((result) => result.data) && <TmdbCredits />}
         </section>}
         {project && (
           <form className="project" onSubmit={addFilm}>
@@ -625,19 +648,19 @@ function App() {
                   <ul>{(movary.films[film.fields["POC TMDB ID"]].played_watch_dates || []).map((entry, index) => <li key={index}>{entry.date || "Date unknown"} · {entry.plays} play(s)</li>)}</ul>
                   {!!movary.films[film.fields["POC TMDB ID"]].history_export_dates?.length && <p>History export dates: {movary.films[film.fields["POC TMDB ID"]].history_export_dates.map((date) => date || "unknown").join(", ")}. This is a separate source and is not added to play counts.</p>}
                 </section>}
-                <ReviewedCatalog source="kaneo" filmId={film.id} tmdbId={tmdbId(film)} trackerTitle={film.title} />
+                {!cacheFixture && <ReviewedCatalog source="kaneo" filmId={film.id} tmdbId={tmdbId(film)} trackerTitle={film.title} />}
                 {film.fields["POC TMDB ID"] && (
                   <section>
-                    <h3>Live TMDB details</h3>
+                    <h3>{cacheFixture ? "Fictional cached details" : "Live TMDB details"}</h3>
                     <p>Supplied TMDB ID: {film.fields["POC TMDB ID"]}. Verify that the returned film is the intended work.</p>
                     <button type="button" onClick={() => startLiveBatch([film])} disabled={!!batch || !tmdbId(film)}>
-                      Fetch or refresh live details
+                      {cacheFixture ? "Read fictional cache" : "Fetch or refresh live details"}
                     </button>
                     {liveError && <p role="alert">{liveError}</p>}
                     {liveResult && !liveMovie && <p role="alert">TMDB returned {liveResult.title || "an unknown title"}; its title or ID differs from this film. It may be another work or an alternate title and needs review before using its metadata.</p>}
                     {liveMovie && (
                       <div>
-                        <p>TMDB: {liveMovie.title} ({liveMovie.year || "year unknown"})</p>
+                        <p>{cacheFixture ? "Fictional cache" : "TMDB"}: {liveMovie.title} ({liveMovie.year || "year unknown"})</p>
                         {liveMovie.original_title && <p>TMDB original title: {liveMovie.original_title}</p>}
                         {liveMovie.synopsis && <p>{liveMovie.synopsis}</p>}
                         <p>Genres: {liveMovie.genres?.join(", ") || "Unknown"}. Directors: {liveMovie.directors?.join(", ") || "Unknown"}.</p>

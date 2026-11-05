@@ -21,7 +21,7 @@ def fixture_get(path, parameters=None):
     raise AssertionError("Unexpected synthetic request")
 
 
-def app(token):
+def app(token, cached=None):
     if not isinstance(token, str) or not token.isascii() or not token:
         raise ValueError("Fixture token required")
 
@@ -59,6 +59,14 @@ def app(token):
                 return send("403 Forbidden", {"error": "Fixture ID not approved"})
         except (ValueError, UnicodeDecodeError):
             return send("400 Bad Request", {"error": "Invalid request"})
+        if cached is not None:
+            try:
+                result = cached(ident)
+            except (OSError, ValueError, PermissionError):
+                return send("503 Service Unavailable", {"error": "Fixture cache unavailable"})
+            if result is None:
+                return send("404 Not Found", {"error": "Fixture cache miss"})
+            return send("200 OK", result)
         try:
             movie = read_movie(ident, get=fixture_get, now=datetime(2026, 1, 1, tzinfo=UTC))
         except TMDbRateLimited:

@@ -16,6 +16,7 @@ export { providerObservation, providerFreshness } from "./youtrack_filters.js";
 
 let locationListener = () => {};
 const host = await YTApp.register({ onAppLocationChange: (location) => locationListener(location) });
+const cacheFixture = typeof __FILMIQ_CACHE_FIXTURE__ !== "undefined" && __FILMIQ_CACHE_FIXTURE__;
 const fields = "id,idReadable,summary,description,project(id,shortName),customFields(id,name,value(name,text))";
 const emptyPreference = { interest_score: null, watchlist: null, watched_at: null, personal_notes: "" };
 const states = ["Discovery", "Evaluation", "Watchlist", "Archived"];
@@ -41,7 +42,7 @@ export function providerDescription(observation, key) {
 export function parseAppLocation(where) {
   const params = new URLSearchParams(where?.search || "");
   const requested = params.get("project");
-  const project = ["FILMPOC", "FILMREAL"].includes(requested) ? requested : "FILMREAL";
+  const project = cacheFixture ? "FILMPOC" : ["FILMPOC", "FILMREAL"].includes(requested) ? requested : "FILMREAL";
   const id = params.get("film");
   return {project, film: id && new RegExp(`^${project}-[1-9]\\d*$`).test(id) ? id : null};
 }
@@ -119,9 +120,12 @@ function App() {
     setLoadingFilms(true); setPreferences(null); setMovary(null); setError(""); setNotice("");
     try {
       const [personal, watched] = await loadFilmView({
-        loadFilms: () => getFilms(target),
-        loadPreferences: readPreferences,
-        loadWatched: () => host.fetchApp("movary/watched", { query: { project: target } }),
+        loadFilms: async () => {
+          const loaded = await getFilms(target);
+          return cacheFixture ? loaded.filter((item) => [900000001, 900000002].includes(suppliedTmdbId(item))) : loaded;
+        },
+        loadPreferences: cacheFixture ? () => Promise.reject(new Error("Disabled in fixture build")) : readPreferences,
+        loadWatched: cacheFixture ? () => Promise.reject(new Error("Disabled in fixture build")) : () => host.fetchApp("movary/watched", { query: { project: target } }),
         publishFilms: (loaded) => publishFilmBatch(run, sequence, loaded, setFilms, setLoadingFilms),
       });
       if (run !== sequence.current) return;
@@ -147,6 +151,14 @@ function App() {
     refresh(project);
     return () => { sequence.current++; };
   }, [project]);
+  useEffect(() => {
+    if (!cacheFixture) return;
+    let active = true;
+    for (const item of films) readLiveMetadata(host, item).then((data) => {
+      if (active) setLiveResults((previous) => ({...previous, [item.idReadable]: {data, requestedId: data.tmdb_id}}));
+    }).catch(() => {});
+    return () => { active = false; };
+  }, [films]);
   useEffect(() => {
     let active = true;
     let navigated = false;
@@ -372,8 +384,9 @@ function App() {
   return <>
     <header><button className="brand" type="button" disabled={locked} onClick={() => selectFilm(null)} style={{background:"transparent",color:"inherit",padding:0}}>FILM <span> / </span> LAB</button><nav>Discovery · Watchlist · Administration</nav></header>
     <main>
+      {cacheFixture && <p role="status"><strong>Offline fictional cache test.</strong> All films, metadata and services shown here are synthetic; this does not exercise live enrichment.</p>}
       <div className="intro"><div><span className="eyebrow">YOUTRACK · LOCAL POC</span><h1>Film discovery</h1><p>Shared film records and separate personal preferences.</p></div></div>
-      <div className="project"><label>Project<select value={project || ""} disabled={locked} onChange={(e) => selectProject(e.target.value)}><option value="" disabled>Loading project…</option><option value="FILMREAL">Film collection</option><option value="FILMPOC">Synthetic test films</option></select></label><button disabled={locked || !project} onClick={() => refresh()}>Reload</button><a href="/issues" target="_blank" rel="noreferrer">Open tracker administration ↗</a></div>
+      <div className="project"><label>Project<select value={project || ""} disabled={locked || cacheFixture} onChange={(e) => selectProject(e.target.value)}><option value="" disabled>Loading project…</option>{!cacheFixture && <option value="FILMREAL">Film collection</option>}<option value="FILMPOC">Synthetic test films</option></select></label><button disabled={locked || !project} onClick={() => refresh()}>Reload</button><a href="/issues" target="_blank" rel="noreferrer">Open tracker administration ↗</a></div>
       {hasPageDraft && <p role="status">You have unsaved edits. Save or copy them before reloading the browser or leaving YouTrack; this page cannot warn you when you reload.</p>}
       {error && <p role="alert">{error}</p>}{notice && <p className="notice">{notice}</p>}
       {liveRateLimited && <p role="alert">TMDB rate limit reached. Wait and reload the page before trying live lookups again.</p>}
@@ -388,14 +401,14 @@ function App() {
           {watchedHistory.plays === null ? <p>Play entries unavailable.</p> : watchedHistory.plays.length ? <ul>{watchedHistory.plays.map((entry, index) => <li key={index}>{entry.date || "Date unknown"} · {entry.plays} play(s)</li>)}</ul> : <p>No play entries in this snapshot.</p>}
           {watchedHistory.exportDates === null ? <p>History export dates unavailable.</p> : watchedHistory.exportDates.length ? <p>History export dates: {watchedHistory.exportDates.map((date) => date || "unknown").join(", ")}. This is a separate source and is not added to play counts.</p> : <p>No history export dates in this snapshot.</p>}
         </section> : <p>Movary watched status unknown.</p>}
-        <ReviewedCatalog source="youtrack" filmId={film.idReadable} tmdbId={suppliedTmdbId(film)} trackerTitle={film.summary} host={host} />
-        <h3>Live TMDB details</h3>
-        <p>Optional lookup for the supplied TMDB ID; verify that the result matches this film. Results stay in this page and are not saved to YouTrack.</p>
-        <button type="button" disabled={locked || liveBusy || liveRateLimited || !suppliedTmdbId(film)} onClick={loadLiveMetadata}>{liveBusy ? "Loading metadata…" : "Load live metadata"}</button>
+        {!cacheFixture && <ReviewedCatalog source="youtrack" filmId={film.idReadable} tmdbId={suppliedTmdbId(film)} trackerTitle={film.summary} host={host} />}
+        <h3>{cacheFixture ? "Fictional cached details" : "Live TMDB details"}</h3>
+        <p>{cacheFixture ? "Offline fictional data, read from the project-local fixture cache." : "Optional lookup for the supplied TMDB ID; verify that the result matches this film. Results stay in this page and are not saved to YouTrack."}</p>
+        <button type="button" disabled={locked || liveBusy || liveRateLimited || !suppliedTmdbId(film)} onClick={loadLiveMetadata}>{liveBusy ? "Loading metadata…" : cacheFixture ? "Read fictional cache" : "Load live metadata"}</button>
         {!suppliedTmdbId(film) && <p>A supplied TMDB ID is required.</p>}
         {liveEntry?.error && <p role="alert">{liveEntry.error}</p>}
         {live && <section>
-          <p>TMDB returned: {live.title} ({live.year ?? "year unknown"}).</p>
+          <p>{cacheFixture ? "Fictional cache returned" : "TMDB returned"}: {live.title} ({live.year ?? "year unknown"}).</p>
           {live.original_title && <p>TMDB original title: {live.original_title} (identity not independently verified).</p>}
           {!liveMatches ? <p role="alert">The returned title differs from this record. It may be a different film or an alternate title and requires verification before its artwork or availability can be used.</p> : <>
             {live.poster_url && <div className="poster"><img src={live.poster_url} alt={`TMDB poster for ${live.title}`} /></div>}
@@ -407,7 +420,7 @@ function App() {
             {live.availability.provider_url && <ExternalLink url={live.availability.provider_url} label="Provider information on TMDB" />}
             {live.imdb_title_url && <p><ExternalLink url={live.imdb_title_url} label="IMDb title page" /> · supplied by TMDB; match not independently verified.</p>}
           </>}
-          <TmdbCredits />
+          {!cacheFixture && <TmdbCredits />}
         </section>}
         <h3>Streaming availability</h3>
         <p>{observation ? `${observation.source} observation: ${observation.status}. Checked ${observation.checked_at || "time unknown"}.` : "Availability unknown."}</p>

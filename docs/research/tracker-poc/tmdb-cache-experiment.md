@@ -1,7 +1,7 @@
 # Fictional TMDb cache experiment
 
 This experiment is **not enabled for real provider data** and is not connected
-to either running film interface. It uses a separate project-local directory,
+to either normal film interface. It uses a separate project-local directory,
 not tracker history or a new database. No provider credentials or live requests
 are used by the checks below.
 
@@ -28,7 +28,10 @@ dedicated fictional Kaneo fixture directory and YouTrack `FILMPOC`; each run
 creates and leaves one fictional record in each tracker. It was run against
 the local trackers: repeat import, user edits, partial and failed refreshes,
 fresh-process cache read and test-only UI filter projections passed. The cache
-projection is not a deployed bridge or browser verification.
+projection itself is not a deployed bridge or browser verification. Separately,
+[fictional-only builds of the existing interfaces](cache-fixture/README.md)
+read this cache through isolated bridges; browser reload and bridge restart
+checks passed for both trackers. Those builds are not the real enrichment path.
 
 Real activation still requires a reviewed TMDb-specific use and retention
 policy, an inventory and purge procedure for all actual copies, an expiry

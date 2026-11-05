@@ -132,9 +132,12 @@ export function runRemainingLive(host, films, active, onResult) {
 export async function readLiveMetadata(host, film) {
   const id = suppliedTmdbId(film);
   if (!id || !/^(FILMPOC|FILMREAL)-[1-9]\d*$/.test(film?.idReadable || "")) throw new Error("Film identity unavailable");
+  const cacheFixture = typeof __FILMIQ_CACHE_FIXTURE__ !== "undefined" && __FILMIQ_CACHE_FIXTURE__;
+  if (cacheFixture && (!film.idReadable.startsWith("FILMPOC-") || ![900000001, 900000002].includes(id))) throw new Error("Fictional identity required");
+  const app = cacheFixture ? "filmiq-tmdb-fixture-isolated" : "filmiq-tmdb-live-isolated";
   let result;
   try {
-    result = await host.fetchYouTrack(`issues/${encodeURIComponent(film.idReadable)}/extensionEndpoints/filmiq-tmdb-live-isolated/metadata/read`, {method: "POST", body: {}});
+    result = await host.fetchYouTrack(`issues/${encodeURIComponent(film.idReadable)}/extensionEndpoints/${app}/metadata/read`, {method: "POST", body: {}});
   } catch (error) {
     if ([error?.status, error?.statusCode, error?.code, error?.response?.status].some((value) => Number(value) === 429) || /\b429\b/.test(error?.message || "")) throw new LiveRateLimited("TMDB rate limit reached");
     throw new Error("Live metadata unavailable");
