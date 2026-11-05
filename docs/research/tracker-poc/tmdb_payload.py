@@ -20,6 +20,7 @@ def movie_payload(movie: Movie) -> dict:
     return {
         "tmdb_id": movie.tmdb_id,
         "title": movie.title,
+        "original_title": movie.original_title,
         "synopsis": movie.synopsis,
         "year": movie.year,
         "genres": movie.genres,

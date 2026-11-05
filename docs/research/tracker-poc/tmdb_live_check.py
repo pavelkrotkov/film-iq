@@ -60,6 +60,7 @@ def check():
         None,
         observed,
         "https://www.imdb.com/title/tt0000012/",
+        "Fictional original",
     )
 
     def reader(ident):
@@ -72,6 +73,7 @@ def check():
     assert result["headers"]["Cache-Control"] == "no-store"
     assert result["body"]["availability"]["status"] == "partial"
     assert result["body"]["imdb_title_url"] == "https://www.imdb.com/title/tt0000012/"
+    assert result["body"]["original_title"] == "Fictional original"
     assert result["body"]["availability"]["offers"][0]["kind"] == "subscription"
     assert invoke(application, "/movie/nope")["status"] == "404 Not Found"
     assert (

@@ -4,7 +4,7 @@ import { filterYoutrackFilms, providerFreshness, providerObservation } from "./y
 
 const film = {idReadable: "FILMPOC-2", customFields: [{name: "FilmIQ TMDB ID", value: 123}]};
 const raw = {
-  tmdb_id: 123, title: "Fictional", synopsis: "Fictional synopsis", year: 2001,
+  tmdb_id: 123, title: "Fictional", original_title: "Fictional Original", synopsis: "Fictional synopsis", year: 2001,
   genres: ["Drama"], directors: ["Fictional Director"],
   poster_url: "https://image.tmdb.org/t/p/w500/fixture.jpg",
   imdb_title_url: "https://www.imdb.com/title/tt1234567/",
@@ -21,6 +21,7 @@ assert.equal(suppliedTmdbId(film), 123);
 const result = await readLiveMetadata(host, film);
 assert.equal(calls, 1);
 assert.equal(result.tmdb_id, 123);
+assert.equal(result.original_title, "Fictional Original");
 assert.equal(result.poster_url, raw.poster_url);
 assert.equal(result.availability.offers[0].provider, "Fictional Stream");
 assert.equal(sameNormalizedTitle(" CAFÉ\t Film ", "cafe\u0301   film"), true);
@@ -30,6 +31,11 @@ assert.equal(sameNormalizedTitle("", ""), false);
 const matchingRecord = {...film, summary: "  FICTIONAL  "};
 const mismatchRecord = {...film, summary: "A different film"};
 assert.equal(liveMetadataMatches(matchingRecord, result), true);
+const originalRecord = {...film, summary: "  fictional\toriginal  "};
+assert.equal(liveMetadataMatches(originalRecord, result), true, "the exact original title can match");
+assert.equal(liveMetadataMatches({...originalRecord, summary: "An edit"}, result), false, "edited titles stay withheld");
+assert.equal(liveMetadataMatches(originalRecord, {...result, tmdb_id: 124}), false, "an original-title match cannot cross IDs");
+assert.equal(liveMetadataMatches(originalRecord, {...result, title: null}), false, "a missing returned title stays withheld");
 assert.equal(liveMetadataMatches(mismatchRecord, result), false);
 assert.equal(liveMetadataMatches(matchingRecord, {...result, tmdb_id: 124}), false);
 const matched = attachMatchedLive([matchingRecord], {"FILMPOC-2": {data: result}});
@@ -59,6 +65,10 @@ const missing = await readLiveMetadata({fetchYouTrack: async () => ({tmdb_id: 12
 assert.equal(missing.availability.status, "unknown");
 assert.equal(missing.synopsis, null);
 assert.equal(missing.poster_url, null);
+assert.equal(missing.original_title, null);
+const invalidOriginal = await readLiveMetadata({fetchYouTrack: async () => ({...raw, original_title: ["Fictional Original"]})}, film);
+assert.equal(invalidOriginal.original_title, null);
+assert.equal(liveMetadataMatches(originalRecord, invalidOriginal), false, "invalid original title stays withheld");
 const incomplete = {...result, availability: {...result.availability, status: "partial", offers: []}};
 assert.deepEqual(filterYoutrackFilms([{...liveFilm, live: incomplete}], {...options, freshness: ""}), [], "a missing partial offer is not a confirmed match");
 const merged = mergeLiveMetadata(result, incomplete);

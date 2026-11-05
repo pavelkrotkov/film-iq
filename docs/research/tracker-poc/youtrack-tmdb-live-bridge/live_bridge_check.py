@@ -98,6 +98,7 @@ def check():
             return {
                 "id": 101,
                 "title": "Fictional",
+                "original_title": "Fictional original",
                 "overview": "Fictional synopsis",
                 "release_date": "2001-01-01",
                 "genres": [],
@@ -135,6 +136,7 @@ def check():
     assert set(ok["body"]) == {
         "tmdb_id",
         "title",
+        "original_title",
         "synopsis",
         "year",
         "genres",
@@ -144,6 +146,7 @@ def check():
         "availability",
     }
     assert ok["body"]["tmdb_id"] == 101 and ok["body"]["availability"]["status"] == "unknown"
+    assert ok["body"]["original_title"] == "Fictional original"
     assert ok["body"]["poster_url"] == "https://image.tmdb.org/t/p/w500/example.jpg"
     limited = invoke(application, 202)
     assert limited["status"] == "429 Too Many Requests" and "secret" not in json.dumps(

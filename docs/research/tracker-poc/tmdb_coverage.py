@@ -46,7 +46,15 @@ def coverage(films: list[dict[str, Any]], get=fetch, pause=time.sleep) -> dict[s
                 counts["invalid_identity"] += 1
             else:
                 counts["valid_response"] += 1
-                counts["title_exact_normalized"] += normalized(title) == normalized(film["title"])
+                direct_match = normalized(title) == normalized(film["title"])
+                original = data.get("original_title")
+                original_match = (
+                    isinstance(original, str)
+                    and bool(original.strip())
+                    and normalized(original) == normalized(film["title"])
+                )
+                counts["title_exact_normalized"] += direct_match
+                counts["additional_original_title_matches"] += not direct_match and original_match
                 counts["release_year"] += release_year(data.get("release_date")) is not None
                 counts["synopsis"] += isinstance(data.get("overview"), str) and bool(
                     data["overview"].strip()

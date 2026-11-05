@@ -29,10 +29,12 @@ the widget, and the synthetic pointer click was unreliable in that setup.
 In a separate trusted-keyboard check, the actual fictional fixture returned 429;
 the widget displayed a rate-limit message, disabled loading and made no second
 request when activated again.
-Grid artwork, provider data and live genre filters require the returned title
-to match the issue title after Unicode normalization, case and whitespace
-normalization. A mismatch stays visible in details for review and may represent
-a legitimate alternate title. A matching title does not verify the identity.
+Grid artwork, provider data and live genre filters require the issue title to
+match either the current TMDB title or original title after Unicode, case and
+whitespace normalization. The original title is read from the same opt-in
+response; it is not independently reviewed evidence. A mismatch stays visible
+in details for review and may represent another legitimate alternate title.
+Neither kind of title match independently verifies identity.
 YouTrack may request confirmation for the POST through its Host API even though
 this particular endpoint is intended to be read-only.
 

@@ -1,9 +1,9 @@
 import { tmdbId } from "./live_batch.js";
-import { sameNormalizedTitle } from "./youtrack_tmdb.js";
+import { matchesLiveTitle } from "./youtrack_tmdb.js";
 
 export function matchedLive(film, result) {
   const data = result?.data;
-  return tmdbId(film) && data?.tmdb_id === tmdbId(film) && sameNormalizedTitle(film.title, data.title) ? data : null;
+  return tmdbId(film) && data?.tmdb_id === tmdbId(film) && matchesLiveTitle(film.title, data) ? data : null;
 }
 
 export async function identityField(request, project, value, taskId = null) {

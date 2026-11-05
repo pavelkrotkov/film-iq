@@ -28,6 +28,7 @@ class Movie:
     poster_url: str | None
     availability: Observation
     imdb_title_url: str | None = None
+    original_title: str | None = None
 
 
 class TMDbError(Exception):
@@ -141,6 +142,7 @@ def read_movie(tmdb_id: int, get=fetch, now: datetime | None = None) -> Movie:
     except TMDbError:
         available = None
     synopsis = details.get("overview")
+    original_title = details.get("original_title")
     external_ids = details.get("external_ids")
     imdb_id = external_ids.get("imdb_id") if isinstance(external_ids, dict) else None
     imdb_url = (
@@ -164,4 +166,5 @@ def read_movie(tmdb_id: int, get=fetch, now: datetime | None = None) -> Movie:
         poster,
         normalize(tmdb_id, available, now or datetime.now(UTC)),
         imdb_url,
+        original_title if isinstance(original_title, str) and original_title.strip() else None,
     )

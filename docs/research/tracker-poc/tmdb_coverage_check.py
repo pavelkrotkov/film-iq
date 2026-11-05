@@ -18,7 +18,8 @@ def main() -> None:
             raise TMDbRateLimited("TMDB returned HTTP 429")
         return {
             "id": 11,
-            "title": "FICTIONAL A",
+            "title": "Fictional alternative",
+            "original_title": "FICTIONAL A",
             "overview": "Fictional synopsis",
             "release_date": "2001-01-01",
             "poster_path": "/fictional.jpg",
@@ -28,7 +29,8 @@ def main() -> None:
 
     result = coverage(films, get, lambda _: None)
     assert len(calls) == 2 and result["stopped_on_access_or_rate_limit"] is True
-    assert result["counts"]["title_exact_normalized"] == 1
+    assert result["counts"]["title_exact_normalized"] == 0
+    assert result["counts"]["additional_original_title_matches"] == 1
     assert result["counts"]["director"] == 1 and result["counts"]["failed"] == 1
     try:
         coverage([films[0], films[0]], get, lambda _: None)

@@ -17,9 +17,15 @@ export function sameNormalizedTitle(left, right) {
   return Boolean(title) && title === normalize(right);
 }
 
+// An exact live title or original-title match is a display guard, not proof of identity.
+export function matchesLiveTitle(title, data) {
+  return typeof data?.title === "string" && !!data.title.trim() &&
+    (sameNormalizedTitle(title, data.title) || sameNormalizedTitle(title, data.original_title));
+}
+
 export function liveMetadataMatches(film, data) {
   const id = suppliedTmdbId(film);
-  return !!id && data?.tmdb_id === id && sameNormalizedTitle(film?.summary, data?.title);
+  return !!id && data?.tmdb_id === id && matchesLiveTitle(film?.summary, data);
 }
 
 export function attachMatchedLive(films, results) {
@@ -137,6 +143,7 @@ export async function readLiveMetadata(host, film) {
   return {
     tmdb_id: id,
     title: result.title,
+    original_title: typeof result.original_title === "string" && result.original_title.trim() ? result.original_title : null,
     synopsis: typeof result.synopsis === "string" && result.synopsis.trim() ? result.synopsis : null,
     year: Number.isInteger(result.year) && result.year > 0 && result.year <= 9999 ? result.year : null,
     genres: strings(result.genres),

@@ -13,6 +13,7 @@ def fixture(path, parameters=None):
         return {
             "id": 42,
             "title": "Synthetic film",
+            "original_title": "Fictional original title",
             "overview": "Synthetic synopsis.",
             "release_date": "2001-02-03",
             "genres": [{"name": "Drama"}],
@@ -69,7 +70,17 @@ if __name__ == "__main__":
         ("Synthetic director",),
     )
     assert movie.poster_url == "https://example.invalid/t/p/w500/fixture.jpg"
+    assert movie.original_title == "Fictional original title"
     assert movie.imdb_title_url == "https://www.imdb.com/title/tt0000042/"
+    for invalid_original in (None, "  ", 42, ["Fictional original title"]):
+
+        def invalid_original_fixture(path, parameters=None, *, value=invalid_original):
+            result = fixture(path, parameters)
+            if path == "movie/42":
+                result["original_title"] = value
+            return result
+
+        assert read_movie(42, invalid_original_fixture, now).original_title is None
     for external in (
         {"imdb_id": "tt0000042/../../unsafe"},
         {"id": 43, "imdb_id": "tt0000042"},
