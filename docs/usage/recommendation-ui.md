@@ -65,6 +65,47 @@ rechecks accepted reviewed film identity server-side, writes only the local
 disposition, then redirects to the updated film page. Repeated actions do not
 add duplicate state or change evidence.
 
+## Rate and mark watched
+
+Use **Rate & mark watched** on a film card or detail page. Choose the watch date
+and an optional enjoyment score from 1–10, then **Review & save**. The final
+**Save rating & mark watched** button commits the displayed film/date/score to
+Movary. A blank score keeps the current rating. The date defaults to today in
+`TZ` (America/New_York for the current single-user installation) and is editable.
+After refresh, the film is excluded from the default unwatched view. It remains
+accessible through the watched filter or its saved recommendation state.
+
+Rating entry requires `--rating-command` in addition to the existing read/export
+configuration. This trusted operator command accepts a JSON request on stdin:
+`username`, positive `tmdb_id`, and integer `rating` (1–10). It must return the
+verified `tmdb_id` and `rating` as JSON. No rating value is placed in command-line
+arguments or logged. `movary_rating.php` calls Movary 0.82.1's own application
+service, using the same method as its native rating editor; no SQL is issued.
+
+For the existing SSH/container installation, construct the JSON argv privately
+from the checked-in bridge, with standard shell quoting for the fixed PHP code:
+
+```python
+import json
+import shlex
+from pathlib import Path
+
+code = Path("src/film_iq/movary_rating.php").read_text().removeprefix("<?php")
+command = [
+    "ssh",
+    "-o",
+    "BatchMode=yes",
+    "your-existing-ssh-alias",
+    "docker exec -i movary php -r " + shlex.quote(code),
+]
+print(json.dumps(command))  # Configure --rating-command; contains no personal values.
+```
+
+A verified watch can succeed before a rating/refresh fails. The response retains
+that successful result and marks the cache stale; retrying the same date does
+not add another play. No live personal ratings are required for acceptance.
+Without the bridge, watched logging and the native rating-editor link still work.
+
 ## Optional Movary controls
 
 Open **Movary history and watchlist · optional** on a film. **Preview watchlist

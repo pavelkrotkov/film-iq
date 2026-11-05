@@ -38,12 +38,13 @@ class Application:
         public_origin: str = "http://127.0.0.1:8770",
         ratings_command: list[str] | None = None,
         history_command: list[str] | None = None,
+        rating_command: list[str] | None = None,
     ):
         self.database, self.cohort = database, cohort
         self.snapshot, self.catalog = snapshot, catalog
         self.public_origin = normalize_origin(public_origin)
         self.csrf_token = token_urlsafe(32)
-        self.movary = MovaryControls(snapshot, ratings_command, history_command)
+        self.movary = MovaryControls(snapshot, ratings_command, history_command, rating_command)
 
     def report(self) -> dict:
         # Recheck accepted revisions and provider retention on every request.

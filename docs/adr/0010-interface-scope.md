@@ -24,9 +24,10 @@ record under [ADR 0001](0001-movary-ownership.md).
 ## Consequences
 No separate frontend build, duplicate personal store, automatic watchlist
 promotion or public multiuser hosting. The installed Movary bearer API supports
-watch dates and watchlist actions but no rating write: display ratings and link
-to the native film/rating editor until a supported endpoint exists. This concrete
-limitation does not gate recommendation UI delivery.
+watch dates and watchlist actions but no rating write. The user's follow-up
+request adds a visible combined rating/watch action through the small native
+application-service bridge in ADR 0001. Keep the native editor as a fallback.
+Missing ratings remain optional; no personal entry is a release prerequisite.
 
 ## Validation / reconsideration
 The POC missing-task gate is satisfied by the user's observed inability to use

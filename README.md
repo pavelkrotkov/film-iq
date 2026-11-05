@@ -29,8 +29,9 @@ uv run film-iq serve --database path/to/evidence.db --cohort path/to/accepted-co
 
 Open `http://127.0.0.1:8770/`. Personal history and reviewed display metadata are
 optional. Save/Dismiss/Restore keeps a FilmIQ shortlist. Optional Movary controls
-preview and explicitly confirm watchlist additions or a dated watch; rating edits
-use the native Movary page. Read-only refresh brings those values back. See the
+preview and explicitly confirm watchlist additions or a dated watch. **Rate &
+mark watched** saves an optional score and watch date together in Movary; the
+native rating editor remains a fallback. Read-only refresh brings those values back. See the
 [website guide](docs/usage/recommendation-ui.md) for configuration and the private
 HTTPS deployment. Its Mac host must remain awake and logged in; process restart
 supervision does not imply automatic login/reboot startup.

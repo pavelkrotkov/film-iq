@@ -21,9 +21,14 @@ must not increment plays. Surface Movary's possible automatic watchlist removal
 before confirming a watch. Personal writes require API readback; a later refresh
 failure must not be represented as rollback or an up-to-date cache.
 
-Movary 0.82.1 has no bearer-token rating-write endpoint. FilmIQ shows nullable
-enjoyment and artistic merit separately and links to the verified native film
-page for rating edits; do not automate session login or fork Movary for this UI.
+Movary 0.82.1 has no bearer-token rating-write endpoint. The user's subsequent
+request for **Rate & mark watched** authorizes a small configured command bridge
+to the same `MovieApi.updateUserRating` application service used by its native
+rating controller. The request travels as JSON on stdin; the service resolves
+user/film and verifies its saved rating. No direct SQL, remote project file,
+session-login automation, fork or second personal store is introduced. This
+bridge is explicitly version-specific and must be checked on Movary upgrades.
+The native film editor remains available when the bridge is not configured.
 
 ## Validation / reconsideration
 Reconsider only if a documented core Movary limitation persists after a working companion POC.
