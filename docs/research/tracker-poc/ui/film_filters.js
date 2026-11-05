@@ -14,6 +14,9 @@ export function syntheticAvailability(film) {
 
 export function providers(film) {
   try {
+    const live = film.live?.availability;
+    if (live && ["complete", "partial"].includes(live.status))
+      return [...new Set(live.offers.filter((offer) => offer.kind === "subscription").map((offer) => offer.provider))];
     const observation = syntheticAvailability(film);
     if (observation) return observation.subscription;
     const raw =
@@ -27,7 +30,11 @@ export function providers(film) {
 }
 
 export function freshness(film, now = Date.now()) {
-  const checked = Date.parse(syntheticAvailability(film)?.checked_at || "");
+  const availability = film.live?.availability;
+  const checked = Date.parse(
+    (availability && availability.status !== "unknown" ? availability.checked_at : "") ||
+      syntheticAvailability(film)?.checked_at || "",
+  );
   const age = now - checked;
   if (!Number.isFinite(age) || age < 0) return "unknown";
   return age <= 7 * 24 * 60 * 60 * 1000 ? "recent" : "stale";
@@ -45,6 +52,8 @@ export function filterFilms(films, options) {
     freshnessFilter,
     sortInterest,
     preferences,
+    movaryOnly,
+    movary,
   } = options;
   return films
     .filter(
@@ -52,9 +61,10 @@ export function filterFilms(films, options) {
         item.title.toLowerCase().includes(query.toLowerCase()) &&
         (!provider || providers(item)?.includes(provider)) &&
         (!watchlistOnly || preferences?.[item.id]?.watchlist) &&
+        (!movaryOnly || movary?.films?.[item.fields["POC TMDB ID"]]?.watched === true) &&
         (!minimum ||
           (preferences?.[item.id]?.interest_score ?? 0) >= Number(minimum)) &&
-        (!genre || item.fields["POC Genre"] === genre) &&
+        (!genre || item.fields["POC Genre"] === genre || item.live?.genres?.includes(genre)) &&
         (!lifecycle || item.status === lifecycle) &&
         (!watched ||
           (preferences?.[item.id] &&

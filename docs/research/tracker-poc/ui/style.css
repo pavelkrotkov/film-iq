@@ -222,6 +222,11 @@ form label {
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
+.poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .card-body {
   padding: 16px 0;
 }

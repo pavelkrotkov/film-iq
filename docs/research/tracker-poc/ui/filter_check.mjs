@@ -84,6 +84,18 @@ const fresh = {
 };
 assert.equal(freshness(fresh, Date.parse("2026-11-06T00:00:00Z")), "recent");
 assert.equal(freshness(fresh, Date.parse("2026-11-20T00:00:00Z")), "stale");
+const live = {
+  id: "live", title: "Fixture", status: "to-do", fields: {},
+  live: {genres: ["Drama"], availability: {
+    status: "partial", checked_at: "2026-11-05T00:00:00Z",
+    offers: [{provider: "Fixture Stream", kind: "subscription"}, {provider: "Rental", kind: "rent"}],
+  }},
+};
+assert.deepEqual(filterFilms([live], {...options, provider: "Fixture Stream", minimum: "", genre: "Drama"}).map((film) => film.id), ["live"]);
+assert.equal(freshness(live, Date.parse("2026-11-06T00:00:00Z")), "recent");
+const movaryFilm = { ...live, fields: {"POC TMDB ID": "12"} };
+assert.equal(filterFilms([movaryFilm], { ...options, provider: "", minimum: "", movaryOnly: true, movary: {films: {"12": {watched: true}}} }).length, 1);
+assert.equal(filterFilms([movaryFilm], { ...options, provider: "", minimum: "", movaryOnly: true, movary: null }).length, 0);
 console.log(
   "30-fixture user-specific provider filter, numeric sort and freshness checks passed",
 );

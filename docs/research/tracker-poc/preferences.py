@@ -1,7 +1,8 @@
-"""Loopback-only synthetic preference bridge authenticated by Kaneo sessions.
+"""Loopback-only preference and read-only Movary bridge using Kaneo sessions.
 
 Run from the project root: uv run python docs/research/tracker-poc/preferences.py
-The SQLite file is POC-only and must not contain actual Movary personal data.
+The SQLite preferences remain POC-only and contain no Movary personal data.
+The separately supplied private sidecar is read-only and project/user scoped.
 """
 
 import hashlib
@@ -20,6 +21,7 @@ from waitress import serve
 ORIGIN = "http://localhost:15174"
 KANEO = "http://localhost:15173/api"
 DATABASE = Path(".cache/tracker-poc/preferences.sqlite3")
+MOVARY_SIDECAR = Path(".cache/tracker-poc/private/movary-watched.json")
 # ponytail: previews are process-local and expire on restart; shared state if deployed beyond the POC.
 SECRET = secrets.token_bytes(32)
 
@@ -88,6 +90,7 @@ def respond(start, status: str, payload: dict):
         status,
         [
             ("Content-Type", "application/json"),
+            ("Cache-Control", "no-store"),
             ("Access-Control-Allow-Origin", ORIGIN),
             ("Access-Control-Allow-Credentials", "true"),
             ("Vary", "Origin"),
@@ -129,6 +132,44 @@ def change(environ: dict, db: sqlite3.Connection, user: str, task: str) -> dict:
     return {"preference": load(db, user, task)}
 
 
+def watched_snapshot(environ: dict, user: str, project: str) -> dict:
+    """Read only the signed-in user's Movary snapshot after project access check."""
+    try:
+        upstream("/project/" + project, environ.get("HTTP_COOKIE", ""))
+    except urllib.error.HTTPError as error:
+        raise PermissionError("Project is not accessible") from error
+    try:
+        snapshot = json.loads(MOVARY_SIDECAR.read_text())
+    except FileNotFoundError:
+        return {"status": "unknown", "films": {}}
+    except (OSError, ValueError) as error:
+        raise RuntimeError("Watched snapshot unavailable") from error
+    if (
+        not isinstance(snapshot, dict)
+        or snapshot.get("version") != "tracker-poc-movary-watched-v1"
+        or not isinstance(snapshot.get("users"), dict)
+    ):
+        raise RuntimeError("Watched snapshot unavailable")
+    if snapshot.get("project_id") != project:
+        return {"status": "unknown", "films": {}}
+    own = snapshot["users"].get(user)
+    if own is None:
+        return {"status": "unknown", "films": {}}
+    if (
+        not isinstance(own, dict)
+        or own.get("source") != "Movary"
+        or not isinstance(own.get("observed_at"), str)
+        or not isinstance(own.get("films"), dict)
+    ):
+        raise RuntimeError("Watched snapshot unavailable")
+    return {
+        "status": "available",
+        "source": "Movary",
+        "observed_at": own["observed_at"],
+        "films": own["films"],
+    }
+
+
 def application(environ: dict, start):
     if environ.get("HTTP_ORIGIN") != ORIGIN:
         return respond(start, "403 Forbidden", {"error": "Origin not allowed"})
@@ -160,6 +201,13 @@ def application(environ: dict, start):
             path = environ["PATH_INFO"].split("/")
             if (
                 len(path) == 3
+                and path[1] == "movary"
+                and path[2].isalnum()
+                and environ["REQUEST_METHOD"] == "GET"
+            ):
+                return respond(start, "200 OK", watched_snapshot(environ, user, path[2]))
+            if (
+                len(path) == 3
                 and path[1] in ("preview", "preferences")
                 and path[2].isalnum()
                 and environ["REQUEST_METHOD"] in ("POST", "PUT")
@@ -172,6 +220,8 @@ def application(environ: dict, start):
         return respond(start, "400 Bad Request", {"error": "Invalid preference or preview"})
     except (urllib.error.URLError, TimeoutError):
         return respond(start, "503 Service Unavailable", {"error": "Kaneo unavailable"})
+    except RuntimeError:
+        return respond(start, "503 Service Unavailable", {"error": "Watched snapshot unavailable"})
 
 
 if __name__ == "__main__":

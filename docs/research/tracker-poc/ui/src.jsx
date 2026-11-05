@@ -1,17 +1,24 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   filterFilms,
   providers,
   syntheticAvailability,
 } from "./film_filters.js";
+import { BATCH_LIMIT, chooseBatch, mergeResult, runBatch, tmdbId } from "./live_batch.js";
 
 const api = "http://localhost:15173/api";
 function ProviderBadges({ film }) {
   const services = providers(film);
   if (services === null) return <span>Availability unknown</span>;
-  if (!services.length) return <span>No subscriptions reported</span>;
-  return services.map((name) => <span key={name}>{name}</span>);
+  if (film.live?.availability?.status === "partial" && !services.length)
+    return <span>Availability incomplete</span>;
+  if (!services.length) return <><span>No subscriptions reported</span>{film.live?.availability_attempt && <span>Latest check incomplete</span>}</>;
+  return <>{services.map((name) => <span key={name}>{name}</span>)}{film.live?.availability?.status === "partial" && <span>Partial</span>}{film.live?.availability_attempt && <span>Latest check incomplete</span>}</>;
+}
+
+function Credits() {
+  return <section><h4>Credits</h4><p><a href="https://www.themoviedb.org/" target="_blank" rel="noreferrer"><img src="https://www.themoviedb.org/assets/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg" alt="TMDB" width="120" /></a> This product uses the TMDB API but is not endorsed or certified by TMDB. Watch-provider data: <a href="https://www.justwatch.com/" target="_blank" rel="noreferrer">JustWatch</a>.</p></section>;
 }
 
 function SourceEvidence({ film }) {
@@ -124,6 +131,8 @@ function App() {
     [preference, setPreference] = useState(emptyPreference),
     [watchlistOnly, setWatchlistOnly] = useState(false),
     [sortInterest, setSortInterest] = useState(false);
+  const [movary, setMovary] = useState(null),
+    [movaryOnly, setMovaryOnly] = useState(false);
   const [minimum, setMinimum] = useState(""),
     [genre, setGenre] = useState(""),
     [lifecycle, setLifecycle] = useState(""),
@@ -135,9 +144,10 @@ function App() {
   const [newTitle, setNewTitle] = useState("");
   const [comments, setComments] = useState(null),
     [newComment, setNewComment] = useState("");
-  const [liveMovie, setLiveMovie] = useState(null),
-    [liveBusy, setLiveBusy] = useState(false),
-    [liveError, setLiveError] = useState(null);
+  const [liveResults, setLiveResults] = useState({}),
+    [batch, setBatch] = useState(null),
+    [batchSummary, setBatchSummary] = useState("");
+  const batchController = useRef(null);
   async function refresh() {
     setBusy(true);
     setError("");
@@ -151,6 +161,11 @@ function App() {
       } catch (e) {
         setPreferences(null);
         setError(`Preferences are unavailable: ${e.message}`);
+      }
+      try {
+        setMovary(await preferenceRequest(`/movary/${encodeURIComponent(project)}`));
+      } catch {
+        setMovary(null);
       }
     } catch (e) {
       setError(e.message);
@@ -166,12 +181,23 @@ function App() {
     window.addEventListener("hashchange", listener);
     return () => window.removeEventListener("hashchange", listener);
   }, []);
+  useEffect(() => () => batchController.current?.abort(), []);
   const film = films.find((item) => item.id === selected);
+  const shownFilms = useMemo(() => films.map((item) => ({
+    ...item, live: liveResults[item.id]?.data,
+  })), [films, liveResults]);
+  const shownFilm = shownFilms.find((item) => item.id === selected);
+  const liveMovie = film ? liveResults[film.id]?.data : null;
+  const liveError = film ? liveResults[film.id]?.error : null;
+  const pending = chooseBatch(films, liveResults);
+  const retries = chooseBatch(films, liveResults, true);
+  const eligible = films.filter((item) => tmdbId(item)).length;
+  const unattempted = films.filter((item) => tmdbId(item) && !liveResults[item.id]).length;
   const genres = [
-    ...new Set(films.map((item) => item.fields["POC Genre"]).filter(Boolean)),
+    ...new Set(shownFilms.flatMap((item) => [item.fields["POC Genre"], ...(item.live?.genres || [])]).filter(Boolean)),
   ].sort();
   const services = [
-    ...new Set(films.flatMap((item) => providers(item) || [])),
+    ...new Set(shownFilms.flatMap((item) => providers(item) || [])),
   ].sort();
   useEffect(() => {
     setPreference(
@@ -214,7 +240,7 @@ function App() {
   }, [film]);
   const filtered = useMemo(
     () =>
-      filterFilms(films, {
+      filterFilms(shownFilms, {
         query,
         provider,
         watchlistOnly,
@@ -225,14 +251,18 @@ function App() {
         freshnessFilter,
         sortInterest,
         preferences,
+        movaryOnly,
+        movary,
       }),
     [
-      films,
+      shownFilms,
       query,
       provider,
       watchlistOnly,
       sortInterest,
       preferences,
+      movaryOnly,
+      movary,
       minimum,
       genre,
       lifecycle,
@@ -326,25 +356,29 @@ function App() {
       setBusy(false);
     }
   }
-  async function loadLiveMovie() {
-    const tmdbId = film.fields["POC TMDB ID"];
-    if (!/^[1-9][0-9]{0,9}$/.test(tmdbId) || Number(tmdbId) > 2147483647) return;
-    setLiveBusy(true);
-    setLiveError(null);
+  async function startLiveBatch(items) {
+    if (!items.length || batchController.current) return;
+    const controller = new AbortController();
+    batchController.current = controller;
+    setBatch({total: items.length, done: 0});
+    setBatchSummary("");
     try {
-      const response = await fetch(`http://localhost:15176/movie/${tmdbId}`, {
-        cache: "no-store",
-        credentials: "omit",
+      const result = await runBatch(items, async (id, signal) => {
+        const response = await fetch(`http://localhost:15176/movie/${id}`, {
+          cache: "no-store", credentials: "omit", signal,
+        });
+        if (!response.ok) throw new Error("Live metadata unavailable");
+        const data = await response.json();
+        if (!data.availability || !Array.isArray(data.availability.offers)) throw new Error("Invalid metadata response");
+        return data;
+      }, controller.signal, (id, result, done) => {
+        setLiveResults((previous) => ({ ...previous, [id]: mergeResult(previous[id], result) }));
+        setBatch({total: items.length, done});
       });
-      if (!response.ok) throw new Error("Live metadata unavailable");
-      const data = await response.json();
-      if (data.tmdb_id !== Number(tmdbId)) throw new Error("TMDB identity mismatch");
-      setLiveMovie({ taskId: film.id, data });
-    } catch {
-      setLiveMovie(null);
-      setLiveError({ taskId: film.id, message: "Live metadata unavailable. Existing film data is unchanged." });
+      setBatchSummary(`${result.cancelled ? "Cancelled" : "Finished"}: ${result.succeeded} loaded, ${result.failed} failed. No results were saved to Kaneo.`);
     } finally {
-      setLiveBusy(false);
+      batchController.current = null;
+      setBatch(null);
     }
   }
   function choose(event) {
@@ -410,6 +444,15 @@ function App() {
           POC preferences use a separate local store and do not change Movary.
           Movary remains the source of truth for personal watch history.
         </p>
+        <p className="notice">{movary?.status === "available" ? `Movary watched snapshot observed ${movary.observed_at}. Missing films remain unknown.` : "Movary watched snapshot unavailable for this user or project."}</p>
+        {!!eligible && <section>
+          <p>Live metadata is optional and stays only in this open page. Each film can use up to three TMDB requests. {unattempted} of {eligible} supplied IDs have not been attempted. Results are not identity verification. Cancel stops further requests; an in-flight request may finish.</p>
+          <button type="button" disabled={!!batch || !pending.length} onClick={() => startLiveBatch(pending)}>Fetch next {pending.length} films (up to {pending.length * 3} requests)</button>{" "}
+          {!!retries.length && <button type="button" disabled={!!batch} onClick={() => startLiveBatch(retries)}>Retry up to {BATCH_LIMIT} failed</button>}{" "}
+          {batch && <><span role="status">Fetching {batch.done} of {batch.total} films. </span><button type="button" onClick={() => batchController.current?.abort()}>Cancel</button></>}
+          {batchSummary && <p role="status">{batchSummary}</p>}
+          {Object.values(liveResults).some((result) => result.data) && <Credits />}
+        </section>}
         {project && (
           <form className="project" onSubmit={addFilm}>
             <label>
@@ -435,7 +478,7 @@ function App() {
             <a href="#">← Back to discovery</a>
             <div className="detail-grid">
               <div className="poster large">
-                <span>NO POSTER</span>
+                {liveMovie?.poster_url ? <img src={liveMovie.poster_url} alt={`TMDB poster for ${liveMovie.title}`} /> : <span>NO POSTER</span>}
               </div>
               <div>
                 <div className="eyebrow">
@@ -443,32 +486,36 @@ function App() {
                   {film.fields["POC Year"] || "YEAR UNKNOWN"}
                 </div>
                 <h2>{film.title}</h2>
+                {movary?.films?.[film.fields["POC TMDB ID"]]?.watched === true && <section>
+                  <h3>Watched in Movary</h3>
+                  <p>Snapshot observed {movary.observed_at}. Watch dates and counts come from Movary; unknown dates remain unknown.</p>
+                  <ul>{(movary.films[film.fields["POC TMDB ID"]].played_watch_dates || []).map((entry, index) => <li key={index}>{entry.date || "Date unknown"} · {entry.plays} play(s)</li>)}</ul>
+                  {!!movary.films[film.fields["POC TMDB ID"]].history_export_dates?.length && <p>History export dates: {movary.films[film.fields["POC TMDB ID"]].history_export_dates.map((date) => date || "unknown").join(", ")}. This is a separate source and is not added to play counts.</p>}
+                </section>}
                 {film.fields["POC TMDB ID"] && (
                   <section>
                     <h3>Live TMDB details</h3>
                     <p>Supplied TMDB ID: {film.fields["POC TMDB ID"]}. Verify that the returned film is the intended work.</p>
-                    <button type="button" onClick={loadLiveMovie} disabled={liveBusy}>
-                      {liveBusy ? "Loading…" : "Fetch live details"}
+                    <button type="button" onClick={() => startLiveBatch([film])} disabled={!!batch || !tmdbId(film)}>
+                      Fetch or refresh live details
                     </button>
-                    {liveError?.taskId === film.id && <p role="alert">{liveError.message}</p>}
-                    {liveMovie?.taskId === film.id && (
+                    {liveError && <p role="alert">{liveError}</p>}
+                    {liveMovie && (
                       <div>
-                        <p>TMDB: {liveMovie.data.title} ({liveMovie.data.year || "year unknown"})</p>
-                        {liveMovie.data.poster_url && <img src={liveMovie.data.poster_url} alt={`TMDB poster for ${liveMovie.data.title}`} width="160" />}
-                        {liveMovie.data.synopsis && <p>{liveMovie.data.synopsis}</p>}
-                        <p>Genres: {liveMovie.data.genres?.join(", ") || "Unknown"}. Directors: {liveMovie.data.directors?.join(", ") || "Unknown"}.</p>
-                        <p>US availability: {liveMovie.data.availability.status}. {liveMovie.data.availability.offers.map((offer) => `${offer.provider} (${offer.kind})`).join(", ") || (liveMovie.data.availability.status === "complete" ? "No offers reported" : "Availability unknown")}.</p>
-                        {liveMovie.data.availability.provider_url && <p><a href={liveMovie.data.availability.provider_url} target="_blank" rel="noreferrer">View provider information on TMDB ↗</a></p>}
+                        <p>TMDB: {liveMovie.title} ({liveMovie.year || "year unknown"})</p>
+                        {liveMovie.synopsis && <p>{liveMovie.synopsis}</p>}
+                        <p>Genres: {liveMovie.genres?.join(", ") || "Unknown"}. Directors: {liveMovie.directors?.join(", ") || "Unknown"}.</p>
+                        <p>US availability: {liveMovie.availability.status}. {liveMovie.availability.offers.map((offer) => `${offer.provider} (${offer.kind})`).join(", ") || (liveMovie.availability.status === "complete" ? "No offers reported" : "Availability unknown")}. Checked: {liveMovie.availability.checked_at}.</p>
+                        {liveMovie.availability_attempt && <p>Latest check was {liveMovie.availability_attempt}; showing the earlier complete observation.</p>}
+                        {liveMovie.availability.provider_url && <p><a href={liveMovie.availability.provider_url} target="_blank" rel="noreferrer">View provider information on TMDB ↗</a></p>}
                         <p>Fetched on demand; these results are not saved to Kaneo. Provider entitlement is unverified.</p>
-                        <h4>Credits</h4>
-                        <p><a href="https://www.themoviedb.org/" target="_blank" rel="noreferrer"><img src="https://www.themoviedb.org/assets/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg" alt="TMDB" width="120" /></a> This product uses the TMDB API but is not endorsed or certified by TMDB. Watch-provider data: <a href="https://www.justwatch.com/" target="_blank" rel="noreferrer">JustWatch</a>.</p>
                       </div>
                     )}
                   </section>
                 )}
                 {film.fields["POC Evidence"] && <SourceEvidence film={film} />}
                 <div className="badges">
-                  <ProviderBadges film={film} />
+                  <ProviderBadges film={shownFilm || film} />
                 </div>
                 <form onSubmit={save}>
                   <label>
@@ -652,7 +699,7 @@ function App() {
                 <select
                   aria-label="Minimum interest score"
                   value={minimum}
-                  disabled={!preferences}
+                  disabled={!preferences && !minimum}
                   onChange={(e) => setMinimum(e.target.value)}
                 >
                   <option value="">Any interest</option>
@@ -685,9 +732,9 @@ function App() {
                   ))}
                 </select>
                 <select
-                  aria-label="Filter by watched status"
+                  aria-label="Filter by POC watched status"
                   value={watched}
-                  disabled={!preferences}
+                  disabled={!preferences && !watched}
                   onChange={(e) => setWatched(e.target.value)}
                 >
                   <option value="">Any watch status</option>
@@ -708,16 +755,20 @@ function App() {
                   <input
                     type="checkbox"
                     checked={watchlistOnly}
-                    disabled={!preferences}
+                    disabled={!preferences && !watchlistOnly}
                     onChange={(e) => setWatchlistOnly(e.target.checked)}
                   />{" "}
                   Watchlist
                 </label>
                 <label>
+                  <input type="checkbox" checked={movaryOnly} disabled={movary?.status !== "available" && !movaryOnly} onChange={(e) => setMovaryOnly(e.target.checked)} />{" "}
+                  Watched in Movary
+                </label>
+                <label>
                   <input
                     type="checkbox"
                     checked={sortInterest}
-                    disabled={!preferences}
+                    disabled={!preferences && !sortInterest}
                     onChange={(e) => setSortInterest(e.target.checked)}
                   />{" "}
                   Sort by interest
@@ -735,15 +786,16 @@ function App() {
                     href={`#film=${encodeURIComponent(item.id)}`}
                   >
                     <div className="poster">
-                      <span>NO POSTER</span>
+                      {item.live?.poster_url ? <img src={item.live.poster_url} alt={`TMDB poster for ${item.live.title}`} loading="lazy" /> : <span>NO POSTER</span>}
                       <b>{states[item.status] || item.status}</b>
                     </div>
                     <div className="card-body">
                       <div className="card-meta">
-                        {item.fields["POC Genre"] || "UNKNOWN GENRE"} ·{" "}
-                        {item.fields["POC Year"] || "UNKNOWN YEAR"}
+                        {item.fields["POC Genre"] || item.live?.genres?.join(", ") || "UNKNOWN GENRE"} ·{" "}
+                        {item.fields["POC Year"] || item.live?.year || "UNKNOWN YEAR"}
                       </div>
                       <h3>{item.title}</h3>
+                      {item.live && <p>TMDB match not independently verified</p>}
                       <div className="badges">
                         <ProviderBadges film={item} />
                       </div>
@@ -751,6 +803,7 @@ function App() {
                         Critic score:{" "}
                         {item.fields["POC Critic Score"] || "Unknown"}
                       </p>
+                      <p>{movary?.films?.[item.fields["POC TMDB ID"]]?.watched === true ? "Watched in Movary" : "Movary watch status not established"}</p>
                       <p>
                         Interest:{" "}
                         {preferences
