@@ -8,6 +8,8 @@ import { filmBaseline, filmChanges, hasDuplicateTmdbId, parseOptionalTmdbId } fr
 import { handleExternalRoute, hasUnsavedPageDraft, routeLocation } from "./youtrack_navigation.js";
 import { TmdbCredits } from "./tmdb_credits.jsx";
 import { filterMayExcludeUnknown } from "./metadata_filter_coverage.js";
+import { movaryHistory } from "./movary_history.js";
+import { ReviewedCatalog } from "./reviewed_catalog_view.jsx";
 export { providerObservation, providerFreshness } from "./youtrack_filters.js";
 
 let locationListener = () => {};
@@ -358,6 +360,7 @@ function App() {
   const live = liveEntry?.data?.tmdb_id === suppliedTmdbId(film) ? liveEntry.data : null;
   const liveMatches = liveMetadataMatches(film, live);
   const observation = film ? providerObservation(liveMatches ? {...film, live} : film) : null;
+  const watchedHistory = film ? movaryHistory(movary, film.idReadable) : null;
   const locked = busy || loadingFilms || restoringLocation || !!pendingPreview || !!pendingNavigation;
   const filmEditLocked = locked || editBaseline?.issueId !== film?.id;
   const hasPageDraft = hasUnsavedPageDraft({filmDirty, prefDirty, commentDrafts, newTitle, newTmdbId});
@@ -376,7 +379,12 @@ function App() {
         <button disabled={locked} onClick={() => selectFilm(null)}>← Back to films</button>
         <h2>{film.summary}</h2><p>{film.idReadable} · {filmYearLabel(film)}</p>
         <p>{field(film, "FilmIQ Director") ? `Source-listed director: ${field(film, "FilmIQ Director")}` : "Director unknown"}</p>
-        <p>{movary?.status === "available" && movary?.films?.[film.idReadable]?.watched ? `Watched in Movary (snapshot ${movary.observed_at || "time unknown"}).` : "Movary watched status unknown."}</p>
+        {watchedHistory ? <section>
+          <h3>Watched in Movary</h3><p>Snapshot observed {watchedHistory.observedAt || "time unknown"}. Watch dates and counts come from Movary; unknown dates remain unknown.</p>
+          {watchedHistory.plays === null ? <p>Play entries unavailable.</p> : watchedHistory.plays.length ? <ul>{watchedHistory.plays.map((entry, index) => <li key={index}>{entry.date || "Date unknown"} · {entry.plays} play(s)</li>)}</ul> : <p>No play entries in this snapshot.</p>}
+          {watchedHistory.exportDates === null ? <p>History export dates unavailable.</p> : watchedHistory.exportDates.length ? <p>History export dates: {watchedHistory.exportDates.map((date) => date || "unknown").join(", ")}. This is a separate source and is not added to play counts.</p> : <p>No history export dates in this snapshot.</p>}
+        </section> : <p>Movary watched status unknown.</p>}
+        <ReviewedCatalog source="youtrack" filmId={film.idReadable} tmdbId={suppliedTmdbId(film)} trackerTitle={film.summary} host={host} />
         <h3>Live TMDB details</h3>
         <p>Optional lookup for the supplied TMDB ID; verify that the result matches this film. Results stay in this page and are not saved to YouTrack.</p>
         <button type="button" disabled={locked || liveBusy || liveRateLimited || !suppliedTmdbId(film)} onClick={loadLiveMetadata}>{liveBusy ? "Loading metadata…" : "Load live metadata"}</button>

@@ -1,0 +1,30 @@
+import assert from "node:assert/strict";
+import {readReviewedCatalog, reviewedCatalog} from "./reviewed_catalog.js";
+
+const now = Date.parse("2026-01-15T12:00:00Z");
+const movie = {tmdb_id:42,title:"Fictional Film",original_title:"Fictional Original",year:2001,directors:["Fictional Director"],runtime_minutes:100,source:"Reviewed display catalog",observed_at:"2026-01-01T00:00:00Z",expires_at:"2026-01-30T00:00:00Z",attribution:"Fictional attribution"};
+assert.equal(reviewedCatalog(movie,42,"fictional  film",now),movie);
+assert.equal(reviewedCatalog(movie,42,"Fictional Original",now),movie);
+assert.equal(reviewedCatalog({...movie,year:null,runtime_minutes:null},42,"Fictional Film",now)?.year,null);
+assert.equal(reviewedCatalog(movie,43,"Fictional Film",now),null);
+assert.equal(reviewedCatalog(movie,42,"Different Film",now),null);
+assert.equal(reviewedCatalog(movie,42,"Fictional Film",Date.parse(movie.expires_at)),null,"expiry must hide facts at the boundary");
+assert.equal(reviewedCatalog(movie,42,"Fictional Film",Date.parse("2025-12-31T00:00:00Z")),null);
+assert.equal(reviewedCatalog({...movie,expires_at:"2027-01-30T00:00:00Z"},42,"Fictional Film",now),null);
+assert.equal(reviewedCatalog({...movie,observed_at:"2026-02-30T00:00:00Z"},42,"Fictional Film",now),null);
+assert.equal(reviewedCatalog({...movie,directors:[]},42,"Fictional Film",now),null);
+assert.equal(reviewedCatalog({...movie,attribution:""},42,"Fictional Film",now),null);
+assert.equal(reviewedCatalog({...movie,year:"2001"},42,"Fictional Film",now),null);
+
+const calls=[];
+const fetcher=async (url,options)=>{calls.push({url,options});return {ok:true,json:async()=>movie};};
+assert.equal(await readReviewedCatalog("kaneo","fictional task",null,fetcher),movie);
+assert.deepEqual(calls,[{url:"http://localhost:15176/catalog/fictional%20task",options:{credentials:"include",cache:"no-store"}}]);
+const host={fetchYouTrack:async(path,options)=>{calls.push({path,options});return {status:"available",film:movie};}};
+assert.equal(await readReviewedCatalog("youtrack","FILMPOC-1",host),movie);
+assert.deepEqual(calls[1],{path:"issues/FILMPOC-1/extensionEndpoints/filmiq-tmdb-live-isolated/metadata/catalog",options:{method:"GET"}});
+assert.equal(await readReviewedCatalog("youtrack","FILMPOC-2",{fetchYouTrack:async()=>({status:"unknown"})}),null);
+assert.equal(await readReviewedCatalog("kaneo","",null,fetcher),null);
+assert.equal(await readReviewedCatalog("unknown","fictional",null,fetcher),null);
+assert.equal(calls.length,2,"unavailable routes make no other requests");
+console.log("Reviewed catalog read, attribution, identity and expiry checks passed");

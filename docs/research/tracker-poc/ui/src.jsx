@@ -18,6 +18,7 @@ import { createFilm, CreatedFilmUnverified, identityField, matchedLive } from ".
 import { TmdbCredits } from "./tmdb_credits.jsx";
 import { filterMayExcludeUnknown } from "./metadata_filter_coverage.js";
 import { metadataChanges, storedMetadata } from "./kaneo_metadata.js";
+import { ReviewedCatalog } from "./reviewed_catalog_view.jsx";
 
 const api = "http://localhost:15173/api";
 function ProviderBadges({ film }) {
@@ -622,6 +623,7 @@ function App() {
                   <ul>{(movary.films[film.fields["POC TMDB ID"]].played_watch_dates || []).map((entry, index) => <li key={index}>{entry.date || "Date unknown"} · {entry.plays} play(s)</li>)}</ul>
                   {!!movary.films[film.fields["POC TMDB ID"]].history_export_dates?.length && <p>History export dates: {movary.films[film.fields["POC TMDB ID"]].history_export_dates.map((date) => date || "unknown").join(", ")}. This is a separate source and is not added to play counts.</p>}
                 </section>}
+                <ReviewedCatalog source="kaneo" filmId={film.id} tmdbId={tmdbId(film)} trackerTitle={film.title} />
                 {film.fields["POC TMDB ID"] && (
                   <section>
                     <h3>Live TMDB details</h3>
