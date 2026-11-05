@@ -94,7 +94,7 @@ column change through the API. The server accepted authenticated requests with
 the UI origin and returned the correct CORS headers. **The actual browser has
 not been tested**: the Mac was locked during this run. The UI uses fixture IDs,
 not TMDB IDs, and does not implement personal scores, watched status, watchlist,
-real posters, reviews, comments, metadata enrichment, or real-film creation.
+real posters, reviews, comments, live TMDB enrichment, or real-film creation.
 Its filters and rendering at 1,000 films have not been measured. Do not use it
 for personal data or represent it as the completed Kaneo POC.
 
@@ -103,7 +103,17 @@ Fixture representation: task title and description hold title and synopsis;
 are task-wide custom fields. `to-do`, `in-progress`, `in-review`, and `done`
 are used as approximate fixture columns; `done` is not Kaneo's archive feature.
 The UI labels missing provider data as unknown. The generated preferences,
-rentals and checked timestamps have not been persisted.
+rentals and checked timestamps have not been persisted for the seeded dataset.
+
+The separate `enrichment.py` worker uses a backend protocol and the existing
+FilmIQ availability normalizer. Its only source is explicitly fictional, with
+IDs that are not TMDB IDs. `kaneo_enrich_check.py` imports a fictional record,
+repeats the import, and verifies that a user-edited synopsis, genre and note
+survive. It stores complete synthetic subscription/rental/purchase observations
+and their checked timestamp together in a single text field. A missing,
+malformed or failed provider response preserves the previous observation. This
+is a sequential fixture test: live TMDB, concurrent imports, and the YouTrack
+adapter are not implemented. Task-wide notes are not per-user preferences.
 
 ## Reproduce the isolated Kaneo experiment
 
@@ -144,6 +154,7 @@ sequentially but is **not safe for simultaneous seeders**.
 POC_PROJECT_ID='<printed project ID>'
 python3 docs/research/tracker-poc/kaneo_smoke.py --project "$POC_PROJECT_ID" --cookie-file .cache/tracker-poc/kaneo-cookies.txt
 python3 docs/research/tracker-poc/kaneo_viewer_check.py --directory .cache/tracker-poc
+uv run python docs/research/tracker-poc/kaneo_enrich_check.py --directory .cache/tracker-poc
 python3 docs/research/tracker-poc/kaneo_seed.py --project "$POC_PROJECT_ID" --cookie-file .cache/tracker-poc/kaneo-cookies.txt --count 1000
 python3 docs/research/tracker-poc/kaneo_benchmark.py --project "$POC_PROJECT_ID" --cookie-file .cache/tracker-poc/kaneo-cookies.txt
 cd docs/research/tracker-poc/ui

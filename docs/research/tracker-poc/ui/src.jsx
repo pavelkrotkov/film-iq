@@ -48,8 +48,24 @@ async function load(project) {
   return films.map((film) => ({ ...film, fields: values.get(film.id) || {} }));
 }
 
+function syntheticAvailability(film) {
+  try {
+    const value = JSON.parse(
+      film.fields["POC Synthetic Availability"] || "null",
+    );
+    if (!value || value.source !== "synthetic fixture, not TMDB") return null;
+    if (!Array.isArray(value.subscription) || !Array.isArray(value.rent))
+      return null;
+    return value;
+  } catch {
+    return null;
+  }
+}
+
 function providers(film) {
   try {
+    const observation = syntheticAvailability(film);
+    if (observation) return observation.subscription;
     const raw =
       film.fields["POC Subscription Providers"] || film.fields["POC Streaming"];
     if (!raw) return null;
@@ -266,6 +282,15 @@ function App() {
                 <p>
                   Critic score: {film.fields["POC Critic Score"] || "Unknown"}
                 </p>
+                {syntheticAvailability(film) && (
+                  <p>
+                    Synthetic rentals:{" "}
+                    {syntheticAvailability(film).rent.join(", ") ||
+                      "None reported"}
+                    . Checked:{" "}
+                    {syntheticAvailability(film).checked_at || "Unknown"}.
+                  </p>
+                )}
               </div>
             </div>
           </section>
