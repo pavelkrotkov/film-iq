@@ -13,7 +13,8 @@ ADRs document what is *decided*, what is deliberately *provisional*, and which e
 | [0007](0007-movary-ratings-export.md) | Complete ratings via existing CLI export, API for history | Accepted for POC |
 | [0008](0008-availability-providers.md) | TMDB baseline, head-to-head free provider evaluation | Provisional |
 | [0009](0009-bundle-optimization.md) | Explicit utility, entitlement and no-purchase option | Accepted policy; calibration provisional |
-| [0010](0010-interface-scope.md) | CLI/report, not a new Movary replacement | Accepted |
+| [0010](0010-interface-scope.md) | FilmIQ primary recommendation UI; CLI/reports retained | Accepted; amended 2026-11-04 |
 | [0011](0011-cost-rights.md) | Zero-new-fee target and rights-aware persistence | Accepted |
 | [0012](0012-empirical-gates.md) | Measure before committing advanced dependencies | Accepted |
+| [0013](0013-recommendation-web.md) | Server-rendered web UI, Waitress, local dispositions, private deployment | Accepted |
 

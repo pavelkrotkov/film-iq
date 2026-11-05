@@ -9,7 +9,7 @@ decision are required to finish development or release.
 
 **Status:** Gate A's narrow POC is validated through real API reads, a sourced report and a user-approved watchlist round trip. Source/provider research and production release remain open; see [the evidence and limits](docs/a7-live-validation.md).
 
-film-iq connects critics' lists, polls, festivals, awards, film identity, personal viewing history and US viewing availability. It explains **why a film matters**, distinguishes critical recognition from optional personal judgments, and proposes realistic viewing bundles and optional monthly streaming-service choices. It is not another watch-history application.
+film-iq connects critics' lists, polls, festivals, awards, film identity, personal viewing history and US viewing availability. It explains **why a film matters**, distinguishes critical recognition from optional personal judgments, and proposes realistic viewing bundles and optional monthly streaming-service choices. FilmIQ is the recommendation interface; Movary remains the personal-history backend.
 
 ## Start here
 
@@ -40,7 +40,7 @@ Availability integration retains its separate production-provider gate.
 
 Movary remains authoritative for watched films, dates, personal ratings and explicit watchlist entries. The companion reads that data and writes only **user-approved** watchlist additions. TMDB IDs are operational movie identity, not substitutes for preserved raw source observations.
 
-Initial implementation: Python 3.12+, SQLite on local storage, CLI and reports; optional HTTP service later. HTTP parsing first; Crawl4AI, LangExtract and dlt only after measurements. TMDB/JustWatch is the availability baseline; compare Movie of the Night on specialty-film coverage and plan entitlement before adoption. Avoid graph databases, vector indexes, microservices and a second tracking UI without evidence.
+Implementation: Python 3.12+, local SQLite, CLI/reports and a planned server-rendered recommendation UI ([build epic](https://github.com/pavelkrotkov/film-iq/issues/98)). HTTP parsing first; Crawl4AI, LangExtract and dlt only after measurements. TMDB/JustWatch is the availability baseline; compare Movie of the Night on specialty-film coverage and plan entitlement before adoption. Avoid graph databases, vector indexes, microservices and speculative frontend infrastructure.
 
 ## Development
 
