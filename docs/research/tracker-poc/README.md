@@ -6,7 +6,8 @@ intentional watchlist. The user authorized a separate local import of existing
 candidate records and a read-only watched-history view. Use fictional records
 and users for destructive, workflow, authorization, and performance tests.
 The [working comparison](comparison.md) maps the evidence and gaps to the
-requested evaluation criteria; scores remain pending.
+requested evaluation criteria and includes provisional scores. For the
+already configured Mac, see the [local runbook](local-runbook.md).
 
 ## Evidence collected so far
 
@@ -247,11 +248,14 @@ this as the completed Kaneo POC.
 Fixture representation: task title and description hold title and synopsis;
 `POC Fixture ID`, `POC Year`, `POC Genre`, and `POC Subscription Providers`
 are task-wide custom fields. `to-do`, `in-progress`, `in-review`, and `done`
-are used as approximate fixture columns; `done` is not Kaneo's archive feature.
+are used as approximate fixture columns; new archived fixtures use Kaneo's
+separate `archived` status. Previously seeded `done` records remain unchanged.
 The UI labels missing provider data as unknown. The generated preferences,
 rentals and checked timestamps have not been persisted for the full seeded dataset.
-The first 30 films also have synthetic critic scores and summaries; reseeding
-fills only missing critic fields and preserved the existing smoke-test score.
+The first 30 newly seeded films also have synthetic critic scores and summaries;
+reseeding leaves existing records and their fields unchanged. In a new fictional
+project, a four-film live check verified that the archived fixture had Kaneo's
+actual `archived` status; reseeding made zero writes and preserved all fields.
 
 ### Per-user preference bridge
 
@@ -302,6 +306,16 @@ is a sequential fixture test. A corresponding YouTrack adapter also passes a
 synthetic repeat, lifecycle and failure-preservation check. Neither adapter
 persists live TMDB responses, and concurrent imports are not tested. Task-wide
 notes are not per-user preferences.
+
+The YouTrack fixture adapter also stores a fictional release year and genre.
+For an existing issue it backfills an empty field only when paginated field
+history shows no previous change; explicit clears and existing values survive.
+It assumes a single worker with no concurrent edits. A live FILMPOC-only check
+created two fictional issues and verified creation, backfill, explicit clear,
+synopsis and lifecycle preservation. The repeatable
+`youtrack_enrich_live_check.py` leaves two new fictional issues per run. The
+page displays stored and source-listed years separately; neither establishes
+the identity of a real film.
 
 On 2026-11-05, two read-only requests using the existing project credential
 checked TMDB's documented example movie ID 11: both the movie-details and
