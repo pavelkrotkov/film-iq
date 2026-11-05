@@ -112,6 +112,14 @@ passed for the sidecar, but its actual rendering in the browser has not been
 verified. The real-data import contains source-list assertions and links, not
 TMDB API response bodies. Source terms and upstream provenance still govern
 retention; this experiment does not establish unrestricted reuse.
+An aggregate inspection found 112 accepted source links across 106 films: 46
+critic selections, 17 award outcomes, and 49 registry selections. None is
+explicitly typed as an individual critic review. These are source links, not
+proof of review coverage or independent verification of every film identity.
+The Kaneo UI can edit a title through a separate API call; its imported field
+provenance continues to describe the original assertion and does not verify
+the edited title against its external identifier. The fictional rename check
+verifies persistence, viewer denial and restoration, not identity correctness.
 
 The optional local TMDB reader fetches metadata and offers on demand without
 writing responses into tracker history. Page-memory batches are limited to 30
@@ -363,6 +371,9 @@ The 130 records now have a sanitized source-provenance field, backfilled only
 where missing; exact input provenance remains in the ignored private manifest.
 A repeat backfill changed zero records. Source evidence IDs and links are
 validated before any import writes, and source-listed years remain assertions.
+Imported field provenance describes the original source assertion. When a user
+edits a title, revalidate it against the saved external identity and tracker
+history: editing the title does not rewrite or independently verify provenance.
 Anonymous issue access returned HTTP 401; signed-in low-privilege access to
 the real project has not been tested. Two fictional local accounts were added
 only to the synthetic project team. An administrator's effective-role query

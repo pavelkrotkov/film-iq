@@ -94,8 +94,16 @@ const live = {
 assert.deepEqual(filterFilms([live], {...options, provider: "Fixture Stream", minimum: "", genre: "Drama"}).map((film) => film.id), ["live"]);
 assert.equal(freshness(live, Date.parse("2026-11-06T00:00:00Z")), "recent");
 const movaryFilm = { ...live, fields: {"POC TMDB ID": "12"} };
-assert.equal(filterFilms([movaryFilm], { ...options, provider: "", minimum: "", movaryOnly: true, movary: {films: {"12": {watched: true}}} }).length, 1);
+assert.equal(filterFilms([movaryFilm], { ...options, provider: "", minimum: "", movaryOnly: true, movary: {status: "available", films: {"12": {watched: true}}} }).length, 1);
+assert.equal(filterFilms([movaryFilm], { ...options, provider: "", minimum: "", movaryOnly: true, movary: {status: "unknown", films: {"12": {watched: true}}} }).length, 0, "unknown history must not supply watched matches");
 assert.equal(filterFilms([movaryFilm], { ...options, provider: "", minimum: "", movaryOnly: true, movary: null }).length, 0);
+const otherFilm = { ...live, id: "other", fields: {"POC TMDB ID": "13"} };
+const byMovary = { ...options, provider: "", minimum: "", excludeMovaryWatched: true };
+const userAHistory = {status: "available", films: {"12": {watched: true}}};
+const userBHistory = {status: "available", films: {"13": {watched: true}}};
+assert.deepEqual(filterFilms([movaryFilm, otherFilm], {...byMovary, movary: userAHistory}).map((film) => film.id), ["other"], "exclude only user A's known watched film; unknown remains visible");
+assert.deepEqual(filterFilms([movaryFilm, otherFilm], {...byMovary, movary: userBHistory}).map((film) => film.id), ["live"], "another user has an independent watched history");
+assert.equal(filterFilms([movaryFilm], {...byMovary, movary: null}).length, 0, "unavailable history must not silently act as an empty history");
 console.log(
   "30-fixture user-specific provider filter, numeric sort and freshness checks passed",
 );

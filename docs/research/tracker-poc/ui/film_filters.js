@@ -53,6 +53,7 @@ export function filterFilms(films, options) {
     sortInterest,
     preferences,
     movaryOnly,
+    excludeMovaryWatched,
     movary,
   } = options;
   return films
@@ -61,7 +62,8 @@ export function filterFilms(films, options) {
         item.title.toLowerCase().includes(query.toLowerCase()) &&
         (!provider || providers(item)?.includes(provider)) &&
         (!watchlistOnly || preferences?.[item.id]?.watchlist) &&
-        (!movaryOnly || movary?.films?.[item.fields["POC TMDB ID"]]?.watched === true) &&
+        (!movaryOnly || (movary?.status === "available" && movary?.films?.[item.fields["POC TMDB ID"]]?.watched === true)) &&
+        (!excludeMovaryWatched || (movary?.status === "available" && movary?.films?.[item.fields["POC TMDB ID"]]?.watched !== true)) &&
         (!minimum ||
           (preferences?.[item.id]?.interest_score ?? 0) >= Number(minimum)) &&
         (!genre || item.fields["POC Genre"] === genre || item.live?.genres?.includes(genre)) &&

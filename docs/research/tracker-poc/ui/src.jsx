@@ -7,6 +7,7 @@ import {
 } from "./film_filters.js";
 import { BATCH_LIMIT, chooseBatch, fetchLiveMovie, mergeResult, runBatch, safeImdbTitleUrl, tmdbId } from "./live_batch.js";
 import { fetchRatings } from "./mdblist_ui.js";
+import { evidenceExplanation, evidenceLabel, sourceLabel } from "./source_evidence.js";
 import { clearSavedDraft, currentComments, setCommentDraft } from "./comment_drafts.js";
 import { emptyPreference, markPreferenceSaved, mergeFilmDraft, syncPreferenceDraft } from "./preference_draft.js";
 import { missingLinkedFilm, unavailableFilterSources } from "./availability_state.js";
@@ -37,13 +38,14 @@ function SourceEvidence({ film }) {
   return <section>
     <h3>Source evidence</h3>
     {film.fields["POC Identity Provenance"] && <p>Identity provenance: {film.fields["POC Identity Provenance"]}</p>}
+    <p>Imported provenance describes the original source assertion. If a title is edited, revalidate it against the saved external identity and tracker history; editing does not update or independently verify provenance.</p>
     {film.fields["POC Source Year"] && <p>Source-listed year: {film.fields["POC Source Year"]} (not independently verified).</p>}
     {links.length ? <ul>{links.map((item, index) => {
       let url;
-      try { const parsed = new URL(item.url); if (parsed.protocol === "https:" || parsed.protocol === "http:") url = parsed.href; } catch { /* Invalid source links stay unavailable. */ }
-      return <li key={item.entry_id || index}>{url ? <a href={url} target="_blank" rel="noreferrer">{item.source_id || "Source"} ↗</a> : "Source link unavailable"}{item.kind ? ` · ${item.kind}` : ""}{item.rank ? ` · rank ${item.rank}` : ""}{item.lineage_kind ? ` · ${item.lineage_kind}` : ""}</li>;
+      try { const parsed = new URL(item?.url); if ((parsed.protocol === "https:" || parsed.protocol === "http:") && !parsed.username && !parsed.password) url = parsed.href; } catch { /* Invalid source links stay unavailable. */ }
+      return <li key={item?.entry_id || index}>{url ? <a href={url} target="_blank" rel="noreferrer">{sourceLabel(item)} ↗</a> : `${sourceLabel(item)}: link unavailable`} · {evidenceLabel(item?.kind)}{item?.rank ? ` · rank ${item.rank}` : ""}{item?.lineage_kind ? ` · ${item.lineage_kind}` : ""}</li>;
     })}</ul> : <p>Source evidence unknown.</p>}
-    <p>These links identify source evidence; a list or ballot is not necessarily an individual review.</p>
+    <p>{evidenceExplanation(links)}</p>
   </section>;
 }
 
@@ -134,15 +136,16 @@ function App() {
     [watchlistOnly, setWatchlistOnly] = useState(false),
     [sortInterest, setSortInterest] = useState(false);
   const [movary, setMovary] = useState(null),
-    [movaryOnly, setMovaryOnly] = useState(false);
+    [movaryOnly, setMovaryOnly] = useState(false),
+    [excludeMovaryWatched, setExcludeMovaryWatched] = useState(false);
   const [minimum, setMinimum] = useState(""),
     [genre, setGenre] = useState(""),
     [lifecycle, setLifecycle] = useState(""),
     [watched, setWatched] = useState(""),
     [freshnessFilter, setFreshnessFilter] = useState("");
-  const [filmDraft, setFilmDraft] = useState({description: "", status: ""}),
+  const [filmDraft, setFilmDraft] = useState({title: "", description: "", status: ""}),
     [detailReady, setDetailReady] = useState(false);
-  const {description, status} = filmDraft;
+  const {title, description, status} = filmDraft;
   const [newTitle, setNewTitle] = useState("");
   const [comments, setComments] = useState(null),
     [commentDrafts, setCommentDrafts] = useState({});
@@ -274,7 +277,7 @@ function App() {
       active = false;
     };
   }, [film]);
-  const unavailableSources = unavailableFilterSources({preferences, movary, minimum, watched, watchlistOnly, sortInterest, movaryOnly});
+  const unavailableSources = unavailableFilterSources({preferences, movary, minimum, watched, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched});
   const filtered = useMemo(
     () =>
       filterFilms(shownFilms, {
@@ -289,6 +292,7 @@ function App() {
         sortInterest,
         preferences,
         movaryOnly,
+        excludeMovaryWatched,
         movary,
       }),
     [
@@ -299,6 +303,7 @@ function App() {
       sortInterest,
       preferences,
       movaryOnly,
+      excludeMovaryWatched,
       movary,
       minimum,
       genre,
@@ -335,9 +340,12 @@ function App() {
   }
   async function save(event) {
     event.preventDefault();
+    if (!title.trim()) { setError("Title cannot be blank."); return; }
     setBusy(true);
     setError("");
     try {
+      if (title.trim() !== film.title)
+        await request(`/task/title/${encodeURIComponent(film.id)}`, "PUT", { title: title.trim() });
       await request(`/task/description/${encodeURIComponent(film.id)}`, "PUT", {
         description,
       });
@@ -572,6 +580,10 @@ function App() {
                   <ProviderBadges film={shownFilm || film} />
                 </div>
                 <form onSubmit={save}>
+                  <label>
+                    Title
+                    <input value={title} onChange={(e) => { detailDirty.current = true; setFilmDraft({...filmDraft, title: e.target.value}); }} maxLength="200" required disabled={!detailReady || busy} />
+                  </label>
                   <label>
                     Synopsis
                     <textarea
@@ -812,8 +824,12 @@ function App() {
                   Watchlist
                 </label>
                 <label>
-                  <input type="checkbox" checked={movaryOnly} disabled={movary?.status !== "available" && !movaryOnly} onChange={(e) => setMovaryOnly(e.target.checked)} />{" "}
+                  <input type="checkbox" checked={movaryOnly} disabled={movary?.status !== "available" && !movaryOnly} onChange={(e) => {setMovaryOnly(e.target.checked); if (e.target.checked) setExcludeMovaryWatched(false);}} />{" "}
                   Watched in Movary
+                </label>
+                <label>
+                  <input type="checkbox" checked={excludeMovaryWatched} disabled={movary?.status !== "available" && !excludeMovaryWatched} onChange={(e) => {setExcludeMovaryWatched(e.target.checked); if (e.target.checked) setMovaryOnly(false);}} />{" "}
+                  Exclude known watched in Movary
                 </label>
                 <label>
                   <input
@@ -830,7 +846,7 @@ function App() {
             {busy ? (
               <p>Loading records…</p>
             ) : unavailableSources.length ? (
-              <p role="alert">Cannot apply filters: {unavailableSources.join(" and ")} unavailable. <button type="button" onClick={() => {setMinimum(""); setWatched(""); setWatchlistOnly(false); setSortInterest(false); setMovaryOnly(false);}}>Clear personal filters</button></p>
+              <p role="alert">Cannot apply filters: {unavailableSources.join(" and ")} unavailable. <button type="button" onClick={() => {setMinimum(""); setWatched(""); setWatchlistOnly(false); setSortInterest(false); setMovaryOnly(false); setExcludeMovaryWatched(false);}}>Clear personal filters</button></p>
             ) : (
               <div className="grid">
                 {filtered.map((item) => (
