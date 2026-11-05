@@ -9,7 +9,8 @@ intentional watchlist. Use synthetic films and users for these experiments.
 * The local YouTrack `2026.2.19728` instance completed initial setup and its
   API returned HTTP 200. Its Docker base URL was corrected to
   `http://localhost:18180` using JetBrains' documented `configure` command.
-  The administrator sign-in and the application itself still need verification.
+  Administrator sign-in worked, and the YouTrack UI created the synthetic
+  `FILMPOC` project and issue `FILMPOC-1`, with a fictional title and synopsis.
   See [changing the base URL](https://www.jetbrains.com/help/youtrack/server/change-base-url-listen-port.html).
 * A preliminary full-page React widget package can be built with
   `python3 docs/research/tracker-poc/build_youtrack.py` after installing the UI
