@@ -2478,6 +2478,37 @@ MI≥50; observed minimum MI is 50.025032. The recurring test budget is recorded
 AGENTS.md. CI and independent final-head review dispositions are required before
 merge and will be recorded in the PR.
 
+## UI1 browse and evidence delivery — 2026-11-04
+
+Related #99/#98: the first server-rendered recommendation slice reuses discovery
+JSON through a small WSGI application and pinned Waitress 3.0.2 (ZPL-2.1).
+Native HTML/CSS supplies responsive cards, title/director search, exact evidence
+and watched filters, transparent source/public-support ordering, and film detail
+pages. Provenance leads the detail page; technical original-record fields and
+optional personal notes remain expandable. No synthetic poster/score/offer or
+personal-data requirement is added. Instructions are in
+[the website guide](docs/usage/recommendation-ui.md).
+
+Accepted reviewed candidates are coalesced independently of the CLI suggestion
+gate. Missing/stale personal history keeps films browsable while both labels and
+filters use unknown watched state. Source rank/ties/unranked semantics, original
+versus reviewed display facts, typed award recipients, lineage, rights-filtered
+viewing variants/credits and original check dates remain inspectable. Each page
+re-reads current acceptance/retention; no raw private snapshot/comments/credentials
+or rights-review text is rendered. Escaped text, restricted links, restrictive
+browser headers and no-store responses cover this read-only web boundary.
+
+One credential-free WSGI journey extends the default collection from 199 to 200:
+199 pass and the existing opt-in live check skips. It exercises accepted-source
+browsing, search/filter/details, original assertions and award recipient meaning,
+escaping, nullable/stale personal state, unresolved identity and unavailable-input
+behavior. Ruff check/format and ty pass. Changed Python modules, including tests,
+have CC≤8 and MI≥50; minimum MI is 50.113460. Desktop browse/detail pages were
+visually inspected against the actual bounded source dataset. Persistent private
+deployment/mobile acceptance belongs to UI4; no user satisfaction is inferred.
+This slice performs no writes, provider requests or scheduling changes. UI2 local
+dispositions and UI3 Movary controls may start in parallel after merge.
+
 ## UI architecture planning evidence — 2026-11-04
 
 UI epic #98 and slices #99–102 are published with native parent/dependency links.
@@ -2487,3 +2518,27 @@ Standards and Spec reviews of the initial head reported no findings. Local Ruff
 check/format, ty and the full unchanged suite pass: 199 collected, 198 passed,
 one opt-in skip. CI/re-review of the corrected head precede merge. No application,
 personal state or provider configuration changed in this planning delivery.
+
+Independent UI1 review found that supplemental accepted critic evidence could
+influence ordering without appearing in film details, and search used only the
+first coalesced source title/director. Details now combine selected and attached
+accepted records once per entry/revision, including critic/unclassified records,
+with rank/tie/unranked, source assertions, locator and classification-review status
+inspectable. Typed award facts stay with their original record. The component
+reader now includes original director/position fields, and search includes all
+accepted original names alongside reviewed display names. Self-review also fixed
+a viewing-link guard: a reviewed older baseline cannot lend film certainty to an
+unreviewed latest attempt. The existing journey covers these concrete regressions
+without adding collected cases or defensive invalid-input matrices.
+
+Amazon Q's empty-source-reasons, generated-count and noninteger-ID findings were
+reviewed against the actual discovery/coalescing and curated-ID producers and
+rebutted with code evidence; their conversations are resolved. No fallback empty
+reason or broad IndexError catch is added for states these producers cannot emit.
+The independent provenance/search findings and the enclosing-offer review guard
+are corrected as described above; exact-head re-review and CI remain required.
+
+Corrected-head local validation remains green: Ruff check/format and ty pass;
+199 tests pass with the existing opt-in skip (200 collected). All 12 changed
+Python modules, now including the shared recognition reader and both web test
+modules, meet CC≤8 and MI≥50 (minimum 50.113460).

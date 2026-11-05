@@ -9,10 +9,11 @@ from film_iq.cli_parser import build_parser
 
 def main(argv: Sequence[str] | None = None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
-    if argv and argv[0] in {"changes", "status"}:
+    if argv and argv[0] in {"changes", "status", "serve"}:
         from importlib import import_module
 
-        return import_module(f"film_iq.{argv[0]}_command").main(argv[1:])
+        module = {"serve": "web_cli"}.get(argv[0], f"{argv[0]}_command")
+        return import_module(f"film_iq.{module}").main(argv[1:])
     if argv and argv[0] in {"discover", "import-list", "refresh-movary", "acquisition-status"}:
         from film_iq.discovery_cli import main as discovery_main
 

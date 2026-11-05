@@ -15,7 +15,7 @@ KINDS = (
 def current_components(db: sqlite3.Connection) -> list[dict]:
     cursor = db.execute("""
         SELECT o.entry_id,o.revision_id,m.film_id,f.tmdb_id,m.decision_id AS match_decision_id,
-               d.id AS document_id,o.raw_title,o.listed_year,o.raw_context,
+               d.id AS document_id,o.raw_title,o.listed_year,o.director,o.position,o.raw_context,
                o.rank,o.tie,l.completeness,l.rank_semantics,
                d.url,d.published_at,o.locator,l.edition,l.author,l.eligibility,
                l.lineage_kind,l.lineage,l.lineage_verification,s.id AS source_id,s.family,
