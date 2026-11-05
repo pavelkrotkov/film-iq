@@ -21,7 +21,8 @@ Neither provider research nor personal ratings/plans blocks this build.
 | [#101 UI3](https://github.com/pavelkrotkov/film-iq/issues/101) | Preview/confirm Movary watchlist promotion, log a watch date, see ratings and open native rating editor | UI1; parallel with UI2 |
 | [#102 UI4](https://github.com/pavelkrotkov/film-iq/issues/102) | Persistent private HTTPS website with current Plex-imported history and verified browser journey | Final acceptance after UI1–3; preparation may start earlier |
 
-All slices are AFK and use separate branches/worktrees inside this project.
+All slices can be implemented autonomously without another user decision and
+use separate branches/worktrees inside this project.
 Native GitHub sub-issue and blocked-by relationships mirror these actual
 acceptance dependencies. Each implementation PR needs bot-review time,
 independent GPT-6.1 Sol high Standards/Spec reviews posted to GitHub, disposition
@@ -2476,3 +2477,13 @@ remaining tracked Python files satisfy CC≤8 (including methods/closures) and
 MI≥50; observed minimum MI is 50.025032. The recurring test budget is recorded in
 AGENTS.md. CI and independent final-head review dispositions are required before
 merge and will be recorded in the PR.
+
+## UI architecture planning evidence — 2026-11-04
+
+UI epic #98 and slices #99–102 are published with native parent/dependency links.
+PR #103 amends ADRs 0001/0010 and adds 0013. The bot found an undefined workflow
+acronym; it is replaced with plain language. Independent GPT-6.1 Sol high
+Standards and Spec reviews of the initial head reported no findings. Local Ruff
+check/format, ty and the full unchanged suite pass: 199 collected, 198 passed,
+one opt-in skip. CI/re-review of the corrected head precede merge. No application,
+personal state or provider configuration changed in this planning delivery.
