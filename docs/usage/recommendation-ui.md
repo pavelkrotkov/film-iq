@@ -103,15 +103,15 @@ links are restricted to HTTP(S). It never exposes unresolved film-action routes.
 
 Keep code, SQLite, private inputs, process configuration, and logs inside the
 attached project. The selected deployment uses Waitress bound to Mac loopback,
-a native supervised SSH reverse tunnel, and Hermes's existing Tailscale Serve
-HTTPS proxy. No project data is copied to Hermes. No public listener or Funnel
+a native supervised SSH reverse tunnel, and the tailnet server's existing Tailscale Serve
+HTTPS proxy. No project data is copied to the tailnet server. No public listener or Funnel
 is needed. The service requires the Mac to be awake and its user session active.
 
 Project-local configuration lives in `.cache/ui-build/runtime/`:
 
 - `com.filmiq.ui.plist`: `uv run --offline --env-file` starts `film-iq serve`
   with absolute installation paths, loopback binding, and project-local caches.
-- `com.filmiq.ui.tunnel.plist`: SSH forwards Hermes `127.0.0.1:8770` to the
+- `com.filmiq.ui.tunnel.plist`: SSH forwards the tailnet server’s `127.0.0.1:8770` to the
   Mac's `127.0.0.1:8770`, using existing SSH authentication. Batch mode and
   failure-on-forwarding-error prevent a stalled password prompt or false start.
 - UI/tunnel stdout and stderr logs are private files in the same directory.
@@ -121,15 +121,19 @@ with mode 0600 and logs/configuration under a mode-0700 private directory.
 Do not print credentials or raw personal snapshots when inspecting failures.
 
 Register the project-local plists directly, after checking both loopback ports
-are free and the merged application is installed:
+are free and the merged application is installed. Run from the attached project
+root and set the existing SSH alias and the private URL selected for this installation:
 
 ```sh
-launchctl bootstrap gui/$(id -u) /Users/pavel/dev/film-iq/.cache/ui-build/runtime/com.filmiq.ui.plist
-launchctl bootstrap gui/$(id -u) /Users/pavel/dev/film-iq/.cache/ui-build/runtime/com.filmiq.ui.tunnel.plist
-ssh hermes 'tailscale serve --bg --yes --https=8450 http://127.0.0.1:8770'
+FILMIQ_PROJECT="$(pwd -P)"
+FILMIQ_SSH_HOST="your-existing-ssh-alias"
+FILMIQ_ORIGIN="https://your-tailnet-host:8450"
+launchctl bootstrap gui/$(id -u) "$FILMIQ_PROJECT/.cache/ui-build/runtime/com.filmiq.ui.plist"
+launchctl bootstrap gui/$(id -u) "$FILMIQ_PROJECT/.cache/ui-build/runtime/com.filmiq.ui.tunnel.plist"
+ssh "$FILMIQ_SSH_HOST" 'tailscale serve --bg --yes --https=8450 http://127.0.0.1:8770'
 ```
 
-The intended endpoint is `https://hermes.tail377b2a.ts.net:8450/`. Preserve every
+Open the configured `$FILMIQ_ORIGIN/` after verifying it. Preserve every
 existing Serve route; never use `tailscale serve reset`. An added Serve route
 alone does not prove the UI is running. Verify the HTTPS response, native process
 state, loopback listener, and existing Movary service before reporting success.
@@ -166,7 +170,7 @@ launchctl bootout gui/$(id -u)/com.filmiq.ui.tunnel
 ```
 
 If deliberately withdrawing the endpoint, remove only the dedicated route with
-`ssh hermes 'tailscale serve --https=8450 off'`. Do not alter Movary's port 8449
+`ssh "$FILMIQ_SSH_HOST" 'tailscale serve --https=8450 off'`. Do not alter Movary's existing route
 or unrelated private services.
 
 ## Backup and recovery
