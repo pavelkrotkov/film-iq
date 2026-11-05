@@ -674,6 +674,13 @@ Both discovery grids now identify a failed latest refresh while retaining the
 previous observation, and distinguish that case from a partial provider check.
 Isolated fictional browser checks exercised both outcomes without external
 requests. This remains page-memory data and is not persistent enrichment.
+If a later metadata response omits a previously shown poster for the same ID
+and title, both interfaces retain it in page memory and label it as coming from
+an earlier lookup; fictional browser checks covered both interfaces.
+
+A separate [fictional cache experiment](tmdb-cache-experiment.md) exercises
+deadlines, purge, recovery and both tracker adapters. It is not connected to
+the running interfaces or enabled for real provider data.
 
 An isolated YouTrack browser test activated a fictional metadata lookup with a
 trusted keyboard click. The main-menu widget reached the real local fixture app
