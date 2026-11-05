@@ -315,7 +315,9 @@ created two fictional issues and verified creation, backfill, explicit clear,
 synopsis and lifecycle preservation. The repeatable
 `youtrack_enrich_live_check.py` leaves two new fictional issues per run. The
 page displays stored and source-listed years separately; neither establishes
-the identity of a real film.
+the identity of a real film. The year-label helper passed deterministic tests,
+but an isolated browser attempt timed out before checking the installed page's
+year display and genre filter; those interactions remain browser-unverified.
 
 On 2026-11-05, two read-only requests using the existing project credential
 checked TMDB's documented example movie ID 11: both the movie-details and
