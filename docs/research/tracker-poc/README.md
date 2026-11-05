@@ -214,6 +214,19 @@ normalized comparison against the current tracker title and either TMDB title;
 its normalization differs slightly from the aggregate check, and neither
 match independently verifies identity. Unmatched data remains withheld.
 
+Both trackers can also read title, original title, release year, directors and
+runtime from an existing reviewed, time-limited project catalog. This is a
+separate local read, not a TMDB request or a tracker-field write. A read-only
+check found 95 of the 130 supplied records matched that catalog's ID and title
+guard. Each tracker bridge was then checked for one accessible, approved film;
+these checks did not print the film or establish identity independently. Missing,
+expired, mismatched or inaccessible facts remain unknown. The existing catalog
+expires on 2027-04-29 and the UI removes its facts at expiry. This does not
+persist synopsis, artwork or availability, or establish a purge procedure for
+the pre-existing catalog and backup copies. Isolated fictional browser checks
+for both film pages showed catalog facts and attribution through reload using
+mocked catalog responses; the real-film browser path remains unverified.
+
 The pinned Kaneo `2.49.0` image and PostgreSQL `16.15` ran locally on
 2026-11-05. The running `/api/openapi` document was inspected. In a private
 synthetic project, `kaneo_smoke.py` created a task with a synthetic identifier,
@@ -301,6 +314,11 @@ also survived readback; anonymous reads and writes returned 401. The 27-film
 read-only Movary snapshot was then imported for the local administrator and
 matched the source mapping on readback. It does not update Movary or a watchlist.
 Concurrent imports and live separation between accounts remain unverified.
+The YouTrack film details now show the snapshot's play dates and counts, with
+unknown dates and repeated entries preserved. History-export dates remain a
+separate observation and are not added to play counts. An isolated fictional
+browser check verified the display through reload with a mocked snapshot; the
+app update left the administrator's existing snapshot unchanged.
 
 The separate `enrichment.py` worker uses a backend protocol and the existing
 FilmIQ availability normalizer. Its only source is explicitly fictional, with

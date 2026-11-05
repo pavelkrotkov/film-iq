@@ -73,6 +73,13 @@ Unicode/casefold/whitespace comparison. The UI now accepts an exact normalized
 current or original title as a display guard; this comparison uses slightly
 different normalization and neither establishes identity. No
 provider response bodies were retained, and this is not a completed enrichment.
+Both film-detail pages can now also read limited facts from the existing
+reviewed catalog without copying it into either tracker or contacting TMDB.
+A supplied-input check found 95 eligible title/ID matches among 130 films;
+both local endpoints returned facts for one accessible, approved film each.
+Fictional browser checks verified the display and reload with mocked endpoint
+responses. Catalog expiry is enforced; synopsis, posters and providers remain
+outside this restart-safe read path. See [the POC README](README.md).
 In later sequential non-retaining checks, both local backends read all 130
 authorized IDs: each returned 130 poster paths and 109 complete US provider
 responses; 21 provider results were unknown. An isolated Kaneo browser check

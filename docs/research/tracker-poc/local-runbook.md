@@ -121,6 +121,7 @@ from pathlib import Path
 root = Path.cwd()
 credential_file = root / '.cache/tracker-poc/private/youtrack-tmdb-live.env'
 approval = root / '.cache/tracker-poc/private/tmdb-approval'
+catalog = root.parent.parent / '.cache/epic-c/results/reviewed-display-catalog-expanded-20261031.json'
 allowed = {'TMDB_API_KEY', 'TMDB_READ_ACCESS_TOKEN'}
 credentials = {}
 for line in credential_file.read_text(encoding='utf-8').splitlines():
@@ -140,6 +141,9 @@ for name in allowed:
     env.pop(name, None)
 env.update(credentials)
 env['FILMIQ_APPROVAL_DIR'] = str(approval)
+env.pop('FILMIQ_REVIEWED_CATALOG', None)
+if catalog.is_file():
+    env['FILMIQ_REVIEWED_CATALOG'] = str(catalog)
 env['PYTHONDONTWRITEBYTECODE'] = '1'
 python = str(root / '.venv/bin/python')
 os.execve(python, [python, 'docs/research/tracker-poc/tmdb_live.py'], env)
@@ -157,6 +161,16 @@ uses `no-store`; that does not establish browser poster-image cache behavior.
 The separate MDBList experiment on port 15177 is optional and is not one of the
 two TMDB bridges. Its [instructions and unresolved live 403](mdblist.md) are
 separate; a successful live ratings response has not been demonstrated.
+
+The reviewed catalog is read from its existing project-local file, with no
+copy into either tracker. Kaneo reads it using the optional environment path
+above. The existing YouTrack bridge container has that file mounted read-only
+using the catalog Compose override; `docker start` retains its mount. Individual
+file bind mounts can keep an old file after an atomic source replacement: stop
+or recreate the bridge when revoking or replacing the catalog. Stopping the
+Kaneo reader likewise disables its catalog access. The UI drops displayed facts
+at the recorded expiry. These controls do not purge the pre-existing source or
+its backups, and a title match does not independently verify identity.
 
 ## Check and stop
 

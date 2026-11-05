@@ -19,6 +19,37 @@ images to the approved image host, propagates HTTP 429, and uses the same
 responses carry `Cache-Control: no-store` at both layers. The service has no
 response persistence, and its request logger is disabled.
 
+An optional issue-scoped catalog endpoint reads existing reviewed facts from a
+configured local file without a TMDB request or tracker write. It checks issue
+visibility, the issue's ID and current title, the approved-ID list, and the
+catalog's freshness and title match. It returns only limited, attributed facts;
+missing, expired, or mismatched data is unknown. It does not verify identity or
+provide a synopsis, poster, or availability. The optional
+`compose.catalog.yaml` mounts the catalog and adapter read-only; set
+`FILMIQ_REVIEWED_CATALOG_FILE` to the existing catalog file before applying it.
+The file mount can retain an older inode after atomic replacement, so stop or
+recreate the bridge when replacing or revoking the source. This does not purge
+the existing catalog or backup copies.
+
+For the current worktree, the optional mount can be applied with the following
+command after the existing bridge credentials and approval directory are in
+place. It recreates only the bridge container and interrupts active requests:
+
+```sh
+catalog_file="$(cd ../.. && pwd)/.cache/epic-c/results/reviewed-display-catalog-expanded-20261031.json"
+if [ -f "$catalog_file" ]; then
+FILMIQ_APPROVAL_DIR="$PWD/.cache/tracker-poc/private/tmdb-approval" \
+FILMIQ_BRIDGE_UID="$(id -u)" FILMIQ_BRIDGE_GID="$(id -g)" \
+FILMIQ_TMDB_BRIDGE_ENABLE_LIVE=1 FILMIQ_REVIEWED_CATALOG_FILE="$catalog_file" \
+docker compose -f docs/research/tracker-poc/compose.yaml \
+  -f docs/research/tracker-poc/youtrack-tmdb-live-bridge/compose.live.yaml \
+  -f docs/research/tracker-poc/youtrack-tmdb-live-bridge/compose.catalog.yaml \
+  --profile tmdb-live-bridge up -d --no-deps --force-recreate --pull never tmdb-live-bridge
+else
+  printf 'Reviewed catalog not found\n' >&2
+fi
+```
+
 The allowlist is a JSON object with `version: 1`, a nonempty unique list of
 positive integers in `allowed_ids`, and exactly `api.themoviedb.org` and
 `image.tmdb.org` in `destinations`. Optional nonempty audit strings are
