@@ -55,6 +55,11 @@ intentional watchlist. Use synthetic films and users for these experiments.
   paging is required. [Authentication](https://www.jetbrains.com/help/youtrack/devportal/apps-faq.html),
   [pagination](https://www.jetbrains.com/help/youtrack/devportal/api-concept-pagination.html),
   [issues API](https://www.jetbrains.com/help/youtrack/devportal/resource-api-issues.html).
+* YouTrack's documented scheduled rules run as a special workflow user with a
+  full set of permissions, which cannot be narrowed. This is an operational
+  consideration for a scheduled enrichment workflow; the rule and its scope
+  have not yet been tested on the local instance.
+  [On-schedule rules](https://www.jetbrains.com/help/youtrack/devportal/on-schedule-rules.html).
 * FilmIQ already has a TMDB/JustWatch availability normalizer that distinguishes
   subscriptions, rentals, purchases, free and ad-supported offers. Its missing
   and malformed responses do not imply removal. Reuse it when implementing the
