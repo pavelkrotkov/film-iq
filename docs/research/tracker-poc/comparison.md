@@ -70,8 +70,10 @@ can explain differences, so those results do not settle film identity. No
 provider response bodies were retained, and this is not a completed enrichment.
 In later sequential non-retaining checks, both local backends read all 130
 authorized IDs: each returned 130 poster paths and 109 complete US provider
-responses; 21 provider results were unknown. The new YouTrack widget can request
-live data on demand, but its browser integration and image caching remain
+responses; 21 provider results were unknown. An isolated Kaneo browser check
+confirmed a matching film's poster loaded and provider information appeared;
+another returned title differed, so the interface withheld that artwork and
+availability. The new YouTrack widget can request live data on demand, but its browser integration and image caching remain
 unverified. The optional MDBList endpoint returned HTTP 403, so no live MDBList enrichment
 is claimed. Source-list links remain labeled by their actual source and lineage;
 they are not automatically independent critic reviews.

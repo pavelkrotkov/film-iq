@@ -510,8 +510,8 @@ title or ID differs. Fictional checks exercised the field-specific edit,
 duplicate preflight, watched filter, title matching and navigation logic. A
 synthetic film in each running tracker confirmed that its supplied ID persists
 on readback. After the YouTrack widget update, the 27-film Movary snapshot was
-identical on readback. These checks do not establish browser rendering or
-server-enforced ID uniqueness; the draft guard does not establish protection
+identical on readback. These checks do not establish YouTrack browser rendering
+or server-enforced ID uniqueness; the draft guard does not establish protection
 when leaving or reloading the entire app.
 
 An isolated headless Brave walkthrough used the fictional Kaneo project and
@@ -524,6 +524,12 @@ performance benchmark. A subsequent run verified that an archived fictional
 film disappeared from the default grid after reload and reappeared with Show
 archived; its initial lifecycle was restored. Both UIs now hide archived films
 by default, but YouTrack's updated control has only synthetic component checks.
+In a separate read-only Brave check against the approved collection, one
+TMDB response had a different title and its artwork and availability were
+withheld. A second approved discovery record had a matching title; its poster
+loaded in the browser and a complete provider response was displayed. No film
+or preference was changed. This does not establish every supplied identity or
+any personal streaming entitlement.
 An isolated YouTrack browser reached the Hub sign-in
 page, but an API token did not establish a browser session, so the newer widget
 was not verified in that browser.
