@@ -1,3 +1,10 @@
+/* YouTrack injects a body text color into the iframe; keep it legible on our dark surface. */
+body { color: #eae5dc; background: #151719; }
+h1, h2, h3, .card strong { color: #eae5dc; }
+main { padding-top: 32px; }
+.intro { padding: 0 0 22px; }
+.intro h1 { font-size: clamp(44px, 5vw, 68px); }
+
 .card {
   display: flex;
   flex-direction: column;

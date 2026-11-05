@@ -2,10 +2,11 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { readDirectReviews, reviewsMatchTitle, safeReviewUrl } from "./direct_reviews.js";
 import { field, filterYoutrackFilms, localWatchLabel, providerObservation, providerFreshness } from "./youtrack_filters.js";
-import { loadFilmView, publishFilmBatch } from "./youtrack_loading.js";
+import { boundedRead, loadFilmView, publishFilmBatch } from "./youtrack_loading.js";
 import { attachMatchedLive, eligibleLiveFilms, liveMetadataMatches, LiveRateLimited, mergeLiveResult, readLiveMetadata, runLiveBatch, suppliedTmdbId } from "./youtrack_tmdb.js";
 import { filmBaseline, filmChanges, hasDuplicateTmdbId, parseOptionalTmdbId } from "./youtrack_edit.js";
 import { handleExternalRoute, routeLocation } from "./youtrack_navigation.js";
+import { TmdbCredits } from "./tmdb_credits.jsx";
 export { providerObservation, providerFreshness } from "./youtrack_filters.js";
 
 let locationListener = () => {};
@@ -20,6 +21,12 @@ export function directReviews(film) {
 export function previewMatchesFilm(preview, filmId) {
   return !!preview && typeof filmId === "string" && preview.issue_id === filmId && !!preview.after;
 }
+// The YouTrack full-page widget iframe lacks allow-forms, so native submit is blocked.
+export function submitOnEnter(event, action) {
+  if (event.key !== "Enter" || event.shiftKey || event.nativeEvent?.isComposing || event.target?.tagName !== "INPUT") return;
+  event.preventDefault();
+  action(event);
+}
 export function providerDescription(observation, key) {
   if (!observation || observation.status === "unknown" || !observation[key]) return "Unknown";
   if (!observation[key].length) return observation.status === "complete" ? "None reported" : "Unknown (partial response)";
@@ -33,8 +40,9 @@ export function parseAppLocation(where) {
   const id = params.get("film");
   return {project, film: id && new RegExp(`^${project}-[1-9]\\d*$`).test(id) ? id : null};
 }
-async function readPreferences() {
-  const response = await host.fetchApp("preferences/all");
+export async function readPreferences() {
+  // YouTrack 2026.2.19728 throws in its host bridge if options are omitted.
+  const response = await host.fetchApp("preferences/all", {});
   if (!response || typeof response.preferences !== "object" || response.preferences === null) throw new Error("Invalid preference response");
   return Object.fromEntries(Object.entries(response.preferences).filter(([, value]) => value?.recorded && value.preference).map(([id, value]) => [id, value.preference]));
 }
@@ -49,10 +57,6 @@ function safeLink(value) {
 function ExternalLink({url, label}) {
   return <><a href={url} target="_blank" rel="noreferrer">{label} ↗</a><details><summary>Copy address if opening is blocked</summary><code>{url}</code></details></>;
 }
-function TmdbCredits() {
-  return <p>This product uses the <a href="https://www.themoviedb.org/" target="_blank" rel="noreferrer">TMDB API</a> but is not endorsed or certified by TMDB. Watch-provider information is supplied by <a href="https://www.justwatch.com/" target="_blank" rel="noreferrer">JustWatch</a>.</p>;
-}
-
 async function getPages(path, query) {
   const rows = [], ids = new Set();
   while (true) {
@@ -85,6 +89,7 @@ function App() {
   const [pendingPreview, setPendingPreview] = useState(null), [pendingNavigation, setPendingNavigation] = useState(null), [discardFailed, setDiscardFailed] = useState(false), [saveUncertain, setSaveUncertain] = useState(false);
   const [restoringLocation, setRestoringLocation] = useState(false);
   const [comments, setComments] = useState(null), [commentDrafts, setCommentDrafts] = useState({}), [newTitle, setNewTitle] = useState("");
+  const [createUncertain, setCreateUncertain] = useState(false);
   const [liveResults, setLiveResults] = useState({}), [liveBusy, setLiveBusy] = useState(false), [liveRateLimited, setLiveRateLimited] = useState(false);
   const [liveBatch, setLiveBatch] = useState(null), [liveSummary, setLiveSummary] = useState("");
   const liveRequest = useRef(false);
@@ -281,23 +286,24 @@ function App() {
     finally { setWorking(false); }
   }
   async function addFilm(event) {
-    event.preventDefault(); if (!newTitle.trim()) return;
-    setWorking(true); setError("");
+    event.preventDefault(); if (!newTitle.trim() || createUncertain) return;
+    setWorking(true); setError(""); setNotice("Checking the project before creating the film…");
     let submitting = false;
     try {
       const id = parseOptionalTmdbId(newTmdbId);
       if (id && hasDuplicateTmdbId(await getFilms(project), id)) throw new Error("That TMDB ID is already used by another visible film in this project.");
-      const projectInfo = await host.fetchYouTrack(`admin/projects/${project}`, { query: { fields: "id" } });
+      const projectInfo = await boundedRead(() => host.fetchYouTrack(`admin/projects/${project}`, { query: { fields: "id" } }), 15000, "Project lookup timed out");
       const body = { project: { id: projectInfo.id }, summary: newTitle.trim() };
       if (id) body.customFields = [{name: "FilmIQ TMDB ID", $type: "SimpleIssueCustomField", value: id}];
       submitting = true;
-      const created = await host.fetchYouTrack("issues", { method: "POST", query: { fields: "idReadable" }, body });
+      setNotice("Creating the film. YouTrack may ask you to confirm the request…");
+      const created = await boundedRead(() => host.fetchYouTrack("issues", { method: "POST", query: { fields: "idReadable" }, body }), 30000);
       if (typeof created?.idReadable !== "string") throw new Error("Creation response was incomplete");
       submitting = false;
       setNewTitle(""); setNewTmdbId("");
       if (await refresh()) await selectFilm(created.idReadable);
       else setError("Film created, but refresh failed. Reload to confirm the displayed record.");
-    } catch (e) { setError(submitting ? "Creation may have completed. Reload before retrying." : `Could not create film: ${e.message}`); }
+    } catch (e) { if (submitting) setCreateUncertain(true); setNotice(""); setError(submitting ? "Creation may have completed. Reload this page and search for the film before retrying." : `Could not create film: ${e.message}`); }
     finally { setWorking(false); }
   }
   async function loadLiveMetadata() {
@@ -376,22 +382,22 @@ function App() {
         <h3>Streaming availability</h3>
         <p>{observation ? `${observation.source} observation: ${observation.status}. Checked ${observation.checked_at || "time unknown"}.` : "Availability unknown."}</p>
         <p>Subscriptions: {providerDescription(observation, "subscription")}. Rentals: {providerDescription(observation, "rent")}.</p>
-        <form onSubmit={saveFilm}><label>Title<input value={title} required disabled={filmEditLocked} onChange={(e) => {setTitle(e.target.value); markFilmDirty(true);}} /></label><label>Supplied TMDB ID (optional)<input inputMode="numeric" value={tmdbId} disabled={filmEditLocked} onChange={(e) => {setTmdbId(e.target.value); markFilmDirty(true);}} /></label><label>Synopsis<textarea value={synopsis} disabled={filmEditLocked} onChange={(e) => {setSynopsis(e.target.value); markFilmDirty(true);}} /></label><label>Lifecycle<select value={state} disabled={filmEditLocked} onChange={(e) => {setState(e.target.value); markFilmDirty(true);}}><option value="">Unknown</option>{states.map((s) => <option key={s}>{s}</option>)}</select></label><button disabled={filmEditLocked}>Save film</button></form>
+        <form onSubmit={saveFilm} onKeyDown={(e) => submitOnEnter(e, saveFilm)}><label>Title<input value={title} required disabled={filmEditLocked} onChange={(e) => {setTitle(e.target.value); markFilmDirty(true);}} /></label><label>Supplied TMDB ID (optional)<input inputMode="numeric" value={tmdbId} disabled={filmEditLocked} onChange={(e) => {setTmdbId(e.target.value); markFilmDirty(true);}} /></label><label>Synopsis<textarea value={synopsis} disabled={filmEditLocked} onChange={(e) => {setSynopsis(e.target.value); markFilmDirty(true);}} /></label><label>Lifecycle<select value={state} disabled={filmEditLocked} onChange={(e) => {setState(e.target.value); markFilmDirty(true);}}><option value="">Unknown</option>{states.map((s) => <option key={s}>{s}</option>)}</select></label><button type="button" onClick={saveFilm} disabled={filmEditLocked}>Save film</button></form>
         <p>Supplied IDs are unverified. Duplicate checks cover visible project records; live lookup remains subject to existing authorization. Clearing an existing ID is not supported in this POC.</p>
         <p>Changing a title does not independently verify the saved external identity or update its original source provenance.</p>
         <p>Critic score: {field(film, "FilmIQ Critic Score") ?? "Unknown"}. {field(film, "FilmIQ Critic Summary")?.text || "Critic summary unavailable."}</p>
         <h3>Personal POC preferences</h3>
         <p>Saved local watched status: {localWatchLabel(preferences, film.idReadable)}. This is separate from the Movary snapshot.</p>
-        {preferences === null ? <p>Preferences are loading or unavailable.</p> : <form onSubmit={savePreference}>
+        {preferences === null ? <p>Preferences are loading or unavailable.</p> : <form onSubmit={savePreference} onKeyDown={(e) => submitOnEnter(e, savePreference)}>
           <label>Interest (1–10)<input type="number" min="1" max="10" disabled={locked} value={pref.interest_score ?? ""} onChange={(e) => changePreference({ interest_score: e.target.value === "" ? null : Number(e.target.value) })} /></label>
           <label>Local POC watchlist<select disabled={locked} value={pref.watchlist === null ? "unknown" : pref.watchlist ? "yes" : "no"} onChange={(e) => changePreference({ watchlist: e.target.value === "unknown" ? null : e.target.value === "yes" })}><option value="unknown">Unknown</option><option value="yes">Yes</option><option value="no">No</option></select></label>
           <label>Watched timestamp (UTC)<input type="datetime-local" disabled={locked} value={pref.watched_at ? pref.watched_at.slice(0, 16) : ""} onChange={(e) => changePreference({ watched_at: e.target.value ? new Date(`${e.target.value}Z`).toISOString() : null })} /></label>
-          <label>Personal notes<textarea disabled={locked} value={pref.personal_notes} onChange={(e) => changePreference({ personal_notes: e.target.value })} /></label><button disabled={locked}>Preview preference changes</button><p className="notice">Local experiment only; Movary remains authoritative.</p>
+          <label>Personal notes<textarea disabled={locked} value={pref.personal_notes} onChange={(e) => changePreference({ personal_notes: e.target.value })} /></label><button type="button" onClick={savePreference} disabled={locked}>Preview preference changes</button><p className="notice">Local experiment only; Movary remains authoritative.</p>
         </form>}
         <h3>Source evidence</h3>{sourceLinks.length ? <ul>{sourceLinks.map((item, index) => { const url = safeLink(item.url); return <li key={index}>{url ? <ExternalLink url={url} label={item.source_id || "Source"} /> : "Source link unavailable"} · {item.kind || "type unknown"} · lineage: {item.lineage_kind || "unknown"}</li>; })}</ul> : <p>Accepted source evidence unavailable.</p>}
         <h3>Direct reviews and aggregators</h3>{staleReviews ? <p>The film title differs from the reviewed source title; links are hidden until revalidated.</p> : reviews?.length ? <ul>{reviews.map((link, index) => <li key={index}><ExternalLink url={safeReviewUrl(link.url)} label={link.provider} /> · {link.type === "individual_critic_review" ? "Individual critic review" : "Review aggregator title page"} · checked {link.checked_at}<p>Page title: {link.identity_evidence.source_page_title}; directors: {link.identity_evidence.source_directors.join(", ")}. {link.identity_evidence.identity_caveat} {link.identity_evidence.details_note}</p></li>)}</ul> : <p>Direct review links unavailable; coverage is unknown.</p>}
         <h3>Comments</h3>{comments === null ? <p>Comments unavailable.</p> : <ul>{comments.map((item) => <li key={item.id}>{item.author?.name || "Unknown"}: {item.text}</li>)}</ul>}
-        <form onSubmit={addComment}><label>Add comment<textarea disabled={locked} value={commentDrafts[film.idReadable] || ""} onChange={(e) => setCommentDrafts((drafts) => ({...drafts, [film.idReadable]: e.target.value}))} /></label><button disabled={locked}>Add comment</button></form>
+        <form onSubmit={addComment}><label>Add comment<textarea disabled={locked} value={commentDrafts[film.idReadable] || ""} onChange={(e) => setCommentDrafts((drafts) => ({...drafts, [film.idReadable]: e.target.value}))} /></label><button type="button" onClick={addComment} disabled={locked}>Add comment</button></form>
         <a href={`/issue/${film.idReadable}`} target="_blank" rel="noreferrer">View tracker record and history ↗</a>
       </section> : <section>
         <div className="filters">
@@ -408,13 +414,13 @@ function App() {
           <label><input type="checkbox" checked={excludeMovaryWatched} disabled={movary?.status !== "available" && !excludeMovaryWatched} onChange={(e) => {setExcludeMovaryWatched(e.target.checked); if (e.target.checked) setMovaryOnly(false);}} /> Exclude known watched in Movary</label>
           <label><input type="checkbox" checked={sortInterest} disabled={preferences === null && !sortInterest} onChange={(e) => setSortInterest(e.target.checked)} /> Sort by interest</label>
         </div>
-        <p>Live metadata is optional and stays in this page. Each film can require up to three TMDB requests; loading a poster can use the browser image cache. A JSON no-store header does not establish image-cache behavior.</p>
+        <p>Live film details stay available until you close or reload this page.</p>
         <button type="button" disabled={locked || liveBusy || liveRateLimited || !eligibleLiveFilms(visible, liveResults).length} onClick={loadNextLiveBatch}>{liveBatch ? `Loading ${liveBatch.done}/${liveBatch.total}…` : "Load live metadata for next 30 displayed films"}</button>
         {liveSummary && <p role="status">{liveSummary}</p>}
         {preferences === null && localWatched && <p role="status">Local watched filtering is unavailable while preferences are loading or unavailable.</p>}
         <h2>Discovery · {visible.length}</h2><div className="grid">{visible.map((item) => {const metadata = item.live; const poster = metadata?.poster_url; const available = providerObservation(item); const sourceYear = field(item, "FilmIQ Source Year"); const year = sourceYear ? `Source-listed year ${sourceYear}` : metadata?.year ? `TMDB-supplied year ${metadata.year}` : "Year unknown"; return <button className="card" key={item.id} disabled={locked} onClick={() => selectFilm(item.idReadable)}><span className="poster">{poster ? <img src={poster} alt={`TMDB poster for ${metadata.title}`} loading="lazy" /> : "Artwork unavailable"}</span><strong>{item.summary}</strong><small>{year} · Interest {preferences?.[item.idReadable]?.interest_score ?? "unknown"} · Critic {field(item, "FilmIQ Critic Score") ?? "unknown"}</small><small>{field(item, "FilmIQ Lifecycle")?.name || "State unknown"} · {movary?.status === "available" && movary?.films?.[item.idReadable]?.watched ? "Watched in Movary" : "Movary watched status unknown"}</small><small>Local watched status: {localWatchLabel(preferences, item.idReadable)}</small><small>{available?.source || "Provider"} subscriptions: {providerDescription(available, "subscription")}</small>{metadata && <small>Supplied TMDB identity is unverified.</small>}</button>;})}</div>
         {Object.values(liveResults).some((item) => item.data) && <TmdbCredits />}
-        <form onSubmit={addFilm}><label>Add film title<input disabled={locked} value={newTitle} onChange={(e) => setNewTitle(e.target.value)} /></label><label>Supplied TMDB ID (optional)<input inputMode="numeric" disabled={locked} value={newTmdbId} onChange={(e) => setNewTmdbId(e.target.value)} /></label><p>IDs are unverified. Duplicate checks cover visible project records; live lookup remains subject to existing authorization.</p><button disabled={locked || !project}>Add film</button></form>
+        <form onSubmit={addFilm} onKeyDown={(e) => submitOnEnter(e, addFilm)}><label>Add film title<input disabled={locked} value={newTitle} onChange={(e) => setNewTitle(e.target.value)} /></label><label>Supplied TMDB ID (optional)<input inputMode="numeric" disabled={locked} value={newTmdbId} onChange={(e) => setNewTmdbId(e.target.value)} /></label><p>IDs are unverified. Duplicate checks cover visible project records; live lookup remains subject to existing authorization.</p><button type="button" onClick={addFilm} disabled={locked || !project || createUncertain}>Add film</button></form>
       </section>}
     </main>
   </>;

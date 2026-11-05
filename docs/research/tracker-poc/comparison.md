@@ -5,8 +5,9 @@ local Mac with Kaneo 2.49.0 and YouTrack Server 2026.2.19728; no Hermes
 deployment or Cloud instance has been tested. The detailed evidence and
 reproduction instructions are in [README.md](README.md).
 
-These scores are provisional: the richer interfaces still need a browser
-walkthrough, and neither upgrades nor recovery have been rehearsed. The user
+These scores are provisional: the latest YouTrack interface has passed a
+fictional browser walkthrough, but live metadata there, upgrades and recovery
+still need verification. The user
 prioritized the single-user workflow over additional multi-account tests. An
 attractive API or a passing mock is not evidence that the complete workflow
 works.
@@ -32,8 +33,8 @@ experience and its app-owned data requires a recovery plan. Both operating
 scores reflect extra local services and untested recovery; the substantially
 larger YouTrack memory sample is not a production sizing comparison.
 
-**Provisional recommendation: continue with YouTrack** if the remaining browser
-walkthrough confirms that the embedded page feels usable. It has demonstrated
+**Provisional recommendation: continue with YouTrack** if the remaining live
+metadata and operational checks confirm the embedded page is usable. It has demonstrated
 more of the requested persistence, query and automation capabilities without a
 source fork, which may reduce ongoing backend work. Kaneo remains the stronger
 candidate if a tracker-free interface is decisive or YouTrack's app/data
@@ -42,7 +43,7 @@ unfinished browser, recovery and upgrade checks have been resolved.
 
 | Criterion and weight | Kaneo evidence | YouTrack evidence | Remaining evidence |
 | --- | --- | --- | --- |
-| Custom UI freedom, 30% | A separate React UI uses the logged-in Kaneo session and local APIs. An isolated Brave session opened a fictional film and persisted a synopsis, lifecycle and interest score through reload. Source is available for a fork, but this experiment did not require one. | A first main-menu iframe rendered a fictional issue and persisted a synopsis edit across reload. The richer app is installed and showed 130 text-labeled cards with placeholder artwork; a later navigation fix still needs browser verification. A temporary exact-origin CORS setting passed a standalone API preflight and was restored. | Click through equivalent screens, deep links and navigation; measure visible tracker chrome and sandbox limitations. Test YouTrack's latest embedded app in an authenticated browser. |
+| Custom UI freedom, 30% | A separate React UI uses the logged-in Kaneo session and local APIs. An isolated Brave session opened a fictional film and persisted a synopsis, lifecycle and interest score through reload. Source is available for a fork, but this experiment did not require one. | The latest main-menu iframe rendered 763 active fictional cards. A Brave walkthrough created and edited a fictional film, persisted an interest score, and exercised archive filtering. The iframe omits `allow-forms`, requiring direct button handlers; the YouTrack sidebar remains visible. | Verify live metadata and posters in YouTrack, deep links and remaining navigation. Test standalone YouTrack authentication in a browser. |
 | Data model, 15% | Numeric and multiselect task fields were read and written. Per-user data uses a small separate SQLite bridge and is not native task-field data. Current task-wide provenance is neutral, but the original import named the personal source and historical storage exposure is unassessed. | Typed issue fields and a separate lifecycle field were exercised; shared provenance was sanitized. A fictional preference and watched snapshot passed live single-user tests, and the real watched snapshot was read back. Deleting the app also deletes its extension properties. | Assess old Kaneo provenance in history/backups, and verify deletion and recovery behavior and practical per-user size limits. |
 | API and agents, 15% | The running OpenAPI document and REST endpoints were inspected; a synthetic external worker repeats without duplicate creation in sequential tests. | A token-authenticated external worker created and updated fictional issues. A local import contains 130 canonical records, with validated source identity and sanitized field provenance. | Test narrow credentials and signed-in permissions. Measure upgrade stability and repeat behavior with the complete app. |
 | Search and sorting, 10% | Board pagination returned 1,000 synthetic tasks. The observed broad native search was capped at 50; the UI joins preferences and sorts them numerically. | A typed global critic-score sort returned 1,000 synthetic issues through paginated REST. Per-user interest sorting is performed by the proposed UI, not that native query. | Exercise identical provider, interest, genre and freshness filters in both browsers, including unknown data and 1,000-film rendering. |
@@ -91,3 +92,10 @@ Kaneo and 0.799 ms for the YouTrack candidate before installation. These are sep
 runs, not a controlled browser comparison, and exclude requests, rendering and
 images. See the [Kaneo](kaneo-filter-benchmark.md) and
 [YouTrack](youtrack-filter-benchmark.md) methods and full samples.
+
+In separate, uncontrolled browser walkthroughs, Kaneo displayed approximately
+1,003 fictional cards in roughly 0.9–1.9 seconds. The embedded YouTrack page
+displayed 763 active cards from its roughly 1,000-issue project at about 11
+seconds, and a later direct-link revisit took about 20 seconds. The workloads,
+browser sessions and measurements were not controlled; they show where to
+investigate, not comparative production capacity.

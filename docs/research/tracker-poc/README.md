@@ -238,8 +238,9 @@ the UI origin and returned the correct CORS headers. An isolated Brave session
 later verified a fictional film's synopsis, lifecycle and interest edit across
 reload; its approximately 1,000-card rendering was observed informally, as
 described below. The private project includes source-identified real records,
-and metadata read-through is optional and nonpersistent. Synthetic add and
-comment interactions still need browser verification. Do not represent
+and metadata read-through is optional and nonpersistent. A second fictional
+browser walkthrough verified add, direct-link reload, comment, watched status
+and archive, without changing Movary. Do not represent
 this as the completed Kaneo POC.
 
 Fixture representation: task title and description hold title and synopsis;
@@ -486,7 +487,7 @@ update adds preferences, watched-history support and synthetic workflows.
 Removing the app deletes its app-owned watched snapshot and preferences;
 recovery and shared-user permissions have not been validated. MDBList read-through is implemented
 without retention, but the live API returned HTTP 403 for an unknown reason.
-No product score or recommendation is justified yet.
+The comparison's scores and recommendation remain provisional.
 
 The YouTrack issue-scoped read-through now reaches the shared Python TMDb reader
 through a local, authenticated bridge with a positive approved-ID list. An
@@ -524,6 +525,10 @@ performance benchmark. A subsequent run verified that an archived fictional
 film disappeared from the default grid after reload and reappeared with Show
 archived; its initial lifecycle was restored. Both UIs now hide archived films
 by default, but YouTrack's updated control has only synthetic component checks.
+A second isolated Kaneo persona created a fictional film, opened its direct
+link after reload, added a comment, recorded and filtered local watched status,
+and archived it. Two new fictional test records remain archived; pre-existing
+fixtures and Movary were unchanged.
 In a separate read-only Brave check against the approved collection, one
 TMDB response had a different title and its artwork and availability were
 withheld. A second approved discovery record had a matching title; its poster
@@ -532,12 +537,31 @@ or preference was changed. This does not establish every supplied identity or
 any personal streaming entitlement.
 An isolated YouTrack browser reached the Hub sign-in
 page, but an API token did not establish a browser session, so the newer widget
-was not verified in that browser.
+was not verified in that browser. A later fictional account, scoped to the
+synthetic project, rendered 763 active cards in an isolated Brave session. It
+revealed that YouTrack 2026.2.19728 throws when `fetchApp` is called without an
+options object; the widget now supplies one and the browser loaded preferences.
+The same test showed that native form submissions were blocked because the
+full-page widget iframe does not have `allow-forms`. The updated controls call
+their handlers directly and support Enter in text inputs. A subsequent browser
+run created a fictional issue, changed its synopsis and lifecycle, reloaded,
+saved an interest score, and confirmed archive filtering. The UI also reports
+an uncertain creation after a bounded wait and requires a reload and search
+before another attempt. A follow-up used a direct link to the fictional film,
+confirmed a saved comment and watched timestamp after reload, and found the film
+with the watched filter while its watchlist remained unknown. A later run
+confirmed that Enter in a title input saves exactly once, and verified the
+corrected foreground and background contrast in the iframe. The revisit took
+about 20 seconds and a grid load about 23 seconds in the roughly 1,000-issue
+synthetic project; these were uncontrolled observations, not a benchmark. These are single-user fictional
+checks, and no Movary data was changed.
+Both interfaces use the same TMDB/JustWatch credits component, including the
+existing TMDB-hosted logo URL with the referrer suppressed; logo availability
+inside the YouTrack iframe has not been browser-verified.
 
 The [comparison](comparison.md) includes provisional weighted scores and a
-conditional recommendation. The richer applications, live metadata controls
-and end-to-end demonstrations still need browser verification; recovery and an
-upgrade rehearsal also remain outstanding. The user prioritized the single-user
+conditional recommendation. The YouTrack live metadata and poster controls,
+recovery and an upgrade rehearsal remain outstanding. The user prioritized the single-user
 workflow over additional multi-account testing. These limitations make the
 scores provisional. Docker Desktop's external runtime storage under
 `/var/lib/docker` was approved by the user on 2026-11-05.

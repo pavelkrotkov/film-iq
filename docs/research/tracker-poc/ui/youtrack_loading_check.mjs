@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
-import { loadFilmView, publishFilmBatch } from "./youtrack_loading.js";
+import { boundedRead, loadFilmView, publishFilmBatch } from "./youtrack_loading.js";
 
 const never = () => new Promise(() => {});
+await assert.rejects(boundedRead(never, 15, "Project lookup timed out"), /Project lookup timed out/);
 let loading = true, films = null;
 const sequence = {current: 1};
 const stalledView = loadFilmView({

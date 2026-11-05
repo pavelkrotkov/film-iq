@@ -2,11 +2,26 @@ import assert from "node:assert/strict";
 import { build } from "esbuild";
 
 let onLocationChange;
-globalThis.YTApp = {register: async (callbacks) => { onLocationChange = callbacks.onAppLocationChange; return {}; }};
+globalThis.YTApp = {register: async (callbacks) => {
+  onLocationChange = callbacks.onAppLocationChange;
+  return {fetchApp: async (path, options) => {
+    assert.equal(path, "preferences/all");
+    assert.deepEqual(options, {});
+    return {preferences: {"FILMPOC-1": {recorded: true, preference: {interest_score: 8}}}};
+  }};
+}};
 const bundle = await build({entryPoints: [new URL("./youtrack.jsx", import.meta.url).pathname], bundle: true, write: false, format: "esm", platform: "browser"});
 const encoded = Buffer.from(bundle.outputFiles[0].contents).toString("base64");
-const {providerObservation, providerDescription, providerFreshness, parseAppLocation, directReviews, previewMatchesFilm} = await import(`data:text/javascript;base64,${encoded}`);
+const {providerObservation, providerDescription, providerFreshness, parseAppLocation, directReviews, previewMatchesFilm, readPreferences, submitOnEnter} = await import(`data:text/javascript;base64,${encoded}`);
 assert.equal(typeof onLocationChange, "function");
+assert.equal((await readPreferences())["FILMPOC-1"].interest_score, 8);
+let submits = 0, prevented = 0;
+const key = (tagName, extra = {}) => ({key:"Enter", target:{tagName}, preventDefault:() => prevented++, ...extra});
+submitOnEnter(key("INPUT"), () => submits++);
+submitOnEnter(key("TEXTAREA"), () => submits++);
+submitOnEnter(key("INPUT", {nativeEvent:{isComposing:true}}), () => submits++);
+assert.equal(submits, 1, "Enter submits an input without consuming textarea newlines or IME composition");
+assert.equal(prevented, 1);
 assert.deepEqual(parseAppLocation({search: "project=FILMPOC&film=FILMPOC-12"}), {project: "FILMPOC", film: "FILMPOC-12"});
 assert.deepEqual(parseAppLocation({search: "project=FILMPOC&film=FILMREAL-12"}), {project: "FILMPOC", film: null});
 assert.deepEqual(parseAppLocation({search: "project=OTHER&film=OTHER-1"}), {project: "FILMREAL", film: null});

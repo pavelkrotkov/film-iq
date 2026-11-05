@@ -15,6 +15,7 @@ import { accessibleProjects, projectUrl } from "./project_picker.js";
 import { confirmNavigation } from "./navigation_guard.js";
 import { readDirectReviews, reviewsMatchTitle, safeReviewUrl } from "./direct_reviews.js";
 import { createFilm, CreatedFilmUnverified, identityField, matchedLive } from "./kaneo_identity.js";
+import { TmdbCredits } from "./tmdb_credits.jsx";
 
 const api = "http://localhost:15173/api";
 function ProviderBadges({ film }) {
@@ -24,10 +25,6 @@ function ProviderBadges({ film }) {
     return <span>Availability incomplete</span>;
   if (!services.length) return <><span>No subscriptions reported</span>{film.live?.availability_attempt && <span>Latest check incomplete</span>}</>;
   return <>{services.map((name) => <span key={name}>{name}</span>)}{film.live?.availability?.status === "partial" && <span>Partial</span>}{film.live?.availability_attempt && <span>Latest check incomplete</span>}</>;
-}
-
-function Credits() {
-  return <section><h4>Credits</h4><p><a href="https://www.themoviedb.org/" target="_blank" rel="noreferrer"><img src="https://www.themoviedb.org/assets/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg" alt="TMDB" width="120" /></a> This product uses the TMDB API but is not endorsed or certified by TMDB. Watch-provider data: <a href="https://www.justwatch.com/" target="_blank" rel="noreferrer">JustWatch</a>.</p></section>;
 }
 
 function SourceEvidence({ film }) {
@@ -536,7 +533,7 @@ function App() {
           {!!retries.length && <button type="button" disabled={!!batch} onClick={() => startLiveBatch(retries)}>Retry up to {BATCH_LIMIT} failed</button>}{" "}
           {batch && <><span role="status">Fetching {batch.done} of {batch.total} films. </span><button type="button" onClick={() => batchController.current?.abort()}>Cancel</button></>}
           {batchSummary && <p role="status">{batchSummary}</p>}
-          {Object.values(liveResults).some((result) => result.data) && <Credits />}
+          {Object.values(liveResults).some((result) => result.data) && <TmdbCredits />}
         </section>}
         {project && (
           <form className="project" onSubmit={addFilm}>
