@@ -4,9 +4,12 @@ This uninstalled, unverified experiment stores a JSON map of readable issue ID
 to preference on the current user's `filmPreferences` User extension property.
 The `preferences` handler exposes `GET /preference?issue_id=FILMPOC-1`,
 `GET /all` (the caller's recorded, currently visible films),
-`POST /preview` with `{issue_id, preference}`, and `POST /confirm` with the
-exact preview `{issue_id, before, after}`. The only write path uses a distinct
-server-stored preview and checks the current value again. A new preview replaces
+`POST /preview` with `{issue_id, preference}`, `POST /confirm` with the preview
+`{issue_id, before, after}`, and `POST /discard` with that preview. The save
+path checks the current value again and matches the issue, interest, watchlist,
+and watched timestamp against the server-stored preview. Draft notes are not
+stored in the preview or bound by that server-side check; the confirmed request
+supplies them. Cancel discards a matching pending preview. A new preview replaces
 the user's previous pending preview; replay or stale confirmation is rejected.
 When no row exists, the read result is `{recorded: false, preference: null}` and
 the preview's `before` is `null`; this state does not mean unwatched or absent

@@ -123,6 +123,21 @@ origin: an anonymous request returned 401 and a signed-in synthetic user
 received 200 for TMDB's example ID. It is a local POC, not a multi-host
 credential gateway.
 
+An aggregate, non-retaining coverage check on 2026-11-05 requested details for
+all 130 supplied IDs: 130 responses returned the requested ID and a title, and
+all 130 included a synopsis, poster path, genre, director and parseable release
+date. After Unicode, case and whitespace normalization, 110 returned titles
+exactly matched the input title; 20 did not. Different titles can be legitimate
+alternates and this check does not establish identity. It queried no provider
+availability and retained no TMDB response bodies. Coverage is not evidence of
+provider accuracy, film identity, rights clearance or persistent enrichment.
+The check can be repeated using `tmdb_coverage.py --input
+.cache/tracker-poc/private/film-input.json --live` with an existing TMDB
+credential in the environment. Omit `--live` for a no-request preview. It
+paces requests and stops on authentication, permission or rate-limit errors;
+it prints aggregate counts only. The original check was a one-time read, not a
+scheduled sync.
+
 The pinned Kaneo `2.49.0` image and PostgreSQL `16.15` ran locally on
 2026-11-05. The running `/api/openapi` document was inspected. In a private
 synthetic project, `kaneo_smoke.py` created a task with a synthetic identifier,
@@ -317,7 +332,13 @@ where missing; exact input provenance remains in the ignored private manifest.
 A repeat backfill changed zero records. Source evidence IDs and links are
 validated before any import writes, and source-listed years remain assertions.
 Anonymous issue access returned HTTP 401; signed-in low-privilege access to
-the real project has not been tested.
+the real project has not been tested. Two fictional local accounts were added
+only to the synthetic project team. An administrator's effective-role query
+reported a Read Issue assignment for each account in FILMPOC and none in
+FILMREAL; the same query returned three assignments for the administrator in
+FILMREAL as a positive control. This is role-assignment evidence, not an
+impersonated issue request or proof of issue-level visibility. See the
+[documented scope and holder query semantics](https://www.jetbrains.com/help/youtrack/devportal/api-access-management-query-syntax.html).
 
 The common synthetic dataset created 30 issues, then 970 more in 26.990 seconds.
 A single local read traversed and numerically sorted 1,000 issues by a typed

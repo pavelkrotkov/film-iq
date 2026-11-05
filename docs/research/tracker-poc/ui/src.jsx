@@ -7,6 +7,8 @@ import {
 } from "./film_filters.js";
 import { BATCH_LIMIT, chooseBatch, mergeResult, runBatch, tmdbId } from "./live_batch.js";
 import { fetchRatings } from "./mdblist_ui.js";
+import { clearSavedDraft, currentComments, setCommentDraft } from "./comment_drafts.js";
+import { emptyPreference, markPreferenceSaved, mergeFilmDraft, syncPreferenceDraft } from "./preference_draft.js";
 
 const api = "http://localhost:15173/api";
 function ProviderBadges({ film }) {
@@ -66,13 +68,6 @@ async function preferenceRequest(path, method = "GET", body) {
   return response.json();
 }
 
-const emptyPreference = {
-  interest_score: null,
-  watchlist: null,
-  watched_at: null,
-  personal_notes: "",
-};
-
 async function load(project) {
   const id = encodeURIComponent(project);
   const columns = await request(`/column/${id}`);
@@ -129,7 +124,7 @@ function App() {
     [query, setQuery] = useState(""),
     [provider, setProvider] = useState("");
   const [preferences, setPreferences] = useState(null),
-    [preference, setPreference] = useState(emptyPreference),
+    [preferenceDraft, setPreferenceDraft] = useState({filmId: null, value: emptyPreference, dirty: false}),
     [watchlistOnly, setWatchlistOnly] = useState(false),
     [sortInterest, setSortInterest] = useState(false);
   const [movary, setMovary] = useState(null),
@@ -139,12 +134,14 @@ function App() {
     [lifecycle, setLifecycle] = useState(""),
     [watched, setWatched] = useState(""),
     [freshnessFilter, setFreshnessFilter] = useState("");
-  const [description, setDescription] = useState(""),
-    [status, setStatus] = useState(""),
+  const [filmDraft, setFilmDraft] = useState({description: "", status: ""}),
     [detailReady, setDetailReady] = useState(false);
+  const {description, status} = filmDraft;
   const [newTitle, setNewTitle] = useState("");
   const [comments, setComments] = useState(null),
-    [newComment, setNewComment] = useState("");
+    [commentDrafts, setCommentDrafts] = useState({});
+  const selectedRef = useRef(selected);
+  selectedRef.current = selected;
   const [liveResults, setLiveResults] = useState({}),
     [batch, setBatch] = useState(null),
     [batchSummary, setBatchSummary] = useState("");
@@ -186,6 +183,11 @@ function App() {
   }, []);
   useEffect(() => () => batchController.current?.abort(), []);
   const film = films.find((item) => item.id === selected);
+  const preference = preferenceDraft.filmId === film?.id ? preferenceDraft.value : emptyPreference;
+  const detailDirty = useRef(false);
+  function setPreference(value) {
+    setPreferenceDraft({filmId: film.id, value, dirty: true});
+  }
   const shownFilms = useMemo(() => films.map((item) => ({
     ...item, live: liveResults[item.id]?.data,
   })), [films, liveResults]);
@@ -218,12 +220,9 @@ function App() {
     ...new Set(shownFilms.flatMap((item) => providers(item) || [])),
   ].sort();
   useEffect(() => {
-    setPreference(
-      film && preferences
-        ? preferences[film.id] || emptyPreference
-        : emptyPreference,
-    );
-  }, [film, preferences]);
+    setPreferenceDraft((current) => syncPreferenceDraft(current, film?.id, preferences));
+  }, [film?.id, preferences]);
+  useEffect(() => { detailDirty.current = false; }, [film?.id]);
   useEffect(() => {
     let active = true;
     setDetailReady(false);
@@ -236,8 +235,7 @@ function App() {
               "Full synopsis is unavailable; editing is disabled.",
             );
           if (active) {
-            setDescription(detail.description);
-            setStatus(detail.status);
+            setFilmDraft((current) => mergeFilmDraft(current, detail, detailDirty.current));
             setDetailReady(true);
           }
         })
@@ -304,7 +302,9 @@ function App() {
           preference,
           token: preview.token,
         });
-        setPreferences((await preferenceRequest("/preferences")).preferences);
+        const updated = (await preferenceRequest("/preferences")).preferences;
+        setPreferences(updated);
+        setPreferenceDraft((current) => markPreferenceSaved(current, film.id, preference));
       }
     } catch (e) {
       setError(e.message);
@@ -324,6 +324,7 @@ function App() {
         await request(`/task/status/${encodeURIComponent(film.id)}`, "PUT", {
           status,
         });
+      detailDirty.current = false;
       await refresh();
     } catch (e) {
       setError(`Update may be partial. Reload to check: ${e.message}`);
@@ -358,15 +359,18 @@ function App() {
   }
   async function addComment(event) {
     event.preventDefault();
-    if (!newComment.trim()) return;
+    const target = film.id;
+    const draft = commentDrafts[target] || "";
+    if (!draft.trim()) return;
     setBusy(true);
     setError("");
     try {
-      await request(`/comment/${encodeURIComponent(film.id)}`, "POST", {
-        content: newComment.trim(),
+      await request(`/comment/${encodeURIComponent(target)}`, "POST", {
+        content: draft.trim(),
       });
-      setNewComment("");
-      setComments(await request(`/comment/${encodeURIComponent(film.id)}`));
+      setCommentDrafts((current) => clearSavedDraft(current, target, draft));
+      const updated = await request(`/comment/${encodeURIComponent(target)}`);
+      setComments((current) => currentComments(selectedRef.current, target, current, updated));
     } catch (e) {
       setError(
         `Comment may have been saved; reload before retrying: ${e.message}`,
@@ -475,7 +479,7 @@ function App() {
         {project && (
           <form className="project" onSubmit={addFilm}>
             <label>
-              Add a synthetic film
+              Add a film to this shared project
               <input
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
@@ -558,17 +562,17 @@ function App() {
                     Synopsis
                     <textarea
                       value={description}
-                      onChange={(e) => setDescription(e.target.value)}
+                      onChange={(e) => { detailDirty.current = true; setFilmDraft({...filmDraft, description: e.target.value}); }}
                       rows="7"
-                      disabled={!detailReady}
+                      disabled={!detailReady || busy}
                     />
                   </label>
                   <label>
                     Lifecycle
                     <select
                       value={status}
-                      onChange={(e) => setStatus(e.target.value)}
-                      disabled={!detailReady}
+                      onChange={(e) => { detailDirty.current = true; setFilmDraft({...filmDraft, status: e.target.value}); }}
+                      disabled={!detailReady || busy}
                     >
                       {Object.entries(states).map(([value, label]) => (
                         <option key={value} value={value}>
@@ -686,10 +690,10 @@ function App() {
                   )}
                   <form onSubmit={addComment}>
                     <label>
-                      Add a synthetic comment
+                      Add a comment (visible to project members)
                       <textarea
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
+                        value={commentDrafts[film.id] || ""}
+                        onChange={(e) => { const text = e.target.value; setCommentDrafts((current) => setCommentDraft(current, film.id, text)); }}
                         rows="3"
                         maxLength="10000"
                         required

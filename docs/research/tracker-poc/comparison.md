@@ -32,6 +32,10 @@ The opt-in TMDB reader retrieves metadata into page memory, with no tracker
 write of the response body; a public example ID worked for a signed-in
 synthetic user after anonymous access was rejected. This does not establish
 accuracy, individual streaming entitlement, or rights for indefinite storage.
+An aggregate live details check returned valid records for all 130 input IDs;
+110 titles exactly matched after normalization and 20 did not. Alternate titles
+can explain differences, so those results do not settle film identity. No
+provider response bodies were retained, and this is not a completed enrichment.
 The optional MDBList endpoint returned HTTP 403, so no live MDBList enrichment
 is claimed. Source-list links remain labeled by their actual source and lineage;
 they are not automatically independent critic reviews.

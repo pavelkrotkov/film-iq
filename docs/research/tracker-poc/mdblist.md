@@ -44,3 +44,7 @@ establish whether the service, account/key, or edge blocked the request. No
 provider response body or API key was printed or retained. The synthetic
 adapter checks pass, but no live result, schema, entitlement, or account quota
 has been verified.
+
+A separate unauthenticated request to the public schema endpoint also returned
+403 from this environment. The application code matches the documented route
+and key format, but this observation does not identify the source of the denial.
