@@ -10,7 +10,9 @@ readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
 authors = [{ name = "pavelkrotkov" }]
-dependencies = []
+dependencies = [
+    "waitress==3.0.2",
+]
 
 [project.scripts]
 film-iq = "film_iq.cli:main"
