@@ -19,7 +19,7 @@ Neither provider research nor personal ratings/plans blocks this build.
 | [#99 UI1](https://github.com/pavelkrotkov/film-iq/issues/99) | Browse/search/filter and original-source film evidence | Merged [PR #105](https://github.com/pavelkrotkov/film-iq/pull/105); issue closed |
 | [#100 UI2](https://github.com/pavelkrotkov/film-iq/issues/100) | Persistent local Save/Dismiss/Restore | After UI1; merged [PR #107](https://github.com/pavelkrotkov/film-iq/pull/107); issue closed |
 | [#101 UI3](https://github.com/pavelkrotkov/film-iq/issues/101) | Movary preview/confirmation, dated watch, native rating link and read-only refresh | Backend parallel with UI2, final forms integration after it; merged [PR #106](https://github.com/pavelkrotkov/film-iq/pull/106); issue closed |
-| [#102 UI4](https://github.com/pavelkrotkov/film-iq/issues/102) | Private HTTPS, refreshed Plex history and verified integrated browser/recovery journey | UI1–3 integrated; observed checks complete, [PR #104](https://github.com/pavelkrotkov/film-iq/pull/104) awaits final review/CI and merge |
+| [#102 UI4](https://github.com/pavelkrotkov/film-iq/issues/102) | Private HTTPS, refreshed Plex history and verified integrated browser/recovery journey | Integrated and accepted in merged [PR #104](https://github.com/pavelkrotkov/film-iq/pull/104); issue closed |
 
 Implementation used separate branches/worktrees inside this project without
 requiring personal ratings, a viewing plan or a provider decision.
@@ -29,8 +29,8 @@ independent GPT-6.1 Sol high Standards/Spec reviews posted to GitHub, dispositio
 of every finding and resolved conversations, passing CI, and worktree cleanup
 following merge. Planning PR #103 and implementation PRs #105/#107/#106 have
 completed bot-review disposition, independent GPT-6.1 Sol high Standards/Spec
-reviews and green CI; their obsolete worktrees are removed. UI4 final review
-and closure of #102/#98 follow the same discipline.
+reviews and green CI; their obsolete worktrees are removed. UI4 completed the same review/CI discipline in merged PR #104, and #102 is
+closed. All four slices are delivered; the UI epic records final closure.
 
 ### UI behavior and boundaries
 
@@ -2719,8 +2719,8 @@ backup copies and receipts stay inside the attached project.
 The UI requires the Mac awake and logged in. Native process supervision and
 reopen were tested; automatic bootstrap after login/reboot is not claimed.
 Provider adoption and user satisfaction remain separate. Final documentation is
-reconciled; full validation and independent PR #104 reviews precede merge and
-closing #102/#98. The controller measured all 343 tracked Python files, including
+reconciled. Full validation and independent PR #104 reviews completed before its
+merge, and #102 is closed. The UI epic records the delivered build and closure. The controller measured all 343 tracked Python files, including
 methods/closures: maximum CC 8, minimum MI 50.025032185536084, no failures.
 
 Final UI4 local validation: `uv sync --dev`, Ruff check/format and ty pass;
