@@ -7,13 +7,33 @@ import {
 } from "./film_filters.js";
 
 const api = "http://localhost:15173/api";
-const states = {
-  "to-do": "Discovery",
-  "in-progress": "Evaluation",
-  "in-review": "Watchlist",
-  done: "Done",
-  archived: "Archived",
-};
+function ProviderBadges({ film }) {
+  const services = providers(film);
+  if (services === null) return <span>Availability unknown</span>;
+  if (!services.length) return <span>No subscriptions reported</span>;
+  return services.map((name) => <span key={name}>{name}</span>);
+}
+
+function SourceEvidence({ film }) {
+  let evidence;
+  try {
+    evidence = JSON.parse(film.fields["POC Evidence"] || "null");
+  } catch {
+    return <p>Source evidence unavailable.</p>;
+  }
+  const links = Array.isArray(evidence?.links) ? evidence.links : [];
+  return <section>
+    <h3>Source evidence</h3>
+    {film.fields["POC Identity Provenance"] && <p>Identity provenance: {film.fields["POC Identity Provenance"]}</p>}
+    {film.fields["POC Source Year"] && <p>Source-listed year: {film.fields["POC Source Year"]} (not independently verified).</p>}
+    {links.length ? <ul>{links.map((item, index) => {
+      let url;
+      try { const parsed = new URL(item.url); if (parsed.protocol === "https:" || parsed.protocol === "http:") url = parsed.href; } catch { /* Invalid source links stay unavailable. */ }
+      return <li key={item.entry_id || index}>{url ? <a href={url} target="_blank" rel="noreferrer">{item.source_id || "Source"} ↗</a> : "Source link unavailable"}{item.kind ? ` · ${item.kind}` : ""}{item.rank ? ` · rank ${item.rank}` : ""}{item.lineage_kind ? ` · ${item.lineage_kind}` : ""}</li>;
+    })}</ul> : <p>Source evidence unknown.</p>}
+    <p>These links identify source evidence; a list or ballot is not necessarily an individual review.</p>
+  </section>;
+}
 
 async function request(path, method = "GET", body) {
   const response = await fetch(api + path, {
@@ -47,6 +67,9 @@ const emptyPreference = {
 
 async function load(project) {
   const id = encodeURIComponent(project);
+  const columns = await request(`/column/${id}`);
+  if (!Array.isArray(columns) || !columns.length)
+    throw new Error("The project has no usable lifecycle columns.");
   const rows = await request(`/custom-field/project/${id}/values`);
   const values = new Map();
   for (const row of rows) {
@@ -70,7 +93,15 @@ async function load(project) {
   }
   if (films.length !== total || new Set(films.map((f) => f.id)).size !== total)
     throw new Error("The board response was incomplete.");
-  return films.map((film) => ({ ...film, fields: values.get(film.id) || {} }));
+  return {
+    films: films.map((film) => ({ ...film, fields: values.get(film.id) || {} })),
+    states: Object.fromEntries([
+      ...columns.map((column) => [column.slug, column.name]),
+      ["planned", "Planned"],
+      ["archived", "Archived"],
+    ]),
+    defaultState: columns[0].slug,
+  };
 }
 
 function selectedId() {
@@ -84,6 +115,8 @@ function App() {
   const [films, setFilms] = useState([]),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
+  const [states, setStates] = useState({}),
+    [defaultState, setDefaultState] = useState("");
   const [selected, setSelected] = useState(selectedId),
     [query, setQuery] = useState(""),
     [provider, setProvider] = useState("");
@@ -102,11 +135,17 @@ function App() {
   const [newTitle, setNewTitle] = useState("");
   const [comments, setComments] = useState(null),
     [newComment, setNewComment] = useState("");
+  const [liveMovie, setLiveMovie] = useState(null),
+    [liveBusy, setLiveBusy] = useState(false),
+    [liveError, setLiveError] = useState(null);
   async function refresh() {
     setBusy(true);
     setError("");
     try {
-      setFilms(await load(project));
+      const result = await load(project);
+      setFilms(result.films);
+      setStates(result.states);
+      setDefaultState(result.defaultState);
       try {
         setPreferences((await preferenceRequest("/preferences")).preferences);
       } catch (e) {
@@ -255,7 +294,7 @@ function App() {
           title: newTitle.trim(),
           description: "",
           priority: "no-priority",
-          status: "to-do",
+          status: defaultState,
         },
       );
       setNewTitle("");
@@ -285,6 +324,27 @@ function App() {
       );
     } finally {
       setBusy(false);
+    }
+  }
+  async function loadLiveMovie() {
+    const tmdbId = film.fields["POC TMDB ID"];
+    if (!/^[1-9][0-9]{0,9}$/.test(tmdbId) || Number(tmdbId) > 2147483647) return;
+    setLiveBusy(true);
+    setLiveError(null);
+    try {
+      const response = await fetch(`http://localhost:15176/movie/${tmdbId}`, {
+        cache: "no-store",
+        credentials: "omit",
+      });
+      if (!response.ok) throw new Error("Live metadata unavailable");
+      const data = await response.json();
+      if (data.tmdb_id !== Number(tmdbId)) throw new Error("TMDB identity mismatch");
+      setLiveMovie({ taskId: film.id, data });
+    } catch {
+      setLiveMovie(null);
+      setLiveError({ taskId: film.id, message: "Live metadata unavailable. Existing film data is unchanged." });
+    } finally {
+      setLiveBusy(false);
     }
   }
   function choose(event) {
@@ -319,7 +379,7 @@ function App() {
               <em>finding.</em>
             </h1>
             <p>
-              A live view of synthetic films stored in your local Kaneo project.
+              A local experimental view of films stored in your Kaneo project.
             </p>
           </div>
           <div className="stats">
@@ -347,8 +407,8 @@ function App() {
           </a>
         </form>
         <p className="notice">
-          Synthetic data only. Preferences use a separate local POC store; they
-          do not change Movary.
+          POC preferences use a separate local store and do not change Movary.
+          Movary remains the source of truth for personal watch history.
         </p>
         {project && (
           <form className="project" onSubmit={addFilm}>
@@ -362,7 +422,7 @@ function App() {
                 required
               />
             </label>
-            <button disabled={busy}>Add film</button>
+            <button disabled={busy || !defaultState}>Add film</button>
           </form>
         )}
         {error && (
@@ -383,14 +443,32 @@ function App() {
                   {film.fields["POC Year"] || "YEAR UNKNOWN"}
                 </div>
                 <h2>{film.title}</h2>
+                {film.fields["POC TMDB ID"] && (
+                  <section>
+                    <h3>Live TMDB details</h3>
+                    <p>Supplied TMDB ID: {film.fields["POC TMDB ID"]}. Verify that the returned film is the intended work.</p>
+                    <button type="button" onClick={loadLiveMovie} disabled={liveBusy}>
+                      {liveBusy ? "Loading…" : "Fetch live details"}
+                    </button>
+                    {liveError?.taskId === film.id && <p role="alert">{liveError.message}</p>}
+                    {liveMovie?.taskId === film.id && (
+                      <div>
+                        <p>TMDB: {liveMovie.data.title} ({liveMovie.data.year || "year unknown"})</p>
+                        {liveMovie.data.poster_url && <img src={liveMovie.data.poster_url} alt={`TMDB poster for ${liveMovie.data.title}`} width="160" />}
+                        {liveMovie.data.synopsis && <p>{liveMovie.data.synopsis}</p>}
+                        <p>Genres: {liveMovie.data.genres?.join(", ") || "Unknown"}. Directors: {liveMovie.data.directors?.join(", ") || "Unknown"}.</p>
+                        <p>US availability: {liveMovie.data.availability.status}. {liveMovie.data.availability.offers.map((offer) => `${offer.provider} (${offer.kind})`).join(", ") || (liveMovie.data.availability.status === "complete" ? "No offers reported" : "Availability unknown")}.</p>
+                        {liveMovie.data.availability.provider_url && <p><a href={liveMovie.data.availability.provider_url} target="_blank" rel="noreferrer">View provider information on TMDB ↗</a></p>}
+                        <p>Fetched on demand; these results are not saved to Kaneo. Provider entitlement is unverified.</p>
+                        <h4>Credits</h4>
+                        <p><a href="https://www.themoviedb.org/" target="_blank" rel="noreferrer"><img src="https://www.themoviedb.org/assets/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg" alt="TMDB" width="120" /></a> This product uses the TMDB API but is not endorsed or certified by TMDB. Watch-provider data: <a href="https://www.justwatch.com/" target="_blank" rel="noreferrer">JustWatch</a>.</p>
+                      </div>
+                    )}
+                  </section>
+                )}
+                {film.fields["POC Evidence"] && <SourceEvidence film={film} />}
                 <div className="badges">
-                  {providers(film)?.length ? (
-                    providers(film).map((name) => (
-                      <span key={name}>{name}</span>
-                    ))
-                  ) : (
-                    <span>Availability unknown</span>
-                  )}
+                  <ProviderBadges film={film} />
                 </div>
                 <form onSubmit={save}>
                   <label>
@@ -667,13 +745,7 @@ function App() {
                       </div>
                       <h3>{item.title}</h3>
                       <div className="badges">
-                        {providers(item)?.length ? (
-                          providers(item).map((name) => (
-                            <span key={name}>{name}</span>
-                          ))
-                        ) : (
-                          <span>Availability unknown</span>
-                        )}
+                        <ProviderBadges film={item} />
                       </div>
                       <p>
                         Critic score:{" "}
@@ -686,7 +758,9 @@ function App() {
                           : "Unavailable"}{" "}
                         ·{" "}
                         {preferences
-                          ? preferences[item.id]?.watchlist
+                          ? !preferences[item.id]
+                            ? "Watchlist unknown"
+                            : preferences[item.id].watchlist
                             ? "Watchlisted"
                             : "Not watchlisted"
                           : "Watchlist unavailable"}

@@ -57,7 +57,7 @@ export function filterFilms(films, options) {
         (!genre || item.fields["POC Genre"] === genre) &&
         (!lifecycle || item.status === lifecycle) &&
         (!watched ||
-          (preferences &&
+          (preferences?.[item.id] &&
             (watched === "marked") ===
               Boolean(preferences[item.id]?.watched_at))) &&
         (!freshnessFilter || freshness(item) === freshnessFilter),

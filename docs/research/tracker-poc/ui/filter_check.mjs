@@ -60,6 +60,18 @@ assert.equal(
   }).length,
   0,
 );
+const withoutPreference = { ...options.preferences };
+delete withoutPreference[films[0].id];
+assert.ok(
+  !filterFilms(films, {
+    ...options,
+    provider: "",
+    minimum: "",
+    watched: "unmarked",
+    preferences: withoutPreference,
+  }).some((film) => film.id === films[0].id),
+  "a missing preference is not evidence that the film is unwatched",
+);
 const fresh = {
   fields: {
     "POC Synthetic Availability": JSON.stringify({

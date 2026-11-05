@@ -19,12 +19,20 @@ const ids = (preferences) =>
   filterFilms(data.films, { ...options, preferences })
     .map((f) => f.fields["POC Fixture ID"])
     .sort();
-assert.deepEqual(ids(data.userA), ["fixture-0008", "fixture-0028"]);
-assert.deepEqual(ids(data.userB), [
-  "fixture-0004",
-  "fixture-0016",
-  "fixture-0024",
-]);
+// The separate preference workflow intentionally edits fixture 0001. Check
+// the whole live result rather than assuming that synthetic state is pristine.
+const expected = (preferences) => data.films
+  .filter((film) => {
+    const raw = film.fields["POC Subscription Providers"] || film.fields["POC Streaming"];
+    const hasNetflix = raw && JSON.parse(raw).includes("Netflix");
+    return hasNetflix && (preferences[film.id]?.interest_score ?? 0) >= 8;
+  })
+  .map((film) => film.fields["POC Fixture ID"])
+  .sort();
+assert.deepEqual(ids(data.userA), expected(data.userA));
+assert.deepEqual(ids(data.userB), expected(data.userB));
+assert.ok(ids(data.userA).includes("fixture-0008"));
+assert.ok(ids(data.userB).includes("fixture-0004"));
 const ordered = filterFilms(data.films, {
   ...options,
   provider: "",
