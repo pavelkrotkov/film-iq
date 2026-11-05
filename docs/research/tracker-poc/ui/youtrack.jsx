@@ -7,6 +7,7 @@ import { attachMatchedLive, eligibleLiveFilms, failedLiveFilms, liveMetadataMatc
 import { filmBaseline, filmChanges, hasDuplicateTmdbId, parseOptionalTmdbId } from "./youtrack_edit.js";
 import { handleExternalRoute, routeLocation } from "./youtrack_navigation.js";
 import { TmdbCredits } from "./tmdb_credits.jsx";
+import { filterMayExcludeUnknown } from "./metadata_filter_coverage.js";
 export { providerObservation, providerFreshness } from "./youtrack_filters.js";
 
 let locationListener = () => {};
@@ -211,6 +212,8 @@ function App() {
   const genres = [...new Set(shownFilms.flatMap((item) => [field(item, "FilmIQ Genre"), ...(item.live?.genres || [])]).filter((value) => typeof value === "string" && value))].sort();
   const visible = useMemo(() => filterYoutrackFilms(shownFilms, {preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness, localWatched, showArchived}), [shownFilms, preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness, localWatched, showArchived]);
   const remainingVisible = remainingLiveFilms(visible, liveResults);
+  const remainingProject = remainingLiveFilms(films, liveResults);
+  const incompleteMetadataFilter = filterMayExcludeUnknown({provider, genre, freshness});
   const failedFilms = failedLiveFilms(films, liveResults);
   async function saveFilm(event) {
     event.preventDefault(); if (!film || editBaseline?.issueId !== film.id) return; setWorking(true); setError("");
@@ -321,8 +324,8 @@ function App() {
       if (projectRef.current === targetProject) setLiveResults((previous) => ({...previous, [target.idReadable]: mergeLiveResult(previous[target.idReadable], {requestedId: suppliedTmdbId(target), error: limited ? "TMDB rate limit reached. Wait and reload the page before trying again." : "Live metadata is unavailable. No automatic retry was made."})}));
     } finally { liveRequest.current = false; setLiveBusy(false); }
   }
-  async function loadNextLiveBatch(all = false, retry = false) {
-    const items = retry ? failedFilms : all ? remainingVisible : eligibleLiveFilms(visible, liveResults);
+  async function loadNextLiveBatch(all = false, retry = false, entireProject = false) {
+    const items = retry ? failedFilms : entireProject ? remainingProject : all ? remainingVisible : eligibleLiveFilms(visible, liveResults);
     if (!items.length || liveRequest.current || liveRateLimited) return;
     const targetProject = project, run = sequence.current;
     const sameContext = () => projectRef.current === targetProject && sequence.current === run;
@@ -422,6 +425,7 @@ function App() {
         <p>Live film details stay available until you close or reload this page.</p>
         <button type="button" disabled={locked || liveBusy || liveRateLimited || !eligibleLiveFilms(visible, liveResults).length} onClick={() => loadNextLiveBatch()}>{liveBatch ? `Loading ${liveBatch.done}/${liveBatch.total}…` : "Load live metadata for next 30 displayed films"}</button>{" "}
         <button type="button" disabled={locked || liveBusy || liveRateLimited || !remainingVisible.length} onClick={() => loadNextLiveBatch(true)}>Load all {remainingVisible.length} remaining visible films (up to {remainingVisible.length * 3} requests)</button>{" "}
+        {incompleteMetadataFilter && <><p>Active provider, genre or freshness filters can exclude films with unknown metadata, so results may be incomplete. Loading the remaining project films also includes hidden and archived films; failed films require retry, and films without a supplied ID cannot be loaded.</p><button type="button" disabled={locked || liveBusy || liveRateLimited || !remainingProject.length} onClick={() => loadNextLiveBatch(true, false, true)}>Load all {remainingProject.length} remaining project films, including archived (up to {remainingProject.length * 3} TMDB API requests, plus poster images)</button>{" "}</>}
         {failedFilms.length > 0 && <button type="button" disabled={locked || liveBusy || liveRateLimited} onClick={() => loadNextLiveBatch(false, true)}>Retry {failedFilms.length} failed films in this project</button>}{" "}
         {liveBatch && <button type="button" onClick={() => {liveCancel.current = true;}}>Cancel loading</button>}
         {liveSummary && <p role="status">{liveSummary}</p>}

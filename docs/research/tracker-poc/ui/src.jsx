@@ -16,6 +16,7 @@ import { confirmNavigation } from "./navigation_guard.js";
 import { readDirectReviews, reviewsMatchTitle, safeReviewUrl } from "./direct_reviews.js";
 import { createFilm, CreatedFilmUnverified, identityField, matchedLive } from "./kaneo_identity.js";
 import { TmdbCredits } from "./tmdb_credits.jsx";
+import { filterMayExcludeUnknown } from "./metadata_filter_coverage.js";
 
 const api = "http://localhost:15173/api";
 function ProviderBadges({ film }) {
@@ -337,6 +338,8 @@ function App() {
     ],
   );
   const remainingVisible = chooseRemaining(filtered, liveResults);
+  const remainingProject = chooseRemaining(films, liveResults);
+  const incompleteMetadataFilter = filterMayExcludeUnknown({provider, genre, freshness: freshnessFilter});
   async function savePreference(event) {
     event.preventDefault();
     setBusy(true);
@@ -529,10 +532,12 @@ function App() {
         {projectListError && <p role="alert">{projectListError}</p>}
         {projectList && !projectList.length && !projectListError && <p>No accessible active projects found.</p>}
         <p className="notice">{movary?.status === "available" ? `Movary watched snapshot observed ${movary.observed_at}. Missing films remain unknown.` : "Movary watched snapshot unavailable for this user or project."}</p>
+        {incompleteMetadataFilter && <p>Active provider, genre or freshness filters can exclude films with unknown metadata, so results may be incomplete. Loading the remaining project films also includes hidden and archived films; failed films require retry, and films without a supplied ID cannot be loaded.</p>}
         {!!eligible && <section>
           <p>Live film details stay available until you close or reload this page. {unattempted} of {eligible} films have not been loaded yet.</p>
           <button type="button" disabled={!!batch || !pending.length} onClick={() => startLiveBatch(pending)}>Load live details for next {pending.length} films</button>{" "}
           <button type="button" disabled={!!batch || !remainingVisible.length} onClick={() => startLiveBatch(remainingVisible, true)}>Load all {remainingVisible.length} remaining visible films (up to {remainingVisible.length * 3} requests)</button>{" "}
+          {incompleteMetadataFilter && <><button type="button" disabled={!!batch || !remainingProject.length} onClick={() => startLiveBatch(remainingProject, true)}>Load all {remainingProject.length} remaining project films, including archived (up to {remainingProject.length * 3} TMDB API requests, plus poster images)</button>{" "}</>}
           {!!retries.length && <button type="button" disabled={!!batch} onClick={() => startLiveBatch(retries)}>Retry up to {BATCH_LIMIT} failed</button>}{" "}
           {batch && <><span role="status">Fetching {batch.done} of {batch.total} films. </span><button type="button" onClick={() => batchController.current?.abort()}>Cancel</button></>}
           {batchSummary && <p role="status">{batchSummary}</p>}

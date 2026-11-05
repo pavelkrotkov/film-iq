@@ -587,6 +587,13 @@ discarded. Fictional browser checks exercised progress and cancellation in both
 interfaces and resumed the YouTrack run; tests with more than 30 fixtures cover
 chunk boundaries and failures. The action does not save metadata or change the
 approved-ID list.
+When a provider, genre, or recent/stale freshness filter can hide films whose
+metadata is unknown, both interfaces now warn that results may be incomplete
+and offer an explicit project-wide lookup. The control states the film count,
+maximum TMDB requests and inclusion of hidden and archived films; it uses the
+same approval checks and stop/cancel behavior. Archived cards remain hidden by
+default. Synthetic checks cover hidden matches and unknown freshness; this
+does not persist the returned metadata.
 YouTrack also offers an explicit retry for failed films in the current project,
 including those hidden by filters. A fictional browser test confirmed a retry
 preserved an earlier success; no automatic retry is made.
