@@ -26,7 +26,11 @@ export function tmdbId(film) {
 
 export function chooseBatch(films, results, retry = false) {
   return films
-    .filter((film) => tmdbId(film) && (retry ? results[film.id]?.error : !results[film.id]))
+    .filter((film) => {
+      const id = tmdbId(film), result = results[film.id];
+      const current = result && (result.requestedId ?? result.data?.tmdb_id) === id;
+      return id && (retry ? current && result.error : !current);
+    })
     .slice(0, BATCH_LIMIT);
 }
 
@@ -34,7 +38,7 @@ export function mergeResult(previous, result) {
   if (!result.data) return { ...previous, ...result };
   const previousAvailability = previous?.data?.availability;
   const currentAvailability = result.data.availability;
-  if (previousAvailability?.status === "complete" && currentAvailability?.status !== "complete") {
+  if (previous?.data?.tmdb_id === result.data.tmdb_id && previousAvailability?.status === "complete" && currentAvailability?.status !== "complete") {
     return { ...result, data: { ...result.data, availability: previousAvailability,
       availability_attempt: currentAvailability?.status || "unknown" } };
   }
@@ -45,17 +49,18 @@ export async function runBatch(films, fetchMovie, signal, onResult) {
   let succeeded = 0, failed = 0, rateLimited = false;
   for (const film of films.slice(0, BATCH_LIMIT)) {
     if (signal.aborted) break;
+    const requestedId = tmdbId(film);
     try {
-      const data = await fetchMovie(tmdbId(film), signal);
+      const data = await fetchMovie(requestedId, signal);
       if (signal.aborted) break;
-      if (data.tmdb_id !== tmdbId(film)) throw new Error("TMDB identity mismatch");
+      if (data.tmdb_id !== requestedId) throw new Error("TMDB identity mismatch");
       succeeded++;
-      onResult(film.id, { data, error: null }, succeeded + failed);
+      onResult(film.id, { data, error: null, requestedId }, succeeded + failed);
     } catch (error) {
       if (signal.aborted) break;
       failed++;
       rateLimited = error instanceof RateLimitError;
-      onResult(film.id, { error: rateLimited ? "TMDB rate limit reached; wait before retrying." : "Live metadata unavailable; retry when ready." }, succeeded + failed);
+      onResult(film.id, { requestedId, error: rateLimited ? "TMDB rate limit reached; wait before retrying." : "Live metadata unavailable; retry when ready." }, succeeded + failed);
       if (rateLimited) break;
     }
   }

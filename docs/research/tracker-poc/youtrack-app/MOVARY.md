@@ -3,9 +3,10 @@
 `movary.js` is a YouTrack app handler that can import a caller-supplied,
 source-tagged watched snapshot into the **current user's** `filmMovarySnapshot`
 extension property. It does not connect to or modify Movary and does not alter
-editable preferences. It has only been tested with synthetic data in a Node
-harness; user isolation, permissions, app installation, and persistence have
-not yet been verified in a running YouTrack instance.
+editable preferences. It has been installed in the local YouTrack instance; a
+fictional single-user test and anonymous-denial checks passed, and the local
+administrator's 27-film snapshot was imported and read back. Independent-user
+isolation and recovery remain unverified.
 
 The global handler offers `GET movary/watched?project=FILMPOC` and
 `POST movary/import`. Both require an explicit `FILMPOC` or `FILMREAL` project.
@@ -52,8 +53,8 @@ unknown dates and repeated observations; absence of a film is **unknown**, not
 proof it was unwatched. GET rechecks issue visibility, so losing access removes
 that film from subsequent responses. The handler cannot independently prove
 that submitted data actually came from Movary: provenance is supplied by the
-calling importer, whose identity, completeness and authorization need live
-verification before using personal data.
+calling importer, which checks its input before the local import. The handler
+itself cannot independently validate that provenance or completeness.
 
 YouTrack app removal deletes extension-property values. Deleting or renaming a
 property in an app reimport also deletes that property's old values. Backup,

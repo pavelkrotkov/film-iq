@@ -14,6 +14,7 @@ import { missingLinkedFilm, unavailableFilterSources } from "./availability_stat
 import { accessibleProjects, projectUrl } from "./project_picker.js";
 import { confirmNavigation } from "./navigation_guard.js";
 import { readDirectReviews, reviewsMatchTitle, safeReviewUrl } from "./direct_reviews.js";
+import { createFilm, CreatedFilmUnverified, identityField, matchedLive } from "./kaneo_identity.js";
 
 const api = "http://localhost:15173/api";
 function ProviderBadges({ film }) {
@@ -161,10 +162,11 @@ function App() {
     [lifecycle, setLifecycle] = useState(""),
     [watched, setWatched] = useState(""),
     [freshnessFilter, setFreshnessFilter] = useState("");
-  const [filmDraft, setFilmDraft] = useState({title: "", description: "", status: ""}),
+  const [filmDraft, setFilmDraft] = useState({title: "", description: "", status: "", tmdb: ""}),
     [detailReady, setDetailReady] = useState(false);
-  const {title, description, status} = filmDraft;
+  const {title, description, status, tmdb} = filmDraft;
   const [newTitle, setNewTitle] = useState("");
+  const [newTmdb, setNewTmdb] = useState("");
   const [comments, setComments] = useState(null),
     [commentDrafts, setCommentDrafts] = useState({});
   const selectedRef = useRef(selected);
@@ -230,17 +232,21 @@ function App() {
     setPreferenceDraft({filmId: film.id, value, dirty: true});
   }
   const shownFilms = useMemo(() => films.map((item) => ({
-    ...item, live: liveResults[item.id]?.data,
+    ...item, live: matchedLive(item, liveResults[item.id]),
   })), [films, liveResults]);
   const shownFilm = shownFilms.find((item) => item.id === selected);
-  const liveMovie = film ? liveResults[film.id]?.data : null;
+  const liveResult = film ? liveResults[film.id]?.data : null;
+  const liveMovie = film ? matchedLive(film, liveResults[film.id]) : null;
   const liveError = film ? liveResults[film.id]?.error : null;
   const mdbId = film ? tmdbId(film) : null;
   const mdbResult = mdbId ? mdbResults[mdbId] : null;
   const pending = chooseBatch(films, liveResults);
   const retries = chooseBatch(films, liveResults, true);
   const eligible = films.filter((item) => tmdbId(item)).length;
-  const unattempted = films.filter((item) => tmdbId(item) && !liveResults[item.id]).length;
+  const unattempted = films.filter((item) => {
+    const id = tmdbId(item), result = liveResults[item.id];
+    return id && (!result || (result.requestedId ?? result.data?.tmdb_id) !== id);
+  }).length;
   async function loadMdbRatings() {
     if (!mdbId || mdbPending) return;
     const id = mdbId;
@@ -276,7 +282,7 @@ function App() {
               "Full synopsis is unavailable; editing is disabled.",
             );
           if (active) {
-            setFilmDraft((current) => mergeFilmDraft(current, detail, detailDirty.current));
+            setFilmDraft((current) => mergeFilmDraft(current, {...detail, tmdb: film.fields["POC TMDB ID"] || ""}, detailDirty.current));
             setDetailReady(true);
           }
         })
@@ -362,6 +368,12 @@ function App() {
     setBusy(true);
     setError("");
     try {
+      const identityChanged = tmdb !== (film.fields["POC TMDB ID"] || "");
+      let fieldId;
+      if (identityChanged) {
+        if (!tmdb) throw new Error("A saved TMDB ID cannot be cleared here; use tracker administration.");
+        fieldId = await identityField(request, project, tmdb, film.id);
+      }
       if (title.trim() !== film.title)
         await request(`/task/title/${encodeURIComponent(film.id)}`, "PUT", { title: title.trim() });
       await request(`/task/description/${encodeURIComponent(film.id)}`, "PUT", {
@@ -371,6 +383,7 @@ function App() {
         await request(`/task/status/${encodeURIComponent(film.id)}`, "PUT", {
           status,
         });
+      if (fieldId) await request("/custom-field/value", "PUT", {taskId: film.id, fieldId, value: tmdb});
       detailDirty.current = false;
       await refresh();
     } catch (e) {
@@ -384,23 +397,24 @@ function App() {
     setBusy(true);
     setError("");
     try {
-      const created = await request(
-        `/task/${encodeURIComponent(project)}`,
-        "POST",
+      const fieldId = newTmdb ? await identityField(request, project, newTmdb) : null;
+      const created = await createFilm(
+        request,
+        project,
         {
           title: newTitle.trim(),
           description: "",
           priority: "no-priority",
           status: defaultState,
-        },
+          ...(fieldId ? {customFields: [{fieldId, value: newTmdb}]} : {}),
+        }, fieldId, newTmdb,
       );
       setNewTitle("");
+      setNewTmdb("");
       await refresh();
       location.hash = `film=${encodeURIComponent(created.id)}`;
     } catch (e) {
-      setError(
-        `Creation may have failed; reload before retrying: ${e.message}`,
-      );
+      setError(e instanceof CreatedFilmUnverified ? e.message : `Creation may be incomplete; reload before retrying: ${e.message}`);
       setBusy(false);
     }
   }
@@ -533,6 +547,7 @@ function App() {
                 required
               />
             </label>
+            <label>Optional supplied TMDB ID<input inputMode="numeric" value={newTmdb} onChange={(e) => setNewTmdb(e.target.value)} placeholder="Positive integer" /></label>
             <button disabled={busy || !defaultState}>Add film</button>
           </form>
         )}
@@ -568,6 +583,7 @@ function App() {
                       Fetch or refresh live details
                     </button>
                     {liveError && <p role="alert">{liveError}</p>}
+                    {liveResult && !liveMovie && <p role="alert">TMDB returned {liveResult.title || "an unknown title"}; its title or ID differs from this film. It may be another work or an alternate title and needs review before using its metadata.</p>}
                     {liveMovie && (
                       <div>
                         <p>TMDB: {liveMovie.title} ({liveMovie.year || "year unknown"})</p>
@@ -609,6 +625,8 @@ function App() {
                     Title
                     <input value={title} onChange={(e) => { detailDirty.current = true; setFilmDraft({...filmDraft, title: e.target.value}); }} maxLength="200" required disabled={!detailReady || busy} />
                   </label>
+                  <label>Supplied TMDB ID (not independently verified)<input inputMode="numeric" value={tmdb} onChange={(e) => {detailDirty.current = true; setFilmDraft({...filmDraft, tmdb: e.target.value});}} disabled={!detailReady || busy} /></label>
+                  <p>Changing this ID does not verify the match. Live lookup is optional and uses your authenticated Kaneo session.</p>
                   <label>
                     Synopsis
                     <textarea

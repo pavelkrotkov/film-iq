@@ -5,9 +5,40 @@ local Mac with Kaneo 2.49.0 and YouTrack Server 2026.2.19728; no Hermes
 deployment or Cloud instance has been tested. The detailed evidence and
 reproduction instructions are in [README.md](README.md).
 
-The requested scores and weighted totals are pending browser-level and
-multiuser tests. An attractive API or a passing mock is not evidence that the
-complete workflow works.
+These scores are provisional: the richer interfaces still need a browser
+walkthrough, and neither upgrades nor recovery have been rehearsed. The user
+prioritized the single-user workflow over additional multi-account tests. An
+attractive API or a passing mock is not evidence that the complete workflow
+works.
+
+| Criterion | Weight | Kaneo | YouTrack |
+| --- | ---: | ---: | ---: |
+| Freedom to create a substantially different UI | 30% | 4 | 3 |
+| Data-model flexibility | 15% | 3 | 4 |
+| APIs and external agent integration | 15% | 3 | 4 |
+| Searching, sorting, and filtering | 10% | 2 | 3 |
+| Lifecycle and automation | 10% | 2 | 5 |
+| Deployment and operating complexity | 10% | 3 | 3 |
+| Upgradeability and long-term maintenance | 10% | 2 | 3 |
+| **Weighted total, out of 5** | **100%** | **3.00** | **3.50** |
+
+These are engineering judgments from this limited POC, not measured future
+costs. Kaneo scores higher on interface freedom because a standalone UI works
+with its public source and an upstream fork was unnecessary; its observed
+search limit, separate preference store and version-specific API behavior lower
+the other scores. YouTrack scores higher for typed fields, native queries and
+tested workflow rules, while its iframe and surrounding interface constrain the
+experience and its app-owned data requires a recovery plan. Both operating
+scores reflect extra local services and untested recovery; the substantially
+larger YouTrack memory sample is not a production sizing comparison.
+
+**Provisional recommendation: continue with YouTrack** if the remaining browser
+walkthrough confirms that the embedded page feels usable. It has demonstrated
+more of the requested persistence, query and automation capabilities without a
+source fork, which may reduce ongoing backend work. Kaneo remains the stronger
+candidate if a tracker-free interface is decisive or YouTrack's app/data
+lifecycle proves burdensome. Do not treat this as a final selection until the
+unfinished browser, recovery and upgrade checks have been resolved.
 
 | Criterion and weight | Kaneo evidence | YouTrack evidence | Remaining evidence |
 | --- | --- | --- | --- |
@@ -47,9 +78,9 @@ they are not automatically independent critic reviews.
 
 The initial build effort has not been tracked in comparable person-hours. The
 existing measurements are local API timings and cannot predict production
-capacity or ongoing maintenance. A recommendation should follow the same
-end-to-end workload on both candidates, with incomplete requirements identified
-and the seven scores justified against that evidence.
+capacity or ongoing maintenance. The provisional scores above should be revisited
+after the same end-to-end workload on both candidates and the outstanding
+recovery and upgrade checks.
 
 For a narrower CPU-only check, the two client filtering functions were run
 separately in warmed Node processes against the same 1,000 fictional films.

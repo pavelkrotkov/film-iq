@@ -1,6 +1,19 @@
 // Pure extraction of YouTrack's existing client-side filtering logic.
 export const field = (film, name) => film.customFields?.find((item) => item.name === name)?.value ?? null;
 
+export function localWatchStatus(preferences, issueId) {
+  if (!preferences || !Object.hasOwn(preferences, issueId)) return "unknown";
+  const value = preferences[issueId]?.watched_at;
+  if (value === null) return "not_recorded";
+  return typeof value === "string" && value.trim() && Number.isFinite(Date.parse(value)) ? "watched" : "unknown";
+}
+
+export function localWatchLabel(preferences, issueId) {
+  if (!preferences) return "Unavailable";
+  const status = localWatchStatus(preferences, issueId);
+  return status === "watched" ? "Watched timestamp recorded" : status === "not_recorded" ? "No watched timestamp recorded" : "Unknown";
+}
+
 export function providerObservation(film) {
   try {
     const live = film.live?.availability;
@@ -29,7 +42,7 @@ export function providerFreshness(observation, now = Date.now()) {
   return age <= 7 * 24 * 60 * 60 * 1000 ? "recent" : "stale";
 }
 
-export function filterYoutrackFilms(films, {preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness}) {
+export function filterYoutrackFilms(films, {preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness, localWatched}) {
   const matching = films.filter((item) => {
     const personal = preferences?.[item.idReadable];
     if (query && !item.summary.toLowerCase().includes(query.toLowerCase())) return false;
@@ -42,6 +55,7 @@ export function filterYoutrackFilms(films, {preferences, query, stateFilter, min
     }
     if (minimum && (personal?.interest_score == null || personal.interest_score < Number(minimum))) return false;
     if (watchlistOnly && personal?.watchlist !== true) return false;
+    if (localWatched && (!preferences || localWatchStatus(preferences, item.idReadable) !== localWatched)) return false;
     if (movaryOnly && (movary?.status !== "available" || movary?.films?.[item.idReadable]?.watched !== true)) return false;
     if (excludeMovaryWatched && (movary?.status !== "available" || movary?.films?.[item.idReadable]?.watched === true)) return false;
     return true;

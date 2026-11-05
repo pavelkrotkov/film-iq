@@ -1,0 +1,21 @@
+import assert from "node:assert/strict";
+import { filmBaseline, filmChanges, hasDuplicateTmdbId, parseOptionalTmdbId } from "./youtrack_edit.js";
+
+const film = (id, tmdbId) => ({id, summary: "Fictional", description: "Original synopsis", customFields: [{name: "FilmIQ TMDB ID", value: tmdbId}, {name: "FilmIQ Lifecycle", value: {name: "Discovery"}}]});
+const records = [film("1", 42), film("2", null)];
+const baseline = filmBaseline(records[0]);
+const draft = {title: "Fictional", synopsis: "Original synopsis", state: "Discovery", tmdbId: "42"};
+assert.equal(parseOptionalTmdbId(" "), null);
+assert.equal(parseOptionalTmdbId(" 42 "), 42);
+for (const value of ["0", "-1", "1.5", "01", "2147483648", "abc"]) assert.throws(() => parseOptionalTmdbId(value));
+assert.equal(hasDuplicateTmdbId(records, 42), true);
+assert.equal(hasDuplicateTmdbId(records, 42, "1"), false);
+assert.equal(hasDuplicateTmdbId(records, 99), false);
+assert.throws(() => hasDuplicateTmdbId([{id: "bad", customFields: []}], 99), /Cannot verify/);
+assert.deepEqual(filmChanges(baseline, draft).changes, {});
+assert.deepEqual(filmChanges(baseline, {...draft, title: "Edited"}).changes, {summary: "Edited"}, "title-only update must not overwrite synopsis or fields");
+assert.deepEqual(filmChanges(baseline, {...draft, tmdbId: "99"}).changes, {customFields: [{name: "FilmIQ TMDB ID", $type: "SimpleIssueCustomField", value: 99}]}, "ID-only update must not overwrite title or synopsis");
+assert.deepEqual(filmChanges(baseline, {...draft, synopsis: "Edited synopsis"}).changes, {description: "Edited synopsis"});
+assert.throws(() => filmChanges(baseline, {...draft, tmdbId: ""}), /Clearing/);
+assert.deepEqual(filmChanges(filmBaseline(records[1]), {...draft, tmdbId: ""}).changes, {});
+console.log("YouTrack TMDB input, duplicate preflight and field-specific update checks passed");

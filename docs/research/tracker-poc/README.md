@@ -398,6 +398,16 @@ The API and UI are bound to loopback; this configuration is for isolated local
 evaluation only.
 React and esbuild are MIT-licensed. The UI includes no service API key.
 
+The optional Kaneo TMDB read-through (`tmdb_live.py`) requires
+`FILMIQ_APPROVAL_DIR` to point to the same owner-controlled directory used by
+the YouTrack bridge, containing `approved-ids.json`; it also needs a TMDB
+credential in the server process environment. It re-reads and validates that
+list for each film. A missing or invalid list returns 503 and an unapproved ID
+returns 403 before contacting TMDB. An approved read may make multiple upstream
+requests without rechecking between them. Restart the service after changing
+its environment. The approved list governs only the documented API and image
+destinations; adding a film to Kaneo does not add approval.
+
 ## YouTrack status
 
 The user selected local YouTrack Server for this evaluation and identified
@@ -489,9 +499,22 @@ header does not establish poster-image cache behavior.
 
 ## Outstanding
 
-The complete comparison, equivalent applications, browser-level multiuser
-preference isolation, usable live enrichment across both frontends, browser demonstrations,
-signed-in YouTrack permission tests, upgrade assessment, weighted scores,
-and recommendation remain outstanding. Do not score or recommend either
-product from the current evidence. Docker Desktop's external runtime storage
-under `/var/lib/docker` was approved by the user on 2026-11-05.
+The latest local widget update adds an optional supplied TMDB ID to film
+creation and editing, shows local watched timestamps separately from the
+Movary snapshot, and guards unsaved drafts on app-route Back/Forward events.
+The corresponding Kaneo UI adds supplied IDs and hides live metadata when its
+title or ID differs. Fictional checks exercised the field-specific edit,
+duplicate preflight, watched filter, title matching and navigation logic. A
+synthetic film in each running tracker confirmed that its supplied ID persists
+on readback. After the YouTrack widget update, the 27-film Movary snapshot was
+identical on readback. These checks do not establish browser rendering or
+server-enforced ID uniqueness; the draft guard does not establish protection
+when leaving or reloading the entire app.
+
+The [comparison](comparison.md) includes provisional weighted scores and a
+conditional recommendation. The richer applications, live metadata controls
+and end-to-end demonstrations still need browser verification; recovery and an
+upgrade rehearsal also remain outstanding. The user prioritized the single-user
+workflow over additional multi-account testing. These limitations make the
+scores provisional. Docker Desktop's external runtime storage under
+`/var/lib/docker` was approved by the user on 2026-11-05.

@@ -21,10 +21,10 @@ const outcome = await runBatch(chosen, async (id) => {
 assert.deepEqual(outcome, {succeeded: 1, failed: 1, cancelled: true, rateLimited: false});
 assert.equal(events.length, 2);
 assert.ok(events[1][1].error);
-assert.equal(chooseBatch(films, {"task-0": {data: {}}, "task-1": {error: "failed"}})[0].id, "task-2");
-assert.deepEqual(chooseBatch(films, {"task-1": {error: "failed"}}, true).map((film) => film.id), ["task-1"]);
-const prior = {data: {availability: {status: "complete", offers: ["fixture"]}}};
-const preserved = mergeResult(prior, {data: {availability: {status: "unknown", offers: []}}});
+assert.equal(chooseBatch(films, {"task-0": {data: {tmdb_id: 1}}, "task-1": {requestedId: 2, error: "failed"}})[0].id, "task-2");
+assert.deepEqual(chooseBatch(films, {"task-1": {requestedId: 2, error: "failed"}}, true).map((film) => film.id), ["task-1"]);
+const prior = {data: {tmdb_id: 2, availability: {status: "complete", offers: ["fixture"]}}};
+const preserved = mergeResult(prior, {data: {tmdb_id: 2, availability: {status: "unknown", offers: []}}});
 assert.deepEqual(preserved.data.availability, prior.data.availability);
 assert.equal(preserved.data.availability_attempt, "unknown");
 assert.deepEqual(mergeResult(prior, {error: "failed"}).data, prior.data);

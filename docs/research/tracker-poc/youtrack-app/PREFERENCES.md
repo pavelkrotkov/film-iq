@@ -1,6 +1,6 @@
 # Synthetic YouTrack preference experiment
 
-This uninstalled, unverified experiment stores a JSON map of readable issue ID
+The installed local POC stores a JSON map of readable issue ID
 to preference on the current user's `filmPreferences` User extension property.
 The `preferences` handler exposes `GET /preference?issue_id=FILMPOC-1`,
 `GET /all` (the caller's recorded, currently visible films),
@@ -28,9 +28,10 @@ concurrency measurements have been made. We have not established whether
 simultaneous updates to different issues on the same user's JSON map conflict or
 can overwrite each other. Backups, retention and deletion still need design.
 The POC relies on YouTrack's authenticated global endpoints and disabled guest
-login, and the authorization behavior has only been tested in a synthetic
-JavaScript harness, not in YouTrack or with real user accounts. Do not use real
-personal data until live access and isolation tests pass.
+login. A live fictional single-user test exercised preview, confirmation and
+replay rejection; anonymous reads and writes were rejected. Independent-user
+isolation has not been verified in the running instance. This is experimental
+storage, not a production authorization or recovery design.
 
 Removing the app deletes its extension property data; reimporting an app after
 removing or renaming properties also deletes the corresponding values. See

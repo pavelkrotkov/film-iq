@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { readDirectReviews, reviewsMatchTitle, safeReviewUrl } from "./direct_reviews.js";
-import { field, filterYoutrackFilms, providerObservation, providerFreshness } from "./youtrack_filters.js";
+import { field, filterYoutrackFilms, localWatchLabel, providerObservation, providerFreshness } from "./youtrack_filters.js";
 import { loadFilmView, publishFilmBatch } from "./youtrack_loading.js";
 import { attachMatchedLive, eligibleLiveFilms, liveMetadataMatches, LiveRateLimited, mergeLiveResult, readLiveMetadata, runLiveBatch, suppliedTmdbId } from "./youtrack_tmdb.js";
+import { filmBaseline, filmChanges, hasDuplicateTmdbId, parseOptionalTmdbId } from "./youtrack_edit.js";
+import { handleExternalRoute, routeLocation } from "./youtrack_navigation.js";
 export { providerObservation, providerFreshness } from "./youtrack_filters.js";
 
 let locationListener = () => {};
@@ -74,17 +76,26 @@ function App() {
   const [error, setError] = useState(""), [notice, setNotice] = useState(""), [busy, setBusy] = useState(false), [loadingFilms, setLoadingFilms] = useState(false);
   const [query, setQuery] = useState(""), [stateFilter, setStateFilter] = useState(""), [minimum, setMinimum] = useState("");
   const [watchlistOnly, setWatchlistOnly] = useState(false), [sortInterest, setSortInterest] = useState(false);
+  const [localWatched, setLocalWatched] = useState("");
   const [provider, setProvider] = useState(""), [genre, setGenre] = useState(""), [freshness, setFreshness] = useState("");
   const [title, setTitle] = useState(""), [synopsis, setSynopsis] = useState(""), [state, setState] = useState(""), [pref, setPref] = useState(emptyPreference);
+  const [tmdbId, setTmdbId] = useState(""), [editBaseline, setEditBaseline] = useState(null), [newTmdbId, setNewTmdbId] = useState("");
   const [prefDirty, setPrefDirty] = useState(false), [filmDirty, setFilmDirty] = useState(false);
   const [pendingPreview, setPendingPreview] = useState(null), [pendingNavigation, setPendingNavigation] = useState(null), [discardFailed, setDiscardFailed] = useState(false), [saveUncertain, setSaveUncertain] = useState(false);
+  const [restoringLocation, setRestoringLocation] = useState(false);
   const [comments, setComments] = useState(null), [commentDrafts, setCommentDrafts] = useState({}), [newTitle, setNewTitle] = useState("");
   const [liveResults, setLiveResults] = useState({}), [liveBusy, setLiveBusy] = useState(false), [liveRateLimited, setLiveRateLimited] = useState(false);
   const [liveBatch, setLiveBatch] = useState(null), [liveSummary, setLiveSummary] = useState("");
   const liveRequest = useRef(false);
-  const sequence = useRef(0), selectedRef = useRef(selected), projectRef = useRef(project);
+  const sequence = useRef(0), selectedRef = useRef(selected), projectRef = useRef(project), restoringCount = useRef(0), guardsRef = useRef({});
   selectedRef.current = selected;
   projectRef.current = project;
+  guardsRef.current = {filmDirty, prefDirty, pendingPreview, pendingNavigation, busy};
+  function setWorking(value) { guardsRef.current.busy = value; setBusy(value); }
+  function markFilmDirty(value) { guardsRef.current.filmDirty = value; setFilmDirty(value); }
+  function markPrefDirty(value) { guardsRef.current.prefDirty = value; setPrefDirty(value); }
+  function setPreview(value) { guardsRef.current.pendingPreview = value; setPendingPreview(value); }
+  function setQueued(value) { guardsRef.current.pendingNavigation = value; setPendingNavigation(value); }
 
   async function refresh(target = project) {
     if (!target || target !== projectRef.current) return;
@@ -102,7 +113,7 @@ function App() {
       setMovary(watched.status === "fulfilled" ? watched.value : null);
       const messages = [];
       if (personal.status === "rejected") {
-        setMinimum(""); setWatchlistOnly(false); setSortInterest(false);
+        setMinimum(""); setWatchlistOnly(false); setSortInterest(false); setLocalWatched("");
         messages.push("Personal preferences are unavailable; preference filters were cleared.");
       }
       if (watched.status !== "fulfilled" || watched.value?.status !== "available") {
@@ -123,51 +134,68 @@ function App() {
   useEffect(() => {
     let active = true;
     let navigated = false;
-    const apply = (where) => {
+    const apply = (next) => {
       if (!active) return;
-      const next = parseAppLocation(where);
+      projectRef.current = next.project; selectedRef.current = next.film;
       setProject(next.project); setSelected(next.film);
     };
-    locationListener = (where) => { navigated = true; apply(where); };
-    host.navigation.getAppLocation().then((where) => { if (!navigated) apply(where); }).catch(() => { if (!navigated) apply({search: ""}); });
+    locationListener = (where) => {
+      navigated = true;
+      void handleExternalRoute(
+        {project: projectRef.current, film: selectedRef.current}, parseAppLocation(where), guardsRef.current,
+        {
+          apply,
+          queue: (next) => setQueued({kind: "route", value: next}),
+          restore: async (current) => {
+            restoringCount.current++; setRestoringLocation(true);
+            try { await host.navigation.replaceAppLocation(routeLocation(current)); }
+            finally { restoringCount.current--; if (!restoringCount.current && active) setRestoringLocation(false); }
+          },
+          notify: (message) => { if (active) setError(message); },
+        },
+      );
+    };
+    host.navigation.getAppLocation().then((where) => { if (!navigated) apply(parseAppLocation(where)); }).catch(() => { if (!navigated) apply(parseAppLocation({search: ""})); });
     return () => { active = false; locationListener = () => {}; };
   }, []);
   const film = films.find((item) => item.idReadable === selected);
   useEffect(() => {
     if (!film) return;
     let active = true;
-    setPrefDirty(false); setFilmDirty(false);
+    markPrefDirty(false); markFilmDirty(false);
     setComments(null);
     getComments(film).then((items) => { if (active) setComments(items); }).catch(() => { if (active) setComments(null); });
     return () => { active = false; };
   }, [film?.idReadable]);
   useEffect(() => {
     if (film && !filmDirty) {
-      setTitle(film.summary || "");
-      setSynopsis(film.description || "");
-      setState(field(film, "FilmIQ Lifecycle")?.name || "");
+      const baseline = filmBaseline(film);
+      setTitle(baseline.title);
+      setSynopsis(baseline.synopsis);
+      setState(baseline.state);
+      setTmdbId(baseline.tmdbId == null ? "" : String(baseline.tmdbId));
+      setEditBaseline(baseline);
     }
   }, [film, filmDirty]);
   useEffect(() => {
     if (film && !prefDirty) setPref(preferences?.[film.idReadable] || emptyPreference);
   }, [film?.idReadable, preferences, prefDirty]);
+  async function navigateRoute(next) {
+    markFilmDirty(false); markPrefDirty(false);
+    projectRef.current = next.project; selectedRef.current = next.film;
+    setProject(next.project); setSelected(next.film);
+    try { await host.navigation.updateAppLocation(routeLocation(next)); }
+    catch { setError("Navigation could not be saved; the current screen may not survive reload."); }
+  }
   async function selectFilm(id, discard = false) {
     if (pendingPreview || (pendingNavigation && !discard)) return;
-    if ((filmDirty || prefDirty) && !discard) { setPendingNavigation({kind: "film", value: id}); return; }
-    setFilmDirty(false); setPrefDirty(false);
-    setSelected(id);
-    const params = new URLSearchParams({ project });
-    if (id) params.set("film", id);
-    try { await host.navigation.updateAppLocation({ search: params.toString() }); }
-    catch { setError("Navigation could not be saved; the current screen may not survive reload."); }
+    if ((filmDirty || prefDirty) && !discard) { setQueued({kind: "film", value: id}); return; }
+    await navigateRoute({project: projectRef.current, film: id});
   }
   async function selectProject(next, discard = false) {
     if (pendingPreview || (pendingNavigation && !discard)) return;
-    if ((filmDirty || prefDirty) && !discard) { setPendingNavigation({kind: "project", value: next}); return; }
-    setFilmDirty(false); setPrefDirty(false);
-    setSelected(null); setProject(next);
-    try { await host.navigation.updateAppLocation({ search: new URLSearchParams({project: next}).toString() }); }
-    catch { setError("Project navigation could not be saved; the current screen may not survive reload."); }
+    if ((filmDirty || prefDirty) && !discard) { setQueued({kind: "project", value: next}); return; }
+    await navigateRoute({project: next, film: null});
   }
   const shownFilms = useMemo(() => attachMatchedLive(films, liveResults), [films, liveResults]);
   const providers = [...new Set(shownFilms.flatMap((item) => {
@@ -175,21 +203,25 @@ function App() {
     return observation?.status !== "unknown" ? observation?.subscription || [] : [];
   }))].sort();
   const genres = [...new Set(shownFilms.flatMap((item) => [field(item, "FilmIQ Genre"), ...(item.live?.genres || [])]).filter((value) => typeof value === "string" && value))].sort();
-  const visible = useMemo(() => filterYoutrackFilms(shownFilms, {preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness}), [shownFilms, preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness]);
+  const visible = useMemo(() => filterYoutrackFilms(shownFilms, {preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness, localWatched}), [shownFilms, preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness, localWatched]);
   async function saveFilm(event) {
-    event.preventDefault(); if (!title.trim()) { setError("Title cannot be blank."); return; } setBusy(true); setError("");
+    event.preventDefault(); if (!film || editBaseline?.issueId !== film.id) return; setWorking(true); setError("");
+    let submitting = false;
     try {
-      const changes = { summary: title.trim(), description: synopsis };
-      if (state) changes.customFields = [{ name: "FilmIQ Lifecycle", $type: "StateIssueCustomField", value: { name: state } }];
+      const {changes, tmdbId: proposedId, idChanged} = filmChanges(editBaseline, {title, synopsis, state, tmdbId});
+      if (!Object.keys(changes).length) { markFilmDirty(false); setNotice("No film changes to save."); return; }
+      if (idChanged && proposedId && hasDuplicateTmdbId(await getFilms(project), proposedId, film.id)) throw new Error("That TMDB ID is already used by another visible film in this project.");
+      submitting = true;
       await host.fetchYouTrack(`issues/${encodeURIComponent(film.id)}`, { method: "POST", body: changes });
+      submitting = false;
       const refreshed = await refresh();
-      if (refreshed) { setFilmDirty(false); setNotice("Film changes saved in YouTrack."); }
+      if (refreshed) { markFilmDirty(false); setNotice("Film changes saved in YouTrack."); }
       else setError("Film changes saved, but refresh failed. Reload to confirm the displayed record.");
-    } catch (e) { setError(`Could not save film: ${e.message}`); }
-    finally { setBusy(false); }
+    } catch (e) { setError(submitting ? "Save may have completed. Reload before retrying." : `Could not save film: ${e.message}`); }
+    finally { setWorking(false); }
   }
   async function savePreference(event) {
-    event.preventDefault(); if (preferences === null || !film) return; setBusy(true); setError(""); const target = film.idReadable;
+    event.preventDefault(); if (preferences === null || !film) return; setWorking(true); setError(""); const target = film.idReadable;
     try {
       const preview = await host.fetchApp("preferences/preview", { method: "POST", body: { issue_id: target, preference: pref } });
       if (!previewMatchesFilm(preview, target)) throw new Error("Invalid preview");
@@ -199,63 +231,73 @@ function App() {
           await host.fetchApp("preferences/discard", { method: "POST", body: preview });
           setNotice("The selected film changed; the earlier preference preview was discarded.");
         } catch {
-          setPendingPreview(preview); setDiscardFailed(true);
+          setPreview(preview); setDiscardFailed(true);
           setError("The selected film changed and the earlier preview could not be cleared.");
         }
         return;
       }
-      setPendingPreview(preview);
+      setPreview(preview);
     } catch (e) { setError(`Could not prepare preference preview: ${e.message}`); }
-    finally { setBusy(false); }
+    finally { setWorking(false); }
   }
   async function confirmPreference() {
     if (!previewMatchesFilm(pendingPreview, selectedRef.current)) { setError("The selected film changed; cancel and preview again."); return; }
-    setBusy(true); setError(""); let saved = false; const target = pendingPreview.issue_id;
+    setWorking(true); setError(""); let saved = false; const target = pendingPreview.issue_id;
     try {
       await host.fetchApp("preferences/confirm", { method: "POST", body: pendingPreview });
       saved = true;
-      setPendingPreview(null); setDiscardFailed(false); setSaveUncertain(false);
+      setPreview(null); setDiscardFailed(false); setSaveUncertain(false);
       setPreferences(await readPreferences());
-      if (selectedRef.current === target) setPrefDirty(false);
+      if (selectedRef.current === target) markPrefDirty(false);
       setNotice(`Local preference for ${target} saved; Movary was not changed.`);
     } catch (e) {
       if (saved) setError(`Preference saved, but refresh failed: ${e.message}`);
       else { setSaveUncertain(true); setDiscardFailed(true); setError("Save may have completed. Close this preview, then open a new preview to compare the server's Before value."); }
     }
-    finally { setBusy(false); }
+    finally { setWorking(false); }
   }
   async function discardPreference() {
-    setBusy(true); setError("");
+    setWorking(true); setError("");
     try {
       await host.fetchApp("preferences/discard", { method: "POST", body: pendingPreview });
-      setPendingPreview(null); setDiscardFailed(false);
+      setPreview(null); setDiscardFailed(false);
       setNotice(saveUncertain ? "Preview closed; open a new preview to compare the server's Before value." : "Preference preview discarded; no preference was saved.");
       setSaveUncertain(false);
     } catch { setDiscardFailed(true); setError("Cancellation could not clear the server preview; retry or close it locally."); }
-    finally { setBusy(false); }
+    finally { setWorking(false); }
   }
   async function addComment(event) {
     event.preventDefault();
     const target = film, text = commentDrafts[target.idReadable] || "";
     if (!text.trim()) return;
-    setBusy(true);
+    setWorking(true);
     try {
       await host.fetchYouTrack(`issues/${encodeURIComponent(target.id)}/comments`, { method: "POST", body: { text } });
       setCommentDrafts((drafts) => ({ ...drafts, [target.idReadable]: "" }));
       const updated = await getComments(target);
       if (selectedRef.current === target.idReadable) setComments(updated);
     } catch (e) { setError(`Comment may not have saved: ${e.message}`); }
-    finally { setBusy(false); }
+    finally { setWorking(false); }
   }
   async function addFilm(event) {
     event.preventDefault(); if (!newTitle.trim()) return;
-    setBusy(true); setError("");
+    setWorking(true); setError("");
+    let submitting = false;
     try {
+      const id = parseOptionalTmdbId(newTmdbId);
+      if (id && hasDuplicateTmdbId(await getFilms(project), id)) throw new Error("That TMDB ID is already used by another visible film in this project.");
       const projectInfo = await host.fetchYouTrack(`admin/projects/${project}`, { query: { fields: "id" } });
-      const created = await host.fetchYouTrack("issues", { method: "POST", query: { fields: "idReadable" }, body: { project: { id: projectInfo.id }, summary: newTitle.trim() } });
-      setNewTitle(""); await refresh(); await selectFilm(created.idReadable);
-    } catch (e) { setError(`Creation may be incomplete; reload before retrying: ${e.message}`); }
-    finally { setBusy(false); }
+      const body = { project: { id: projectInfo.id }, summary: newTitle.trim() };
+      if (id) body.customFields = [{name: "FilmIQ TMDB ID", $type: "SimpleIssueCustomField", value: id}];
+      submitting = true;
+      const created = await host.fetchYouTrack("issues", { method: "POST", query: { fields: "idReadable" }, body });
+      if (typeof created?.idReadable !== "string") throw new Error("Creation response was incomplete");
+      submitting = false;
+      setNewTitle(""); setNewTmdbId("");
+      if (await refresh()) await selectFilm(created.idReadable);
+      else setError("Film created, but refresh failed. Reload to confirm the displayed record.");
+    } catch (e) { setError(submitting ? "Creation may have completed. Reload before retrying." : `Could not create film: ${e.message}`); }
+    finally { setWorking(false); }
   }
   async function loadLiveMetadata() {
     if (!film || !suppliedTmdbId(film) || liveRequest.current || liveRateLimited) return;
@@ -286,7 +328,7 @@ function App() {
       if (active()) setLiveSummary(`${result.rateLimited ? "Stopped after a rate limit. Wait and reload before trying again." : result.cancelled ? "Stopped." : result.failed ? "Stopped after an unavailable response." : "Finished."} ${result.succeeded} loaded; ${result.failed} unavailable. No automatic retries or tracker writes.`);
     } finally { liveRequest.current = false; setLiveBusy(false); setLiveBatch(null); }
   }
-  function changePreference(values) { setPref((current) => ({...current, ...values})); setPrefDirty(true); }
+  function changePreference(values) { setPref((current) => ({...current, ...values})); markPrefDirty(true); }
   const evidence = film ? sourceEvidence(film) : {};
   const sourceLinks = Array.isArray(evidence?.links) ? evidence.links.filter((item) => item && typeof item === "object") : [];
   const reviews = film ? directReviews(film) : null;
@@ -295,7 +337,8 @@ function App() {
   const live = liveEntry?.data?.tmdb_id === suppliedTmdbId(film) ? liveEntry.data : null;
   const liveMatches = liveMetadataMatches(film, live);
   const observation = film ? providerObservation(liveMatches ? {...film, live} : film) : null;
-  const locked = busy || loadingFilms || !!pendingPreview || !!pendingNavigation;
+  const locked = busy || loadingFilms || restoringLocation || !!pendingPreview || !!pendingNavigation;
+  const filmEditLocked = locked || editBaseline?.issueId !== film?.id;
   const preferenceLabel = (value) => value === null ? "unknown" : value === true ? "yes" : value === false ? "no" : value;
   return <>
     <header><button className="brand" type="button" disabled={locked} onClick={() => selectFilm(null)} style={{background:"transparent",color:"inherit",padding:0}}>FILM <span> / </span> LAB</button><nav>Discovery · Watchlist · Administration</nav></header>
@@ -304,8 +347,8 @@ function App() {
       <div className="project"><label>Project<select value={project || ""} disabled={locked} onChange={(e) => selectProject(e.target.value)}><option value="" disabled>Loading project…</option><option value="FILMREAL">Film collection</option><option value="FILMPOC">Synthetic test films</option></select></label><button disabled={locked || !project} onClick={() => refresh()}>Reload</button><a href="/issues" target="_blank" rel="noreferrer">Open tracker administration ↗</a></div>
       {error && <p role="alert">{error}</p>}{notice && <p className="notice">{notice}</p>}
       {liveRateLimited && <p role="alert">TMDB rate limit reached. Wait and reload the page before trying live lookups again.</p>}
-      {pendingNavigation && <section aria-labelledby="discard-title"><h2 id="discard-title">Discard unsaved edits?</h2><p>Your film and preference drafts have not been saved.</p><button disabled={busy} autoFocus onClick={() => setPendingNavigation(null)}>Keep editing</button><button disabled={busy} onClick={() => {const target = pendingNavigation; setPendingNavigation(null); if (target.kind === "film") selectFilm(target.value, true); else selectProject(target.value, true);}}>Discard and continue</button></section>}
-      {pendingPreview && <section aria-labelledby="preference-preview-title"><h2 id="preference-preview-title">Review preference changes</h2><p>Film: {pendingPreview.issue_id}</p><p>Interest: {preferenceLabel((pendingPreview.before || emptyPreference).interest_score)} → {preferenceLabel(pendingPreview.after.interest_score)}</p><p>Watchlist: {preferenceLabel((pendingPreview.before || emptyPreference).watchlist)} → {preferenceLabel(pendingPreview.after.watchlist)}</p><p>Watched date: {preferenceLabel((pendingPreview.before || emptyPreference).watched_at)} → {preferenceLabel(pendingPreview.after.watched_at)}</p><p>Notes before: {(pendingPreview.before || emptyPreference).personal_notes || "(empty)"}</p><p>Notes after: {pendingPreview.after.personal_notes || "(empty)"}</p><button disabled={busy} autoFocus onClick={discardPreference}>Cancel preview</button><button disabled={busy || saveUncertain || !previewMatchesFilm(pendingPreview, selected)} onClick={confirmPreference}>Save local preference</button>{discardFailed && <><p>The server preview may remain until another preview or app removal. Draft notes are not stored in it.</p><button disabled={busy} onClick={() => {setPendingPreview(null); setDiscardFailed(false); setNotice(saveUncertain ? "Preview closed locally; the save outcome and server preview remain unverified. Open a new preview to compare the server's Before value." : "Preview closed locally; the server preview may remain."); setSaveUncertain(false);}}>Close preview locally</button></>}</section>}
+      {pendingNavigation && <section aria-labelledby="discard-title"><h2 id="discard-title">Discard unsaved edits?</h2><p>Your film and preference drafts have not been saved.</p><button disabled={busy || restoringLocation} autoFocus onClick={() => setQueued(null)}>Keep editing</button><button disabled={busy || restoringLocation} onClick={() => {const target = pendingNavigation; setQueued(null); if (target.kind === "film") selectFilm(target.value, true); else if (target.kind === "project") selectProject(target.value, true); else navigateRoute(target.value);}}>Discard and continue</button></section>}
+      {pendingPreview && <section aria-labelledby="preference-preview-title"><h2 id="preference-preview-title">Review preference changes</h2><p>Film: {pendingPreview.issue_id}</p><p>Interest: {preferenceLabel((pendingPreview.before || emptyPreference).interest_score)} → {preferenceLabel(pendingPreview.after.interest_score)}</p><p>Watchlist: {preferenceLabel((pendingPreview.before || emptyPreference).watchlist)} → {preferenceLabel(pendingPreview.after.watchlist)}</p><p>Watched date: {preferenceLabel((pendingPreview.before || emptyPreference).watched_at)} → {preferenceLabel(pendingPreview.after.watched_at)}</p><p>Notes before: {(pendingPreview.before || emptyPreference).personal_notes || "(empty)"}</p><p>Notes after: {pendingPreview.after.personal_notes || "(empty)"}</p><button disabled={busy || restoringLocation} autoFocus onClick={discardPreference}>Cancel preview</button><button disabled={busy || restoringLocation || saveUncertain || !previewMatchesFilm(pendingPreview, selected)} onClick={confirmPreference}>Save local preference</button>{discardFailed && <><p>The server preview may remain until another preview or app removal. Draft notes are not stored in it.</p><button disabled={busy || restoringLocation} onClick={() => {setPreview(null); setDiscardFailed(false); setNotice(saveUncertain ? "Preview closed locally; the save outcome and server preview remain unverified. Open a new preview to compare the server's Before value." : "Preview closed locally; the server preview may remain."); setSaveUncertain(false);}}>Close preview locally</button></>}</section>}
       {film ? <section>
         <button disabled={locked} onClick={() => selectFilm(null)}>← Back to films</button>
         <h2>{film.summary}</h2><p>{film.idReadable} · {field(film, "FilmIQ Source Year") ? `Source-listed year ${field(film, "FilmIQ Source Year")}` : "Release year unknown"}</p>
@@ -332,10 +375,12 @@ function App() {
         <h3>Streaming availability</h3>
         <p>{observation ? `${observation.source} observation: ${observation.status}. Checked ${observation.checked_at || "time unknown"}.` : "Availability unknown."}</p>
         <p>Subscriptions: {providerDescription(observation, "subscription")}. Rentals: {providerDescription(observation, "rent")}.</p>
-        <form onSubmit={saveFilm}><label>Title<input value={title} required disabled={locked} onChange={(e) => {setTitle(e.target.value); setFilmDirty(true);}} /></label><label>Synopsis<textarea value={synopsis} disabled={locked} onChange={(e) => {setSynopsis(e.target.value); setFilmDirty(true);}} /></label><label>Lifecycle<select value={state} disabled={locked} onChange={(e) => {setState(e.target.value); setFilmDirty(true);}}><option value="">Unknown</option>{states.map((s) => <option key={s}>{s}</option>)}</select></label><button disabled={locked}>Save film</button></form>
+        <form onSubmit={saveFilm}><label>Title<input value={title} required disabled={filmEditLocked} onChange={(e) => {setTitle(e.target.value); markFilmDirty(true);}} /></label><label>Supplied TMDB ID (optional)<input inputMode="numeric" value={tmdbId} disabled={filmEditLocked} onChange={(e) => {setTmdbId(e.target.value); markFilmDirty(true);}} /></label><label>Synopsis<textarea value={synopsis} disabled={filmEditLocked} onChange={(e) => {setSynopsis(e.target.value); markFilmDirty(true);}} /></label><label>Lifecycle<select value={state} disabled={filmEditLocked} onChange={(e) => {setState(e.target.value); markFilmDirty(true);}}><option value="">Unknown</option>{states.map((s) => <option key={s}>{s}</option>)}</select></label><button disabled={filmEditLocked}>Save film</button></form>
+        <p>Supplied IDs are unverified. Duplicate checks cover visible project records; live lookup remains subject to existing authorization. Clearing an existing ID is not supported in this POC.</p>
         <p>Changing a title does not independently verify the saved external identity or update its original source provenance.</p>
         <p>Critic score: {field(film, "FilmIQ Critic Score") ?? "Unknown"}. {field(film, "FilmIQ Critic Summary")?.text || "Critic summary unavailable."}</p>
         <h3>Personal POC preferences</h3>
+        <p>Saved local watched status: {localWatchLabel(preferences, film.idReadable)}. This is separate from the Movary snapshot.</p>
         {preferences === null ? <p>Preferences are loading or unavailable.</p> : <form onSubmit={savePreference}>
           <label>Interest (1–10)<input type="number" min="1" max="10" disabled={locked} value={pref.interest_score ?? ""} onChange={(e) => changePreference({ interest_score: e.target.value === "" ? null : Number(e.target.value) })} /></label>
           <label>Local POC watchlist<select disabled={locked} value={pref.watchlist === null ? "unknown" : pref.watchlist ? "yes" : "no"} onChange={(e) => changePreference({ watchlist: e.target.value === "unknown" ? null : e.target.value === "yes" })}><option value="unknown">Unknown</option><option value="yes">Yes</option><option value="no">No</option></select></label>
@@ -355,6 +400,7 @@ function App() {
           <label>Provider<select value={provider} onChange={(e) => setProvider(e.target.value)}><option value="">All providers</option>{providers.map((p) => <option key={p}>{p}</option>)}</select></label>
           <label>Availability freshness<select value={freshness} onChange={(e) => setFreshness(e.target.value)}><option value="">Any freshness</option><option value="recent">Checked within 7 days</option><option value="stale">Older than 7 days</option><option value="unknown">Unknown</option></select></label>
           <label>Minimum interest<input type="number" min="1" max="10" value={minimum} disabled={preferences === null && !minimum} onChange={(e) => setMinimum(e.target.value)} /></label>
+          <label>Local watched status<select value={localWatched} disabled={preferences === null && !localWatched} onChange={(e) => setLocalWatched(e.target.value)}><option value="">Any status</option><option value="watched">Watched timestamp recorded</option><option value="not_recorded">No watched timestamp recorded</option><option value="unknown">Unknown</option></select></label>
           <label><input type="checkbox" checked={watchlistOnly} disabled={preferences === null && !watchlistOnly} onChange={(e) => setWatchlistOnly(e.target.checked)} /> Watchlist only</label>
           <label><input type="checkbox" checked={movaryOnly} disabled={movary?.status !== "available" && !movaryOnly} onChange={(e) => {setMovaryOnly(e.target.checked); if (e.target.checked) setExcludeMovaryWatched(false);}} /> Watched in Movary</label>
           <label><input type="checkbox" checked={excludeMovaryWatched} disabled={movary?.status !== "available" && !excludeMovaryWatched} onChange={(e) => {setExcludeMovaryWatched(e.target.checked); if (e.target.checked) setMovaryOnly(false);}} /> Exclude known watched in Movary</label>
@@ -363,9 +409,10 @@ function App() {
         <p>Live metadata is optional and stays in this page. Each film can require up to three TMDB requests; loading a poster can use the browser image cache. A JSON no-store header does not establish image-cache behavior.</p>
         <button type="button" disabled={locked || liveBusy || liveRateLimited || !eligibleLiveFilms(visible, liveResults).length} onClick={loadNextLiveBatch}>{liveBatch ? `Loading ${liveBatch.done}/${liveBatch.total}…` : "Load live metadata for next 30 displayed films"}</button>
         {liveSummary && <p role="status">{liveSummary}</p>}
-        <h2>Discovery · {visible.length}</h2><div className="grid">{visible.map((item) => {const metadata = item.live; const poster = metadata?.poster_url; const available = providerObservation(item); const sourceYear = field(item, "FilmIQ Source Year"); const year = sourceYear ? `Source-listed year ${sourceYear}` : metadata?.year ? `TMDB-supplied year ${metadata.year}` : "Year unknown"; return <button className="card" key={item.id} disabled={locked} onClick={() => selectFilm(item.idReadable)}><span className="poster">{poster ? <img src={poster} alt={`TMDB poster for ${metadata.title}`} loading="lazy" /> : "Artwork unavailable"}</span><strong>{item.summary}</strong><small>{year} · Interest {preferences?.[item.idReadable]?.interest_score ?? "unknown"} · Critic {field(item, "FilmIQ Critic Score") ?? "unknown"}</small><small>{field(item, "FilmIQ Lifecycle")?.name || "State unknown"} · {movary?.status === "available" && movary?.films?.[item.idReadable]?.watched ? "Watched in Movary" : "Watched unknown"}</small><small>{available?.source || "Provider"} subscriptions: {providerDescription(available, "subscription")}</small>{metadata && <small>Supplied TMDB identity is unverified.</small>}</button>;})}</div>
+        {preferences === null && localWatched && <p role="status">Local watched filtering is unavailable while preferences are loading or unavailable.</p>}
+        <h2>Discovery · {visible.length}</h2><div className="grid">{visible.map((item) => {const metadata = item.live; const poster = metadata?.poster_url; const available = providerObservation(item); const sourceYear = field(item, "FilmIQ Source Year"); const year = sourceYear ? `Source-listed year ${sourceYear}` : metadata?.year ? `TMDB-supplied year ${metadata.year}` : "Year unknown"; return <button className="card" key={item.id} disabled={locked} onClick={() => selectFilm(item.idReadable)}><span className="poster">{poster ? <img src={poster} alt={`TMDB poster for ${metadata.title}`} loading="lazy" /> : "Artwork unavailable"}</span><strong>{item.summary}</strong><small>{year} · Interest {preferences?.[item.idReadable]?.interest_score ?? "unknown"} · Critic {field(item, "FilmIQ Critic Score") ?? "unknown"}</small><small>{field(item, "FilmIQ Lifecycle")?.name || "State unknown"} · {movary?.status === "available" && movary?.films?.[item.idReadable]?.watched ? "Watched in Movary" : "Movary watched status unknown"}</small><small>Local watched status: {localWatchLabel(preferences, item.idReadable)}</small><small>{available?.source || "Provider"} subscriptions: {providerDescription(available, "subscription")}</small>{metadata && <small>Supplied TMDB identity is unverified.</small>}</button>;})}</div>
         {Object.values(liveResults).some((item) => item.data) && <TmdbCredits />}
-        <form onSubmit={addFilm}><label>Add film title<input disabled={locked} value={newTitle} onChange={(e) => setNewTitle(e.target.value)} /></label><button disabled={locked || !project}>Add film</button></form>
+        <form onSubmit={addFilm}><label>Add film title<input disabled={locked} value={newTitle} onChange={(e) => setNewTitle(e.target.value)} /></label><label>Supplied TMDB ID (optional)<input inputMode="numeric" disabled={locked} value={newTmdbId} onChange={(e) => setNewTmdbId(e.target.value)} /></label><p>IDs are unverified. Duplicate checks cover visible project records; live lookup remains subject to existing authorization.</p><button disabled={locked || !project}>Add film</button></form>
       </section>}
     </main>
   </>;
