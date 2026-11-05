@@ -2478,6 +2478,33 @@ MI≥50; observed minimum MI is 50.025032. The recurring test budget is recorded
 AGENTS.md. CI and independent final-head review dispositions are required before
 merge and will be recorded in the PR.
 
+### UI Movary controls — 2026-11-04
+
+Related #101: the installed Movary 0.82.1 source was inspected read-only. The
+supported played API's PUT changes only supplied dates and preserves omitted
+comments, positions and locations; POST increments an existing date's plays.
+The UI therefore previews an explicit ISO date, confirms it, reads fresh complete
+state and treats an already-recorded date as a no-op. New-date writes use PUT
+with one play, preserve older dates and disclose possible automatic removal of
+the selected intentional watchlist entry. Watchlist promotion reuses the existing
+approved adapter. Both actions require API readback before claiming success.
+
+There is no bearer rating-write endpoint in this installed version. The native
+film URL `/users/{username}/movies/{movary_id}` is supported and redirects to
+its canonical title slug. FilmIQ links a known private crosswalk to this editor;
+nullable enjoyment and artistic merit remain separate. A read-only refresh
+button supports returning from rating edits without waiting for the daily job.
+
+Preview/confirmation uses the shared form boundary plus a private, stateless
+signature binding accepted film identity, action and explicit date. Rendering
+and previews make no Movary request. Missing API/export configuration leaves
+browsing usable. Verified writes are followed by the existing complete atomic
+personal refresh; an unverified write or failed refresh marks the prior cache
+stale and never claims rollback. No real personal state is written for acceptance.
+Credential-free fixtures extend the single browser journey, retaining the
+200-case default collection budget. Shared route wiring and final validation
+follow the local-disposition slice's security integration.
+
 ## UI1 browse and evidence delivery — 2026-11-04
 
 Related #99/#98: the first server-rendered recommendation slice reuses discovery
