@@ -18,8 +18,19 @@ def main() -> None:
         action="store_true",
         help="build a separate candidate without replacing the existing approval ZIP",
     )
+    parser.add_argument(
+        "--live-cache-candidate",
+        action="store_true",
+        help="build a separate disabled-by-default cache-hydration candidate",
+    )
     args = parser.parse_args()
-    output = OUTPUT.with_name("youtrack-app-candidate") if args.candidate else OUTPUT
+    output = (
+        OUTPUT.with_name("youtrack-app-live-cache-candidate")
+        if args.live_cache_candidate
+        else OUTPUT.with_name("youtrack-app-candidate")
+        if args.candidate
+        else OUTPUT
+    )
     widget = output / "widgets/films"
     widget.mkdir(parents=True, exist_ok=True)
     app = POC / "youtrack-app"
@@ -43,14 +54,13 @@ def main() -> None:
             "--bundle",
             "--minify",
             "--format=esm",
+            *(["--define:__FILMIQ_LIVE_CACHE__=true"] if args.live_cache_candidate else []),
             f"--outfile={widget / 'app.js'}",
         ],
         cwd=POC / "ui",
         check=True,
     )
-    archive = output.parent / (
-        "youtrack-app-candidate.zip" if args.candidate else "youtrack-app.zip"
-    )
+    archive = output.parent / (output.name + ".zip")
     with ZipFile(archive, "w", ZIP_DEFLATED) as package:
         for path in (*(output / name for name in app_files), *sorted(widget.iterdir())):
             package.write(path, path.relative_to(output))

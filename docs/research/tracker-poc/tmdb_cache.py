@@ -431,13 +431,16 @@ def write_film(
     now: datetime,
     *,
     authority: Path,
+    max_age: timedelta = MAX_AGE,
 ) -> dict[str, str]:
     """Store an observation and report if incomplete metadata was preserved instead."""
     now, observed = _time(now), _time(observed_at)
+    if not isinstance(max_age, timedelta) or not timedelta(0) < max_age <= MAX_AGE:
+        raise ValueError("Cache maximum age must be positive and within the source limit")
     journal = _bound_authority(root, authority, policy, now)
     if _policy(policy, now) != "retain":
         raise PermissionError("Source retention is not enabled")
-    if observed > now or _deadline(journal, observed, now) <= now:
+    if observed > now or min(_deadline(journal, observed, now), observed + max_age) <= now:
         raise ValueError("Metadata observation is not retainable")
     if not isinstance(film, dict):
         raise ValueError("Invalid film")
@@ -447,7 +450,7 @@ def write_film(
     path = _path(root, ident)
     metadata = _section(_observation_policy(journal, observed), observed, _metadata(film))
     metadata["expires_at"] = min(
-        _time(metadata["expires_at"]), _deadline(journal, observed, now)
+        _time(metadata["expires_at"]), _deadline(journal, observed, now), observed + max_age
     ).isoformat()
     availability = _availability(film.get("availability"), now)
     current = _load(path, ident)
@@ -491,7 +494,7 @@ def write_film(
             availability_deadline = _deadline(journal, checked, now)
         except ValueError:
             availability_deadline = now
-        if availability_deadline > now and (
+        if min(availability_deadline, checked + max_age) > now and (
             marks["availability"] is None or checked > _time(marks["availability"])
         ):
             previous = current["availability"]
@@ -502,7 +505,7 @@ def write_film(
             ):
                 section = _section(_observation_policy(journal, checked), checked, data)
                 section["expires_at"] = min(
-                    _time(section["expires_at"]), availability_deadline
+                    _time(section["expires_at"]), availability_deadline, checked + max_age
                 ).isoformat()
                 current["availability"] = _merge(previous, section)
     _save(path, current)

@@ -97,7 +97,11 @@ def safe_poster(value: object) -> str | None:
 
 
 def app(
-    config: Config, load_allowlist: Callable[[], object], reader: Callable, catalog_reader=None
+    config: Config,
+    load_allowlist: Callable[[], object],
+    reader: Callable,
+    catalog_reader=None,
+    cache=None,
 ):
     """The reader is injected so tests can never accidentally use live fetch."""
 
@@ -122,7 +126,11 @@ def app(
         ):
             return send("401 Unauthorized", {"error": "Unauthorized"})
         path = environ.get("PATH_INFO")
-        if environ.get("REQUEST_METHOD") != "POST" or path not in {"/metadata", "/catalog"}:
+        if environ.get("REQUEST_METHOD") != "POST" or path not in {
+            "/metadata",
+            "/catalog",
+            "/cache",
+        }:
             return send("404 Not Found", {"error": "Not found"})
         try:
             length = int(environ.get("CONTENT_LENGTH") or 0)
@@ -149,6 +157,16 @@ def app(
             return send("503 Service Unavailable", {"error": "Approval configuration unavailable"})
         if ident not in allowed:
             return send("403 Forbidden", {"error": "Film not approved"})
+        if path == "/cache":
+            if cache is None:
+                return send("404 Not Found", {"error": "Cache unavailable"})
+            try:
+                value = cache.get(ident)
+            except (OSError, ValueError, TypeError):
+                return send("503 Service Unavailable", {"error": "Cache unavailable"})
+            return (
+                send("200 OK", value) if value else send("404 Not Found", {"error": "Cache miss"})
+            )
         if path == "/catalog":
             try:
                 facts = catalog_reader(ident, value["title"]) if catalog_reader else None
@@ -157,12 +175,19 @@ def app(
             return send(
                 "200 OK", {"status": "available", "film": facts} if facts else {"status": "unknown"}
             )
+        if cache is not None:
+            try:
+                cache.check()
+            except (OSError, ValueError, TypeError):
+                return send("503 Service Unavailable", {"error": "Cache unavailable"})
         try:
             movie = reader(ident)
             if type(movie.tmdb_id) is not int or movie.tmdb_id != ident:
                 raise ValueError("Response identity mismatch")
             payload = movie_payload(movie)
             payload["poster_url"] = safe_poster(payload["poster_url"])
+            if cache is not None:
+                payload["cache_expires_at"] = cache.put(payload)["cache_expires_at"]
         except TMDbRateLimited:
             return send("429 Too Many Requests", {"error": "TMDB rate limit reached"})
         except Exception:
@@ -196,12 +221,17 @@ def main():
             return decode_allowlist(ALLOWLIST_PATH.read_text(encoding="utf-8"))
 
         parse_allowlist(load())
+        cache = None
+        if os.environ.get("FILMIQ_TMDB_CACHE_ENABLE", "0") != "0":
+            from tmdb_live_cache import from_env
+
+            cache = from_env(os.environ)
     except (OSError, ValueError, TypeError):
         raise SystemExit("Live bridge configuration unavailable") from None
     with make_server(
         "127.0.0.1",
         15178,
-        app(config, load, read_movie, read_reviewed),
+        app(config, load, read_movie, read_reviewed, cache),
         handler_class=QuietHandler,
     ) as server:
         server.serve_forever()

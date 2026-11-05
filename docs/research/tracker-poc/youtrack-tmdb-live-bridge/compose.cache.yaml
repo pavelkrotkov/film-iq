@@ -1,0 +1,10 @@
+# Explicit opt-in only, after the separate policy and retention review.
+services:
+  tmdb-live-bridge:
+    environment:
+      FILMIQ_TMDB_CACHE_ENABLE: "1"
+      FILMIQ_TMDB_CACHE_DIRECTORY: /run/filmiq/live-cache
+    volumes:
+      - ./tmdb_live_cache.py:/opt/filmiq/poc/tmdb_live_cache.py:ro
+      - ./tmdb_cache.py:/opt/filmiq/poc/tmdb_cache.py:ro
+      - "${FILMIQ_YOUTRACK_CACHE_DIR:?Set the dedicated YouTrack cache directory}:/run/filmiq/live-cache:rw"

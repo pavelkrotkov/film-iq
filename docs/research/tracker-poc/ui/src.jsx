@@ -5,7 +5,7 @@ import {
   providers,
   syntheticAvailability,
 } from "./film_filters.js";
-import { BATCH_LIMIT, chooseBatch, chooseRemaining, fetchLiveMovie, mergeResult, refreshNotice, runBatch, runRemainingBatch, safeImdbTitleUrl, tmdbId } from "./live_batch.js";
+import { BATCH_LIMIT, chooseBatch, chooseRemaining, expireCachedResults, fetchCachedMovie, fetchLiveMovie, fetchTaskLiveMovie, mergeResult, refreshNotice, runBatch, runRemainingBatch, safeImdbTitleUrl, tmdbId } from "./live_batch.js";
 import { fetchRatings } from "./mdblist_ui.js";
 import { evidenceExplanation, evidenceLabel, sourceLabel } from "./source_evidence.js";
 import { clearSavedDraft, currentComments, setCommentDraft } from "./comment_drafts.js";
@@ -20,9 +20,11 @@ import { filterMayExcludeUnknown } from "./metadata_filter_coverage.js";
 import { metadataChanges, storedMetadata } from "./kaneo_metadata.js";
 import { ReviewedCatalog } from "./reviewed_catalog_view.jsx";
 import {storedGenreDisplay, storedGenreLabels} from "./stored_genres.js";
+import {Poster} from "./poster.jsx";
 
 const api = "http://localhost:15173/api";
 const cacheFixture = typeof __FILMIQ_CACHE_FIXTURE__ !== "undefined" && __FILMIQ_CACHE_FIXTURE__;
+const liveCache = typeof __FILMIQ_LIVE_CACHE__ !== "undefined" && __FILMIQ_LIVE_CACHE__;
 const fixtureProject = cacheFixture ? __FILMIQ_FIXTURE_PROJECT__ : "";
 const fixtureIds = new Set([900000001, 900000002]);
 async function fixtureMovie(item, signal) {
@@ -195,6 +197,7 @@ function App() {
   const [liveResults, setLiveResults] = useState({}),
     [batch, setBatch] = useState(null),
     [batchSummary, setBatchSummary] = useState("");
+  const [cacheGeneration, setCacheGeneration] = useState(0);
   const [mdbResults, setMdbResults] = useState({}),
     [mdbPending, setMdbPending] = useState(false);
   const batchController = useRef(null);
@@ -252,6 +255,34 @@ function App() {
     }).catch(() => {});
     return () => { active = false; controller.abort(); };
   }, [films]);
+  useEffect(() => {
+    if (!liveCache || cacheFixture) return;
+    let active = true;
+    const controller = new AbortController();
+    void (async () => {
+      for (const item of films) {
+        const id = tmdbId(item);
+        if (!id || !active) continue;
+        try {
+          const data = await fetchCachedMovie(item, controller.signal);
+          if (active) setLiveResults((previous) => previous[item.id] ? previous : {...previous, [item.id]: {data, requestedId:id}});
+        } catch { /* An absent cache remains unknown and never triggers a live request. */ }
+      }
+    })();
+    return () => { active = false; controller.abort(); };
+  }, [films, cacheGeneration]);
+  useEffect(() => {
+    if (!liveCache || cacheFixture) return;
+    const {results, next} = expireCachedResults(liveResults);
+    const expireAndReload = () => {
+      setLiveResults((current) => expireCachedResults(current).results);
+      setCacheGeneration((current) => current + 1);
+    };
+    if (results !== liveResults) { expireAndReload(); return; }
+    if (!Number.isFinite(next)) return;
+    const timer = setTimeout(expireAndReload, Math.min(next - Date.now(), 2147483647));
+    return () => clearTimeout(timer);
+  }, [liveResults]);
   useEffect(() => {
     const confirm = (message) => window.confirm(message);
     const navigate = (event) => {
@@ -514,7 +545,7 @@ function App() {
     setBatchSummary("");
     try {
       const runner = all ? runRemainingBatch : runBatch;
-      const fetcher = cacheFixture ? (id, signal) => fixtureMovie(items.find((item) => tmdbId(item) === id), signal) : fetchLiveMovie;
+      const fetcher = cacheFixture ? (id, signal) => fixtureMovie(items.find((item) => tmdbId(item) === id), signal) : liveCache ? (id, signal) => fetchTaskLiveMovie(items.find((item) => tmdbId(item) === id), signal) : fetchLiveMovie;
       const result = await runner(items, fetcher, controller.signal, (id, result, done) => {
         setLiveResults((previous) => ({ ...previous, [id]: mergeResult(previous[id], result) }));
         setBatch({total: items.length, done});
@@ -633,7 +664,7 @@ function App() {
             <a href="#" onClick={guardNavigation}>← Back to discovery</a>
             <div className="detail-grid">
               <div className="poster large">
-                {liveMovie?.poster_url ? <img src={liveMovie.poster_url} alt={`TMDB poster for ${liveMovie.title}`} /> : <span>NO POSTER</span>}
+                <Poster url={liveMovie?.poster_url} alt={`TMDB poster for ${liveMovie?.title}`} transient={liveCache} fallback={<span>NO POSTER</span>} />
               </div>
               <div>
                 <div className="eyebrow">
@@ -980,7 +1011,7 @@ function App() {
                     href={`#film=${encodeURIComponent(item.id)}`}
                   >
                     <div className="poster">
-                      {item.live?.poster_url ? <img src={item.live.poster_url} alt={`TMDB poster for ${item.live.title}`} loading="lazy" /> : <span>NO POSTER</span>}
+                      <Poster url={item.live?.poster_url} alt={`TMDB poster for ${item.live?.title}`} loading="lazy" transient={liveCache} fallback={<span>NO POSTER</span>} />
                       <b>{states[item.status] || item.status}</b>
                     </div>
                     <div className="card-body">

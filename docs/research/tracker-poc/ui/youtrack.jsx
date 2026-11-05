@@ -11,12 +11,14 @@ import { filterMayExcludeUnknown } from "./metadata_filter_coverage.js";
 import { movaryHistory } from "./movary_history.js";
 import { ReviewedCatalog } from "./reviewed_catalog_view.jsx";
 import {storedGenreDisplay, storedGenreLabels} from "./stored_genres.js";
-import {refreshNotice} from "./live_batch.js";
+import {expireCachedResults, refreshNotice} from "./live_batch.js";
+import {Poster} from "./poster.jsx";
 export { providerObservation, providerFreshness } from "./youtrack_filters.js";
 
 let locationListener = () => {};
 const host = await YTApp.register({ onAppLocationChange: (location) => locationListener(location) });
 const cacheFixture = typeof __FILMIQ_CACHE_FIXTURE__ !== "undefined" && __FILMIQ_CACHE_FIXTURE__;
+const liveCache = typeof __FILMIQ_LIVE_CACHE__ !== "undefined" && __FILMIQ_LIVE_CACHE__;
 const fields = "id,idReadable,summary,description,project(id,shortName),customFields(id,name,value(name,text))";
 const emptyPreference = { interest_score: null, watchlist: null, watched_at: null, personal_notes: "" };
 const states = ["Discovery", "Evaluation", "Watchlist", "Archived"];
@@ -102,6 +104,7 @@ function App() {
   const [comments, setComments] = useState(null), [commentDrafts, setCommentDrafts] = useState({}), [newTitle, setNewTitle] = useState("");
   const [createUncertain, setCreateUncertain] = useState(false);
   const [liveResults, setLiveResults] = useState({}), [liveBusy, setLiveBusy] = useState(false), [liveRateLimited, setLiveRateLimited] = useState(false);
+  const [cacheGeneration, setCacheGeneration] = useState(0);
   const [liveBatch, setLiveBatch] = useState(null), [liveSummary, setLiveSummary] = useState("");
   const liveRequest = useRef(false), liveCancel = useRef(false);
   const sequence = useRef(0), selectedRef = useRef(selected), projectRef = useRef(project), restoringCount = useRef(0), guardsRef = useRef({});
@@ -152,13 +155,39 @@ function App() {
     return () => { sequence.current++; };
   }, [project]);
   useEffect(() => {
-    if (!cacheFixture) return;
+    if (!cacheFixture || liveCache) return;
     let active = true;
     for (const item of films) readLiveMetadata(host, item).then((data) => {
       if (active) setLiveResults((previous) => ({...previous, [item.idReadable]: {data, requestedId: data.tmdb_id}}));
     }).catch(() => {});
     return () => { active = false; };
   }, [films]);
+  useEffect(() => {
+    if (!liveCache) return;
+    let active = true;
+    void (async () => {
+      for (const item of films) {
+        if (!suppliedTmdbId(item) || !active) continue;
+        try {
+          const data = await readLiveMetadata(host, item, {cacheOnly:true});
+          if (active) setLiveResults((previous) => previous[item.idReadable] ? previous : {...previous, [item.idReadable]: {data, requestedId:data.tmdb_id}});
+        } catch { /* Cache misses remain unknown and never cause provider requests. */ }
+      }
+    })();
+    return () => { active = false; };
+  }, [films, cacheGeneration]);
+  useEffect(() => {
+    if (!liveCache) return;
+    const {results, next} = expireCachedResults(liveResults);
+    const expireAndReload = () => {
+      setLiveResults((current) => expireCachedResults(current).results);
+      setCacheGeneration((current) => current + 1);
+    };
+    if (results !== liveResults) { expireAndReload(); return; }
+    if (!Number.isFinite(next)) return;
+    const timer = setTimeout(expireAndReload, Math.min(next - Date.now(), 2147483647));
+    return () => clearTimeout(timer);
+  }, [liveResults]);
   useEffect(() => {
     let active = true;
     let navigated = false;
@@ -411,7 +440,7 @@ function App() {
           <p>{cacheFixture ? "Fictional cache returned" : "TMDB returned"}: {live.title} ({live.year ?? "year unknown"}).</p>
           {live.original_title && <p>TMDB original title: {live.original_title} (identity not independently verified).</p>}
           {!liveMatches ? <p role="alert">The returned title differs from this record. It may be a different film or an alternate title and requires verification before its artwork or availability can be used.</p> : <>
-            {live.poster_url && <div className="poster"><img src={live.poster_url} alt={`TMDB poster for ${live.title}`} /></div>}
+            {live.poster_url && <div className="poster"><Poster url={live.poster_url} alt={`TMDB poster for ${live.title}`} transient={liveCache} /></div>}
             {live.poster_from_previous && <p>Poster from an earlier lookup.</p>}
             <p>Directors: {live.directors?.join(", ") || "unknown"}; genres: {live.genres?.join(", ") || "unknown"}.</p>
             <p>{live.synopsis || "Synopsis unavailable."}</p>
@@ -467,7 +496,7 @@ function App() {
         {liveBatch && <button type="button" onClick={() => {liveCancel.current = true;}}>Cancel loading</button>}
         {liveSummary && <p role="status">{liveSummary}</p>}
         {preferences === null && localWatched && <p role="status">Local watched filtering is unavailable while preferences are loading or unavailable.</p>}
-        <h2>Discovery · {visible.length}</h2><div className="grid">{visible.map((item) => {const metadata = item.live; const poster = metadata?.poster_url; const available = providerObservation(item); const year = filmYearLabel(item, metadata?.year); const refresh = refreshNotice(liveResults[item.idReadable], suppliedTmdbId(item), metadata); return <button className="card" key={item.id} disabled={locked} onClick={() => selectFilm(item.idReadable)}><span className="poster">{poster ? <img src={poster} alt={`TMDB poster for ${metadata.title}`} loading="lazy" /> : "Artwork unavailable"}</span><strong>{item.summary}</strong><small>{storedGenreDisplay(field(item, "FilmIQ Genre")) ?? (metadata?.genres?.join(", ") || "Genre unknown")}</small><small>{year} · Interest {preferences?.[item.idReadable]?.interest_score ?? "unknown"} · Critic {field(item, "FilmIQ Critic Score") ?? "unknown"}</small><small>{field(item, "FilmIQ Lifecycle")?.name || "State unknown"} · {movary?.status === "available" && movary?.films?.[item.idReadable]?.watched ? "Watched in Movary" : "Movary watched status unknown"}</small><small>{localWatchlistLabel(preferences, item.idReadable)} · Local watched status: {localWatchLabel(preferences, item.idReadable)}</small><small>{available?.source || "Provider"} subscriptions: {providerDescription(available, "subscription")}</small>{metadata?.poster_from_previous && <small>Poster from an earlier lookup.</small>}{refresh && <small>{refresh}</small>}{metadata && <small>Supplied TMDB identity is unverified.</small>}</button>;})}</div>
+        <h2>Discovery · {visible.length}</h2><div className="grid">{visible.map((item) => {const metadata = item.live; const poster = metadata?.poster_url; const available = providerObservation(item); const year = filmYearLabel(item, metadata?.year); const refresh = refreshNotice(liveResults[item.idReadable], suppliedTmdbId(item), metadata); return <button className="card" key={item.id} disabled={locked} onClick={() => selectFilm(item.idReadable)}><span className="poster"><Poster url={poster} alt={`TMDB poster for ${metadata?.title}`} loading="lazy" transient={liveCache} /></span><strong>{item.summary}</strong><small>{storedGenreDisplay(field(item, "FilmIQ Genre")) ?? (metadata?.genres?.join(", ") || "Genre unknown")}</small><small>{year} · Interest {preferences?.[item.idReadable]?.interest_score ?? "unknown"} · Critic {field(item, "FilmIQ Critic Score") ?? "unknown"}</small><small>{field(item, "FilmIQ Lifecycle")?.name || "State unknown"} · {movary?.status === "available" && movary?.films?.[item.idReadable]?.watched ? "Watched in Movary" : "Movary watched status unknown"}</small><small>{localWatchlistLabel(preferences, item.idReadable)} · Local watched status: {localWatchLabel(preferences, item.idReadable)}</small><small>{available?.source || "Provider"} subscriptions: {providerDescription(available, "subscription")}</small>{metadata?.poster_from_previous && <small>Poster from an earlier lookup.</small>}{refresh && <small>{refresh}</small>}{metadata && <small>Supplied TMDB identity is unverified.</small>}</button>;})}</div>
         {Object.values(liveResults).some((item) => item.data) && <TmdbCredits />}
         <form onSubmit={addFilm} onKeyDown={(e) => submitOnEnter(e, addFilm)}><label>Add film title<input disabled={locked} value={newTitle} onChange={(e) => setNewTitle(e.target.value)} /></label><label>Supplied TMDB ID (optional)<input inputMode="numeric" disabled={locked} value={newTmdbId} onChange={(e) => setNewTmdbId(e.target.value)} /></label><p>IDs are unverified. Duplicate checks cover visible project records; live lookup remains subject to existing authorization.</p>{(newTitle.trim() || newTmdbId.trim()) && <DraftExitWarning kind="new-film details" />}<button type="button" onClick={addFilm} disabled={locked || !project || createUncertain}>Add film</button></form>
       </section>}

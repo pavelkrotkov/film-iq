@@ -1,0 +1,165 @@
+# Disabled seven-day live-cache candidate
+
+This code is **disabled** and has only been tested with fictional provider
+payloads. No real cache has been initialized, live provider called, tracker
+app updated, or scheduler installed as part of this candidate. The existing
+noncommercial private-use assessment and its unresolved qualifications are in
+[intended-use-20261031.md](../availability/intended-use-20261031.md); the
+seven-day period is a conservative local choice, not a claim about TMDB's terms.
+
+The two bridges retain their existing authentication and exact approved-ID
+allowlist checks. Kaneo's cache read requires a visible task and obtains its ID
+from the task's field; YouTrack's issue-scoped handler verifies issue visibility
+and obtains the ID from its field. Cache-only reads never contact the provider.
+With caching enabled, Kaneo's explicit refresh is also task-scoped and the old
+ID-only refresh route is disabled. With caching disabled, the existing ID-only
+route remains unchanged: it requires a signed-in user and approved ID but does
+not verify visibility of a task. It is suitable only for the existing
+single-user POC assumption until that separate limitation is addressed.
+The existing explicit refresh still invokes the provider; a successful response
+is written to the cache and returned. A failed or partial response cannot
+replace an earlier complete availability observation. There are no issue/task,
+tracker-history, Movary, or preference writes in this path. An opt-in UI build
+can hydrate via cache-only requests on reload; ordinary builds do not do so.
+Although the JSON cache route never calls TMDB, rendering a cached poster URL
+causes a separate request to `image.tmdb.org`. The opt-in UI fetches it using
+`cache: 'no-store'`, renders a temporary object URL, revokes that URL on change
+or unmount, and shows a placeholder if fetch or rendering is blocked. The
+ordinary UI keeps its existing direct-image behavior. `no-store` controls the
+browser HTTP cache; it does not remove previously stored images or prove that
+browser temporary files, OS swap, or other copies cannot persist. The existing
+authorization scope and image-retention assessment still apply.
+Mounted cards start their transient poster fetch eagerly; the image element's
+`loading="lazy"` attribute does not delay that preceding fetch.
+
+## Intended local inventory
+
+The proposed single private root is `.cache/tracker-poc/private/tmdb-live-cache/`,
+with **two independent** child directories `kaneo/` and `youtrack/`. Each child
+would contain `policy.json`, `authority.json`, `cache/.cache-instance`, and
+`cache/<id>.json` plus possible `.tmp` files. The authority records policy
+decisions and film-ID purge watermarks, so it is private even though it contains
+no film descriptions. Cache files include source metadata, availability and
+poster paths; actual poster image bytes are fetched separately by the browser.
+Existing browser-cached images and other independently retained copies still
+need their own assessment and handling.
+
+Use only one process for each child directory. Kaneo serializes its own threads;
+YouTrack's current bridge serves one request at a time. There is no lock across
+multiple processes. Configure both directories to be private to the service
+user; the Docker bridge must be able to write only its dedicated child. The
+`youtrack-tmdb-live-bridge/compose.cache.yaml` override supplies the optional
+mount; it is not loaded by the normal Compose configuration.
+
+For this candidate, **do not back up either cache or copy it into tracker
+history, databases, exports, reports or screenshots**. The inventory is an
+intended boundary, not verification that host backup software, browser caches,
+or other tools actually exclude it. Before activation, verify those exclusions
+and the handling of any existing copies. Recovery fails closed if the latest
+independently preserved authority is missing or mismatched. Restoring both a
+cache and an outdated authority together cannot be detected; discard the
+disposable cache on uncertain recovery instead of treating it as current.
+
+On 2026-11-05 the empty intended root was created and a narrow Time Machine
+exclusion for it was verified. Its existing private parent is included in a
+configured Time Machine backup. No provider data or cache policy was stored in
+the root. A process-only check detected OneDrive but did not establish its sync
+roots. Other backup/sync software and existing browser caches remain unverified.
+
+## Expiry and policy changes
+
+Each metadata and availability observation is valid for at most seven days,
+subject to an earlier policy expiry or termination. A fresh response does not
+extend an earlier retained partial observation. Cache hydration returns the
+earlier section expiry; opt-in UI builds discard the hydrated data at that
+time; still-fresh metadata is then rehydrated using only the cache route. JSON
+responses remain `no-store`; the separate poster request has its own cache mode.
+
+The service rereads its policy file and verifies the authority on every cache
+operation. Update the authority and policy consistently; while they differ,
+the cache fails closed. On termination set the termination flag and record the
+decision in the authority; simply setting `allowed` false blocks reads/writes
+but is not the same as the termination purge. Stop the bridges while recording
+and replacing the policy so no request races with the update. Already-rendered
+browser data cannot be remotely recalled: close or reload open pages when a
+decision is shortened or terminated. Earlier copied data needs its own purge.
+
+Expired sections are purged on bridge startup and cache operations, with all
+writers serialized within that one bridge process. **Seven days is a display
+deadline, not a guarantee of physical deletion by that exact time.** When the
+bridge is stopped, or the host is off, no process can delete files; overdue
+data remains on disk until a later purge. A stopped bridge on an otherwise
+running host likewise has no automatic purge in this candidate. The project's
+existing [operations guidance](../../operations-recovery.md) recommends the
+host's native scheduler; no schedule is registered here. Real activation needs
+an operator-owned purge arrangement for stopped bridges, monitoring of missed
+purges and the host-off limitation, and a decision on the permissible delay.
+
+## Review and verification
+
+Before enabling anything, review the use and third-party-content terms,
+attribution and approved ID list; verify the copy inventory and no-backup
+boundary; prepare a reviewed policy with a separately initialized authority;
+and decide the offline physical-deletion limitation. Both bridges and the UI
+must be deliberately configured and the updated YouTrack issue handler installed
+before cache hydration can work. `FILMIQ_TMDB_CACHE_ENABLE=1` and
+`FILMIQ_TMDB_CACHE_DIRECTORY` are explicit server opt-ins. The UI build flag
+`__FILMIQ_LIVE_CACHE__=true` is separate; `build_youtrack.py
+--live-cache-candidate` creates a separate review package and does not install
+it. Neither option initializes storage. A YouTrack override also requires
+`FILMIQ_YOUTRACK_CACHE_DIR` pointing to its dedicated child.
+
+Fictional-only checks:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=docs/research/tracker-poc/youtrack-tmdb-live-bridge:docs/research/tracker-poc:src \
+  .venv/bin/python docs/research/tracker-poc/tmdb_live_cache_check.py
+node docs/research/tracker-poc/youtrack-tmdb-live-bridge/metadata_check.cjs
+node docs/research/tracker-poc/ui/live_cache_ui_check.mjs
+(cd docs/research/tracker-poc/ui && node poster_check.mjs)
+```
+
+On 2026-11-05, 130 sequential fictional in-process reads, each performing a
+whole-directory purge scan, took 2.665 seconds (20.50 ms/read) on this local
+host; this excludes HTTP and browser overhead and is not a production scale
+claim. No benchmark contacted TMDB or used personal records.
+
+Fictional browser checks were run in the actual Kaneo UI and restricted-user
+YouTrack iframe. For both, metadata and PNG bytes were intercepted locally;
+the initial fictional availability expired, a cache-only reread restored the
+still-fresh synopsis with availability unknown, and no live refresh occurred.
+Each browser rendered the synthetic poster through a blob URL after a `no-store`
+fetch and revoked the prior blob on expiry. The YouTrack test used the separate
+fixture-gated app, never the installed live app. The test proves those UI and
+iframe behaviors with intercepted responses, not the live cache endpoint or
+real images. An independently authorized real-image HEAD check established
+HTTP 200, no redirect, and `Access-Control-Allow-Origin: *` for both local
+origins; it did not verify all future responses or removal of old cached copies.
+
+To repeat the browser tests, first build the opt-in Kaneo bundle and prepare the
+separate fixture-gated YouTrack app as described in
+[`cache-fixture/README.md`](cache-fixture/README.md). The installed test widget
+must be compiled with both `__FILMIQ_CACHE_FIXTURE__=true` and
+`__FILMIQ_LIVE_CACHE__=true` for this check. Use only an existing fictional
+FILMPOC issue titled `Fictional film` with fixture ID `900000001` and a fictional
+Kaneo task with the same fixture identity. The checks need the local trackers,
+the existing fictional sessions and project-local browser tooling. They block
+external and FILMREAL requests and intercept metadata and poster bytes:
+
+```sh
+docs/research/tracker-poc/ui/node_modules/.bin/esbuild docs/research/tracker-poc/ui/src.jsx \
+  --bundle --minify --loader:.js=jsx --define:__FILMIQ_LIVE_CACHE__=true \
+  --outfile=.cache/tracker-poc/kaneo-live-cache-candidate.js
+docs/research/tracker-poc/ui/node_modules/.bin/esbuild docs/research/tracker-poc/ui/youtrack.jsx \
+  --bundle --minify --format=esm --define:__FILMIQ_CACHE_FIXTURE__=true \
+  --define:__FILMIQ_LIVE_CACHE__=true \
+  --outfile=.cache/tracker-poc/youtrack-cache-fixture-app/widgets/films/app.js
+# Upload only the separate fictional app directory with the official YouTrack CLI.
+node docs/research/tracker-poc/ui/live_cache_browser_check.cjs kaneo FICTIONAL_TASK_ID FICTIONAL_PROJECT_ID PROJECT_LOCAL_FICTIONAL_COOKIE_FILE
+node docs/research/tracker-poc/ui/live_cache_browser_check.cjs youtrack FILMPOC_ISSUE_ID
+```
+
+No actual source credential, real film ID or provider response is needed for
+these checks. The YouTrack browser check requires a preexisting signed-in
+fictional test profile in the ignored project cache; it does not sign in using
+the user's active browser session.

@@ -22,12 +22,14 @@ const context = {exports: {}, require(name) {
 }};
 vm.runInNewContext(fs.readFileSync(path.join(__dirname, 'metadata.js'), 'utf8'), context);
 const endpoint = context.exports.httpHandler.endpoints[0];
+const catalogEndpoint = context.exports.httpHandler.endpoints.find(item => item.path === '/catalog');
+const cacheEndpoint = context.exports.httpHandler.endpoints.find(item => item.path === '/cached');
 assert.equal(endpoint.scope, 'issue');
 assert.equal(context.exports.httpHandler.requirements.filmId.type, 'integer');
 
-function invoke({id = 101, login = 'fixture-user', project = 'FILMREAL', visible = true, banned = false, reported = true, catalog = false} = {}) {
+function invoke({id = 101, login = 'fixture-user', project = 'FILMREAL', visible = true, banned = false, reported = true, catalog = false, cache = false} = {}) {
   const result = {headers: {}};
-  (catalog ? context.exports.httpHandler.endpoints[1] : endpoint).handle({currentUser: {login, isBanned: banned}, settings: {bridgeToken: 'synthetic-setting'},
+  (catalog ? catalogEndpoint : cache ? cacheEndpoint : endpoint).handle({currentUser: {login, isBanned: banned}, settings: {bridgeToken: 'synthetic-setting'},
     issue: {summary:'Fictional', project: {key: project}, isReported: reported, isVisibleTo: () => visible, fields: {'FilmIQ TMDB ID': id}},
     request: {json: () => ({tmdb_id: 999})},
     response: {addHeader(k,v) {result.headers[k]=v;}, json(v) {result.body=v;}, set code(v) {result.code=v;}}});
@@ -48,7 +50,7 @@ responseCode = 429; assert.equal(invoke().code, 429);
 responseCode = 503; assert.equal(invoke().code, 503);
 responseCode = 200; responseId = 999; assert.equal(invoke().code, 502);
 responseId = 101; calls = 0;
-assert.equal(context.exports.httpHandler.endpoints[1].method, 'GET');
+assert.equal(catalogEndpoint.method, 'GET');
 assert.equal(invoke({catalog:true,login:'guest'}).code, 401);
 assert.equal(invoke({catalog:true,visible:false}).code, 404);
 assert.equal(invoke({catalog:true,project:'OTHER'}).code, 404);
@@ -56,4 +58,14 @@ assert.equal(calls, 0);
 assert.equal(invoke({catalog:true}).code, 200);
 assert.equal(sentPath, '/catalog'); assert.equal(sent.tmdb_id, 101); assert.equal(sent.title, 'Fictional');
 responseId = 999; assert.equal(invoke({catalog:true}).code, 503);
+responseId = 101; calls = 0;
+assert.equal(cacheEndpoint.method, 'GET');
+assert.equal(invoke({cache:true,login:'guest'}).code, 401);
+assert.equal(invoke({cache:true,visible:false}).code, 404);
+assert.equal(invoke({cache:true,project:'OTHER'}).code, 404);
+assert.equal(calls, 0);
+assert.equal(invoke({cache:true}).code, 200);
+assert.equal(sentPath, '/cache'); assert.equal(sent.tmdb_id, 101);
+responseCode = 404; assert.equal(invoke({cache:true}).code, 404);
+responseCode = 403; assert.equal(invoke({cache:true}).code, 403);
 console.log('Synthetic issue visibility, ID derivation, secret handoff and errors passed');

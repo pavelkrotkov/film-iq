@@ -18,6 +18,47 @@ export async function fetchLiveMovie(id, signal, fetcher = fetch) {
   return data;
 }
 
+// The cache-only path never initiates a provider request.
+export async function fetchCachedMovie(film, signal, fetcher = fetch) {
+  const id = tmdbId(film);
+  if (!id || !/^[A-Za-z0-9_-]{1,200}$/.test(film.id || "")) throw new Error("Film identity unavailable");
+  const response = await fetcher(`http://localhost:15176/cache/${encodeURIComponent(film.id)}`, {
+    cache: "no-store", credentials: "include", signal,
+  });
+  if (!response.ok) throw new Error("Cached metadata unavailable");
+  const data = await response.json();
+  if (data.tmdb_id !== id || !data.availability || !Array.isArray(data.availability.offers) || !Number.isFinite(Date.parse(data.cache_expires_at)) || Date.parse(data.cache_expires_at) <= Date.now()) throw new Error("Invalid or expired cached metadata");
+  return data;
+}
+
+export async function fetchTaskLiveMovie(film, signal, fetcher = fetch) {
+  const id = tmdbId(film);
+  if (!id || !/^[A-Za-z0-9_-]{1,200}$/.test(film.id || "")) throw new Error("Film identity unavailable");
+  const response = await fetcher(`http://localhost:15176/refresh/${encodeURIComponent(film.id)}`, {
+    cache: "no-store", credentials: "include", signal,
+  });
+  if (response.status === 429) throw new RateLimitError();
+  if (!response.ok) throw new Error("Live metadata unavailable");
+  const data = await response.json();
+  if (data.tmdb_id !== id || !data.availability || !Array.isArray(data.availability.offers) || !Number.isFinite(Date.parse(data.cache_expires_at)) || Date.parse(data.cache_expires_at) <= Date.now()) throw new Error("Invalid or expired metadata response");
+  return data;
+}
+
+export function expireCachedResults(results, now = Date.now()) {
+  let changed = false, next = Infinity;
+  const remaining = {};
+  for (const [key, value] of Object.entries(results)) {
+    const expiry = value?.data?.cache_expires_at;
+    if (expiry) {
+      const timestamp = Date.parse(expiry);
+      if (!Number.isFinite(timestamp) || timestamp <= now) { changed = true; continue; }
+      next = Math.min(next, timestamp);
+    }
+    remaining[key] = value;
+  }
+  return {results: changed ? remaining : results, next};
+}
+
 export function tmdbId(film) {
   const value = film.fields["POC TMDB ID"];
   return typeof value === "string" && /^[1-9][0-9]{0,9}$/.test(value) &&
@@ -47,11 +88,25 @@ export function chooseBatch(films, results, retry = false) {
 }
 
 // A missing poster is unknown; retain one from the same ID and unchanged title.
+export function carryIsFresh(previous, now = Date.now()) {
+  if (!previous || previous.cache_expires_at == null) return true;
+  const deadline = Date.parse(previous.cache_expires_at);
+  return Number.isFinite(deadline) && deadline > now;
+}
+
+export function carryEarlierDeadline(previous, current) {
+  const oldDeadline = Date.parse(previous?.cache_expires_at);
+  const newDeadline = Date.parse(current?.cache_expires_at);
+  return Number.isFinite(oldDeadline) && (!Number.isFinite(newDeadline) || oldDeadline < newDeadline)
+    ? {...current, cache_expires_at: previous.cache_expires_at} : current;
+}
+
 export function preserveEarlierPoster(previous, current) {
   if (previous?.tmdb_id && previous.tmdb_id === current?.tmdb_id &&
+      carryIsFresh(previous) &&
       typeof previous.title === "string" && !!previous.title.trim() && previous.title === current.title &&
       typeof previous.poster_url === "string" && !!previous.poster_url && current.poster_url == null) {
-    return {...current, poster_url: previous.poster_url, poster_from_previous: true};
+    return carryEarlierDeadline(previous, {...current, poster_url: previous.poster_url, poster_from_previous: true});
   }
   return current;
 }
@@ -59,14 +114,14 @@ export function preserveEarlierPoster(previous, current) {
 export function mergeResult(previous, result) {
   if (!result.data) {
     const oldId = previous?.requestedId ?? previous?.data?.tmdb_id;
-    return { ...(oldId && result.requestedId && oldId !== result.requestedId ? {} : previous), ...result };
+    return { ...(oldId && result.requestedId && oldId !== result.requestedId || !carryIsFresh(previous?.data) ? {} : previous), ...result };
   }
   const data = preserveEarlierPoster(previous?.data, result.data);
   const previousAvailability = previous?.data?.availability;
   const currentAvailability = data.availability;
-  if (previous?.data?.tmdb_id === data.tmdb_id && previousAvailability?.status === "complete" && currentAvailability?.status !== "complete") {
-    return { ...result, data: { ...data, availability: previousAvailability,
-      availability_attempt: currentAvailability?.status || "unknown" } };
+  if (previous?.data?.tmdb_id === data.tmdb_id && carryIsFresh(previous?.data) && previousAvailability?.status === "complete" && currentAvailability?.status !== "complete") {
+    return { ...result, data: carryEarlierDeadline(previous.data, { ...data, availability: previousAvailability,
+      availability_attempt: currentAvailability?.status || "unknown" }) };
   }
   return data === result.data ? result : {...result, data};
 }

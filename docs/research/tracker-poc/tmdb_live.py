@@ -61,6 +61,7 @@ def app(
     get_upstream=upstream,
     load_catalog_path=reviewed_catalog_path,
     read_catalog=catalog_facts,
+    cache=None,
 ):
     def application(environ: dict, start):
         origin = environ.get("HTTP_ORIGIN", "")
@@ -77,7 +78,9 @@ def app(
             and 0 < int(path[2]) <= 2_147_483_647
         )
         is_catalog = path[1] == "catalog" and bool(re.fullmatch(r"[A-Za-z0-9_-]{1,200}", path[2]))
-        if not (is_movie or is_catalog):
+        is_cache = path[1] == "cache" and bool(re.fullmatch(r"[A-Za-z0-9_-]{1,200}", path[2]))
+        is_refresh = path[1] == "refresh" and bool(re.fullmatch(r"[A-Za-z0-9_-]{1,200}", path[2]))
+        if not (is_movie or is_catalog or is_cache or is_refresh):
             return response(start, "404 Not Found", {"error": "Not found"}, origin)
         try:
             authenticate(environ)
@@ -92,7 +95,9 @@ def app(
                 {"error": "Approval configuration unavailable"},
                 origin,
             )
-        if is_catalog:
+        if (is_movie and cache is not None) or (is_refresh and cache is None):
+            return response(start, "404 Not Found", {"error": "Not found"}, origin)
+        if is_catalog or is_cache or is_refresh:
             unavailable = {"error": "Reviewed catalog unavailable"}
             cookie = environ.get("HTTP_COOKIE", "")
             try:
@@ -135,26 +140,66 @@ def app(
             identity = int(value)
             if identity > 2_147_483_647 or identity not in allowed:
                 return response(start, "404 Not Found", unavailable, origin)
-            facts = read_catalog(load_catalog_path(), identity, title)
-            return (
-                response(start, "200 OK", facts, origin)
-                if facts is not None
-                else response(start, "404 Not Found", unavailable, origin)
-            )
-        if int(path[2]) not in allowed:
-            return response(start, "403 Forbidden", {"error": "Film not approved"}, origin)
+            if is_cache:
+                if cache is None:
+                    return response(start, "404 Not Found", {"error": "Cache unavailable"}, origin)
+                try:
+                    value = cache.get(identity)
+                except (OSError, ValueError, TypeError):
+                    return response(
+                        start, "503 Service Unavailable", {"error": "Cache unavailable"}, origin
+                    )
+                return (
+                    response(start, "200 OK", value, origin)
+                    if value
+                    else response(start, "404 Not Found", {"error": "Cache miss"}, origin)
+                )
+            if is_catalog:
+                facts = read_catalog(load_catalog_path(), identity, title)
+                return (
+                    response(start, "200 OK", facts, origin)
+                    if facts is not None
+                    else response(start, "404 Not Found", unavailable, origin)
+                )
+            movie_id = identity
+        else:
+            movie_id = int(path[2])
+            if movie_id not in allowed:
+                return response(start, "403 Forbidden", {"error": "Film not approved"}, origin)
+        if cache is not None:
+            try:
+                cache.check()
+            except (OSError, ValueError, TypeError):
+                return response(
+                    start, "503 Service Unavailable", {"error": "Cache unavailable"}, origin
+                )
         try:
-            movie = reader(int(path[2]))
+            movie = reader(movie_id)
+            if type(movie.tmdb_id) is not int or movie.tmdb_id != movie_id:
+                raise ValueError("Response identity mismatch")
         except TMDbRateLimited:
             return response(
                 start, "429 Too Many Requests", {"error": "TMDB rate limit reached"}, origin
             )
         except (TMDbError, ValueError, OSError):
             return response(start, "502 Bad Gateway", {"error": "TMDB unavailable"}, origin)
-        return response(start, "200 OK", movie_payload(movie), origin)
+        payload = movie_payload(movie)
+        if cache is not None:
+            try:
+                payload["cache_expires_at"] = cache.put(payload)["cache_expires_at"]
+            except (OSError, ValueError, TypeError, KeyError):
+                return response(
+                    start, "503 Service Unavailable", {"error": "Cache unavailable"}, origin
+                )
+        return response(start, "200 OK", payload, origin)
 
     return application
 
 
 if __name__ == "__main__":
-    serve(app(), host="127.0.0.1", port=15176)
+    cache = None
+    if os.environ.get("FILMIQ_TMDB_CACHE_ENABLE", "0") != "0":
+        from tmdb_live_cache import from_env
+
+        cache = from_env(os.environ)
+    serve(app(cache=cache), host="127.0.0.1", port=15176)

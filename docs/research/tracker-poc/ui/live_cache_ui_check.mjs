@@ -1,0 +1,66 @@
+import assert from 'node:assert/strict';
+import {expireCachedResults, fetchCachedMovie, fetchTaskLiveMovie, mergeResult} from './live_batch.js';
+import {mergeLiveMetadata, mergeLiveResult, readLiveMetadata} from './youtrack_tmdb.js';
+
+const expiry = new Date(Date.now() + 60000).toISOString();
+const data = {tmdb_id:123, title:'Fictional', cache_expires_at:expiry, availability:{status:'unknown', offers:[]}};
+const task = {id:'fictional-task', fields:{'POC TMDB ID':'123'}};
+const actual = await fetchCachedMovie(task, null, async (url) => {
+  assert.equal(url, 'http://localhost:15176/cache/fictional-task');
+  return {ok:true,json:async () => data};
+});
+assert.equal(actual.tmdb_id,123);
+await fetchTaskLiveMovie(task, null, async (url) => {
+  assert.equal(url, 'http://localhost:15176/refresh/fictional-task');
+  return {ok:true,json:async () => data};
+});
+await assert.rejects(fetchTaskLiveMovie(task, null, async () => ({ok:true,json:async () => ({...data, cache_expires_at:null})})));
+await assert.rejects(fetchCachedMovie(task,null,async () => ({ok:true,json:async () => ({...data,cache_expires_at:'2000-01-01T00:00:00Z'})})));
+const issue = {idReadable:'FILMPOC-1', customFields:[{name:'FilmIQ TMDB ID',value:123}]};
+const cached = await readLiveMetadata({fetchYouTrack:async (url, options) => {
+  assert.equal(url,'issues/FILMPOC-1/extensionEndpoints/filmiq-tmdb-live-isolated/metadata/cached');
+  assert.deepEqual(options,{method:'GET'});
+  return data;
+}},issue,{cacheOnly:true});
+assert.equal(cached.cache_expires_at,expiry);
+await assert.rejects(readLiveMetadata({fetchYouTrack:async () => ({...data, cache_expires_at:null})}, issue, {requireExpiry:true}));
+await assert.rejects(readLiveMetadata({fetchYouTrack:async () => ({...data, cache_expires_at:'2000-01-01T00:00:00Z'})}, issue, {requireExpiry:true}));
+const original = {cached:{data:cached},live:{data:{tmdb_id:123}}};
+const after = expireCachedResults(original,Date.parse(expiry));
+assert.equal(after.results.cached,undefined);
+assert.deepEqual(after.results.live,original.live);
+
+const oldExpiry = new Date(Date.now() + 30000).toISOString(), newExpiry = new Date(Date.now() + 120000).toISOString();
+const previous = {...data,cache_expires_at:oldExpiry,poster_url:'fictional.jpg',availability:{status:'complete',offers:[{provider:'Fixture',kind:'subscription'}]}};
+const newAvailability = {...data,cache_expires_at:newExpiry,poster_url:null,availability:{status:'complete',offers:[]}};
+const newPoster = {...data,cache_expires_at:newExpiry,poster_url:'new-fictional.jpg',availability:{status:'unknown',offers:[]}};
+for (const next of [newAvailability,newPoster]) {
+  const kaneo = mergeResult({data:previous},{data:next}).data;
+  const youtrack = mergeLiveMetadata(previous,next);
+  assert.equal(kaneo.cache_expires_at,oldExpiry);
+  assert.equal(youtrack.cache_expires_at,oldExpiry);
+  if (!next.poster_url) { assert.equal(kaneo.poster_url,previous.poster_url); assert.equal(youtrack.poster_url,previous.poster_url); }
+  else { assert.deepEqual(kaneo.availability,previous.availability); assert.deepEqual(youtrack.availability,previous.availability); }
+}
+const expired = {...previous,cache_expires_at:'2000-01-01T00:00:00Z'};
+assert.equal(mergeResult({data:expired},{data:newAvailability}).data.poster_url,null);
+assert.equal(mergeLiveMetadata(expired,newAvailability).poster_url,null);
+assert.equal(mergeResult({data:expired},{data:newPoster}).data.availability.status,'unknown');
+assert.equal(mergeLiveMetadata(expired,newPoster).availability.status,'unknown');
+assert.equal(mergeResult({data:expired},{error:'failed'}).data,undefined);
+assert.equal(mergeLiveResult({data:expired},{error:'failed'}).data,undefined);
+
+// Expiring the earlier provider section permits a new cache-only read of the
+// still-fresh metadata; the read never uses the refresh endpoint.
+let cacheReads = 0;
+const cleared = expireCachedResults({task:{data:previous}}, Date.parse(oldExpiry)).results;
+assert.equal(cleared.task,undefined);
+const refreshed = await fetchCachedMovie(task, null, async (url) => {
+  cacheReads++;
+  assert.equal(url, 'http://localhost:15176/cache/fictional-task');
+  return {ok:true,json:async () => ({...data,cache_expires_at:newExpiry,synopsis:'Still fresh',availability:{status:'unknown',offers:[]}})};
+});
+assert.equal(refreshed.synopsis,'Still fresh');
+assert.equal(refreshed.availability.status,'unknown');
+assert.equal(cacheReads,1);
+console.log('Cache-only routes and display expiry passed');
