@@ -3,6 +3,13 @@ export const field = (film, name) => film.customFields?.find((item) => item.name
 
 export function providerObservation(film) {
   try {
+    const live = film.live?.availability;
+    if (live) {
+      if (!["complete", "partial", "unknown"].includes(live.status) || !Array.isArray(live.offers) ||
+          !live.offers.every((item) => item && typeof item.provider === "string" && item.provider.trim() && ["subscription", "rent", "buy", "free", "ads"].includes(item.kind))) return null;
+      const providers = (kind) => [...new Set(live.offers.filter((item) => item.kind === kind).map((item) => item.provider))];
+      return {source: "TMDB / JustWatch", status: live.status, subscription: providers("subscription"), rent: providers("rent"), checked_at: live.checked_at};
+    }
     const raw = field(film, "FilmIQ Provider Observation");
     const value = JSON.parse(typeof raw === "string" ? raw : raw?.text || "null");
     if (!value || value.source !== "synthetic fixture, not TMDB") return null;
@@ -11,7 +18,7 @@ export function providerObservation(film) {
     const list = (v) => Array.isArray(v) && v.every((item) => typeof item === "string" && item.trim()) ? v : null;
     const subscription = list(value.subscription), rent = list(value.rent);
     if (status === "complete" && (!subscription || !rent)) return null;
-    return {status, subscription, rent, checked_at: typeof value.checked_at === "string" ? value.checked_at : null};
+    return {source: "Synthetic fixture", status, subscription, rent, checked_at: typeof value.checked_at === "string" ? value.checked_at : null};
   } catch { return null; }
 }
 
@@ -27,7 +34,7 @@ export function filterYoutrackFilms(films, {preferences, query, stateFilter, min
     const personal = preferences?.[item.idReadable];
     if (query && !item.summary.toLowerCase().includes(query.toLowerCase())) return false;
     if (stateFilter && field(item, "FilmIQ Lifecycle")?.name !== stateFilter) return false;
-    if (genre && field(item, "FilmIQ Genre") !== genre) return false;
+    if (genre && field(item, "FilmIQ Genre") !== genre && !item.live?.genres?.includes(genre)) return false;
     if (provider || freshness) {
       const observation = providerObservation(item);
       if (provider && (observation?.status === "unknown" || !observation?.subscription?.includes(provider))) return false;

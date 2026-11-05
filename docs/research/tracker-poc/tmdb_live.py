@@ -6,9 +6,9 @@ in the process environment and stop the service when testing is finished.
 """
 
 import json
-from urllib.parse import urlparse
 
 from preferences import current_user
+from tmdb_payload import movie_payload
 from tmdb_readonly import TMDbError, TMDbRateLimited, read_movie
 from waitress import serve
 
@@ -28,13 +28,6 @@ def response(start, status: str, payload: dict, origin: str):
         headers.append(("Access-Control-Allow-Credentials", "true"))
     start(status, headers)
     return [body]
-
-
-def safe_provider_link(value: str) -> str | None:
-    parsed = urlparse(value)
-    if parsed.scheme == "https" and parsed.hostname == "www.themoviedb.org":
-        return value
-    return None
 
 
 def app(reader=read_movie, authenticate=current_user):
@@ -64,27 +57,7 @@ def app(reader=read_movie, authenticate=current_user):
             )
         except (TMDbError, ValueError, OSError):
             return response(start, "502 Bad Gateway", {"error": "TMDB unavailable"}, origin)
-        observation = movie.availability
-        link = next(
-            (url for offer in observation.offers if (url := safe_provider_link(offer.url))), None
-        )
-        payload = {
-            "tmdb_id": movie.tmdb_id,
-            "title": movie.title,
-            "synopsis": movie.synopsis,
-            "year": movie.year,
-            "genres": movie.genres,
-            "directors": movie.directors,
-            "poster_url": movie.poster_url,
-            "imdb_title_url": movie.imdb_title_url,
-            "availability": {
-                "status": observation.status,
-                "checked_at": observation.checked_at.isoformat(),
-                "provider_url": link,
-                "offers": [{"provider": o.provider, "kind": o.kind} for o in observation.offers],
-            },
-        }
-        return response(start, "200 OK", payload, origin)
+        return response(start, "200 OK", movie_payload(movie), origin)
 
     return application
 

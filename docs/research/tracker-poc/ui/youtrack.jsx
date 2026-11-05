@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { readDirectReviews, reviewsMatchTitle, safeReviewUrl } from "./direct_reviews.js";
 import { field, filterYoutrackFilms, providerObservation, providerFreshness } from "./youtrack_filters.js";
 import { loadFilmView, publishFilmBatch } from "./youtrack_loading.js";
+import { attachMatchedLive, eligibleLiveFilms, liveMetadataMatches, LiveRateLimited, mergeLiveResult, readLiveMetadata, runLiveBatch, suppliedTmdbId } from "./youtrack_tmdb.js";
 export { providerObservation, providerFreshness } from "./youtrack_filters.js";
 
 let locationListener = () => {};
@@ -46,6 +47,9 @@ function safeLink(value) {
 function ExternalLink({url, label}) {
   return <><a href={url} target="_blank" rel="noreferrer">{label} ↗</a><details><summary>Copy address if opening is blocked</summary><code>{url}</code></details></>;
 }
+function TmdbCredits() {
+  return <p>This product uses the <a href="https://www.themoviedb.org/" target="_blank" rel="noreferrer">TMDB API</a> but is not endorsed or certified by TMDB. Watch-provider information is supplied by <a href="https://www.justwatch.com/" target="_blank" rel="noreferrer">JustWatch</a>.</p>;
+}
 
 async function getPages(path, query) {
   const rows = [], ids = new Set();
@@ -75,6 +79,9 @@ function App() {
   const [prefDirty, setPrefDirty] = useState(false), [filmDirty, setFilmDirty] = useState(false);
   const [pendingPreview, setPendingPreview] = useState(null), [pendingNavigation, setPendingNavigation] = useState(null), [discardFailed, setDiscardFailed] = useState(false), [saveUncertain, setSaveUncertain] = useState(false);
   const [comments, setComments] = useState(null), [commentDrafts, setCommentDrafts] = useState({}), [newTitle, setNewTitle] = useState("");
+  const [liveResults, setLiveResults] = useState({}), [liveBusy, setLiveBusy] = useState(false), [liveRateLimited, setLiveRateLimited] = useState(false);
+  const [liveBatch, setLiveBatch] = useState(null), [liveSummary, setLiveSummary] = useState("");
+  const liveRequest = useRef(false);
   const sequence = useRef(0), selectedRef = useRef(selected), projectRef = useRef(project);
   selectedRef.current = selected;
   projectRef.current = project;
@@ -109,7 +116,7 @@ function App() {
   }
   useEffect(() => {
     if (!project) return;
-    setFilms([]); setPreferences(null); setMovary(null);
+    setFilms([]); setPreferences(null); setMovary(null); setLiveResults({}); setLiveSummary("");
     refresh(project);
     return () => { sequence.current++; };
   }, [project]);
@@ -162,12 +169,13 @@ function App() {
     try { await host.navigation.updateAppLocation({ search: new URLSearchParams({project: next}).toString() }); }
     catch { setError("Project navigation could not be saved; the current screen may not survive reload."); }
   }
-  const providers = [...new Set(films.flatMap((item) => {
+  const shownFilms = useMemo(() => attachMatchedLive(films, liveResults), [films, liveResults]);
+  const providers = [...new Set(shownFilms.flatMap((item) => {
     const observation = providerObservation(item);
     return observation?.status !== "unknown" ? observation?.subscription || [] : [];
   }))].sort();
-  const genres = [...new Set(films.map((item) => field(item, "FilmIQ Genre")).filter((value) => typeof value === "string" && value))].sort();
-  const visible = useMemo(() => filterYoutrackFilms(films, {preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness}), [films, preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness]);
+  const genres = [...new Set(shownFilms.flatMap((item) => [field(item, "FilmIQ Genre"), ...(item.live?.genres || [])]).filter((value) => typeof value === "string" && value))].sort();
+  const visible = useMemo(() => filterYoutrackFilms(shownFilms, {preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness}), [shownFilms, preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness]);
   async function saveFilm(event) {
     event.preventDefault(); if (!title.trim()) { setError("Title cannot be blank."); return; } setBusy(true); setError("");
     try {
@@ -249,12 +257,44 @@ function App() {
     } catch (e) { setError(`Creation may be incomplete; reload before retrying: ${e.message}`); }
     finally { setBusy(false); }
   }
+  async function loadLiveMetadata() {
+    if (!film || !suppliedTmdbId(film) || liveRequest.current || liveRateLimited) return;
+    const target = film, targetProject = project;
+    liveRequest.current = true; setLiveBusy(true);
+    try {
+      const data = await readLiveMetadata(host, target);
+      if (projectRef.current === targetProject) setLiveResults((previous) => ({...previous, [target.idReadable]: mergeLiveResult(previous[target.idReadable], {data})}));
+    } catch (error) {
+      const limited = error instanceof LiveRateLimited;
+      if (limited) setLiveRateLimited(true);
+      if (projectRef.current === targetProject) setLiveResults((previous) => ({...previous, [target.idReadable]: mergeLiveResult(previous[target.idReadable], {error: limited ? "TMDB rate limit reached. Wait and reload the page before trying again." : "Live metadata is unavailable. No automatic retry was made."})}));
+    } finally { liveRequest.current = false; setLiveBusy(false); }
+  }
+  async function loadNextLiveBatch() {
+    const items = eligibleLiveFilms(visible, liveResults);
+    if (!items.length || liveRequest.current || liveRateLimited) return;
+    const targetProject = project, run = sequence.current;
+    const active = () => projectRef.current === targetProject && sequence.current === run;
+    let done = 0;
+    liveRequest.current = true; setLiveBusy(true); setLiveBatch({done: 0, total: items.length}); setLiveSummary("");
+    try {
+      const result = await runLiveBatch(host, items, active, (item, outcome) => {
+        setLiveResults((previous) => ({...previous, [item.idReadable]: mergeLiveResult(previous[item.idReadable], outcome)}));
+        setLiveBatch({done: ++done, total: items.length});
+      });
+      if (result.rateLimited) setLiveRateLimited(true);
+      if (active()) setLiveSummary(`${result.rateLimited ? "Stopped after a rate limit. Wait and reload before trying again." : result.cancelled ? "Stopped." : result.failed ? "Stopped after an unavailable response." : "Finished."} ${result.succeeded} loaded; ${result.failed} unavailable. No automatic retries or tracker writes.`);
+    } finally { liveRequest.current = false; setLiveBusy(false); setLiveBatch(null); }
+  }
   function changePreference(values) { setPref((current) => ({...current, ...values})); setPrefDirty(true); }
   const evidence = film ? sourceEvidence(film) : {};
   const sourceLinks = Array.isArray(evidence?.links) ? evidence.links.filter((item) => item && typeof item === "object") : [];
   const reviews = film ? directReviews(film) : null;
   const staleReviews = film && reviews?.length && !reviewsMatchTitle(reviews, film.summary);
-  const observation = film ? providerObservation(film) : null;
+  const liveEntry = film ? liveResults[film.idReadable] : null;
+  const live = liveEntry?.data?.tmdb_id === suppliedTmdbId(film) ? liveEntry.data : null;
+  const liveMatches = liveMetadataMatches(film, live);
+  const observation = film ? providerObservation(liveMatches ? {...film, live} : film) : null;
   const locked = busy || loadingFilms || !!pendingPreview || !!pendingNavigation;
   const preferenceLabel = (value) => value === null ? "unknown" : value === true ? "yes" : value === false ? "no" : value;
   return <>
@@ -263,6 +303,7 @@ function App() {
       <div className="intro"><div><span className="eyebrow">YOUTRACK · LOCAL POC</span><h1>Film discovery</h1><p>Shared film records and separate personal preferences.</p></div></div>
       <div className="project"><label>Project<select value={project || ""} disabled={locked} onChange={(e) => selectProject(e.target.value)}><option value="" disabled>Loading project…</option><option value="FILMREAL">Film collection</option><option value="FILMPOC">Synthetic test films</option></select></label><button disabled={locked || !project} onClick={() => refresh()}>Reload</button><a href="/issues" target="_blank" rel="noreferrer">Open tracker administration ↗</a></div>
       {error && <p role="alert">{error}</p>}{notice && <p className="notice">{notice}</p>}
+      {liveRateLimited && <p role="alert">TMDB rate limit reached. Wait and reload the page before trying live lookups again.</p>}
       {pendingNavigation && <section aria-labelledby="discard-title"><h2 id="discard-title">Discard unsaved edits?</h2><p>Your film and preference drafts have not been saved.</p><button disabled={busy} autoFocus onClick={() => setPendingNavigation(null)}>Keep editing</button><button disabled={busy} onClick={() => {const target = pendingNavigation; setPendingNavigation(null); if (target.kind === "film") selectFilm(target.value, true); else selectProject(target.value, true);}}>Discard and continue</button></section>}
       {pendingPreview && <section aria-labelledby="preference-preview-title"><h2 id="preference-preview-title">Review preference changes</h2><p>Film: {pendingPreview.issue_id}</p><p>Interest: {preferenceLabel((pendingPreview.before || emptyPreference).interest_score)} → {preferenceLabel(pendingPreview.after.interest_score)}</p><p>Watchlist: {preferenceLabel((pendingPreview.before || emptyPreference).watchlist)} → {preferenceLabel(pendingPreview.after.watchlist)}</p><p>Watched date: {preferenceLabel((pendingPreview.before || emptyPreference).watched_at)} → {preferenceLabel(pendingPreview.after.watched_at)}</p><p>Notes before: {(pendingPreview.before || emptyPreference).personal_notes || "(empty)"}</p><p>Notes after: {pendingPreview.after.personal_notes || "(empty)"}</p><button disabled={busy} autoFocus onClick={discardPreference}>Cancel preview</button><button disabled={busy || saveUncertain || !previewMatchesFilm(pendingPreview, selected)} onClick={confirmPreference}>Save local preference</button>{discardFailed && <><p>The server preview may remain until another preview or app removal. Draft notes are not stored in it.</p><button disabled={busy} onClick={() => {setPendingPreview(null); setDiscardFailed(false); setNotice(saveUncertain ? "Preview closed locally; the save outcome and server preview remain unverified. Open a new preview to compare the server's Before value." : "Preview closed locally; the server preview may remain."); setSaveUncertain(false);}}>Close preview locally</button></>}</section>}
       {film ? <section>
@@ -270,8 +311,26 @@ function App() {
         <h2>{film.summary}</h2><p>{film.idReadable} · {field(film, "FilmIQ Source Year") ? `Source-listed year ${field(film, "FilmIQ Source Year")}` : "Release year unknown"}</p>
         <p>{field(film, "FilmIQ Director") ? `Source-listed director: ${field(film, "FilmIQ Director")}` : "Director unknown"}</p>
         <p>{movary?.status === "available" && movary?.films?.[film.idReadable]?.watched ? `Watched in Movary (snapshot ${movary.observed_at || "time unknown"}).` : "Movary watched status unknown."}</p>
+        <h3>Live TMDB details</h3>
+        <p>Optional lookup for the supplied TMDB ID; verify that the result matches this film. Results stay in this page and are not saved to YouTrack.</p>
+        <button type="button" disabled={locked || liveBusy || liveRateLimited || !suppliedTmdbId(film)} onClick={loadLiveMetadata}>{liveBusy ? "Loading metadata…" : "Load live metadata"}</button>
+        {!suppliedTmdbId(film) && <p>A supplied TMDB ID is required.</p>}
+        {liveEntry?.error && <p role="alert">{liveEntry.error}</p>}
+        {live && <section>
+          <p>TMDB returned: {live.title} ({live.year ?? "year unknown"}).</p>
+          {!liveMatches ? <p role="alert">The returned title differs from this record. It may be a different film or an alternate title and requires verification before its artwork or availability can be used.</p> : <>
+            {live.poster_url && <div className="poster"><img src={live.poster_url} alt={`TMDB poster for ${live.title}`} /></div>}
+            <p>Directors: {live.directors?.join(", ") || "unknown"}; genres: {live.genres?.join(", ") || "unknown"}.</p>
+            <p>{live.synopsis || "Synopsis unavailable."}</p>
+            <p>US provider status: {live.availability.status}. {live.availability.offers.map((offer) => `${offer.provider} (${offer.kind})`).join(", ") || (live.availability.status === "complete" ? "No offers reported." : "Availability unknown.")} Checked: {live.availability.checked_at || "unknown"}. Personal subscription entitlement is not established.</p>
+            {live.availability_attempt && <p>Latest provider check was {live.availability_attempt}; the earlier complete observation is shown.</p>}
+            {live.availability.provider_url && <ExternalLink url={live.availability.provider_url} label="Provider information on TMDB" />}
+            {live.imdb_title_url && <p><ExternalLink url={live.imdb_title_url} label="IMDb title page" /> · supplied by TMDB; match not independently verified.</p>}
+          </>}
+          <TmdbCredits />
+        </section>}
         <h3>Streaming availability</h3>
-        <p>{observation ? `Synthetic observation: ${observation.status}. Checked ${observation.checked_at || "time unknown"}.` : "Availability unknown."}</p>
+        <p>{observation ? `${observation.source} observation: ${observation.status}. Checked ${observation.checked_at || "time unknown"}.` : "Availability unknown."}</p>
         <p>Subscriptions: {providerDescription(observation, "subscription")}. Rentals: {providerDescription(observation, "rent")}.</p>
         <form onSubmit={saveFilm}><label>Title<input value={title} required disabled={locked} onChange={(e) => {setTitle(e.target.value); setFilmDirty(true);}} /></label><label>Synopsis<textarea value={synopsis} disabled={locked} onChange={(e) => {setSynopsis(e.target.value); setFilmDirty(true);}} /></label><label>Lifecycle<select value={state} disabled={locked} onChange={(e) => {setState(e.target.value); setFilmDirty(true);}}><option value="">Unknown</option>{states.map((s) => <option key={s}>{s}</option>)}</select></label><button disabled={locked}>Save film</button></form>
         <p>Changing a title does not independently verify the saved external identity or update its original source provenance.</p>
@@ -301,7 +360,11 @@ function App() {
           <label><input type="checkbox" checked={excludeMovaryWatched} disabled={movary?.status !== "available" && !excludeMovaryWatched} onChange={(e) => {setExcludeMovaryWatched(e.target.checked); if (e.target.checked) setMovaryOnly(false);}} /> Exclude known watched in Movary</label>
           <label><input type="checkbox" checked={sortInterest} disabled={preferences === null && !sortInterest} onChange={(e) => setSortInterest(e.target.checked)} /> Sort by interest</label>
         </div>
-        <h2>Discovery · {visible.length}</h2><div className="grid">{visible.map((item) => <button className="card" key={item.id} disabled={locked} onClick={() => selectFilm(item.idReadable)}><span className="poster">Artwork unavailable</span><strong>{item.summary}</strong><small>{field(item, "FilmIQ Source Year") || "Year unknown"} · Interest {preferences?.[item.idReadable]?.interest_score ?? "unknown"} · Critic {field(item, "FilmIQ Critic Score") ?? "unknown"}</small><small>{field(item, "FilmIQ Lifecycle")?.name || "State unknown"} · {movary?.status === "available" && movary?.films?.[item.idReadable]?.watched ? "Watched in Movary" : "Watched unknown"}</small><small>Subscriptions: {providerDescription(providerObservation(item), "subscription")}</small></button>)}</div>
+        <p>Live metadata is optional and stays in this page. Each film can require up to three TMDB requests; loading a poster can use the browser image cache. A JSON no-store header does not establish image-cache behavior.</p>
+        <button type="button" disabled={locked || liveBusy || liveRateLimited || !eligibleLiveFilms(visible, liveResults).length} onClick={loadNextLiveBatch}>{liveBatch ? `Loading ${liveBatch.done}/${liveBatch.total}…` : "Load live metadata for next 30 displayed films"}</button>
+        {liveSummary && <p role="status">{liveSummary}</p>}
+        <h2>Discovery · {visible.length}</h2><div className="grid">{visible.map((item) => {const metadata = item.live; const poster = metadata?.poster_url; const available = providerObservation(item); const sourceYear = field(item, "FilmIQ Source Year"); const year = sourceYear ? `Source-listed year ${sourceYear}` : metadata?.year ? `TMDB-supplied year ${metadata.year}` : "Year unknown"; return <button className="card" key={item.id} disabled={locked} onClick={() => selectFilm(item.idReadable)}><span className="poster">{poster ? <img src={poster} alt={`TMDB poster for ${metadata.title}`} loading="lazy" /> : "Artwork unavailable"}</span><strong>{item.summary}</strong><small>{year} · Interest {preferences?.[item.idReadable]?.interest_score ?? "unknown"} · Critic {field(item, "FilmIQ Critic Score") ?? "unknown"}</small><small>{field(item, "FilmIQ Lifecycle")?.name || "State unknown"} · {movary?.status === "available" && movary?.films?.[item.idReadable]?.watched ? "Watched in Movary" : "Watched unknown"}</small><small>{available?.source || "Provider"} subscriptions: {providerDescription(available, "subscription")}</small>{metadata && <small>Supplied TMDB identity is unverified.</small>}</button>;})}</div>
+        {Object.values(liveResults).some((item) => item.data) && <TmdbCredits />}
         <form onSubmit={addFilm}><label>Add film title<input disabled={locked} value={newTitle} onChange={(e) => setNewTitle(e.target.value)} /></label><button disabled={locked || !project}>Add film</button></form>
       </section>}
     </main>

@@ -1,0 +1,108 @@
+import assert from "node:assert/strict";
+import { attachMatchedLive, eligibleLiveFilms, LiveRateLimited, liveMetadataMatches, mergeLiveMetadata, mergeLiveResult, readLiveMetadata, runLiveBatch, safePosterUrl, sameNormalizedTitle, suppliedTmdbId } from "./youtrack_tmdb.js";
+import { filterYoutrackFilms, providerFreshness, providerObservation } from "./youtrack_filters.js";
+
+const film = {idReadable: "FILMPOC-2", customFields: [{name: "FilmIQ TMDB ID", value: 123}]};
+const raw = {
+  tmdb_id: 123, title: "Fictional", synopsis: "Fictional synopsis", year: 2001,
+  genres: ["Drama"], directors: ["Fictional Director"],
+  poster_url: "https://image.tmdb.org/t/p/w500/fixture.jpg",
+  imdb_title_url: "https://www.imdb.com/title/tt1234567/",
+  availability: {status: "complete", checked_at: "2026-11-05T12:00:00Z", provider_url: "https://www.themoviedb.org/movie/123/watch", offers: [{provider: "Fictional Stream", kind: "subscription"}]},
+};
+let calls = 0;
+const host = {async fetchYouTrack(path, options) {
+  calls++;
+  assert.equal(path, "issues/FILMPOC-2/extensionEndpoints/filmiq-tmdb-live-isolated/metadata/read");
+  assert.deepEqual(options, {method: "POST", body: {}});
+  return raw;
+}};
+assert.equal(suppliedTmdbId(film), 123);
+const result = await readLiveMetadata(host, film);
+assert.equal(calls, 1);
+assert.equal(result.tmdb_id, 123);
+assert.equal(result.poster_url, raw.poster_url);
+assert.equal(result.availability.offers[0].provider, "Fictional Stream");
+assert.equal(sameNormalizedTitle(" CAFÉ\t Film ", "cafe\u0301   film"), true);
+assert.equal(sameNormalizedTitle("ＦＩＬＭ", "film"), true);
+assert.equal(sameNormalizedTitle("Fictional Film", "Different Film"), false);
+assert.equal(sameNormalizedTitle("", ""), false);
+const matchingRecord = {...film, summary: "  FICTIONAL  "};
+const mismatchRecord = {...film, summary: "A different film"};
+assert.equal(liveMetadataMatches(matchingRecord, result), true);
+assert.equal(liveMetadataMatches(mismatchRecord, result), false);
+assert.equal(liveMetadataMatches(matchingRecord, {...result, tmdb_id: 124}), false);
+const matched = attachMatchedLive([matchingRecord], {"FILMPOC-2": {data: result}});
+const mismatched = attachMatchedLive([mismatchRecord], {"FILMPOC-2": {data: result}});
+assert.equal(matched[0].live.poster_url, result.poster_url);
+assert.equal(mismatched[0].live, undefined, "mismatched poster and providers must not attach");
+const liveFilm = {...film, summary: "Fictional", live: {...result, availability: {...result.availability, checked_at: new Date().toISOString()}}};
+const options = {preferences: {}, query: "", stateFilter: "", minimum: "", watchlistOnly: false, sortInterest: false, movaryOnly: false, excludeMovaryWatched: false, movary: null, provider: "Fictional Stream", genre: "Drama", freshness: "recent"};
+assert.deepEqual(filterYoutrackFilms(mismatched, {...options, freshness: ""}), [], "mismatched live providers and genres must not enter filters");
+assert.equal(providerObservation(liveFilm).source, "TMDB / JustWatch");
+assert.equal(providerFreshness(providerObservation(liveFilm)), "recent");
+assert.deepEqual(filterYoutrackFilms([liveFilm], options), [liveFilm]);
+assert.deepEqual(filterYoutrackFilms([liveFilm], {...options, provider: "Other Stream"}), []);
+assert.deepEqual(filterYoutrackFilms([liveFilm], {...options, genre: "Comedy"}), []);
+assert.equal(film.live, undefined, "live enrichment must not mutate the canonical film");
+const fixtureFilm = {...film, summary: "Fictional", customFields: [...film.customFields, {name: "FilmIQ Provider Observation", value: {text: JSON.stringify({source: "synthetic fixture, not TMDB", subscription: ["Fixture Stream"], rent: [], checked_at: "2026-11-05T12:00:00Z"})}}]};
+assert.equal(providerObservation(fixtureFilm).source, "Synthetic fixture");
+assert.deepEqual(providerObservation(fixtureFilm).subscription, ["Fixture Stream"]);
+assert.equal(providerObservation({...fixtureFilm, live: missingLive()}).status, "unknown");
+assert.equal(safePosterUrl("https://evil.example/t/p/w500/x.jpg"), null);
+assert.equal(safePosterUrl("http://image.tmdb.org/t/p/w500/x.jpg"), null);
+assert.equal(safePosterUrl("https://image.tmdb.org/t/p/w500/x.jpg?key=secret"), null);
+assert.equal(safePosterUrl("https://image.tmdb.org.evil.example/t/p/w500/x.jpg"), null);
+const wrong = {fetchYouTrack: async () => ({...raw, tmdb_id: 124})};
+await assert.rejects(readLiveMetadata(wrong, film), /identity mismatch/);
+const missing = await readLiveMetadata({fetchYouTrack: async () => ({tmdb_id: 123, title: "Fictional"})}, film);
+assert.equal(missing.availability.status, "unknown");
+assert.equal(missing.synopsis, null);
+assert.equal(missing.poster_url, null);
+const incomplete = {...result, availability: {...result.availability, status: "partial", offers: []}};
+assert.deepEqual(filterYoutrackFilms([{...liveFilm, live: incomplete}], {...options, freshness: ""}), [], "a missing partial offer is not a confirmed match");
+const merged = mergeLiveMetadata(result, incomplete);
+assert.equal(merged.availability.status, "complete");
+assert.equal(merged.availability_attempt, "partial");
+assert.equal(mergeLiveResult({data: result}, {error: "unavailable"}).data, result, "a failed refresh retains prior page-memory data");
+let attempts = 0;
+const limited = {fetchYouTrack: async () => {attempts++; throw Object.assign(new Error("429"), {status: 429});}};
+await assert.rejects(readLiveMetadata(limited, film), LiveRateLimited);
+assert.equal(attempts, 1, "rate limiting must not trigger an automatic retry");
+await assert.rejects(readLiveMetadata({fetchYouTrack: async () => ({status: 429})}, film), LiveRateLimited);
+await assert.rejects(readLiveMetadata(host, {...film, customFields: []}), /identity unavailable/);
+assert.equal(calls, 1, "missing IDs must never issue a request");
+function missingLive() { return {availability: {status: "unknown", checked_at: null, offers: []}}; }
+const films = Array.from({length: 35}, (_, index) => ({idReadable: `FILMPOC-${index + 1}`, customFields: [{name: "FilmIQ TMDB ID", value: 101 + index}]}));
+const candidates = eligibleLiveFilms(films, {"FILMPOC-1": {data: raw}, "FILMPOC-2": {error: "failed"}});
+assert.equal(candidates.length, 30);
+assert.equal(candidates[0].idReadable, "FILMPOC-3", "completed and failed attempts are not automatically retried");
+const requested = [], recorded = [];
+const batchHost = {fetchYouTrack: async (path) => {
+  const index = Number(path.match(/FILMPOC-(\d+)/)[1]);
+  requested.push(index);
+  if (index === 3) throw Object.assign(new Error("limited"), {response: {status: "429"}});
+  return {...raw, tmdb_id: 100 + index};
+}};
+const batch = await runLiveBatch(batchHost, films, () => true, (item, result) => recorded.push({item, result}));
+assert.deepEqual(requested, [1, 2, 3]);
+assert.equal(batch.succeeded, 2);
+assert.equal(batch.failed, 1);
+assert.equal(batch.rateLimited, true);
+assert.equal(recorded.length, 3);
+let opaqueCalls = 0;
+const opaque = await runLiveBatch({fetchYouTrack: async () => {opaqueCalls++; throw new Error("opaque Host API failure");}}, films, () => true, () => {});
+assert.equal(opaqueCalls, 1, "an opaque Host API error must not hide a rate limit and continue a batch");
+assert.equal(opaque.failed, 1);
+let mismatchCalls = 0;
+await runLiveBatch({fetchYouTrack: async () => {mismatchCalls++; return {...raw, tmdb_id: 999};}}, films, () => true, () => {});
+assert.equal(mismatchCalls, 1, "an identity mismatch must stop without requesting a second film");
+let active = true, cancelledCalls = 0, delivered = 0;
+const cancelled = await runLiveBatch({fetchYouTrack: async () => {cancelledCalls++; active = false; return raw;}}, films, () => active, () => delivered++);
+assert.equal(cancelledCalls, 1);
+assert.equal(delivered, 0);
+assert.equal(cancelled.cancelled, true, "a project change stops after the in-flight request");
+let normalCalls = 0;
+await runLiveBatch({fetchYouTrack: async (path) => {normalCalls++; const index = Number(path.match(/FILMPOC-(\d+)/)[1]); return {...raw, tmdb_id: 100 + index};}}, films, () => true, () => {});
+assert.equal(normalCalls, 30, "each explicit batch must stop at 30 films");
+console.log("Synthetic YouTrack live metadata identity, URL, unknown and rate-limit checks passed");

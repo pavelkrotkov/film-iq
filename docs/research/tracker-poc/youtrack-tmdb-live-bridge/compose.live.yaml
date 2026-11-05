@@ -1,0 +1,22 @@
+services:
+  tmdb-live-bridge:
+    image: python:3.12.12-slim@sha256:f3fa41d74a768c2fce8016b98c191ae8c1bacd8f1152870a3f9f87d350920b7c
+    profiles: [tmdb-live-bridge]
+    network_mode: service:youtrack
+    user: "${FILMIQ_BRIDGE_UID:?Set the non-root UID that can read the allowlist}:${FILMIQ_BRIDGE_GID:?Set its GID}"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    env_file: ../../../.cache/tracker-poc/private/youtrack-tmdb-live.env
+    environment:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONPATH: /opt/filmiq/live:/opt/filmiq/poc:/opt/filmiq/src
+      FILMIQ_TMDB_BRIDGE_ENABLE_LIVE: "${FILMIQ_TMDB_BRIDGE_ENABLE_LIVE:-0}"
+    volumes:
+      - ./youtrack-tmdb-live-bridge:/opt/filmiq/live:ro
+      - ./tmdb_readonly.py:/opt/filmiq/poc/tmdb_readonly.py:ro
+      - ./tmdb_payload.py:/opt/filmiq/poc/tmdb_payload.py:ro
+      - ../../../src:/opt/filmiq/src:ro
+      - "${FILMIQ_APPROVAL_DIR:?Set the dedicated approval directory}:/run/filmiq/approval:ro"
+    command: ["python", "/opt/filmiq/live/live_bridge.py"]
+    restart: "no"

@@ -1,8 +1,8 @@
-"""Map the verified private Movary snapshot to the current YouTrack user.
+"""Map the private Movary snapshot to the current YouTrack user.
 
 This does not write Movary, tracker fields, or editable personal preferences.
-It imports only through the YouTrack app's current-user endpoint. The app
-must first pass live synthetic authorization and isolation tests.
+It imports only through the YouTrack app's current-user endpoint. Before the
+local import, live fictional single-user and anonymous-denial checks passed.
 """
 
 import argparse

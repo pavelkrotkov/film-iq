@@ -1,0 +1,8 @@
+{
+  "type": "object",
+  "title": "TMDB live bridge",
+  "properties": {
+    "bridgeToken": {"type": "string", "format": "secret", "title": "Bridge token"}
+  },
+  "required": ["bridgeToken"]
+}

@@ -279,13 +279,12 @@ numeric sort and availability freshness. The React controls, visual layout and
 
 The updated YouTrack app's personal preference preview stores only the fields
 needed to bind the confirmation, not draft notes. Its cancel action discards
-the pending preview. The code is installed, but its fictional checks have not
-yet been validated in the YouTrack runtime. YouTrack's per-project Movary snapshot
-handler likewise has synthetic checks only; concurrent imports are unverified.
-Anonymous live requests to the preference and watched handlers returned 401.
-`youtrack_persona_handlers_check.py` is prepared to exercise two fictional
-accounts against the installed handlers, but has not been run with authenticated
-users because the fictional accounts do not yet have usable API credentials.
+the pending preview. In the live runtime, a fictional preference was previewed,
+confirmed and read back, and replay was rejected. A fictional watched snapshot
+also survived readback; anonymous reads and writes returned 401. The 27-film
+read-only Movary snapshot was then imported for the local administrator and
+matched the source mapping on readback. It does not update Movary or a watchlist.
+Concurrent imports and live separation between accounts remain unverified.
 
 The separate `enrichment.py` worker uses a backend protocol and the existing
 FilmIQ availability normalizer. Its only source is explicitly fictional, with
@@ -458,24 +457,35 @@ per-user interest queries, browser rendering, concurrent performance, or
 production capacity. The synthetic API exercise verified state values,
 comments and history, rejection of a nonnumeric integer and an invalid state,
 preservation of a user-edited synopsis and provider observation, repeat import,
-and anonymous read/write denial. The separate programmed workflow and per-user
-extension properties have only passed mock checks and await a live test. The
-dedicated synthetic workflow issue initially lacked the fixture marker required
-by both rules; `youtrack_setup.py --workflow-fixture` now sets it only when
+and anonymous read/write denial. The dedicated synthetic workflow issue
+initially lacked the fixture marker required by both rules; the
+`youtrack_setup.py --workflow-fixture` command now sets it only when
 empty, checks for conflicts and verifies the write. A repeated setup made no
 change. JetBrains' `@jetbrains/youtrack-apps-tools` CLI version 1.0.3 attached
 the app to the synthetic project only. In the live server the guarded change
-  rule rejected Archived → Discovery with HTTP 400 and allowed Archived →
-  Evaluation, while the scheduled rule wrote its synthetic marker. The original
-  issue lifecycle was restored. Its marker was cleared too, but can be set again
-  by the still-enabled recurring rule.
+rule rejected Archived → Discovery with HTTP 400 and allowed Archived →
+Evaluation, while the scheduled rule wrote its synthetic marker. The original
+issue lifecycle was restored. Its marker was cleared too, but can be set again
+by the still-enabled recurring rule.
 
 The earlier embedded widget passed an actual synopsis edit/reload. The installed
-update adds preferences, watched-history support and synthetic workflows; the
-app's permission and data-loss behavior must be tested before real watched data
-is imported into its per-user property. MDBList read-through is implemented
+update adds preferences, watched-history support and synthetic workflows.
+Removing the app deletes its app-owned watched snapshot and preferences;
+recovery and shared-user permissions have not been validated. MDBList read-through is implemented
 without retention, but the live API returned HTTP 403 for an unknown reason.
 No product score or recommendation is justified yet.
+
+The YouTrack issue-scoped read-through now reaches the shared Python TMDb reader
+through a local, authenticated bridge with a positive approved-ID list. An
+anonymous request and an unapproved fictional ID were rejected. In sequential
+non-retaining checks, each backend read all 130 authorized IDs: each returned
+130 poster paths, 109 complete provider responses and 21 unknown provider
+responses. No rate limit or failed film request occurred in those runs. These
+are provider results for supplied IDs, not independent film-identity or personal
+subscription verification. The checks did not retain response bodies, and the
+browser must load live data again on demand. The updated YouTrack widget and
+its main-menu invocation still need browser verification. A JSON `no-store`
+header does not establish poster-image cache behavior.
 
 ## Outstanding
 
