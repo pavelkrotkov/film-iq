@@ -76,6 +76,7 @@ def app(reader=read_movie, authenticate=current_user):
             "genres": movie.genres,
             "directors": movie.directors,
             "poster_url": movie.poster_url,
+            "imdb_title_url": movie.imdb_title_url,
             "availability": {
                 "status": observation.status,
                 "checked_at": observation.checked_at.isoformat(),

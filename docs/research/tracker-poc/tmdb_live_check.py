@@ -42,12 +42,23 @@ def check():
         "partial",
         now,
     )
-    movie = Movie(12, "Fictional", None, None, None, None, None, observed)
+    movie = Movie(
+        12,
+        "Fictional",
+        None,
+        None,
+        None,
+        None,
+        None,
+        observed,
+        "https://www.imdb.com/title/tt0000012/",
+    )
     application = app(lambda _: movie, lambda _: "synthetic-user")
     result = invoke(application, "/movie/12")
     assert result["status"] == "200 OK"
     assert result["headers"]["Cache-Control"] == "no-store"
     assert result["body"]["availability"]["status"] == "partial"
+    assert result["body"]["imdb_title_url"] == "https://www.imdb.com/title/tt0000012/"
     assert result["body"]["availability"]["offers"][0]["kind"] == "subscription"
     assert invoke(application, "/movie/nope")["status"] == "404 Not Found"
     assert (

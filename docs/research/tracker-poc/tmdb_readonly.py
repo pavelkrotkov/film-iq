@@ -6,6 +6,7 @@ making this data visible or persisting it. Credentials come from environment.
 
 import json
 import os
+import re
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -26,6 +27,7 @@ class Movie:
     directors: tuple[str, ...] | None
     poster_url: str | None
     availability: Observation
+    imdb_title_url: str | None = None
 
 
 class TMDbError(Exception):
@@ -92,7 +94,7 @@ def release_year(value) -> int | None:
 def read_movie(tmdb_id: int, get=fetch, now: datetime | None = None) -> Movie:
     if type(tmdb_id) is not int or tmdb_id <= 0:
         raise ValueError("TMDB ID must be a positive integer")
-    details = get(f"movie/{tmdb_id}", {"append_to_response": "credits"})
+    details = get(f"movie/{tmdb_id}", {"append_to_response": "credits,external_ids"})
     if (
         type(details.get("id")) is not int
         or details.get("id") != tmdb_id
@@ -139,6 +141,19 @@ def read_movie(tmdb_id: int, get=fetch, now: datetime | None = None) -> Movie:
     except TMDbError:
         available = None
     synopsis = details.get("overview")
+    external_ids = details.get("external_ids")
+    imdb_id = external_ids.get("imdb_id") if isinstance(external_ids, dict) else None
+    imdb_url = (
+        f"https://www.imdb.com/title/{imdb_id}/"
+        if isinstance(imdb_id, str)
+        and re.fullmatch(r"tt[0-9]{7,15}", imdb_id)
+        and isinstance(external_ids, dict)
+        and (
+            "id" not in external_ids
+            or (type(external_ids["id"]) is int and external_ids["id"] == tmdb_id)
+        )
+        else None
+    )
     return Movie(
         tmdb_id,
         details["title"],
@@ -148,4 +163,5 @@ def read_movie(tmdb_id: int, get=fetch, now: datetime | None = None) -> Movie:
         directors,
         poster,
         normalize(tmdb_id, available, now or datetime.now(UTC)),
+        imdb_url,
     )

@@ -5,11 +5,12 @@ import {
   providers,
   syntheticAvailability,
 } from "./film_filters.js";
-import { BATCH_LIMIT, chooseBatch, fetchLiveMovie, mergeResult, runBatch, tmdbId } from "./live_batch.js";
+import { BATCH_LIMIT, chooseBatch, fetchLiveMovie, mergeResult, runBatch, safeImdbTitleUrl, tmdbId } from "./live_batch.js";
 import { fetchRatings } from "./mdblist_ui.js";
 import { clearSavedDraft, currentComments, setCommentDraft } from "./comment_drafts.js";
 import { emptyPreference, markPreferenceSaved, mergeFilmDraft, syncPreferenceDraft } from "./preference_draft.js";
 import { missingLinkedFilm, unavailableFilterSources } from "./availability_state.js";
+import { accessibleProjects, projectUrl } from "./project_picker.js";
 
 const api = "http://localhost:15173/api";
 function ProviderBadges({ film }) {
@@ -116,6 +117,9 @@ function App() {
   const [project, setProject] = useState(
     new URLSearchParams(location.search).get("project") || "",
   );
+  const [projectList, setProjectList] = useState(null),
+    [projectListError, setProjectListError] = useState(""),
+    [chosenProject, setChosenProject] = useState(project);
   const [films, setFilms] = useState([]),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
@@ -177,6 +181,18 @@ function App() {
       setBusy(false);
     }
   }
+  async function refreshProjects() {
+    setProjectList(null); setProjectListError("");
+    try {
+      const result = await accessibleProjects(request);
+      setProjectList(result.projects);
+      if (result.incomplete) setProjectListError("Some workspaces could not be loaded; the project list is incomplete.");
+    } catch {
+      setProjectList([]);
+      setProjectListError("Projects could not be loaded. Sign in to Kaneo and try again.");
+    }
+  }
+  useEffect(() => { refreshProjects(); }, []);
   useEffect(() => {
     if (project) refresh();
   }, [project]);
@@ -403,11 +419,9 @@ function App() {
   }
   function choose(event) {
     event.preventDefault();
-    const value = new FormData(event.currentTarget).get("project").trim();
-    const next = new URL(location.href);
-    next.searchParams.set("project", value);
-    next.hash = "";
-    location.href = next.href;
+    const value = chosenProject;
+    if (!value) return;
+    location.href = projectUrl(location.href, value);
   }
   return (
     <>
@@ -443,15 +457,15 @@ function App() {
         </div>
         <form className="project" onSubmit={choose}>
           <label>
-            Project ID{" "}
-            <input
-              name="project"
-              defaultValue={project}
-              required
-              placeholder="Kaneo project ID"
-            />
+            Project{" "}
+            <select value={chosenProject} onChange={(event) => setChosenProject(event.target.value)}>
+              <option value="">{projectList === null ? "Loading projects…" : "Choose an accessible project"}</option>
+              {project && !projectList?.some((item) => item.id === project) && <option value={project}>Current project (not in project list)</option>}
+              {(projectList || []).map((item) => <option key={item.id} value={item.id}>{item.workspace} / {item.name}</option>)}
+            </select>
           </label>
-          <button>Open project</button>
+          <button disabled={!chosenProject}>Open project</button>
+          <button type="button" onClick={refreshProjects}>Refresh projects</button>
           <a
             href="http://localhost:15173/auth/sign-in"
             target="_blank"
@@ -464,6 +478,8 @@ function App() {
           POC preferences use a separate local store and do not change Movary.
           Movary remains the source of truth for personal watch history.
         </p>
+        {projectListError && <p role="alert">{projectListError}</p>}
+        {projectList && !projectList.length && !projectListError && <p>No accessible active projects found.</p>}
         <p className="notice">{movary?.status === "available" ? `Movary watched snapshot observed ${movary.observed_at}. Missing films remain unknown.` : "Movary watched snapshot unavailable for this user or project."}</p>
         {!!eligible && <section>
           <p>Live metadata is optional and stays only in this open page. Each film can use up to three TMDB requests. {unattempted} of {eligible} supplied IDs have not been attempted. Results are not identity verification. Cancel stops further requests; an in-flight request may finish.</p>
@@ -525,6 +541,7 @@ function App() {
                         <p>TMDB: {liveMovie.title} ({liveMovie.year || "year unknown"})</p>
                         {liveMovie.synopsis && <p>{liveMovie.synopsis}</p>}
                         <p>Genres: {liveMovie.genres?.join(", ") || "Unknown"}. Directors: {liveMovie.directors?.join(", ") || "Unknown"}.</p>
+                        {safeImdbTitleUrl(liveMovie.imdb_title_url) ? <p><a href={safeImdbTitleUrl(liveMovie.imdb_title_url)} target="_blank" rel="noreferrer">IMDb title page ↗</a> · IMDb ID supplied by TMDB; match not independently verified. IMDb ratings are audience ratings.</p> : <p>IMDb title link unknown; TMDB did not supply a usable ID.</p>}
                         <p>US availability: {liveMovie.availability.status}. {liveMovie.availability.offers.map((offer) => `${offer.provider} (${offer.kind})`).join(", ") || (liveMovie.availability.status === "complete" ? "No offers reported" : "Availability unknown")}. Checked: {liveMovie.availability.checked_at}.</p>
                         {liveMovie.availability_attempt && <p>Latest check was {liveMovie.availability_attempt}; showing the earlier complete observation.</p>}
                         {liveMovie.availability.provider_url && <p><a href={liveMovie.availability.provider_url} target="_blank" rel="noreferrer">View provider information on TMDB ↗</a></p>}

@@ -18,6 +18,7 @@ def fixture(path, parameters=None):
             "genres": [{"name": "Drama"}],
             "poster_path": "/fixture.jpg",
             "credits": {"crew": [{"job": "Director", "name": "Synthetic director"}]},
+            "external_ids": {"id": 42, "imdb_id": "tt0000042"},
         }
     if path == "configuration":
         return {
@@ -68,6 +69,21 @@ if __name__ == "__main__":
         ("Synthetic director",),
     )
     assert movie.poster_url == "https://example.invalid/t/p/w500/fixture.jpg"
+    assert movie.imdb_title_url == "https://www.imdb.com/title/tt0000042/"
+    for external in (
+        {"imdb_id": "tt0000042/../../unsafe"},
+        {"id": 43, "imdb_id": "tt0000042"},
+        None,
+    ):
+
+        def external_fixture(path, parameters=None, *, external=external):
+            result = fixture(path, parameters)
+            if path == "movie/42":
+                assert parameters == {"append_to_response": "credits,external_ids"}
+                result["external_ids"] = external
+            return result
+
+        assert read_movie(42, external_fixture, now).imdb_title_url is None
     assert {offer.kind for offer in movie.availability.offers} == {"subscription", "rent"}
     failed = read_movie(42, failed_providers, now)
     assert failed.availability.status == "unknown" and not failed.availability.offers

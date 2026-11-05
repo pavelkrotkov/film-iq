@@ -3,6 +3,10 @@ export const BATCH_LIMIT = 30;
 
 export class RateLimitError extends Error {}
 
+export function safeImdbTitleUrl(value) {
+  return typeof value === "string" && /^https:\/\/www\.imdb\.com\/title\/tt[0-9]{7,15}\/$/.test(value) ? value : null;
+}
+
 export async function fetchLiveMovie(id, signal, fetcher = fetch) {
   const response = await fetcher(`http://localhost:15176/movie/${id}`, {
     cache: "no-store", credentials: "include", signal,

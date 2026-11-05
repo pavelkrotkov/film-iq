@@ -1,16 +1,30 @@
 """Exercise synthetic enrichment, failure handling, and the YouTrack lifecycle."""
 
+import json
 from datetime import UTC, datetime
 from urllib.parse import quote
 
 from enrichment import FixtureSource, enrich
 from youtrack_client import YouTrackClient
-from youtrack_enrich import YouTrackFixtureBackend
+from youtrack_enrich import YouTrackFixtureBackend, custom_value
 
 
 class MissingAvailability(FixtureSource):
     def availability(self, source_id: int) -> None:
         return None
+
+
+class PartialAvailability(FixtureSource):
+    def availability(self, source_id: int) -> dict:
+        return {
+            "id": source_id,
+            "results": {"US": {"link": "https://example.invalid", "flatrate": [{}]}},
+        }
+
+
+class FailedAvailability(FixtureSource):
+    def availability(self, source_id: int) -> None:
+        raise RuntimeError("simulated provider failure")
 
 
 def main() -> None:
@@ -52,12 +66,26 @@ def main() -> None:
     )
     observation_path = path + "/customFields/" + quote(observation["id"], safe="")
     prior = client.request(observation_path, query={"fields": "id,value(text)"})["value"]["text"]
+    decoded = json.loads(prior)
+    assert decoded["subscription"] == ["Fixture Stream"]
+    assert decoded["rent"] == ["Fixture Rental"]
     assert enrich(MissingAvailability(), backend, identity, now) == record
+    assert enrich(PartialAvailability(), backend, identity, now) == record
+    try:
+        enrich(FailedAvailability(), backend, identity, now)
+    except RuntimeError as error:
+        assert str(error) == "simulated provider failure"
+    else:
+        raise AssertionError("provider failure was not propagated")
     after = client.request(observation_path, query={"fields": "id,value(text)"})["value"]["text"]
     assert after == prior
     issue = client.request(path, query={"fields": "id,description"})
     assert issue["description"] == user_synopsis
-    print("Synthetic YouTrack repeat import, lifecycle, and failure checks passed")
+    assert enrich(FixtureSource(), backend, identity, now) == record
+    assert (
+        sum(custom_value(issue, "FilmIQ Fixture ID") == identity for issue in backend.issues()) == 1
+    )
+    print("Synthetic YouTrack repeat import, lifecycle, and failed/partial response checks passed")
 
 
 if __name__ == "__main__":

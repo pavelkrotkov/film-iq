@@ -245,6 +245,19 @@ provider handling. It does not implement or validate a live TMDB-to-tracker
 import. [Movie details](https://developer.themoviedb.org/reference/movie-details),
 [watch providers and JustWatch attribution](https://developer.themoviedb.org/reference/movie-watch-providers).
 
+The on-demand Kaneo read-through also requests [TMDB movie external IDs](https://developer.themoviedb.org/reference/movie-external-ids)
+with the details response. When a syntactically valid IMDb ID is returned, it
+links to the corresponding [IMDb title page](https://origin-help.imdb.com/article/contribution/filmography-credits/adding-credits/GAB5B33MBLEG73CT).
+TMDB supplies the mapping; its match to the intended film has not been
+independently verified. IMDb's ratings are [user-vote averages](https://www.imdb.com/interfaces/),
+not critic ratings. Missing or invalid IDs produce an unknown link. This adds
+no IMDb data fetch or tracker persistence; it does not supply critic reviews or
+invent Rotten Tomatoes or Metacritic links. TMDB use remains subject to its
+[attribution and applicable license terms](https://developer.themoviedb.org/docs/faq),
+including the existing credits shown in the UI. A local read of TMDB's public
+example ID returned a syntactically valid IMDb title link after the service was
+restarted; browser display and individual-film identity remain unverified.
+
 ## Reproduce the isolated Kaneo experiment
 
 Use this worktree's root as the current directory. Docker Desktop stores images
@@ -311,9 +324,13 @@ python3 -m http.server 15174 --bind 127.0.0.1
 ```
 
 Sign in to `http://localhost:15173/auth/sign-in` using the synthetic account in
-`.cache/tracker-poc/kaneo-test-user.json`, then open
-`http://localhost:15174/?project=<printed project ID>`. The API and UI are
-bound to loopback; this configuration is for isolated local evaluation only.
+`.cache/tracker-poc/kaneo-test-user.json`, then open `http://localhost:15174/`
+and select an accessible project. A direct URL with `?project=<project ID>`
+remains supported. The picker uses the authenticated workspace and project
+APIs and excludes projects outside the current user's access; synthetic API and
+fixture checks passed, but the picker has not yet been tested in a browser.
+The API and UI are bound to loopback; this configuration is for isolated local
+evaluation only.
 React and esbuild are MIT-licensed. The UI includes no service API key.
 
 ## YouTrack status
@@ -354,6 +371,16 @@ FILMREAL; the same query returned three assignments for the administrator in
 FILMREAL as a positive control. This is role-assignment evidence, not an
 impersonated issue request or proof of issue-level visibility. See the
 [documented scope and holder query semantics](https://www.jetbrains.com/help/youtrack/devportal/api-access-management-query-syntax.html).
+
+A standalone frontend is a documented alternative: YouTrack Server supports
+an explicit [CORS origin allowlist](https://www.jetbrains.com/help/youtrack/server/server-configuration-settings.html).
+The local server initially omitted the POC UI origin; its preflight returned
+200 without an `Access-Control-Allow-Origin` header. Temporarily adding only
+`http://localhost:15174` produced a 200 preflight with that exact allowed
+origin, the requested `authorization` header, and credential support. The
+original settings were then restored and read back. This verifies the preflight
+only, not an authenticated browser request, token acquisition, actual issue
+access, or per-user isolation. No wildcard origin was enabled.
 
 The common synthetic dataset created 30 issues, then 970 more in 26.990 seconds.
 A single local read traversed and numerically sorted 1,000 issues by a typed

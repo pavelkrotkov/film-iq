@@ -1,10 +1,13 @@
 import assert from "node:assert/strict";
-import { BATCH_LIMIT, chooseBatch, fetchLiveMovie, mergeResult, RateLimitError, runBatch } from "./live_batch.js";
+import { BATCH_LIMIT, chooseBatch, fetchLiveMovie, mergeResult, RateLimitError, runBatch, safeImdbTitleUrl } from "./live_batch.js";
 
 const films = Array.from({length: 35}, (_, index) => ({
   id: `task-${index}`,
   fields: {"POC TMDB ID": String(index + 1)},
 }));
+assert.equal(safeImdbTitleUrl("https://www.imdb.com/title/tt0000042/"), "https://www.imdb.com/title/tt0000042/");
+assert.equal(safeImdbTitleUrl("https://www.imdb.com.evil.example/title/tt0000042/"), null);
+assert.equal(safeImdbTitleUrl("https://www.imdb.com/title/tt0000042/other"), null);
 films.push({id: "bad", fields: {"POC TMDB ID": "not-an-id"}});
 const chosen = chooseBatch(films, {});
 assert.equal(chosen.length, BATCH_LIMIT);
