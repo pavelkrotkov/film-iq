@@ -2518,3 +2518,27 @@ Standards and Spec reviews of the initial head reported no findings. Local Ruff
 check/format, ty and the full unchanged suite pass: 199 collected, 198 passed,
 one opt-in skip. CI/re-review of the corrected head precede merge. No application,
 personal state or provider configuration changed in this planning delivery.
+
+Independent UI1 review found that supplemental accepted critic evidence could
+influence ordering without appearing in film details, and search used only the
+first coalesced source title/director. Details now combine selected and attached
+accepted records once per entry/revision, including critic/unclassified records,
+with rank/tie/unranked, source assertions, locator and classification-review status
+inspectable. Typed award facts stay with their original record. The component
+reader now includes original director/position fields, and search includes all
+accepted original names alongside reviewed display names. Self-review also fixed
+a viewing-link guard: a reviewed older baseline cannot lend film certainty to an
+unreviewed latest attempt. The existing journey covers these concrete regressions
+without adding collected cases or defensive invalid-input matrices.
+
+Amazon Q's empty-source-reasons, generated-count and noninteger-ID findings were
+reviewed against the actual discovery/coalescing and curated-ID producers and
+rebutted with code evidence; their conversations are resolved. No fallback empty
+reason or broad IndexError catch is added for states these producers cannot emit.
+The independent provenance/search findings and the enclosing-offer review guard
+are corrected as described above; exact-head re-review and CI remain required.
+
+Corrected-head local validation remains green: Ruff check/format and ty pass;
+199 tests pass with the existing opt-in skip (200 collected). All 12 changed
+Python modules, now including the shared recognition reader and both web test
+modules, meet CC≤8 and MI≥50 (minimum 50.113460).

@@ -4,7 +4,7 @@ import json
 
 from discovery_fixtures import fresh_status, snapshot
 from display_fixtures import NOW
-from web_support import prepare, request
+from web_support import inspect_aliases, inspect_offer_identity, prepare, request
 
 from film_iq import web
 
@@ -54,7 +54,6 @@ def inspect_private_notes(detail):
     assert "Your enjoyment /10" in detail
     assert "conflicting or invalid" in detail
     assert "PRIVATE COMMENT" not in detail
-    assert "provenance" not in detail
 
 
 def inspect_browse(app):
@@ -91,6 +90,8 @@ def test_web_discovery_journey(evidence_db, tmp_path, monkeypatch):
     app = prepare(evidence_db, tmp_path)
     inspect_browse(app)
     inspect_evidence(app)
+    inspect_aliases(app)
+    inspect_offer_identity(app, monkeypatch)
     inspect_personal(app, tmp_path)
     # Exercise the same WSGI boundary for assets and health, not an internal renderer.
     assert request(app, "/style.css")["headers"]["Content-Type"].startswith("text/css")

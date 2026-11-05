@@ -26,7 +26,11 @@ def state_view(state: dict) -> str:
 
 
 def record_view(role: str, record: dict) -> str:
-    claims = "".join(claim_view(claim) for claim in record["assertions"])
+    claims = (
+        "".join(claim_view(claim) for claim in record["assertions"])
+        if record["work_reviewed"]
+        else ""
+    )
     return f"""<article class="evidence"><h3>{text(role)} · {text(record["source"])}</h3>
 <p>Status: {text(record["status"])}; attempt recorded {text(record["checked_at"])}.</p>
 {claims or "<p>No reviewed viewing links supplied. Availability remains unknown.</p>"}</article>"""

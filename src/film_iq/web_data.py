@@ -77,13 +77,15 @@ def select(items: list[dict], values: dict[str, str]) -> list[dict]:
 
 def searchable(item: dict) -> str:
     display = item.get("display") or {}
-    names = [
-        item["raw_title"],
-        item["director"],
-        display.get("title"),
-        display.get("original_title"),
-        *display.get("directors", []),
+    names = [display.get("title"), display.get("original_title"), *display.get("directors", [])]
+    source = item["source_reasons"] + [
+        row
+        for kind in (*KINDS, "unclassified")
+        for row in item.get("public_evidence_components", {}).get(kind, [])
     ]
+    names.extend(
+        value for reason in source for value in (reason["raw_title"], reason.get("director"))
+    )
     return " ".join(str(name) for name in names if name).casefold()
 
 

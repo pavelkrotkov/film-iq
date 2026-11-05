@@ -1,7 +1,7 @@
 """A film's reasons and original assertions stay visible beside optional personal state."""
 
 from film_iq.web_data import watched_label
-from film_iq.web_evidence import components, credits, source_reason
+from film_iq.web_evidence import components, credits, selected_evidence
 from film_iq.web_html import fields, film_meta, link, text, title
 from film_iq.web_offers import viewing
 from film_iq.web_render import freshness, layout
@@ -42,7 +42,7 @@ def display_context(item: dict) -> str:
 
 
 def detail(report: dict, item: dict) -> str:
-    reasons = "".join(source_reason(reason) for reason in item["source_reasons"])
+    reasons = selected_evidence(item)
     body = f"""<a class="back" href="/">← Back to discovery</a>
 <section class="film-heading"><p class="eyebrow">THE FILM NOTEBOOK</p><h1>{text(title(item))}</h1>
 <p class="film-meta">{film_meta(item)}</p><p>{link(f"https://www.themoviedb.org/movie/{item['tmdb_id']}", f"Reviewed identity · TMDB {item['tmdb_id']}")}</p></section>
