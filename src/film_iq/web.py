@@ -20,7 +20,7 @@ from film_iq.web_render import browse, layout
 HEADERS = [
     ("Cache-Control", "no-store"),
     ("X-Content-Type-Options", "nosniff"),
-    ("Referrer-Policy", "no-referrer"),
+    ("Referrer-Policy", "same-origin"),
     (
         "Content-Security-Policy",
         "default-src 'none'; style-src 'self'; img-src https://www.themoviedb.org; base-uri 'none'; frame-ancestors 'none'; form-action 'self'",

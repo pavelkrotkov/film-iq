@@ -63,7 +63,10 @@ def inspect_browse(app):
     assert home["status"] == "200 OK"
     assert "1 film to explore" in home["body"]
     assert "Watch history unknown" in home["body"]
-    assert home["headers"]["Cache-Control"] == "no-store"
+    assert (home["headers"]["Cache-Control"], home["headers"]["Referrer-Policy"]) == (
+        "no-store",
+        "same-origin",
+    )
     assert "frame-ancestors 'none'" in home["headers"]["Content-Security-Policy"]
     assert (
         "1 film to explore"

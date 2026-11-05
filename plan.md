@@ -2519,6 +2519,18 @@ one existing opt-in skip. All 11 changed Python modules, including methods and
 closures, meet CC≤8 and MI≥50 (minimum 51.021676). No live personal write or
 activation is claimed; exact-head CI/reviews and UI4 deployment remain next.
 
+UI4's real HTTPS browser check found a concrete integration defect before final
+UI3 review: a native Save form sent `Origin: null` and the exact-origin guard
+correctly rejected it with 403, leaving dispositions unchanged. The response's
+`Referrer-Policy: no-referrer` caused the browser to serialize an opaque origin
+for this non-CORS POST, as specified by the
+[Fetch origin-header algorithm](https://fetch.spec.whatwg.org/#origin-header).
+The response now uses `same-origin`; external evidence links retain
+`rel=noreferrer`, and exact Origin/Host plus CSRF checks remain unchanged.
+The existing journey now asserts this browser-facing response-policy contract:
+it failed against the old header and passes with the corrected header. Actual
+browser re-verification belongs to UI4 after this corrected head is merged.
+
 ## UI1 browse and evidence delivery — 2026-11-04
 
 Related #99/#98: the first server-rendered recommendation slice reuses discovery
