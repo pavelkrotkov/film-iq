@@ -22,7 +22,7 @@ function App() {
       const pageSize = 100;
       for (let skip = 0; ; ) {
         const page = await host.fetchYouTrack("issues", {
-          query: { fields, query: `project: {${project}} sort by: id asc`, $top: pageSize, $skip: skip },
+          query: { fields, query: `project: {${project}} sort by: {issue id} asc`, $top: pageSize, $skip: skip },
         });
         if (!Array.isArray(page)) throw new Error("Unexpected issue response");
         if (!page.length) break;

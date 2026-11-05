@@ -15,9 +15,12 @@ intentional watchlist. Use synthetic films and users for these experiments.
 * A preliminary full-page React widget package can be built with
   `python3 docs/research/tracker-poc/build_youtrack.py` after installing the UI
   dependencies. It uses `host.fetchYouTrack` for issue reads and synopsis edits,
-  and builds a ZIP under `.cache/tracker-poc/`. It has not been installed or
-  tested, does not yet implement the common schema or preference controls, and
-  is not evidence of a working YouTrack POC.
+  and builds a ZIP under `.cache/tracker-poc/`. The first version installed and
+  rendered in a main-menu iframe, but its issue search returned HTTP 400 because
+  `id` is not a valid sort field. The code now uses the documented `{issue id}`
+  field; that revision has not yet been installed or verified. The app does not
+  yet implement the common schema or preference controls, and is not evidence
+  of a working YouTrack POC.
 * Kaneo source inspected: release `v2.49.0`, commit
   `e0ebc61748654f4e33e713dcb441be726ec1cfc4`. Its custom-field schema
   supports text, number, date, dropdown, boolean, and multiselect. Values are
