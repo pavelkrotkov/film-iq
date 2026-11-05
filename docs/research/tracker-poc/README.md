@@ -112,10 +112,40 @@ passed for the sidecar, but its actual rendering in the browser has not been
 verified. The real-data import contains source-list assertions and links, not
 TMDB API response bodies. Source terms and upstream provenance still govern
 retention; this experiment does not establish unrestricted reuse.
+The original Kaneo import copied source provenance into task-wide fields,
+including a personal-source name for watched-only films. A 2026-11-05 migration
+replaced the exact original values on all 130 records with the same neutral
+current-field representation; the complete original provenance remains in the
+ignored private manifest. The repeat updated zero records, source evidence and
+review links remained unchanged, and an unrelated viewer was denied access.
+This does not establish erasure of old values from database pages, WAL, backups
+or snapshots, and is not a complete shared-user privacy test. The separate
+YouTrack import also stores sanitized shared provenance. See the
+[migration notes](kaneo-provenance-migration.md).
 An aggregate inspection found 112 accepted source links across 106 films: 46
 critic selections, 17 award outcomes, and 49 registry selections. None is
 explicitly typed as an individual critic review. These are source links, not
 proof of review coverage or independent verification of every film identity.
+Separately researched direct links were then added to dedicated tracker fields
+on 34 films in each POC: 26 individual critic-review pages and 33 aggregator
+title pages. Source pages were checked against available film identity
+evidence; the supplied TMDB-to-personal-film mapping was not independently
+verified. One additional film was held for manual identity review. A readback
+matched all 59 expected links in both trackers, the original source evidence
+remained intact, and a repeat import made zero writes. The Kaneo UI has a
+direct-links view; the YouTrack field is available in the native issue view,
+but the pending embedded app does not yet render it. Neither view has been
+browser-verified.
+
+The detailed source checks and corroboration links remain in ignored private
+manifests. Shared review-link values use the same source-neutral shape for all
+films and do not include watched-history origin; this does not remediate the
+possible historical Kaneo provenance copies described above. Only links and
+factual identity assertions are stored, not review prose or ratings. Source
+pages can change or disappear, and a missing link does not mean a review is
+absent. The no-overwrite importer skips existing link fields and requires manual
+reconciliation for later additions; it does not support concurrent writers.
+See [direct-review link setup and checks](direct-review-links.md).
 The Kaneo UI can edit a title through a separate API call; its imported field
 provenance continues to describe the original assertion and does not verify
 the edited title against its external identifier. The fictional rename check

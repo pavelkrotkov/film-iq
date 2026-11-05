@@ -15,6 +15,15 @@ from urllib.parse import urlsplit
 
 from kaneo_smoke import call, ensure_field
 
+PUBLIC_IDENTITY_PROVENANCE = "Source-provided film identity; not independently verified."
+PUBLIC_FIELD_PROVENANCE = json.dumps(
+    {
+        "identity": PUBLIC_IDENTITY_PROVENANCE,
+        "details": "Exact source provenance is retained privately.",
+    },
+    ensure_ascii=False,
+)
+
 FIELD_TYPES = {
     "POC TMDB ID": "text",
     "POC Identity Provenance": "text",
@@ -74,8 +83,8 @@ def import_films(opener, base: str, project: str, manifest: dict) -> dict:
         if identity not in present:
             attributes = {
                 "POC TMDB ID": identity,
-                "POC Identity Provenance": film["field_provenance"].get("tmdb_id", "unknown"),
-                "POC Field Provenance": json.dumps(film["field_provenance"], ensure_ascii=False),
+                "POC Identity Provenance": PUBLIC_IDENTITY_PROVENANCE,
+                "POC Field Provenance": PUBLIC_FIELD_PROVENANCE,
                 "POC Source Year": str(film["source_year"]) if film.get("source_year") else None,
                 "POC Source Director": film.get("director"),
                 "POC Evidence": json.dumps(film["accepted_discovery_evidence"], ensure_ascii=False),

@@ -12,6 +12,7 @@ import { clearSavedDraft, currentComments, setCommentDraft } from "./comment_dra
 import { emptyPreference, markPreferenceSaved, mergeFilmDraft, syncPreferenceDraft } from "./preference_draft.js";
 import { missingLinkedFilm, unavailableFilterSources } from "./availability_state.js";
 import { accessibleProjects, projectUrl } from "./project_picker.js";
+import { readDirectReviews, safeReviewUrl } from "./direct_reviews.js";
 
 const api = "http://localhost:15173/api";
 function ProviderBadges({ film }) {
@@ -46,6 +47,21 @@ function SourceEvidence({ film }) {
       return <li key={item?.entry_id || index}>{url ? <a href={url} target="_blank" rel="noreferrer">{sourceLabel(item)} ↗</a> : `${sourceLabel(item)}: link unavailable`} · {evidenceLabel(item?.kind)}{item?.rank ? ` · rank ${item.rank}` : ""}{item?.lineage_kind ? ` · ${item.lineage_kind}` : ""}</li>;
     })}</ul> : <p>Source evidence unknown.</p>}
     <p>{evidenceExplanation(links)}</p>
+  </section>;
+}
+
+function DirectReviews({ film }) {
+  const links = readDirectReviews(film.fields["POC Direct Review Links"], film.fields["POC TMDB ID"]);
+  return <section><h3>Direct reviews and aggregators</h3>
+    {links?.length ? <ul>{links.map((link, index) => {
+      const evidence = link.identity_evidence;
+      return <li key={index}><a href={safeReviewUrl(link.url)} target="_blank" rel="noreferrer">{link.provider} ↗</a> · {link.type === "individual_critic_review" ? "Individual critic review" : "Review aggregator title page"} · checked {link.checked_at}
+        <p>Page title: {evidence.source_page_title}; source title: {evidence.input_title}; director: {evidence.source_directors.join(", ")}.</p>
+        {typeof evidence.source_year === "number" ? <p>Source-listed year: {evidence.source_year}.</p> : <p>Source year unknown.</p>}
+        <p>{evidence.identity_caveat} {evidence.details_note}</p>
+      </li>;
+    })}</ul> : <p>Direct review links unavailable; coverage is unknown.</p>}
+    {!!links?.length && <p>Page identity was reviewed against the source record; the TMDB identity was not independently reverified.</p>}
   </section>;
 }
 
@@ -559,6 +575,7 @@ function App() {
                   </section>
                 )}
                 {film.fields["POC Evidence"] && <SourceEvidence film={film} />}
+                <DirectReviews film={film} />
                 {mdbId && <section>
                   <h3>Ratings from MDBList</h3>
                   <p>Fetches one result on request. Data stays in this page and is not saved to the tracker.</p>
