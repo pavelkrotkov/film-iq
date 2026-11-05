@@ -15,5 +15,5 @@ export function markPreferenceSaved(draft, filmId, savedValue) {
 }
 
 export function mergeFilmDraft(draft, loaded, dirty) {
-  return dirty ? draft : { title: loaded.title, description: loaded.description, status: loaded.status, tmdb: loaded.tmdb || "" };
+  return dirty ? draft : { title: loaded.title, description: loaded.description, status: loaded.status, tmdb: loaded.tmdb || "", year: loaded.year || "", genre: loaded.genre || "" };
 }

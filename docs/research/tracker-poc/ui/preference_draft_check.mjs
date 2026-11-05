@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { emptyPreference, markPreferenceSaved, mergeFilmDraft, syncPreferenceDraft } from "./preference_draft.js";
 
-const original = { title: "Saved title", description: "Saved synopsis", status: "to-do", tmdb: "42" };
-const editing = { title: "Edited title", description: "Unfinished synopsis", status: "in-progress", tmdb: "43" };
+const original = { title: "Saved title", description: "Saved synopsis", status: "to-do", tmdb: "42", year: "2001", genre: "Drama" };
+const editing = { title: "Edited title", description: "Unfinished synopsis", status: "in-progress", tmdb: "43", year: "2002", genre: "Comedy" };
 assert.equal(mergeFilmDraft(editing, original, true), editing, "refresh must retain unsaved title, synopsis and state");
 assert.deepEqual(mergeFilmDraft(editing, original, false), original, "clean fields should refresh");
 const saved = { ...emptyPreference, interest_score: 6 };

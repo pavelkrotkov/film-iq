@@ -17,6 +17,7 @@ import { readDirectReviews, reviewsMatchTitle, safeReviewUrl } from "./direct_re
 import { createFilm, CreatedFilmUnverified, identityField, matchedLive } from "./kaneo_identity.js";
 import { TmdbCredits } from "./tmdb_credits.jsx";
 import { filterMayExcludeUnknown } from "./metadata_filter_coverage.js";
+import { metadataChanges, storedMetadata } from "./kaneo_metadata.js";
 
 const api = "http://localhost:15173/api";
 function ProviderBadges({ film }) {
@@ -96,11 +97,17 @@ async function load(project) {
   if (!Array.isArray(columns) || !columns.length)
     throw new Error("The project has no usable lifecycle columns.");
   const rows = await request(`/custom-field/project/${id}/values`);
+  let definitions = null;
+  try { definitions = await request(`/custom-field/project/${id}`); } catch { /* Keep the board usable if field definitions cannot be read. */ }
   const values = new Map();
+  const taskRows = new Map();
   for (const row of rows) {
     const record = values.get(row.taskId) || {};
     record[row.fieldName] = row.value;
     values.set(row.taskId, record);
+    const fields = taskRows.get(row.taskId) || [];
+    fields.push(row);
+    taskRows.set(row.taskId, fields);
   }
   const films = [];
   let page = 1,
@@ -119,7 +126,7 @@ async function load(project) {
   if (films.length !== total || new Set(films.map((f) => f.id)).size !== total)
     throw new Error("The board response was incomplete.");
   return {
-    films: films.map((film) => ({ ...film, fields: values.get(film.id) || {} })),
+    films: films.map((film) => ({ ...film, fields: values.get(film.id) || {}, metadata: storedMetadata(definitions, taskRows.get(film.id) || []) })),
     states: Object.fromEntries([
       ...columns.map((column) => [column.slug, column.name]),
       ["planned", "Planned"],
@@ -162,9 +169,9 @@ function App() {
     [watched, setWatched] = useState(""),
     [freshnessFilter, setFreshnessFilter] = useState("");
   const [showArchived, setShowArchived] = useState(false);
-  const [filmDraft, setFilmDraft] = useState({title: "", description: "", status: "", tmdb: ""}),
+  const [filmDraft, setFilmDraft] = useState({title: "", description: "", status: "", tmdb: "", year: "", genre: ""}),
     [detailReady, setDetailReady] = useState(false);
-  const {title, description, status, tmdb} = filmDraft;
+  const {title, description, status, tmdb, year, genre: filmGenre} = filmDraft;
   const [newTitle, setNewTitle] = useState("");
   const [newTmdb, setNewTmdb] = useState("");
   const [comments, setComments] = useState(null),
@@ -172,6 +179,7 @@ function App() {
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
   const detailDirty = useRef(false), preferenceDirty = useRef(false), skipHashPrompt = useRef(false);
+  const metadataDirty = useRef({year: false, genre: false});
   preferenceDirty.current = preferenceDraft.dirty && preferenceDraft.filmId === selected;
   const [liveResults, setLiveResults] = useState({}),
     [batch, setBatch] = useState(null),
@@ -291,7 +299,7 @@ function App() {
   useEffect(() => {
     setPreferenceDraft((current) => syncPreferenceDraft(current, film?.id, preferences));
   }, [film?.id, preferences]);
-  useEffect(() => { detailDirty.current = false; }, [film?.id]);
+  useEffect(() => { detailDirty.current = false; metadataDirty.current = {year: false, genre: false}; }, [film?.id]);
   useEffect(() => {
     let active = true;
     setDetailReady(false);
@@ -304,7 +312,7 @@ function App() {
               "Full synopsis is unavailable; editing is disabled.",
             );
           if (active) {
-            setFilmDraft((current) => mergeFilmDraft(current, {...detail, tmdb: film.fields["POC TMDB ID"] || ""}, detailDirty.current));
+            setFilmDraft((current) => mergeFilmDraft(current, {...detail, tmdb: film.fields["POC TMDB ID"] || "", year: film.metadata.year.value, genre: film.metadata.genre.value}, detailDirty.current));
             setDetailReady(true);
           }
         })
@@ -394,13 +402,16 @@ function App() {
     if (!title.trim()) { setError("Title cannot be blank."); return; }
     setBusy(true);
     setError("");
+    let submitting = false;
     try {
+      const metadata = metadataChanges(film.metadata, {year, genre: filmGenre}, metadataDirty.current);
       const identityChanged = tmdb !== (film.fields["POC TMDB ID"] || "");
       let fieldId;
       if (identityChanged) {
         if (!tmdb) throw new Error("A saved TMDB ID cannot be cleared here; use tracker administration.");
         fieldId = await identityField(request, project, tmdb, film.id);
       }
+      submitting = true;
       if (title.trim() !== film.title)
         await request(`/task/title/${encodeURIComponent(film.id)}`, "PUT", { title: title.trim() });
       await request(`/task/description/${encodeURIComponent(film.id)}`, "PUT", {
@@ -411,10 +422,13 @@ function App() {
           status,
         });
       if (fieldId) await request("/custom-field/value", "PUT", {taskId: film.id, fieldId, value: tmdb});
+      for (const {fieldId: metadataField, value} of metadata)
+        await request("/custom-field/value", "PUT", {taskId: film.id, fieldId: metadataField, value});
       detailDirty.current = false;
+      metadataDirty.current = {year: false, genre: false};
       await refresh();
     } catch (e) {
-      setError(`Update may be partial. Reload to check: ${e.message}`);
+      setError(submitting ? `Update may be partial. Reload to check: ${e.message}` : `Could not save: ${e.message}`);
       setBusy(false);
     }
   }
@@ -661,6 +675,10 @@ function App() {
                   </label>
                   <label>Supplied TMDB ID (not independently verified)<input inputMode="numeric" value={tmdb} onChange={(e) => {detailDirty.current = true; setFilmDraft({...filmDraft, tmdb: e.target.value});}} disabled={!detailReady || busy} /></label>
                   <p>Changing this ID does not verify the match. Live lookup is optional and uses your authenticated Kaneo session.</p>
+                  <label>Stored release year<input inputMode="numeric" value={year} onChange={(e) => {detailDirty.current = true; metadataDirty.current.year = true; setFilmDraft({...filmDraft, year: e.target.value});}} disabled={!detailReady || busy} readOnly={!film.metadata.year.editable} /></label>
+                  <label>Stored genre<input value={filmGenre} onChange={(e) => {detailDirty.current = true; metadataDirty.current.genre = true; setFilmDraft({...filmDraft, genre: e.target.value});}} disabled={!detailReady || busy} readOnly={!film.metadata.genre.editable} /></label>
+                  {(!film.metadata.year.editable || !film.metadata.genre.editable) && <p>Release year or genre cannot be edited because its project field is unavailable or invalid.</p>}
+                  <p>Stored year and genre are editable fields; clearing either leaves it unknown and does not change source-listed assertions.</p>
                   <label>
                     Synopsis
                     <textarea
