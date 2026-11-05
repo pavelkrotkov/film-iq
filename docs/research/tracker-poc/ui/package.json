@@ -2,6 +2,7 @@
   "name": "film-iq-tracker-poc-ui",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "esbuild src.jsx --bundle --minify --outfile=dist/app.js --loader:.js=jsx"
   },

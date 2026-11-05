@@ -183,7 +183,14 @@ form label {
 }
 .filters {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
   gap: 10px;
+}
+.filters label {
+  font-size: 12px;
+  color: #bcbab5;
 }
 .grid {
   display: grid;
@@ -290,7 +297,7 @@ form label {
   .filters {
     margin-top: 18px;
   }
-  .filters input {
+  .filters input:not([type="checkbox"]) {
     min-width: 0;
     width: 50%;
   }

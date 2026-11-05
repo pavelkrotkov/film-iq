@@ -1,5 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
+import {
+  filterFilms,
+  providers,
+  syntheticAvailability,
+} from "./film_filters.js";
 
 const api = "http://localhost:15173/api";
 const states = {
@@ -19,6 +24,25 @@ async function request(path, method = "GET", body) {
   if (!response.ok) throw new Error(`Kaneo returned HTTP ${response.status}`);
   return response.json();
 }
+
+async function preferenceRequest(path, method = "GET", body) {
+  const response = await fetch("http://localhost:15175" + path, {
+    method,
+    credentials: "include",
+    headers: body ? { "Content-Type": "application/json" } : {},
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  if (!response.ok)
+    throw new Error(`Preference bridge returned HTTP ${response.status}`);
+  return response.json();
+}
+
+const emptyPreference = {
+  interest_score: null,
+  watchlist: false,
+  watched_at: null,
+  personal_notes: "",
+};
 
 async function load(project) {
   const id = encodeURIComponent(project);
@@ -48,34 +72,6 @@ async function load(project) {
   return films.map((film) => ({ ...film, fields: values.get(film.id) || {} }));
 }
 
-function syntheticAvailability(film) {
-  try {
-    const value = JSON.parse(
-      film.fields["POC Synthetic Availability"] || "null",
-    );
-    if (!value || value.source !== "synthetic fixture, not TMDB") return null;
-    if (!Array.isArray(value.subscription) || !Array.isArray(value.rent))
-      return null;
-    return value;
-  } catch {
-    return null;
-  }
-}
-
-function providers(film) {
-  try {
-    const observation = syntheticAvailability(film);
-    if (observation) return observation.subscription;
-    const raw =
-      film.fields["POC Subscription Providers"] || film.fields["POC Streaming"];
-    if (!raw) return null;
-    const value = JSON.parse(raw);
-    return Array.isArray(value) ? value : null;
-  } catch {
-    return null;
-  }
-}
-
 function selectedId() {
   return new URLSearchParams(location.hash.slice(1)).get("film");
 }
@@ -90,6 +86,15 @@ function App() {
   const [selected, setSelected] = useState(selectedId),
     [query, setQuery] = useState(""),
     [provider, setProvider] = useState("");
+  const [preferences, setPreferences] = useState(null),
+    [preference, setPreference] = useState(emptyPreference),
+    [watchlistOnly, setWatchlistOnly] = useState(false),
+    [sortInterest, setSortInterest] = useState(false);
+  const [minimum, setMinimum] = useState(""),
+    [genre, setGenre] = useState(""),
+    [lifecycle, setLifecycle] = useState(""),
+    [watched, setWatched] = useState(""),
+    [freshnessFilter, setFreshnessFilter] = useState("");
   const [description, setDescription] = useState(""),
     [status, setStatus] = useState(""),
     [detailReady, setDetailReady] = useState(false);
@@ -98,6 +103,12 @@ function App() {
     setError("");
     try {
       setFilms(await load(project));
+      try {
+        setPreferences((await preferenceRequest("/preferences")).preferences);
+      } catch (e) {
+        setPreferences(null);
+        setError(`Preferences are unavailable: ${e.message}`);
+      }
     } catch (e) {
       setError(e.message);
     } finally {
@@ -113,6 +124,19 @@ function App() {
     return () => window.removeEventListener("hashchange", listener);
   }, []);
   const film = films.find((item) => item.id === selected);
+  const genres = [
+    ...new Set(films.map((item) => item.fields["POC Genre"]).filter(Boolean)),
+  ].sort();
+  const services = [
+    ...new Set(films.flatMap((item) => providers(item) || [])),
+  ].sort();
+  useEffect(() => {
+    setPreference(
+      film && preferences
+        ? preferences[film.id] || emptyPreference
+        : emptyPreference,
+    );
+  }, [film, preferences]);
   useEffect(() => {
     let active = true;
     setDetailReady(false);
@@ -138,13 +162,55 @@ function App() {
   }, [film]);
   const filtered = useMemo(
     () =>
-      films.filter(
-        (item) =>
-          item.title.toLowerCase().includes(query.toLowerCase()) &&
-          (!provider || providers(item)?.includes(provider)),
-      ),
-    [films, query, provider],
+      filterFilms(films, {
+        query,
+        provider,
+        watchlistOnly,
+        minimum,
+        genre,
+        lifecycle,
+        watched,
+        freshnessFilter,
+        sortInterest,
+        preferences,
+      }),
+    [
+      films,
+      query,
+      provider,
+      watchlistOnly,
+      sortInterest,
+      preferences,
+      minimum,
+      genre,
+      lifecycle,
+      watched,
+      freshnessFilter,
+    ],
   );
+  async function savePreference(event) {
+    event.preventDefault();
+    setBusy(true);
+    setError("");
+    try {
+      const path = encodeURIComponent(film.id);
+      const preview = await preferenceRequest(`/preview/${path}`, "POST", {
+        preference,
+      });
+      const text = `Preview synthetic preference change:\nInterest: ${preview.before.interest_score ?? "unknown"} → ${preview.after.interest_score ?? "unknown"}\nWatchlist: ${preview.before.watchlist ? "yes" : "no"} → ${preview.after.watchlist ? "yes" : "no"}\nWatched: ${preview.before.watched_at || "not marked"} → ${preview.after.watched_at || "not marked"}\nNotes before: ${preview.before.personal_notes || "(empty)"}\nNotes after: ${preview.after.personal_notes || "(empty)"}\n\nSave these changes?`;
+      if (window.confirm(text)) {
+        await preferenceRequest(`/preferences/${path}`, "PUT", {
+          preference,
+          token: preview.token,
+        });
+        setPreferences((await preferenceRequest("/preferences")).preferences);
+      }
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setBusy(false);
+    }
+  }
   async function save(event) {
     event.preventDefault();
     setBusy(true);
@@ -223,8 +289,8 @@ function App() {
           </a>
         </form>
         <p className="notice">
-          Synthetic data only. Individual scores, watchlists and watched state
-          are not implemented in this experiment.
+          Synthetic data only. Preferences use a separate local POC store; they
+          do not change Movary.
         </p>
         {error && (
           <p className="error" role="alert">
@@ -279,6 +345,82 @@ function App() {
                   </label>
                   <button disabled={busy || !detailReady}>Save to Kaneo</button>
                 </form>
+                <form onSubmit={savePreference}>
+                  <h3>Your synthetic preferences</h3>
+                  <label>
+                    Interest score
+                    <select
+                      value={preference.interest_score ?? ""}
+                      disabled={!preferences}
+                      onChange={(e) =>
+                        setPreference({
+                          ...preference,
+                          interest_score: e.target.value
+                            ? Number(e.target.value)
+                            : null,
+                        })
+                      }
+                    >
+                      <option value="">Unknown</option>
+                      {Array.from({ length: 10 }, (_, i) => (
+                        <option key={i + 1} value={i + 1}>
+                          {i + 1}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label>
+                    <span>
+                      <input
+                        type="checkbox"
+                        checked={preference.watchlist}
+                        disabled={!preferences}
+                        onChange={(e) =>
+                          setPreference({
+                            ...preference,
+                            watchlist: e.target.checked,
+                          })
+                        }
+                      />{" "}
+                      On my watchlist
+                    </span>
+                  </label>
+                  <label>
+                    <span>
+                      <input
+                        type="checkbox"
+                        checked={Boolean(preference.watched_at)}
+                        disabled={!preferences}
+                        onChange={(e) =>
+                          setPreference({
+                            ...preference,
+                            watched_at: e.target.checked
+                              ? new Date().toISOString()
+                              : null,
+                          })
+                        }
+                      />{" "}
+                      Marked watched
+                    </span>
+                  </label>
+                  <label>
+                    Personal notes
+                    <textarea
+                      value={preference.personal_notes}
+                      disabled={!preferences}
+                      onChange={(e) =>
+                        setPreference({
+                          ...preference,
+                          personal_notes: e.target.value,
+                        })
+                      }
+                      rows="3"
+                    />
+                  </label>
+                  <button disabled={busy || !preferences}>
+                    Preview and save preferences
+                  </button>
+                </form>
                 <p>
                   Critic score: {film.fields["POC Critic Score"] || "Unknown"}
                 </p>
@@ -316,10 +458,83 @@ function App() {
                   onChange={(e) => setProvider(e.target.value)}
                 >
                   <option value="">All providers</option>
-                  {["Netflix", "Hulu", "Criterion Channel"].map((p) => (
+                  {services.map((p) => (
                     <option key={p}>{p}</option>
                   ))}
                 </select>
+                <select
+                  aria-label="Minimum interest score"
+                  value={minimum}
+                  disabled={!preferences}
+                  onChange={(e) => setMinimum(e.target.value)}
+                >
+                  <option value="">Any interest</option>
+                  {Array.from({ length: 10 }, (_, i) => (
+                    <option key={i + 1} value={i + 1}>
+                      {i + 1} or higher
+                    </option>
+                  ))}
+                </select>
+                <select
+                  aria-label="Filter by genre"
+                  value={genre}
+                  onChange={(e) => setGenre(e.target.value)}
+                >
+                  <option value="">All genres</option>
+                  {genres.map((g) => (
+                    <option key={g}>{g}</option>
+                  ))}
+                </select>
+                <select
+                  aria-label="Filter by lifecycle"
+                  value={lifecycle}
+                  onChange={(e) => setLifecycle(e.target.value)}
+                >
+                  <option value="">All states</option>
+                  {Object.entries(states).map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  aria-label="Filter by watched status"
+                  value={watched}
+                  disabled={!preferences}
+                  onChange={(e) => setWatched(e.target.value)}
+                >
+                  <option value="">Any watch status</option>
+                  <option value="marked">Marked watched</option>
+                  <option value="unmarked">Not marked watched</option>
+                </select>
+                <select
+                  aria-label="Filter by availability freshness"
+                  value={freshnessFilter}
+                  onChange={(e) => setFreshnessFilter(e.target.value)}
+                >
+                  <option value="">Any freshness</option>
+                  <option value="recent">Checked within 7 days</option>
+                  <option value="stale">Older than 7 days</option>
+                  <option value="unknown">Unknown freshness</option>
+                </select>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={watchlistOnly}
+                    disabled={!preferences}
+                    onChange={(e) => setWatchlistOnly(e.target.checked)}
+                  />{" "}
+                  Watchlist
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={sortInterest}
+                    disabled={!preferences}
+                    onChange={(e) => setSortInterest(e.target.checked)}
+                  />{" "}
+                  Sort by interest
+                </label>
               </div>
             </div>
             {busy ? (
@@ -354,6 +569,18 @@ function App() {
                       <p>
                         Critic score:{" "}
                         {item.fields["POC Critic Score"] || "Unknown"}
+                      </p>
+                      <p>
+                        Interest:{" "}
+                        {preferences
+                          ? (preferences[item.id]?.interest_score ?? "Unknown")
+                          : "Unavailable"}{" "}
+                        ·{" "}
+                        {preferences
+                          ? preferences[item.id]?.watchlist
+                            ? "Watchlisted"
+                            : "Not watchlisted"
+                          : "Watchlist unavailable"}
                       </p>
                     </div>
                   </a>

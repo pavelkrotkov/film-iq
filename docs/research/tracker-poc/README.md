@@ -59,8 +59,8 @@ intentional watchlist. Use synthetic films and users for these experiments.
 output to an ignored file within the project folder if needed. It contains two
 synthetic users with independent preferences. Fixture IDs are deliberately not
 TMDB IDs, and must never be submitted to TMDB or presented as verified films.
-The Kaneo seeder loads canonical fixture attributes only; the two users'
-preferences are not yet stored in either tracker.
+The Kaneo film seeder loads canonical fixture attributes. A separate preference
+seeder loaded 30 films for each synthetic user, with a second run adding zero.
 
 ## Kaneo experiment
 
@@ -93,8 +93,9 @@ fields using the current Kaneo browser session; it can submit a synopsis or
 column change through the API. The server accepted authenticated requests with
 the UI origin and returned the correct CORS headers. **The actual browser has
 not been tested**: the Mac was locked during this run. The UI uses fixture IDs,
-not TMDB IDs, and does not implement personal scores, watched status, watchlist,
-real posters, reviews, comments, live TMDB enrichment, or real-film creation.
+not TMDB IDs, and does not implement real posters, reviews, comments, live TMDB
+enrichment, or real-film creation. Preference controls are wired to the bridge
+described below, but have not yet been verified in a browser.
 Its filters and rendering at 1,000 films have not been measured. Do not use it
 for personal data or represent it as the completed Kaneo POC.
 
@@ -103,7 +104,34 @@ Fixture representation: task title and description hold title and synopsis;
 are task-wide custom fields. `to-do`, `in-progress`, `in-review`, and `done`
 are used as approximate fixture columns; `done` is not Kaneo's archive feature.
 The UI labels missing provider data as unknown. The generated preferences,
-rentals and checked timestamps have not been persisted for the seeded dataset.
+rentals and checked timestamps have not been persisted for the full seeded dataset.
+
+### Synthetic per-user preference bridge
+
+Kaneo custom fields are task-wide, so the POC uses one small SQLite file at
+`.cache/tracker-poc/preferences.sqlite3` for `(Kaneo user ID, task ID)` scores,
+watchlist flags, watched timestamps and notes. It is for synthetic data only;
+Movary remains authoritative for real personal state. The loopback-only bridge
+resolves the current user through Kaneo's session and checks the user's task
+read access before writes. Preference reads return only that user's rows; a user
+who later loses access to a task can still retrieve their own stored preference
+row, but the UI receives film metadata only from Kaneo. A deployment would need
+to assess this revocation behavior, storage retention and backup separately.
+
+Changes require a server-generated preview and a separate confirmation request;
+the preview binds the user, record, previous values and proposed values. The
+React UI requests this preview and presents a confirmation before saving. The
+preview key is process-local and previews expire when the bridge restarts. The
+application joins and numerically sorts the current user's preferences in the
+browser; these scores are not queryable or sortable by Kaneo's native search.
+The API check verified two users with distinct values, rejection of another
+user's preview token and unauthenticated access, and persistence after restart.
+A live check joined all 1,001 Kaneo tasks to both users' preferences and ran the
+same UI filter code: Netflix with interest at least eight returned fixture IDs
+0008 and 0028 for user A, and 0004, 0016 and 0024 for user B. Numeric ordering
+placed scores of ten first. A separate deterministic fixture check covers
+numeric sort and availability freshness. The React controls, visual layout and
+1,000-film rendering remain unverified in a browser.
 
 The separate `enrichment.py` worker uses a backend protocol and the existing
 FilmIQ availability normalizer. Its only source is explicitly fictional, with
@@ -157,6 +185,22 @@ python3 docs/research/tracker-poc/kaneo_viewer_check.py --directory .cache/track
 uv run python docs/research/tracker-poc/kaneo_enrich_check.py --directory .cache/tracker-poc
 python3 docs/research/tracker-poc/kaneo_seed.py --project "$POC_PROJECT_ID" --cookie-file .cache/tracker-poc/kaneo-cookies.txt --count 1000
 python3 docs/research/tracker-poc/kaneo_benchmark.py --project "$POC_PROJECT_ID" --cookie-file .cache/tracker-poc/kaneo-cookies.txt
+```
+
+In a second terminal, start the preference bridge from the worktree root:
+
+```sh
+uv run python docs/research/tracker-poc/preferences.py
+```
+
+Then, from the worktree root in the first terminal, run the two-user check and
+start the UI:
+
+```sh
+uv run python docs/research/tracker-poc/preferences_check.py --directory .cache/tracker-poc
+uv run python docs/research/tracker-poc/preferences_seed.py --directory .cache/tracker-poc --count 30
+uv run python docs/research/tracker-poc/live_filter_check.py --directory .cache/tracker-poc
+python3 docs/research/tracker-poc/fixture_data.py 30 | node docs/research/tracker-poc/ui/filter_check.mjs
 cd docs/research/tracker-poc/ui
 npm ci --cache ../../../../.cache/npm --no-audit --no-fund
 npm run build
@@ -181,8 +225,8 @@ one-time token are shown in the container logs. No YouTrack score is justified.
 
 ## Outstanding
 
-The complete comparison, equivalent applications, multiuser preference
-isolation, enrichment, browser demonstrations, equivalent YouTrack permission
+The complete comparison, equivalent applications, browser-level multiuser
+preference isolation, live enrichment, browser demonstrations, equivalent YouTrack permission
 tests, YouTrack setup and measurements, upgrade assessment, weighted scores,
 and recommendation remain outstanding. Do not score or recommend either
 product from the current evidence. Docker Desktop's external runtime storage
