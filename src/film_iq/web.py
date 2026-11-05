@@ -12,6 +12,7 @@ from film_iq.web_data import films, filters, select
 from film_iq.web_detail import detail
 from film_iq.web_dispositions import VIEWS, actions, navigation, submit
 from film_iq.web_forms import normalize_origin, read_form
+from film_iq.web_movary import MovaryControls
 from film_iq.web_render import browse, layout
 
 # Browser copies have no longer retention lease than the live evidence.
@@ -35,11 +36,14 @@ class Application:
         snapshot: Path | None = None,
         catalog: Path | None = None,
         public_origin: str = "http://127.0.0.1:8770",
+        ratings_command: list[str] | None = None,
+        history_command: list[str] | None = None,
     ):
         self.database, self.cohort = database, cohort
         self.snapshot, self.catalog = snapshot, catalog
         self.public_origin = normalize_origin(public_origin)
         self.csrf_token = token_urlsafe(32)
+        self.movary = MovaryControls(snapshot, ratings_command, history_command)
 
     def report(self) -> dict:
         # Recheck accepted revisions and provider retention on every request.
@@ -76,6 +80,7 @@ class Application:
         return [] if environ["REQUEST_METHOD"] == "HEAD" else [payload]
 
     def get(self, environ):
+        self.movary.snapshot = self.snapshot
         if environ["REQUEST_METHOD"] == "POST":
             return self.post(environ)
         if environ["REQUEST_METHOD"] not in {"GET", "HEAD"}:
@@ -104,7 +109,8 @@ class Application:
                 detail(
                     report,
                     item,
-                    actions=actions(item, self.csrf_token),
+                    actions=actions(item, self.csrf_token)
+                    + self.movary.panel(item, self.csrf_token),
                     navigation=navigation(items, item["disposition"]),
                 ),
                 "text/html",
@@ -151,6 +157,13 @@ class Application:
             ),
             None,
         )
-        if item is None or path != f"/films/{item['tmdb_id']}/disposition":
+        if item is None:
             return "404 Not Found", "No accepted film action at this address.", "text/plain"
-        return submit(self.database, item, values)
+        if path == f"/films/{item['tmdb_id']}/disposition":
+            return submit(self.database, item, values)
+        prefix = f"/films/{item['tmdb_id']}/movary/"
+        if path.startswith(prefix):
+            # Form errors remain 400/403, separate from unavailable source inputs.
+            # Only the signed preview/confirm controller authorizes API writes.
+            return self.movary.submit(item, path.removeprefix(prefix), values, self.csrf_token)
+        return "404 Not Found", "No accepted film action at this address.", "text/plain"

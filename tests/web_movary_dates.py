@@ -6,6 +6,7 @@ from film_iq import web_movary_refresh
 
 
 def inspect_dates(app, stub, post, approve):
+    assert post(app, "watched/preview", {"date": ""})["status"] == "400 Bad Request"
     values = {"date": "2026-02-02"}
     preview = post(app, "watched/preview", values)
     assert "may remove this film from your watchlist" in preview["body"]

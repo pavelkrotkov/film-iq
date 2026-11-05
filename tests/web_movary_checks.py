@@ -29,6 +29,7 @@ def approve(app, action, values=None):
 
 
 def inspect_movary(app, root, monkeypatch):
+    app.public_origin = "https://film.example.test:8450"
     missing = request(app, "/films/123")["body"]
     assert "Movary actions are unavailable" in missing
     stub = MovaryStub(root)
@@ -54,7 +55,10 @@ def inspect_watchlist(app, stub):
     confirmation = approve(app, "watchlist")
     assert stub.calls == []  # Neither rendering nor preview makes an API request.
     refused = post(app, "watched/confirm", {**confirmation, "date": "2026-02-02"})
-    assert refused["status"].startswith("403")
+    assert (refused["status"], refused["body"]) == (
+        "403 Forbidden",
+        "Movary confirmation does not match its preview.",
+    )
     assert stub.calls == []
     assert "Added to watchlist" in post(app, "watchlist/confirm", confirmation)["body"]
     assert stub.watchlisted

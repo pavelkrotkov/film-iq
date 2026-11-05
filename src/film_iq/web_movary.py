@@ -31,6 +31,14 @@ class MovaryControls:
         value = f"{item['tmdb_id']}:{action}:{day}".encode()
         return hmac.new(self._key, value, hashlib.sha256).hexdigest()
 
+    def submit(self, item: dict, route: str, values: dict, csrf: str):
+        try:
+            return self.action(item, route, values, csrf)
+        except PermissionError:
+            return "403 Forbidden", "Movary confirmation does not match its preview.", "text/plain"
+        except ValueError:
+            return "400 Bad Request", "Invalid Movary action or watch date.", "text/plain"
+
     def action(self, item: dict, route: str, values: dict, csrf: str):
         if not self.enabled():
             return (

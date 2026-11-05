@@ -2502,8 +2502,22 @@ browsing usable. Verified writes are followed by the existing complete atomic
 personal refresh; an unverified write or failed refresh marks the prior cache
 stale and never claims rollback. No real personal state is written for acceptance.
 Credential-free fixtures extend the single browser journey, retaining the
-200-case default collection budget. Shared route wiring and final validation
-follow the local-disposition slice's security integration.
+200-case default collection budget. Final integration reuses UI2's exact
+Origin/Host/CSRF boundary, keeps personal controls in a collapsed optional panel,
+and returns malformed action/date forms as 400 and mismatched signed previews as
+403. Source-input failures retain their separate 503 response; unverified API
+writes and failed personal refreshes return truthful 502 messages.
+
+The existing browser journey now exercises missing configuration, the verified
+native-editor link, no-request previews, otherwise valid cross-action rejection,
+watchlist confirmation/readback/retry, explicit-date preview, preserved old dates,
+plays/comments/enjoyment, no-op repeat watches, an uncertain committed response,
+and a verified write followed by export failure. It uses a configured HTTPS
+public origin while all personal API responses and exports are synthetic.
+Ruff check/format and ty pass; full pytest remains 200 collected, 199 passed and
+one existing opt-in skip. All 11 changed Python modules, including methods and
+closures, meet CC≤8 and MI≥50 (minimum 51.021676). No live personal write or
+activation is claimed; exact-head CI/reviews and UI4 deployment remain next.
 
 ## UI1 browse and evidence delivery — 2026-11-04
 

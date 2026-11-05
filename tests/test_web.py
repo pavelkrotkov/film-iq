@@ -5,6 +5,7 @@ import json
 from discovery_fixtures import fresh_status, snapshot
 from display_fixtures import NOW
 from web_disposition_support import inspect_dispositions
+from web_movary_checks import inspect_movary
 from web_support import inspect_aliases, inspect_offer_identity, prepare, request
 
 from film_iq import web
@@ -95,6 +96,7 @@ def test_web_discovery_journey(evidence_db, tmp_path, monkeypatch):
     inspect_offer_identity(app, monkeypatch)
     inspect_personal(app, tmp_path)
     inspect_dispositions(app, evidence_db, tmp_path)
+    inspect_movary(app, tmp_path, monkeypatch)
     # Exercise the same WSGI boundary for assets and health, not an internal renderer.
     assert request(app, "/style.css")["headers"]["Content-Type"].startswith("text/css")
     assert request(app, "/health")["status"] == "200 OK"

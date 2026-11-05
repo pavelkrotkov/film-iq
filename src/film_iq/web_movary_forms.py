@@ -16,15 +16,15 @@ def form(item: dict, action: str, fields: str, caption: str, csrf: str) -> str:
 def panel(item: dict, snapshot, settings, enabled: bool, csrf: str) -> str:
     body = native_editor(item, snapshot, settings)
     if not enabled:
-        return (
-            body
-            + '<p class="muted">Movary actions are unavailable until the server has its API and complete-export configuration. You can keep browsing.</p>'
-        )
-    body += form(item, "watchlist/preview", "", "Preview watchlist addition", csrf)
-    day = '<label>Watch date <input type="date" name="date" required></label>'
-    body += form(item, "watched/preview", day, "Preview watch date", csrf)
-    body += form(item, "refresh", "", "Refresh history and ratings", csrf)
-    return '<section class="detail-section"><h2>Keep track in Movary</h2>' + body + "</section>"
+        body += '<p class="muted">Movary actions are unavailable until this server is connected to Movary. You can keep browsing.</p>'
+    else:
+        body += form(item, "watchlist/preview", "", "Preview watchlist addition", csrf)
+        day = '<label>Watch date <input type="date" name="date" required></label>'
+        body += form(item, "watched/preview", day, "Preview watch date", csrf)
+        body += form(item, "refresh", "", "Refresh history and ratings", csrf)
+    return (
+        "<details><summary>Movary history and watchlist · optional</summary>" + body + "</details>"
+    )
 
 
 def confirmation(item: dict, action: str, day: str, signature: str, csrf: str) -> str:
