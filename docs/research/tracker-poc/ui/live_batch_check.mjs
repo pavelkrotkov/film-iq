@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { BATCH_LIMIT, chooseBatch, chooseRemaining, fetchLiveMovie, mergeResult, refreshNotice, RateLimitError, runBatch, runRemainingBatch, safeImdbTitleUrl } from "./live_batch.js";
+import { BATCH_LIMIT, chooseBatch, chooseRemaining, fetchLiveMovie, mergeResult, preserveEarlierPoster, refreshNotice, RateLimitError, runBatch, runRemainingBatch, safeImdbTitleUrl } from "./live_batch.js";
 
 const films = Array.from({length: 35}, (_, index) => ({
   id: `task-${index}`,
@@ -24,6 +24,17 @@ assert.ok(events[1][1].error);
 assert.equal(chooseBatch(films, {"task-0": {data: {tmdb_id: 1}}, "task-1": {requestedId: 2, error: "failed"}})[0].id, "task-2");
 assert.deepEqual(chooseBatch(films, {"task-1": {requestedId: 2, error: "failed"}}, true).map((film) => film.id), ["task-1"]);
 const prior = {data: {tmdb_id: 2, availability: {status: "complete", offers: ["fixture"]}}};
+const oldPoster = {tmdb_id:2,title:"Fictional",poster_url:"https://image.tmdb.org/t/p/w500/fictional.jpg",availability:{status:"complete",checked_at:"2026-01-01T00:00:00Z",offers:[]}};
+const missingPoster = {tmdb_id:2,title:"Fictional",poster_url:null,availability:{status:"complete",checked_at:"2026-01-02T00:00:00Z",offers:[]}};
+const retainedPoster = mergeResult({data:oldPoster}, {data:missingPoster}).data;
+assert.equal(retainedPoster.poster_url, oldPoster.poster_url);
+assert.equal(retainedPoster.poster_from_previous, true, "retained artwork must be labeled earlier");
+assert.equal(retainedPoster.availability.checked_at, missingPoster.availability.checked_at, "provider freshness stays independent");
+assert.equal(preserveEarlierPoster(null, missingPoster).poster_url, null, "no previous poster remains unknown");
+assert.equal(preserveEarlierPoster(oldPoster, {...missingPoster,tmdb_id:3}).poster_url, null, "different ID must not inherit artwork");
+assert.equal(preserveEarlierPoster(oldPoster, {...missingPoster,title:"Different"}).poster_url, null, "different title must not inherit artwork");
+const replacement = {...missingPoster,poster_url:"https://image.tmdb.org/t/p/w500/new.jpg"};
+assert.equal(preserveEarlierPoster(retainedPoster, replacement).poster_from_previous, undefined, "fresh artwork clears the earlier label");
 const preserved = mergeResult(prior, {data: {tmdb_id: 2, availability: {status: "unknown", offers: []}}});
 assert.deepEqual(preserved.data.availability, prior.data.availability);
 assert.equal(preserved.data.availability_attempt, "unknown");

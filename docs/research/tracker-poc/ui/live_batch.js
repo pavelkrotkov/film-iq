@@ -46,18 +46,29 @@ export function chooseBatch(films, results, retry = false) {
   return chooseRemaining(films, results, retry).slice(0, BATCH_LIMIT);
 }
 
+// A missing poster is unknown; retain one from the same ID and unchanged title.
+export function preserveEarlierPoster(previous, current) {
+  if (previous?.tmdb_id && previous.tmdb_id === current?.tmdb_id &&
+      typeof previous.title === "string" && !!previous.title.trim() && previous.title === current.title &&
+      typeof previous.poster_url === "string" && !!previous.poster_url && current.poster_url == null) {
+    return {...current, poster_url: previous.poster_url, poster_from_previous: true};
+  }
+  return current;
+}
+
 export function mergeResult(previous, result) {
   if (!result.data) {
     const oldId = previous?.requestedId ?? previous?.data?.tmdb_id;
     return { ...(oldId && result.requestedId && oldId !== result.requestedId ? {} : previous), ...result };
   }
+  const data = preserveEarlierPoster(previous?.data, result.data);
   const previousAvailability = previous?.data?.availability;
-  const currentAvailability = result.data.availability;
-  if (previous?.data?.tmdb_id === result.data.tmdb_id && previousAvailability?.status === "complete" && currentAvailability?.status !== "complete") {
-    return { ...result, data: { ...result.data, availability: previousAvailability,
+  const currentAvailability = data.availability;
+  if (previous?.data?.tmdb_id === data.tmdb_id && previousAvailability?.status === "complete" && currentAvailability?.status !== "complete") {
+    return { ...result, data: { ...data, availability: previousAvailability,
       availability_attempt: currentAvailability?.status || "unknown" } };
   }
-  return result;
+  return data === result.data ? result : {...result, data};
 }
 
 export async function runBatch(films, fetchMovie, signal, onResult, {stopOnError = false} = {}) {

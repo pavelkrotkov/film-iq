@@ -618,6 +618,7 @@ function App() {
                   {film.fields["POC Year"] || "YEAR UNKNOWN"}
                 </div>
                 <h2>{film.title}</h2>
+                {liveMovie?.poster_from_previous && <p>Poster from an earlier lookup.</p>}
                 {movary?.status === "available" && movary?.films?.[film.fields["POC TMDB ID"]]?.watched === true && <section>
                   <h3>Watched in Movary</h3>
                   <p>Snapshot observed {movary.observed_at}. Watch dates and counts come from Movary; unknown dates remain unknown.</p>
@@ -966,6 +967,7 @@ function App() {
                       </div>
                       <h3>{item.title}</h3>
                       {item.live && <p>TMDB match not independently verified</p>}
+                      {item.live?.poster_from_previous && <p>Poster from an earlier lookup.</p>}
                       <div className="badges">
                         <ProviderBadges film={item} />
                       </div>

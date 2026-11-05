@@ -1,5 +1,5 @@
 import { field } from "./youtrack_filters.js";
-import { runRemaining } from "./live_batch.js";
+import { preserveEarlierPoster, runRemaining } from "./live_batch.js";
 
 export class LiveRateLimited extends Error {}
 export const LIVE_BATCH_LIMIT = 30;
@@ -70,10 +70,11 @@ function availability(value) {
 }
 
 export function mergeLiveMetadata(previous, current) {
-  if (previous?.tmdb_id === current.tmdb_id && previous?.availability?.status === "complete" && current.availability.status !== "complete") {
-    return {...current, availability: previous.availability, availability_attempt: current.availability.status};
+  const data = preserveEarlierPoster(previous, current);
+  if (previous?.tmdb_id === data.tmdb_id && previous?.availability?.status === "complete" && data.availability.status !== "complete") {
+    return {...data, availability: previous.availability, availability_attempt: data.availability.status};
   }
-  return current;
+  return data;
 }
 
 export function mergeLiveResult(previous, outcome) {

@@ -75,6 +75,15 @@ assert.deepEqual(filterYoutrackFilms([{...liveFilm, live: incomplete}], {...opti
 const merged = mergeLiveMetadata(result, incomplete);
 assert.equal(merged.availability.status, "complete");
 assert.equal(merged.availability_attempt, "partial");
+const oldPoster = {...result, title:"Fictional", poster_url:"https://image.tmdb.org/t/p/w500/fictional.jpg"};
+const noPoster = {...oldPoster, poster_url:null};
+const retainedPoster = mergeLiveMetadata(oldPoster, noPoster);
+assert.equal(retainedPoster.poster_url, oldPoster.poster_url);
+assert.equal(retainedPoster.poster_from_previous, true, "retained artwork is labeled earlier");
+assert.equal(mergeLiveMetadata(null, noPoster).poster_url, null, "no previous artwork stays unknown");
+assert.equal(mergeLiveMetadata(oldPoster, {...noPoster,tmdb_id:999}).poster_url, null, "different IDs cannot inherit artwork");
+assert.equal(mergeLiveMetadata(oldPoster, {...noPoster,title:"Different"}).poster_url, null, "different titles cannot inherit artwork");
+assert.equal(mergeLiveMetadata(retainedPoster, {...noPoster,poster_url:"https://image.tmdb.org/t/p/w500/new.jpg"}).poster_from_previous, undefined);
 assert.equal(mergeLiveResult({data: result}, {error: "unavailable"}).data, result, "a failed refresh retains prior page-memory data");
 const failedRefresh = mergeLiveResult({data: result}, {requestedId: 123, error: "unavailable"});
 assert.equal(refreshNotice(failedRefresh, 123, result), "Latest refresh failed; previous data shown.");
