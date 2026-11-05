@@ -38,6 +38,13 @@ Sign in to [YouTrack](http://localhost:18180/) with the existing administrator
 account and open **FilmIQ POC** from the main menu. The installed YouTrack app
 runs inside YouTrack; it does not use the separate Kaneo UI server.
 
+YouTrack's configured backups are under `.cache/tracker-poc/youtrack/backups`.
+One manual backup was created and checked on 2026-11-05; it is owner-only and
+contains private data. A newly created archive was initially readable by other
+local users, so check and restrict permissions for each future backup. Automatic
+backups are disabled. The existing local archive has not been restored and is
+not a separate-machine copy. See [JetBrains' backup instructions](https://www.jetbrains.com/help/youtrack/server/back-up-the-database.html).
+
 Restart Kaneo alone with `docker restart film-iq-tracker-poc-kaneo-1`. For a
 PostgreSQL restart, stop Kaneo first, restart PostgreSQL, repeat the `pg_isready`
 check above until it succeeds, then start Kaneo:

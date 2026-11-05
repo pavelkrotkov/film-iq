@@ -108,6 +108,15 @@ documentation](https://www.postgresql.org/docs/16/app-pgdump.html) and
 The current Compose file does not establish automatic startup after a host
 reboot; Hermes has not been tested.
 
+On 2026-11-05, YouTrack's [documented manual backup API](https://www.jetbrains.com/help/youtrack/devportal/api-usecase-backup.html)
+created one database-and-attachments archive in the existing project-local
+backup directory. YouTrack reported success, the archive listing passed an
+integrity check, and YouTrack could read it after its permissions were changed
+to owner-only. This is a local copy on the same machine, not an off-device
+backup or a restore test. Automatic backups remain disabled; extension-property
+recovery is unverified. The archive contains private project data and must stay
+out of Git. Future backups need their permissions checked as well.
+
 For a narrower CPU-only check, the two client filtering functions were run
 separately in warmed Node processes against the same 1,000 fictional films.
 The Netflix-plus-interest filter and numeric sort had medians of 0.643 ms for

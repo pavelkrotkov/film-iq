@@ -329,7 +329,13 @@ after reload. An earlier timeout was traced to the test's exact-label selector.
 The installed YouTrack form can also edit its stored release year and single
 genre separately from source-listed assertions. A fictional browser check
 saved, reloaded, cleared and reloaded both fields without changing the source
-fields. Kaneo displays its existing source-listed director where present.
+fields. Kaneo displays its existing source-listed director where present. Its
+film editor now also supports a stored release year and single genre; the two
+empty project field definitions were provisioned without changing film values.
+An isolated browser test against a newly created fictional Kaneo task saved,
+reloaded, cleared and reloaded both fields while preserving source-listed
+year and director. Kaneo represents these clears as empty strings. A failed
+multi-request save can be partial and is reported as such.
 
 An isolated Kaneo Brave walkthrough with fictional data verified that
 canceling browser Back or reload preserves an unsaved film draft, and that
@@ -337,6 +343,15 @@ unsent comments and new-film drafts receive an unload warning. Film-to-film
 navigation retains comment drafts. An older-browser fallback restores the
 displayed URL after a canceled history traversal by replacing that target
 entry, so it does not preserve the original history stack.
+
+The YouTrack widget's iframe lacks `allow-modals`, so a browser reload can
+discard an unsaved draft without a confirmation dialog. The installed widget
+now shows a warning beside unsaved film, preference, comment and new-film
+forms. An isolated fictional Brave walkthrough verified those warnings;
+they do not recover a draft after reload. [Iframe sandbox behavior](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/iframe)
+and [YouTrack Host API storage](https://www.jetbrains.com/help/youtrack/devportal/apps-host-api.html#storage)
+are documented separately; browser-local Host API storage is not account-scoped
+and is not used for private draft contents.
 
 On 2026-11-05, two read-only requests using the existing project credential
 checked TMDB's documented example movie ID 11: both the movie-details and
