@@ -12,7 +12,8 @@ import { clearSavedDraft, currentComments, setCommentDraft } from "./comment_dra
 import { emptyPreference, markPreferenceSaved, mergeFilmDraft, syncPreferenceDraft } from "./preference_draft.js";
 import { missingLinkedFilm, unavailableFilterSources } from "./availability_state.js";
 import { accessibleProjects, projectUrl } from "./project_picker.js";
-import { readDirectReviews, safeReviewUrl } from "./direct_reviews.js";
+import { confirmNavigation } from "./navigation_guard.js";
+import { readDirectReviews, reviewsMatchTitle, safeReviewUrl } from "./direct_reviews.js";
 
 const api = "http://localhost:15173/api";
 function ProviderBadges({ film }) {
@@ -52,8 +53,9 @@ function SourceEvidence({ film }) {
 
 function DirectReviews({ film }) {
   const links = readDirectReviews(film.fields["POC Direct Review Links"], film.fields["POC TMDB ID"]);
+  const stale = links?.length && !reviewsMatchTitle(links, film.title);
   return <section><h3>Direct reviews and aggregators</h3>
-    {links?.length ? <ul>{links.map((link, index) => {
+    {stale ? <p>The film title differs from the reviewed source title; links are hidden until revalidated.</p> : links?.length ? <ul>{links.map((link, index) => {
       const evidence = link.identity_evidence;
       return <li key={index}><a href={safeReviewUrl(link.url)} target="_blank" rel="noreferrer">{link.provider} ↗</a> · {link.type === "individual_critic_review" ? "Individual critic review" : "Review aggregator title page"} · checked {link.checked_at}
         <p>Page title: {evidence.source_page_title}; source title: {evidence.input_title}; director: {evidence.source_directors.join(", ")}.</p>
@@ -441,20 +443,26 @@ function App() {
       setBatch(null);
     }
   }
+  function mayNavigate() {
+    return confirmNavigation(detailDirty.current, preferenceDraft.dirty && preferenceDraft.filmId === selected, (message) => window.confirm(message));
+  }
+  function guardNavigation(event) {
+    if (!mayNavigate()) event.preventDefault();
+  }
   function choose(event) {
     event.preventDefault();
     const value = chosenProject;
-    if (!value) return;
+    if (!value || !mayNavigate()) return;
     location.href = projectUrl(location.href, value);
   }
   return (
     <>
       <header>
-        <a className="brand" href="#">
+        <a className="brand" href="#" onClick={guardNavigation}>
           FILM <span> / </span> LAB
         </a>
         <nav>
-          <a href="#">Discover</a>
+          <a href="#" onClick={guardNavigation}>Discover</a>
           <a href="http://localhost:15173/" target="_blank" rel="noreferrer">
             Kaneo admin ↗
           </a>
@@ -535,7 +543,7 @@ function App() {
         )}
         {film ? (
           <section className="detail">
-            <a href="#">← Back to discovery</a>
+            <a href="#" onClick={guardNavigation}>← Back to discovery</a>
             <div className="detail-grid">
               <div className="poster large">
                 {liveMovie?.poster_url ? <img src={liveMovie.poster_url} alt={`TMDB poster for ${liveMovie.title}`} /> : <span>NO POSTER</span>}
@@ -546,7 +554,7 @@ function App() {
                   {film.fields["POC Year"] || "YEAR UNKNOWN"}
                 </div>
                 <h2>{film.title}</h2>
-                {movary?.films?.[film.fields["POC TMDB ID"]]?.watched === true && <section>
+                {movary?.status === "available" && movary?.films?.[film.fields["POC TMDB ID"]]?.watched === true && <section>
                   <h3>Watched in Movary</h3>
                   <p>Snapshot observed {movary.observed_at}. Watch dates and counts come from Movary; unknown dates remain unknown.</p>
                   <ul>{(movary.films[film.fields["POC TMDB ID"]].played_watch_dates || []).map((entry, index) => <li key={index}>{entry.date || "Date unknown"} · {entry.plays} play(s)</li>)}</ul>
@@ -890,7 +898,7 @@ function App() {
                         Critic score:{" "}
                         {item.fields["POC Critic Score"] || "Unknown"}
                       </p>
-                      <p>{movary?.films?.[item.fields["POC TMDB ID"]]?.watched === true ? "Watched in Movary" : "Movary watch status not established"}</p>
+                      <p>{movary?.status === "available" && movary?.films?.[item.fields["POC TMDB ID"]]?.watched === true ? "Watched in Movary" : "Movary watch status not established"}</p>
                       <p>
                         Interest:{" "}
                         {preferences

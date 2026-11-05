@@ -17,3 +17,7 @@ export function readDirectReviews(raw, filmId) {
     return value.links;
   } catch { return null; }
 }
+
+export function reviewsMatchTitle(links, title) {
+  return Array.isArray(links) && typeof title === "string" && links.every((link) => link.identity_evidence.input_title === title);
+}

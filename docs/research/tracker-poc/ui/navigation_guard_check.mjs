@@ -1,0 +1,12 @@
+import assert from "node:assert/strict";
+import { confirmNavigation } from "./navigation_guard.js";
+let calls = 0;
+const cancel = () => { calls++; return false; };
+const accept = () => { calls++; return true; };
+assert.equal(confirmNavigation(false, false, cancel), true);
+assert.equal(calls, 0, "clean navigation must not prompt");
+assert.equal(confirmNavigation(true, false, cancel), false, "cancel preserves a film draft");
+assert.equal(confirmNavigation(false, true, cancel), false, "cancel preserves a preference draft");
+assert.equal(confirmNavigation(true, true, accept), true, "accept allows navigation");
+assert.equal(calls, 3);
+console.log("Kaneo in-app navigation confirmation checks passed");

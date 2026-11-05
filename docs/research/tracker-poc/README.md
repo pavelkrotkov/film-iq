@@ -24,7 +24,19 @@ requested evaluation criteria; scores remain pending.
   `id` is not a valid sort field. After correction to `{issue id}`, the widget
   loaded a fictional issue, saved an edited synopsis and read it after a page
   reload. The newer package adds a richer UI and per-user handlers, but has not
-  yet been installed or verified; it is not a complete YouTrack POC.
+  yet been installed or verified; it is not a complete YouTrack POC. A further
+  separate candidate adds title editing, source-neutral direct-review display,
+  a known-watched exclusion filter and critic information. Build it with
+  `python3 docs/research/tracker-poc/build_youtrack.py --candidate`; this leaves
+  the earlier pending ZIP unchanged. A local non-browser check parsed all 43
+  stored direct-review fields in that candidate. Installation, actual rendering
+  and per-user behavior remain unverified.
+  The candidate uses an in-widget preference confirmation and provides a
+  selectable URL if an external link cannot open. JetBrains documents a
+  [sandboxed iframe](https://www.jetbrains.com/help/youtrack/devportal/app-architecture.html)
+  and host navigation, but the actual popup permissions and interaction of this
+  local build have not been verified. Browser Back/Forward and reload can still
+  discard unsaved drafts; the in-app navigation guard has not been tested live.
 * Kaneo source inspected: release `v2.49.0`, commit
   `e0ebc61748654f4e33e713dcb441be726ec1cfc4`. Its custom-field schema
   supports text, number, date, dropdown, boolean, and multiselect. Values are
@@ -127,15 +139,15 @@ critic selections, 17 award outcomes, and 49 registry selections. None is
 explicitly typed as an individual critic review. These are source links, not
 proof of review coverage or independent verification of every film identity.
 Separately researched direct links were then added to dedicated tracker fields
-on 34 films in each POC: 26 individual critic-review pages and 33 aggregator
+on 43 films in each POC: 35 individual critic-review pages and 35 aggregator
 title pages. Source pages were checked against available film identity
 evidence; the supplied TMDB-to-personal-film mapping was not independently
 verified. One additional film was held for manual identity review. A readback
-matched all 59 expected links in both trackers, the original source evidence
+matched all 70 expected links in both trackers, the original source evidence
 remained intact, and a repeat import made zero writes. The Kaneo UI has a
-direct-links view; the YouTrack field is available in the native issue view,
-but the pending embedded app does not yet render it. Neither view has been
-browser-verified.
+direct-links view; the YouTrack field is attached for the native issue view.
+A newer uninstalled app candidate adds a direct-links view, but the previously
+prepared package does not. Neither view has been browser-verified.
 
 The detailed source checks and corroboration links remain in ignored private
 manifests. Shared review-link values use the same source-neutral shape for all

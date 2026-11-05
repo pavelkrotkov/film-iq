@@ -39,9 +39,10 @@ FILMREAL`. Add `--apply` only after reviewing the counts. See each script's
 `--help` for the complete arguments. Do not run a subset of related batches:
 the holdback check only considers the manifests supplied in the invocation.
 
-On 2026-11-05, a five-batch preview identified 34 eligible films with 59 links
-and one held-back identity. The two local POC imports each filled 34 empty
-fields, and readback matched all links. A repeat made zero writes. The Kaneo
-film view can display these links; the YouTrack native issue view contains the
-field, while its pending embedded app does not yet display it. Neither display
-has been verified in a browser.
+On 2026-11-05, six batches identified 43 eligible films with 70 links and one
+held-back identity. The two local POC imports each filled 43 empty fields, and
+readback matched all links. A repeat made zero writes. The Kaneo film view can
+display these links; the YouTrack field is attached for the native issue view,
+and a newer uninstalled embedded-app candidate adds a direct-links view. Both
+custom views hide links when the current title differs from the reviewed source
+title, pending revalidation. Neither display has been verified in a browser.

@@ -1,5 +1,6 @@
 """Build an installable YouTrack app ZIP inside the ignored POC cache."""
 
+import argparse
 import shutil
 import subprocess
 from pathlib import Path
@@ -11,7 +12,15 @@ OUTPUT = ROOT / ".cache/tracker-poc/youtrack-app"
 
 
 def main() -> None:
-    widget = OUTPUT / "widgets/films"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--candidate",
+        action="store_true",
+        help="build a separate candidate without replacing the existing approval ZIP",
+    )
+    args = parser.parse_args()
+    output = OUTPUT.with_name("youtrack-app-candidate") if args.candidate else OUTPUT
+    widget = output / "widgets/films"
     widget.mkdir(parents=True, exist_ok=True)
     app = POC / "youtrack-app"
     app_files = (
@@ -23,7 +32,7 @@ def main() -> None:
         "poc_scheduled_marker.js",
     )
     for name in app_files:
-        shutil.copy2(app / name, OUTPUT / name)
+        shutil.copy2(app / name, output / name)
     shutil.copy2(POC / "youtrack-app/widgets/films/index.html", widget / "index.html")
     shutil.copy2(POC / "youtrack-app/widgets/films/youtrack.css", widget / "youtrack.css")
     shutil.copy2(POC / "ui/style.css", widget / "style.css")
@@ -39,10 +48,12 @@ def main() -> None:
         cwd=POC / "ui",
         check=True,
     )
-    archive = OUTPUT.parent / "youtrack-app.zip"
+    archive = output.parent / (
+        "youtrack-app-candidate.zip" if args.candidate else "youtrack-app.zip"
+    )
     with ZipFile(archive, "w", ZIP_DEFLATED) as package:
-        for path in (*(OUTPUT / name for name in app_files), *sorted(widget.iterdir())):
-            package.write(path, path.relative_to(OUTPUT))
+        for path in (*(output / name for name in app_files), *sorted(widget.iterdir())):
+            package.write(path, path.relative_to(output))
     print(f"Built {archive}")
 
 
