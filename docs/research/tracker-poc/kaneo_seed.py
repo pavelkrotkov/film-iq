@@ -1,6 +1,8 @@
 """Seed fictional films in a dedicated Kaneo test project, never TMDB.
 
-Reruns reuse existing fixture IDs and fill missing synthetic critic fields.
+Reruns reuse existing fixture IDs and leave existing records unchanged.
+New Archived fixtures use Kaneo's archived status. Existing lifecycle states,
+including fixtures previously seeded as done, are never rewritten.
 This does not store per-user preferences and is not safe for simultaneous
 seeders; stop if duplicate IDs are found.
 """
@@ -38,32 +40,16 @@ def seed(base: str, project: str, cookie_file: Path, count: int):
     if len(ids) != len(set(ids)):
         raise ValueError("duplicate fixture IDs; refusing to seed")
     present = {row["value"]: row["taskId"] for row in values if row["fieldId"] == identity}
-    populated = {(row["taskId"], row["fieldId"]) for row in values if row["value"]}
     states = {
         "Discovery": "to-do",
         "Evaluation": "in-progress",
         "Watchlist": "in-review",
-        "Archived": "done",
+        "Archived": "archived",
     }
     started = time.monotonic()
     added = 0
-    updated = 0
     for film in generate(count)["films"]:
         if film["fixture_id"] in present:
-            task = present[film["fixture_id"]]
-            for field, value in (
-                (critic, str(film["critic_score"])),
-                (summary, film["critic_summary"]),
-            ):
-                if (task, field) not in populated:
-                    call(
-                        opener,
-                        base,
-                        "/custom-field/value",
-                        {"taskId": task, "fieldId": field, "value": value},
-                        "PUT",
-                    )
-                    updated += 1
             continue
         fields = [
             {"fieldId": identity, "value": film["fixture_id"]},
@@ -87,12 +73,14 @@ def seed(base: str, project: str, cookie_file: Path, count: int):
         )
         added += 1
     print(
-        f"Created {added} fixtures and filled {updated} missing critic fields in {time.monotonic() - started:.2f}s"
+        f"Created {added} fixtures in {time.monotonic() - started:.2f}s. Existing fixtures were preserved."
     )
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     parser.add_argument("--base", default="http://localhost:15173")
     parser.add_argument("--project", required=True)
     parser.add_argument("--cookie-file", required=True, type=Path)

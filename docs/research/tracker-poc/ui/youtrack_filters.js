@@ -1,6 +1,17 @@
 // Pure extraction of YouTrack's existing client-side filtering logic.
 export const field = (film, name) => film.customFields?.find((item) => item.name === name)?.value ?? null;
 
+export function filmYearLabel(film, liveYear = null) {
+  const labels = [];
+  const release = field(film, "FilmIQ Release Year");
+  const source = field(film, "FilmIQ Source Year");
+  const valid = (year) => Number.isInteger(year) && year > 0 && year <= 9999;
+  if (valid(release)) labels.push(`Stored release year ${release}`);
+  if (valid(source)) labels.push(`Source-listed year ${source}`);
+  if (!labels.length && valid(liveYear)) labels.push(`TMDB-supplied year ${liveYear}`);
+  return labels.join(" · ") || "Year unknown";
+}
+
 export function localWatchStatus(preferences, issueId) {
   if (!preferences || !Object.hasOwn(preferences, issueId)) return "unknown";
   const value = preferences[issueId]?.watched_at;

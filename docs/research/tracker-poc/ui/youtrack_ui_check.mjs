@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { build } from "esbuild";
+import { filmYearLabel } from "./youtrack_filters.js";
 
 let onLocationChange;
 globalThis.YTApp = {register: async (callbacks) => {
@@ -45,4 +46,11 @@ assert.equal(directReviews({...reviewFilm,customFields:[{name:"FilmIQ TMDB ID",v
 assert.equal(previewMatchesFilm({issue_id:"FILMPOC-1",after:{}},"FILMPOC-1"),true);
 assert.equal(previewMatchesFilm({issue_id:"FILMPOC-1",after:{}},"FILMPOC-2"),false);
 assert.equal(previewMatchesFilm({issue_id:"FILMPOC-1"},"FILMPOC-1"),false);
+const years = (release, source) => ({customFields:[{name:"FilmIQ Release Year",value:release},{name:"FilmIQ Source Year",value:source}]});
+assert.equal(filmYearLabel(years(2001, 2002)), "Stored release year 2001 · Source-listed year 2002");
+assert.equal(filmYearLabel(years(2001, null)), "Stored release year 2001");
+assert.equal(filmYearLabel(years(null, 2002)), "Source-listed year 2002");
+assert.equal(filmYearLabel(years(null, null), 2003), "TMDB-supplied year 2003");
+assert.equal(filmYearLabel(years(null, null)), "Year unknown");
+assert.equal(filmYearLabel(years("2001", 0)), "Year unknown");
 console.log("YouTrack route parsing and synthetic provider unknown/partial/freshness checks passed");
