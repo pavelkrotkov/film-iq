@@ -2647,13 +2647,13 @@ The existing complete read-only Movary refresh/export operation succeeded and
 its absent daily-job registration was restored from the original project-local
 plist. The refreshed snapshot preserves every Plex-imported latest watch date.
 No personal-state write, production-provider request or B4-job change occurred.
-The evidence database remains schema11; no local-disposition migration has run.
+The evidence database remains schema 11; no local-disposition migration has run.
 
 Actual HTTPS/browser checks exercised populated browse/detail, original evidence
 links, published rank versus unranked selection, original-language title and
 director search, preservation/watched filters, empty results, not-found response,
 visible keyboard skip navigation and source/access uncertainty. Desktop width
-1440 and DevTools mobile width390 both fit without horizontal overflow. The
+1440 px and DevTools mobile width 390 px both fit without horizontal overflow. The
 configured API token is absent from browse/detail HTML; responses use no-store.
 These checks establish observed behavior, not user satisfaction.
 
@@ -2663,11 +2663,11 @@ full validation and independent reviews. Native jobs supervise process restarts
 inside the current GUI session. The Mac must remain awake and logged in; direct
 project-path registration is not a claim of automatic login/reboot startup.
 
-### UI4 schema12 migration and real-form finding — 2026-11-04
+### UI4 schema 12 migration and real-form finding — 2026-11-04
 
-The native UI and daily refresh were stopped before a validated online schema11
-backup and explicit migration to12. Hashes/counts for all27 preexisting tables
-are unchanged. An isolated restore of the pre-migration copy reproduces schema11,
+The native UI and daily refresh were stopped before a validated online schema 11
+backup and explicit migration to 12. Hashes/counts for all 27 preexisting tables
+are unchanged. An isolated restore of the pre-migration copy reproduces schema 11,
 then upgrades and validates successfully with an empty disposition table. Private
 backup/receipts remain inside the attached project. The UI restarted with the
 exact browser-facing public origin, and the original daily refresh registration
@@ -2706,7 +2706,7 @@ watchlist API state, all personal film values and raw export provenance compare
 unchanged before/after. No live personal write or rating edit was used for
 acceptance; API write/idempotence/failure semantics remain fixture-verified.
 
-Actual desktop 1440/mobile 390, keyboard skip navigation, search/filters, evidence,
+Actual desktop 1440 px/mobile 390 px, keyboard skip navigation, search/filters, evidence,
 rank/unranked distinctions, unknown access and empty/not-found views passed.
 One isolated stale-copy view preserved all 106 accepted films with unknown watched
 state; one missing-input view showed unavailable (503) rather than an empty catalog.
