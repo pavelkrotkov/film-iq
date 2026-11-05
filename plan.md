@@ -2478,6 +2478,59 @@ MI≥50; observed minimum MI is 50.025032. The recurring test budget is recorded
 AGENTS.md. CI and independent final-head review dispositions are required before
 merge and will be recorded in the PR.
 
+### UI Movary controls — 2026-11-04
+
+Related #101: the installed Movary 0.82.1 source was inspected read-only. The
+supported played API's PUT changes only supplied dates and preserves omitted
+comments, positions and locations; POST increments an existing date's plays.
+The UI therefore previews an explicit ISO date, confirms it, reads fresh complete
+state and treats an already-recorded date as a no-op. New-date writes use PUT
+with one play, preserve older dates and disclose possible automatic removal of
+the selected intentional watchlist entry. Watchlist promotion reuses the existing
+approved adapter. Both actions require API readback before claiming success.
+
+There is no bearer rating-write endpoint in this installed version. The native
+film URL `/users/{username}/movies/{movary_id}` is supported and redirects to
+its canonical title slug. FilmIQ links a known private crosswalk to this editor;
+nullable enjoyment and artistic merit remain separate. A read-only refresh
+button supports returning from rating edits without waiting for the daily job.
+
+Preview/confirmation uses the shared form boundary plus a private, stateless
+signature binding accepted film identity, action and explicit date. Rendering
+and previews make no Movary request. Missing API/export configuration leaves
+browsing usable. Verified writes are followed by the existing complete atomic
+personal refresh; an unverified write or failed refresh marks the prior cache
+stale and never claims rollback. No real personal state is written for acceptance.
+Credential-free fixtures extend the single browser journey, retaining the
+200-case default collection budget. Final integration reuses UI2's exact
+Origin/Host/CSRF boundary, keeps personal controls in a collapsed optional panel,
+and returns malformed action/date forms as 400 and mismatched signed previews as
+403. Source-input failures retain their separate 503 response; unverified API
+writes and failed personal refreshes return truthful 502 messages.
+
+The existing browser journey now exercises missing configuration, the verified
+native-editor link, no-request previews, otherwise valid cross-action rejection,
+watchlist confirmation/readback/retry, explicit-date preview, preserved old dates,
+plays/comments/enjoyment, no-op repeat watches, an uncertain committed response,
+and a verified write followed by export failure. It uses a configured HTTPS
+public origin while all personal API responses and exports are synthetic.
+Ruff check/format and ty pass; full pytest remains 200 collected, 199 passed and
+one existing opt-in skip. All 11 changed Python modules, including methods and
+closures, meet CC≤8 and MI≥50 (minimum 51.021676). No live personal write or
+activation is claimed; exact-head CI/reviews and UI4 deployment remain next.
+
+UI4's real HTTPS browser check found a concrete integration defect before final
+UI3 review: a native Save form sent `Origin: null` and the exact-origin guard
+correctly rejected it with 403, leaving dispositions unchanged. The response's
+`Referrer-Policy: no-referrer` caused the browser to serialize an opaque origin
+for this non-CORS POST, as specified by the
+[Fetch origin-header algorithm](https://fetch.spec.whatwg.org/#origin-header).
+The response now uses `same-origin`; external evidence links retain
+`rel=noreferrer`, and exact Origin/Host plus CSRF checks remain unchanged.
+The existing journey now asserts this browser-facing response-policy contract:
+it failed against the old header and passes with the corrected header. Actual
+browser re-verification belongs to UI4 after this corrected head is merged.
+
 ## UI1 browse and evidence delivery — 2026-11-04
 
 Related #99/#98: the first server-rendered recommendation slice reuses discovery

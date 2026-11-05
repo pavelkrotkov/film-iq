@@ -3,6 +3,7 @@
 import argparse
 from pathlib import Path
 
+from film_iq.refresh_movary import _command
 from film_iq.web import Application
 
 
@@ -12,6 +13,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--cohort", type=Path, action="append", required=True)
     parser.add_argument("--snapshot", type=Path)
     parser.add_argument("--catalog", type=Path)
+    parser.add_argument(
+        "--ratings-command", type=_command, help="JSON argv emitting complete ratings CSV"
+    )
+    parser.add_argument(
+        "--history-command", type=_command, help="JSON argv emitting complete history CSV"
+    )
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8770)
     parser.add_argument("--public-origin", help="Browser-facing origin, including HTTPS proxy port")
