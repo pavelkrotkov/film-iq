@@ -14,8 +14,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--catalog", type=Path)
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8770)
+    parser.add_argument("--public-origin", help="Browser-facing origin, including HTTPS proxy port")
     args = vars(parser.parse_args(argv))
     host, port = args.pop("host"), args.pop("port")
+    args["public_origin"] = args["public_origin"] or f"http://{host}:{port}"
     from waitress import serve
 
     serve(Application(**args), host=host, port=port, threads=1, max_request_body_size=16384)

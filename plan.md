@@ -2542,3 +2542,37 @@ Corrected-head local validation remains green: Ruff check/format and ty pass;
 199 tests pass with the existing opt-in skip (200 collected). All 12 changed
 Python modules, now including the shared recognition reader and both web test
 modules, meet CC≤8 and MI≥50 (minimum 50.113460).
+
+## UI2 local shortlist delivery — 2026-11-04
+
+Related #100/#98: native Save, Dismiss and Restore controls now persist only
+FilmIQ recommendation dispositions in a two-column schema12 table keyed to the
+existing TMDB crosswalk. Discover/Saved/Dismissed navigation counts currently
+accepted film identities, and filters narrow each view. Saved/Dismissed default
+to all watched states so later watch logging cannot conceal a saved choice.
+Source evidence and nullable personal state remain available on the same detail
+pages; no Movary request or personal-state mutation is part of these actions.
+
+Each POST rechecks accepted reviewed identity and uses a per-process CSRF token,
+bounded native form parsing, and exact configured Origin plus Host. An explicit
+`--public-origin` supports the private HTTPS proxy while the backend stays on
+loopback; forwarded headers grant no authority. Successful local actions redirect
+to the updated film, repeated actions keep a single row, and restart invalidates
+old forms while retaining dispositions. The UI does not silently migrate the
+live database: backup and explicit schema11→12 migration precede deployment.
+
+UI3's backend/render work remains parallel; its final route integration and merge
+now follow UI2 so it reuses this exact forms/security boundary rather than a
+second implementation. UI4 owns the backed-up live migration and activation.
+No live migration, local user-state write or external personal write was made by
+this implementation. The existing single browser journey now covers backed-up
+schema11 upgrade/isolated restore, save/retry/reopen, origin/Host/token authority,
+invalid/unreviewed actions, later watched state, dismiss/restore and unchanged
+source/personal exports. No collected cases or validation matrices were added.
+
+Local UI2 validation: Ruff check/format and ty pass; the full collection remains
+200 (199 pass, one existing opt-in skip). The final generic HTTPS-origin browser
+journey also passes. All 14 changed Python modules, including migration/version
+fixtures and workflow helpers, have CC≤8 and MI≥50 (minimum MI 50.426156).
+Bot review, independent exact-head Standards/Spec review and verified CI precede
+merge; live activation and user satisfaction are not claimed by these checks.

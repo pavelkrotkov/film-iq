@@ -17,7 +17,7 @@ from film_iq.recognition.models import AwardOutcome
 from film_iq.recognition.storage import classify_entry
 
 
-def request(app, url="/", method="GET", body=""):
+def request(app, url="/", method="GET", body="", headers=None):
     response: dict = {}
     parts = urlsplit(url)
     environ = {
@@ -28,6 +28,10 @@ def request(app, url="/", method="GET", body=""):
         "CONTENT_LENGTH": str(len(body.encode())),
         "CONTENT_TYPE": "application/x-www-form-urlencoded",
     }
+
+    if method == "POST":
+        environ.update(HTTP_ORIGIN=app.public_origin, HTTP_HOST=urlsplit(app.public_origin).netloc)
+    environ.update(headers or {})
 
     def start(status, headers):
         response.update(status=status, headers=dict(headers))

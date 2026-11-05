@@ -12,7 +12,7 @@ def test_online_backup_restore_preserves_schema_and_refuses_overwrite(evidence_d
     db = evidence_db
     db.execute("UPDATE entry_observation SET raw_title='accepted revision marker'")
     db.executescript("""
-        DROP TABLE recognition_snapshot; DROP TABLE entry_recognition;
+        DROP TABLE recommendation_disposition; DROP TABLE recognition_snapshot; DROP TABLE entry_recognition;
         DROP TABLE offer_event; DROP TABLE offer_current; DROP TABLE offer_fetch;
         DROP TABLE offer_purge; DROP TABLE offer_policy; PRAGMA user_version=9;
     """)
@@ -30,7 +30,7 @@ def test_online_backup_restore_preserves_schema_and_refuses_overwrite(evidence_d
         assert recovered.execute("SELECT raw_title FROM entry_observation").fetchone() == (
             "accepted revision marker",
         )
-        assert recovered.execute("PRAGMA user_version").fetchone() == (11,)
+        assert recovered.execute("PRAGMA user_version").fetchone() == (12,)
     with pytest.raises(FileExistsError):
         restore(tmp_path / "backup.db", tmp_path / "evidence.db")
     assert (tmp_path / "backup.db").stat().st_mode & 0o777 == 0o600

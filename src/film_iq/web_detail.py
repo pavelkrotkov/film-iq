@@ -41,13 +41,15 @@ def display_context(item: dict) -> str:
     return f"<details><summary>Reviewed display facts</summary>{facts}<p>{evidence}</p><p>Catalog release dates do not rewrite source-listed years.</p></details>"
 
 
-def detail(report: dict, item: dict) -> str:
+def detail(
+    report: dict, item: dict, actions: str = "", navigation: str = '<a href="/">Discover</a>'
+) -> str:
     reasons = selected_evidence(item)
     body = f"""<a class="back" href="/">← Back to discovery</a>
 <section class="film-heading"><p class="eyebrow">THE FILM NOTEBOOK</p><h1>{text(title(item))}</h1>
 <p class="film-meta">{film_meta(item)}</p><p>{link(f"https://www.themoviedb.org/movie/{item['tmdb_id']}", f"Reviewed identity · TMDB {item['tmdb_id']}")}</p></section>
-{freshness(report)}{display_context(item)}
+{actions}{freshness(report)}{display_context(item)}
 <section class="detail-section"><p class="eyebrow">WHY IT IS HERE</p><h2>Follow the evidence</h2><div class="evidence-grid">{reasons}</div>{components(item)}</section>
 <details><summary>Your film notes · optional</summary>{personal(item)}<p class="muted">Public recognition is separate from your own judgment.</p></details>
 <section class="detail-section"><h2>Where to watch</h2>{viewing(item)}</section>{credits(report)}"""
-    return layout(title(item), body)
+    return layout(title(item), body, navigation)
