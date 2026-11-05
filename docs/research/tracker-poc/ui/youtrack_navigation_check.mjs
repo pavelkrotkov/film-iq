@@ -1,5 +1,14 @@
 import assert from "node:assert/strict";
-import { handleExternalRoute, routeLocation } from "./youtrack_navigation.js";
+import { handleExternalRoute, hasUnsavedPageDraft, routeLocation } from "./youtrack_navigation.js";
+
+const clean = {filmDirty:false, prefDirty:false, commentDrafts:{}, newTitle:"", newTmdbId:""};
+assert.equal(hasUnsavedPageDraft(clean), false);
+assert.equal(hasUnsavedPageDraft({...clean, filmDirty:true}), true);
+assert.equal(hasUnsavedPageDraft({...clean, prefDirty:true}), true);
+assert.equal(hasUnsavedPageDraft({...clean, commentDrafts:{"FILMPOC-1":"unsent"}}), true);
+assert.equal(hasUnsavedPageDraft({...clean, commentDrafts:{"FILMPOC-1":"  "}}), false);
+assert.equal(hasUnsavedPageDraft({...clean, newTitle:"Fictional"}), true);
+assert.equal(hasUnsavedPageDraft({...clean, newTmdbId:"42"}), true);
 
 const current = {project: "FILMPOC", film: "FILMPOC-1"};
 const next = {project: "FILMPOC", film: "FILMPOC-2"};

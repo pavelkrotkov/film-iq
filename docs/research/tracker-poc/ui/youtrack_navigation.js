@@ -4,6 +4,11 @@ export function routeLocation(route) {
   return {search: params.toString()};
 }
 
+export function hasUnsavedPageDraft({filmDirty, prefDirty, commentDrafts, newTitle, newTmdbId}) {
+  return Boolean(filmDirty || prefDirty || newTitle.trim() || newTmdbId.trim() ||
+    Object.values(commentDrafts).some((text) => typeof text === "string" && text.trim()));
+}
+
 export async function handleExternalRoute(current, next, guards, {apply, queue, restore, notify}) {
   if (current.project === next.project && current.film === next.film) return;
   if (!current.project || !(guards.pendingPreview || guards.pendingNavigation || guards.busy || guards.filmDirty || guards.prefDirty)) {
