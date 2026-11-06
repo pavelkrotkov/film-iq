@@ -87,4 +87,7 @@ conflicting names, malformed or missing data, and changed title or ID.
 The deployed YouTrack package and Kaneo bundle matched the reviewed builds;
 the checked watched property, preferences, settings, usages and attachment
 metadata were unchanged. No real-film browser walkthrough was performed for
-this change.
+this change. A 1,000-film fictional review-evidence search measured 3.18 ms
+median / 3.65 ms p95 for Kaneo's extracted filter and 3.48 ms / 3.70 ms for
+YouTrack's, in 50 warmed Node samples. These are CPU-only measurements; they
+exclude browser rendering, network and data loading.
