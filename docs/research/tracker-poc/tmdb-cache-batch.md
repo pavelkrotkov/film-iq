@@ -97,6 +97,20 @@ a stronger prior availability observation after an incomplete attempt; that
 case remains covered by fictional tests, not this live run. This one-time
 on-demand verification did not install or authorize a schedule.
 
+A later read-only comparison on November 6 inspected the policy-valid local
+cache sections for all 130 approved IDs without opening a Kaneo session or
+contacting TMDb. Metadata content matched for all 130. Both caches retained
+the same provider offer sets for 109 complete availability observations. Of
+the other 21 films, 20 had no retained availability in either cache; one had
+no retained Kaneo availability and an explicitly unknown YouTrack observation.
+That distinction provides an observation timestamp in YouTrack, not evidence
+that providers are absent. The YouTrack metadata observation times were later
+than Kaneo's for all 130: the caches were populated sequentially and five
+YouTrack records were subsequently refreshed. Different observation times do
+not establish different provider availability or justify copying cache files
+across their separate policy and authority boundaries. This comparison does
+not verify film identities, entitlement or what is currently available.
+
 ## Optional periodic refresh windows
 
 The default runner only fills cache misses. To refresh an existing observation
