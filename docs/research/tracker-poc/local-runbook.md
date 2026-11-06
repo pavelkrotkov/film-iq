@@ -106,7 +106,78 @@ publishes no separate host port. To restart it alone, run:
 docker restart film-iq-tracker-poc-tmdb-live-bridge-1
 ```
 
-The Kaneo bridge is a **third foreground terminal**. The command below reads
+### YouTrack one-film cache pilot
+
+The existing bridge container now runs the one-film cache pilot. The restart
+command above preserves its current mounts and environment. It does not apply
+changes to the Compose files. The pilot keeps the original approved collection
+for local catalog reads and limits provider refreshes to one approved film.
+Its separate private cache is under
+`.cache/tracker-poc/private/tmdb-live-cache/youtrack/`. Check the container's
+state and its logs for the generic `TMDB cache maintenance failed` message;
+absence of the message is not a worker heartbeat. Hourly cleanup stops when
+the bridge or host stops. The seven-day display limit is not a guarantee of
+physical deletion while stopped.
+
+If the existing bridge must be **recreated**, retain all four overrides so its
+reviewed catalog and separate approval scopes remain available. From the
+worktree root, with Docker Desktop and YouTrack running:
+
+```sh
+export FILMIQ_APPROVAL_DIR="$PWD/.cache/tracker-poc/private/tmdb-pilot-approval"
+export FILMIQ_CATALOG_APPROVAL_HOST_DIR="$PWD/.cache/tracker-poc/private/tmdb-approval"
+export FILMIQ_YOUTRACK_CACHE_DIR="$PWD/.cache/tracker-poc/private/tmdb-live-cache/youtrack"
+export FILMIQ_BRIDGE_UID="$(id -u)" FILMIQ_BRIDGE_GID="$(id -g)"
+export FILMIQ_TMDB_BRIDGE_ENABLE_LIVE=1
+export FILMIQ_REVIEWED_CATALOG_FILE="$PWD/../../.cache/epic-c/results/reviewed-display-catalog-expanded-20261031.json"
+docker compose -f docs/research/tracker-poc/compose.yaml \
+  -f docs/research/tracker-poc/youtrack-tmdb-live-bridge/compose.live.yaml \
+  -f docs/research/tracker-poc/youtrack-tmdb-live-bridge/compose.catalog.yaml \
+  -f docs/research/tracker-poc/youtrack-tmdb-live-bridge/compose.cache.yaml \
+  -f docs/research/tracker-poc/youtrack-tmdb-live-bridge/compose.catalog-approval.yaml \
+  --profile tmdb-live-bridge up -d --no-deps --force-recreate --pull never tmdb-live-bridge
+```
+
+The credential remains in the existing private Compose env file. The saved
+pre-pilot app packages are under
+`.cache/tracker-poc/private/youtrack-pilot-rollback-i792iwgg/`. Restore them
+only by updating the two existing apps in place; deleting an app deletes its
+app-owned data. Recreating the original bridge also requires the original
+full approval directory and live plus catalog overrides without the two
+pilot overrides. See the [cache candidate notes](tmdb-live-cache-candidate.md)
+for the stopped-writer purge procedure and retention limits.
+
+### Kaneo one-film cache pilot
+
+The active pilot uses one provider-approved film, the original broader local
+catalog approval, and the seven-day policy in the separate private Kaneo cache.
+Its bridge runs in the background. To start the pilot after a reboot or restart
+its currently running bridge without changing either tracker, its UI, or Movary:
+
+```sh
+cd /Users/pavel/dev/film-iq/.worktrees/kaneo-youtrack
+.venv/bin/python docs/research/tracker-poc/kaneo_live_pilot.py
+```
+
+If the port is free, the command starts the pilot even when its PID record is
+missing or stale. If the port is occupied, it verifies that the recorded pilot
+PID owns the listener before stopping it; an unrecognized listener is left
+untouched. It then starts the same pilot configuration. It reads the
+provider credential from the existing private env file and passes it only in
+the process environment. Standard output and errors go to the owner-only
+`.cache/tracker-poc/private/kaneo-live-pilot.log`; inspect this log for
+`TMDB cache maintenance failed`. This is a manual check, not an alert. The PID
+record is `.cache/tracker-poc/private/kaneo-live-pilot-pid.json`. If an existing
+listener does not match, investigate it before proceeding.
+An hourly cleanup only runs while the bridge is running; host-off deletion
+still requires an operator. Cache-only reads do not call TMDb. The original UI
+bundle is saved at `.cache/tracker-poc/kaneo-live-pilot-original.js` for rollback.
+
+### Ordinary Kaneo bridge without the cache pilot
+
+The non-pilot Kaneo bridge is a **third foreground terminal**. Do not run this
+ordinary launcher while the pilot is active; it does not enable the pilot cache
+or its separate catalog scope. The command below reads
 only the TMDB credential from the existing project-local YouTrack bridge env
 file as data. It does not source or execute the file, print the credential, or
 put it in the command line. It uses the existing approval directory and
@@ -153,8 +224,8 @@ PY
 Leave this terminal open; **Ctrl-C** stops it, and rerun the block to restart.
 Both bridges enforce the existing positive approved-ID list. Loading a film's
 live metadata is an explicit UI action and may make multiple upstream calls;
-adding a film does not authorize its ID. Data is held in page memory and must
-be loaded again after reload. An unavailable or partial provider response is
+adding a film does not authorize its ID. In this non-pilot configuration, data
+is held in page memory and must be loaded again after reload. An unavailable or partial provider response is
 unknown, not proof of absence or subscription entitlement. The JSON response
 uses `no-store`; that does not establish browser poster-image cache behavior.
 

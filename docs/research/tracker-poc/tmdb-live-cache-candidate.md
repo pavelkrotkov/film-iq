@@ -1,9 +1,9 @@
-# Disabled seven-day live-cache candidate
+# Seven-day live-cache candidate and one-film pilot
 
-This code is **disabled** and has only been tested with fictional provider
-payloads. No real cache has been initialized, live provider called, tracker
-app updated, or scheduler installed as part of this candidate. The existing
-noncommercial private-use assessment and its unresolved qualifications are in
+The candidate is enabled locally for **one approved film** in each tracker.
+A real refresh and cache-only read succeeded in each bridge, and each retained
+the cached result across a bridge restart. No tracker or Movary record was
+modified. The existing noncommercial private-use assessment and its unresolved qualifications are in
 [intended-use-20261031.md](../availability/intended-use-20261031.md); the
 seven-day period is a conservative local choice, not a claim about TMDB's terms.
 
@@ -39,7 +39,7 @@ Mounted cards start their transient poster fetch eagerly; the image element's
 
 ## Intended local inventory
 
-The proposed single private root is `.cache/tracker-poc/private/tmdb-live-cache/`,
+The single private root is `.cache/tracker-poc/private/tmdb-live-cache/`,
 with **two independent** child directories `kaneo/` and `youtrack/`. Each child
 would contain `policy.json`, `authority.json`, `cache/.cache-instance`, and
 `cache/<id>.json` plus possible `.tmp` files. The authority records policy
@@ -59,17 +59,18 @@ mount; it is not loaded by the normal Compose configuration.
 For this candidate, **do not back up either cache or copy it into tracker
 history, databases, exports, reports or screenshots**. The inventory is an
 intended boundary, not verification that host backup software, browser caches,
-or other tools actually exclude it. Before activation, verify those exclusions
-and the handling of any existing copies. Recovery fails closed if the latest
+or other tools actually exclude it. Other backup exclusions and the handling of pre-existing copies remain
+unverified. Recovery fails closed if the latest
 independently preserved authority is missing or mismatched. Restoring both a
 cache and an outdated authority together cannot be detected; discard the
 disposable cache on uncertain recovery instead of treating it as current.
 
 On 2026-11-05 the empty intended root was created and a narrow Time Machine
 exclusion for it was verified. Its existing private parent is included in a
-configured Time Machine backup. No provider data or cache policy was stored in
-the root. A process-only check detected OneDrive but did not establish its sync
-roots. Other backup/sync software and existing browser caches remain unverified.
+configured Time Machine backup. After that check, the one-film pilot initialized separate policies and stored
+one normalized cache record per tracker. A process-only check detected OneDrive
+but did not establish its sync roots. Other backup/sync software and existing
+browser caches remain unverified.
 
 ## Expiry and policy changes
 
@@ -102,8 +103,9 @@ error can delay it further. When the bridge is stopped, or the host is off, no
 process can delete files; overdue data remains on disk until a later purge.
 The project's existing [operations guidance](../../operations-recovery.md)
 recommends the host's native scheduler; no separate schedule is registered
-here. Real activation needs monitoring, an operator-owned purge arrangement for
-stopped bridges, and a decision on the permissible host-off delay.
+here. The running pilot requires manual log monitoring and a stopped-writer purge
+when appropriate. No mechanism deletes data while the host is off; a prolonged
+outage must be handled by the operator before the source deadline.
 
 ### Stopped-writer manual purge
 
@@ -127,11 +129,11 @@ backups, exports or other locations. The command does not contact TMDB.
 
 ## Review and verification
 
-Before enabling anything, review the use and third-party-content terms,
-attribution and approved ID list; verify the copy inventory and no-backup
-boundary; prepare a reviewed policy with a separately initialized authority;
-and decide the offline physical-deletion limitation. Both bridges and the UI
-must be deliberately configured and the updated YouTrack issue handler installed
+The one-film pilot uses the reviewed policy and independently initialized
+authorities described above. Other backup/sync coverage, pre-existing browser
+copies, and the offline physical-deletion limitation remain open. Reassess
+these boundaries and source use before expanding the pilot. Both bridges and the
+UI require deliberate configuration and the updated YouTrack issue handler
 before cache hydration can work. `FILMIQ_TMDB_CACHE_ENABLE=1` and
 `FILMIQ_TMDB_CACHE_DIRECTORY` are explicit server opt-ins. The UI build flag
 `__FILMIQ_LIVE_CACHE__=true` is separate; `build_youtrack.py
