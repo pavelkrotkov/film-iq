@@ -150,8 +150,13 @@ title. The links require a user action to open; artwork and provider offers
 remain withheld. Fictional rendering and identity-guard checks passed, and a
 local in-memory rendering against the validated manifests and cache produced
 five such panels. This was not a current tracker-field or real-film browser
-rendering check. The deployed bundles matched their reviewed builds and the
-checked watched property and app settings were unchanged.
+rendering check. A later read-only check of all 130 current YouTrack issue
+fields against 130 unexpired cached metadata records found 11 current title
+mismatches and five panels with matching reviewed alternate-title links when
+passed through the deployed component in memory. This does not verify film
+identity or real-film browser rendering. The deployed bundles matched their
+reviewed builds and the checked watched property and app settings were
+unchanged.
 Both film-detail pages can now also read limited facts from the existing
 reviewed catalog without copying it into either tracker or making a TMDB API
 request. The shared credits component requests TMDB's generic logo without a
