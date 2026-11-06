@@ -78,10 +78,29 @@ the importer's reads and task-update for setting an existing value; creating
 a missing field additionally requires project-update. API key restrictions
 intersect with the owner's workspace permissions. The v2.49.0 key-creation
 dialog exposes name and expiry but no scope selector, so a UI-created key's
-access should not be described as narrowly scoped. The documented API key
-mode has only been exercised with fictional in-process transport, not a live
-key or real tracker. The mode does not itself provision a credential or
-authorize access to one.
+access should not be described as narrowly scoped. The key mode passed a
+separate real-server test against pinned Kaneo v2.49.0: an isolated fictional
+API-only account issued its own key, then the importer previewed and wrote one
+fictional review field, repeated without a duplicate, and preserved an
+explicit clear. An anonymous read was rejected. An independent fresh fixture
+run repeated these checks. Its setup session remained in
+memory inside the fictional container and was discarded before bearer
+operations; no browser or real POC account was accessed. CLI environment
+parsing, proxy disabling and redirect refusal were tested in process. This
+does not verify a real POC key or its actual permissions. The mode does not
+itself provision a real credential or authorize access to one.
+
+To repeat with the pinned fictional Kaneo, PostgreSQL and Python images already
+installed locally, run:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 uv run --no-sync python docs/research/tracker-poc/kaneo_bearer_live_fixture.py
+```
+
+The runner creates an owner-only project-local fixture and isolated internal
+network with no published ports, uses no provider, and leaves its stopped
+fictional containers and files in place. It needs Docker; it is not a backup or
+test of the running POC's credentials.
 
 On 2026-11-05, eight batches identified 50 eligible films with 78 links and one
 held-back identity. Both local POC imports filled empty fields, and readback
