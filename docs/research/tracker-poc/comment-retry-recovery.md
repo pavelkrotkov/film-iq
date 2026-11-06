@@ -12,6 +12,12 @@ the list, so this is not an exactly-once guarantee. Fictional actual-handler
 tests cover both trackers, including failed reload, navigation, preserved
 drafts and explicit retry. No real-film browser verification is claimed.
 
+The two reviewed UI bundles were deployed locally and verified against their
+built bytes. The complete YouTrack watched property, both project projections,
+visible preferences, app settings and usages, and issue attachment metadata
+matched the pre-update observations. The guarded update did not issue provider
+requests or write tracker fields. Private code rollbacks were retained.
+
 ```sh
 node docs/research/tracker-poc/ui/comment_workflow_check.mjs
 ```
