@@ -61,6 +61,17 @@ imported into the local YouTrack administrator's app-owned property after a
 fictional single-user and anonymous-denial check. Readback matched the source;
 neither import writes to Movary or changes a watchlist.
 
+An aggregate read of the 130 YouTrack issues on 2026-11-06 found no nonempty
+issue description, stored release year, stored genre, critic score or critic
+summary. The source-listed director field was populated for 54 issues and the
+direct-review-links field for 50. The private input likewise has no synopsis,
+canonical release year or genre. These counts describe the issue fields, not
+the separate TMDB cache. They expose a material gap against the requested
+persistent canonical film model: the POC can display cached synopsis, year and
+genre while available, but has not demonstrated a rights-compatible way to
+retain those TMDB-derived details indefinitely. This is not evidence that the
+tracker cannot store those field types.
+
 The opt-in TMDB reader can retain normalized metadata in a separate local
 seven-day cache without writing the response to tracker history. Both trackers
 have cached all 130 approved records. A cache-only comparison found identical
