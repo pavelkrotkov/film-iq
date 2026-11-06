@@ -39,6 +39,7 @@ def main() -> None:
         "entity-extensions.json",
         "preferences.js",
         "movary.js",
+        "movary-watchlist.js",
         "poc_lifecycle_guard.js",
         "poc_scheduled_marker.js",
     )
