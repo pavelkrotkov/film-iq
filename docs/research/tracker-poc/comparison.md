@@ -138,6 +138,20 @@ tracker title. The new detail panel shows the available source and returned
 facts for manual review while continuing to withhold mismatched artwork and
 offers. Conversely, an exact title match can still identify the wrong film;
 the current guard does not automatically resolve conflicting year or director.
+An offline comparison of the nine validated private review batches against the
+unexpired local YouTrack cache found existing review evidence for six of those
+11 withheld source-manifest films. Five of the six had a reviewed source-page
+title matching the cached TMDB title or original title; their source-listed
+years also matched, and four had a matching source director. These observations
+do not establish an independent film identity or independent source lineage.
+Both deployed identity-review panels can show the matching existing review
+title and link as an unverified lead, after checking the supplied ID and saved
+title. The links require a user action to open; artwork and provider offers
+remain withheld. Fictional rendering and identity-guard checks passed, and a
+local in-memory rendering against the validated manifests and cache produced
+five such panels. This was not a current tracker-field or real-film browser
+rendering check. The deployed bundles matched their reviewed builds and the
+checked watched property and app settings were unchanged.
 Both film-detail pages can now also read limited facts from the existing
 reviewed catalog without copying it into either tracker or making a TMDB API
 request. The shared credits component requests TMDB's generic logo without a
