@@ -17,10 +17,18 @@ A paced collection run populated a separate seven-day metadata and US-provider
 cache for all 130 approved IDs in each backend. Cache-only comparison found
 identical metadata and availability status for all 130, with matching provider
 sets for the 109 complete observations and 21 unknown observations in both.
-All 130 cached entries remained readable after each bridge restarted. The
-YouTrack watched snapshot still matched its 27-film source; no tracker or Movary
-record was modified by enrichment. These observations do not establish film
-identity, individual streaming entitlement, or overall usability.
+All 130 cached entries remained readable after each bridge restarted.
+YouTrack's mixed-v2 watched snapshot retains all 27 issue/event histories:
+16 entries are ID-bound and 11 remain unbound and unknown in the UI. A repeat
+read-only preview returned the same 27/16 counts. The binding uses matching
+source events and current supplied IDs; it does not independently verify film
+identity. No tracker or Movary record was modified by enrichment. These
+observations do not establish individual streaming entitlement or overall usability.
+The guarded app update and migration left the other project's watched projection,
+visible preferences, settings, usages and attachments unchanged in the checked
+before/after observations. The owner-only v1 projections are visibility-filtered,
+not full extension-property backups; real rollback and full recovery remain
+unverified. See [watched migration and rollback](youtrack-app/MOVARY.md).
 An aggregate 2026-11-06 read found no nonempty synopsis, release-year or genre
 values on the 130 YouTrack issues themselves; those details currently rely on
 the separate expiring cache. See the [comparison](comparison.md) for coverage
@@ -378,13 +386,15 @@ the pending preview. In the live runtime, a fictional preference was previewed,
 confirmed and read back, and replay was rejected. A fictional watched snapshot
 also survived readback; anonymous reads and writes returned 401. The 27-film
 read-only Movary snapshot was then imported for the local administrator and
-matched the source mapping on readback. It does not update Movary or a watchlist.
+its events matched on readback. A later guarded update retained all 27 histories,
+with 16 inferred ID bindings and 11 unbound; it does not update Movary or a watchlist.
 Concurrent imports and live separation between accounts remain unverified.
-The YouTrack film details now show the snapshot's play dates and counts, with
-unknown dates and repeated entries preserved. History-export dates remain a
+For entries whose bound ID still matches the issue, YouTrack film details show
+the snapshot's play dates and counts, with unknown dates and repeated entries
+preserved. Unbound entries remain unknown. History-export dates remain a
 separate observation and are not added to play counts. An isolated fictional
-browser check verified the display through reload with a mocked snapshot; the
-app update left the administrator's existing snapshot unchanged.
+browser check verified the display through reload with a mocked snapshot; that
+earlier app update left the administrator's then-existing snapshot unchanged.
 YouTrack cards also distinguish local watchlisted, not watchlisted, unknown
 and unavailable states. These POC preferences do not change Movary's
 authoritative watchlist.
@@ -670,8 +680,9 @@ The corresponding Kaneo UI adds supplied IDs and hides live metadata when its
 title or ID differs. Fictional checks exercised the field-specific edit,
 duplicate preflight, watched filter, title matching and navigation logic. A
 synthetic film in each running tracker confirmed that its supplied ID persists
-on readback. After the YouTrack widget update, the 27-film Movary snapshot was
-identical on readback. These checks do not establish YouTrack browser rendering
+on readback. At that earlier point the 27-film Movary snapshot was identical
+after a widget update; the subsequent mixed-v2 migration and its readback are
+described above. These checks do not establish YouTrack browser rendering
 or server-enforced ID uniqueness; the draft guard does not establish protection
 when leaving or reloading the entire app.
 

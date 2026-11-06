@@ -5,8 +5,10 @@ source-tagged watched snapshot into the **current user's** `filmMovarySnapshot`
 extension property. It does not connect to or modify Movary and does not alter
 editable preferences. It has been installed in the local YouTrack instance; a
 fictional single-user test and anonymous-denial checks passed, and the local
-administrator's 27-film snapshot was imported and read back. Independent-user
-isolation and recovery remain unverified.
+administrator's 27-film snapshot was imported and read back. A later guarded
+update migrated the `FILMREAL` snapshot to mixed v2: all 27 issue/event histories
+were preserved, with 16 ID-bound and 11 unbound. Independent-user isolation
+and full recovery remain unverified.
 
 The global handler offers `GET movary/watched?project=FILMPOC` and
 `POST movary/import`. Both require an explicit `FILMPOC` or `FILMREAL` project.
@@ -43,13 +45,13 @@ still matches the issue's current supplied ID. A match does not independently
 verify the film identity. Legacy v1 entries lack this binding and remain stored,
 but the candidate UI reports their watched status as unknown until a mapping is
 reviewed and reimported. The handler reads both formats and never changes stored
-data during GET. The current deployed version may differ from this candidate.
+data during GET. The mixed-v2 candidate has been installed in the local app.
 V1 records contain no TMDb IDs. A unique fingerprint match is supporting evidence
 within these snapshots, not independent proof of historical identity. Coincidental
 events or earlier edits can still misidentify a film. Ambiguous records are not
 bound. The migration requires complete input, a full current issue listing and
 the same source observation; it is not a general importer for later refreshes or
-new users. No real migration has been verified by these fictional checks.
+new users. Fictional tests alone do not verify the real migration.
 
 The importer must independently establish that its source refresh is complete;
 the handler only checks the supplied `complete` assertion. It validates all
@@ -75,9 +77,9 @@ cannot see, so the importer comparison alone cannot prove completeness. The
 handler separately checks the entire stored project snapshot and rejects a
 replacement containing inaccessible old entries. Inspect the current mapping,
 visibility and an owner-controlled recovery path before migrating real data.
-The same-observation comparison and v1/v2 handler compatibility have fictional
-tests, not a verified real migration. A new import replaces the selected project's
-snapshot; it is not a merge or backup.
+The handler has fictional compatibility and rollback tests; the real `FILMREAL`
+migration was separately checked by readback. A new import replaces the selected
+project's snapshot; it is not a merge or backup.
 
 An older UI ignores the v2 binding and can still show stale watched history after
 an ID change, so deploy the matching UI with the handler. An older handler
@@ -95,18 +97,26 @@ Restore every v2 project before downgrading, since the old handler cannot parse
 any v2 project in the property. This converts the current snapshot, not a backup
 of an older observation. The candidate has passed offline and isolated live
 fictional tests, including mixed bound/unbound entries and a v1 rollback. Those
-tests do not verify recovery of the real app or its data. No real migration or
-rollback was performed.
+tests do not verify recovery of the real app or its data. The real snapshot was
+migrated but has not been rolled back.
 
 ## Real migration and rollback procedure
 
-This procedure describes a future operation; it has not been carried out on the
-personal snapshot. The most recent read-only preflight returned **27 entries,
-16 proposed bindings and 11 unbound**. These are observations of that input at
-that time, not fixed expectations, verified identities or evidence that a later
+The guarded local `FILMREAL` migration has been completed once. Its readback
+preserved all **27 issue/event histories**, with **16 ID-bound and 11 unbound**;
+a subsequent read-only preview again returned 27 entries and 16 bindings. The
+other project's watched projection, visible preferences, settings, usages and
+attachments were unchanged in the checked before/after observations. These
+counts describe this input, not verified identities or evidence that a later
 snapshot is unchanged. The v1 issue activity inspected so far does not record
 initial TMDb field values, so it does not independently prove the original
 issue-to-film bindings.
+
+Owner-only pre-migration v1 projections were retained for both app projects.
+They are visibility-filtered API results, not complete raw extension-property
+backups. Full app-property or server recovery remains unverified. The following
+steps record the method and precautions for any future operation; they are not
+an instruction to rerun the migration now.
 
 1. Establish a tested, owner-controlled recovery path before changing the app or
    snapshot. Capture owner-only pre-migration snapshots for **every app project**
@@ -147,13 +157,13 @@ issue-to-film bindings.
    with `--apply`. The handler checks every existing entry's visibility, the
    complete stored same-observation event set, and every non-null ID before its
    single property write. Do not run concurrent imports. The 11 entries in the
-   observed preflight would remain stored but have unknown watched status in the
-   candidate UI; an unbound entry is not evidence the film was unwatched.
+   observed migration remain stored but have unknown watched status in the UI;
+   an unbound entry is not evidence the film was unwatched.
 5. Read back both projects and compare issue keys, all ordered play/export events
    including repeats and unknown dates, observation times and unbound counts with
    their protected pre-migration snapshots. Confirm unrelated app preferences
    and other projects remain intact. A successful HTTP response or matching
-   aggregate count alone is insufficient. Preserve the pre-migration backups.
+   aggregate count alone is insufficient. Preserve the pre-migration projections.
 
 For rollback, keep the compatible candidate handler installed. Call its
 `POST extensionEndpoints/filmiq-poc/movary/restore-legacy` for each v2 project
@@ -163,8 +173,8 @@ entries, strips bindings and preserves the current issue/event mappings and
 other projects. Compare the resulting v1 data with the protected snapshots and
 confirm every project has been restored before reverting the handler and UI. An
 `already-legacy` response is a no-op. If observations changed after migration,
-this conversion does not restore the earlier backup; recovery of an older
-observation requires a separately established recovery procedure. Never uninstall
+this conversion does not restore an earlier observation; recovery of one requires
+a separately established recovery procedure. Never uninstall
 the app to roll back: doing so deletes its extension properties.
 
 Legacy snapshots without a project field are read by grouping their existing
