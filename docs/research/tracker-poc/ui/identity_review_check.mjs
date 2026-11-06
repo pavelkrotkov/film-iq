@@ -15,6 +15,7 @@ const { IdentityReview } = module.exports;
 const data = {
   tmdb_id: 42, title: "Fictional response", original_title: "Alternate fictional title",
   year: 2001, directors: ["Fictional Director"],
+  imdb_title_url: "https://www.imdb.com/title/tt1234567/",
   poster_url: "https://image.tmdb.org/t/p/w500/fixture.jpg",
   availability: {status: "complete", offers: [{provider: "Fictional Stream", kind: "subscription"}]},
 };
@@ -23,7 +24,15 @@ const props = {expectedId: 42, savedTitle: "Fictional saved title", sourceYear: 
 const mismatch = render(props);
 for (const value of ["Film identity needs review", "Fictional saved title", "2002", "Source Director", "Fictional response", "Alternate fictional title", "2001", "Fictional Director", "do not confirm a match"]) assert.ok(mismatch.includes(value), `missing ${value}`);
 assert.match(mismatch, /Artwork and streaming offers are withheld/);
+assert.match(mismatch, /Open candidate IMDb title page/);
+assert.match(mismatch, /IMDb ID supplied by TMDB; the film match is not independently verified/);
+assert.match(mismatch, /href="https:\/\/www\.imdb\.com\/title\/tt1234567\/"/);
+assert.match(mismatch, /rel="noreferrer"/);
 assert.doesNotMatch(mismatch, /Fictional Stream|fixture\.jpg|<img/i, "unverified offers and artwork must not render");
+assert.doesNotMatch(render({...props, provider: "Fictional cache"}), /IMDb title page/, "fixture data must not expose a live link");
+for (const unsafe of ["https://imdb.com/title/tt1234567/", "https://www.imdb.com/title/tt1234567/?ref=unsafe", "javascript:alert(1)", null]) {
+  assert.doesNotMatch(render({...props, data: {...data, imdb_title_url: unsafe}}), /IMDb title page/, "invalid URLs remain unavailable");
+}
 assert.equal(render({...props, savedTitle: "  FICTIONAL RESPONSE  "}), "", "matching title uses the normal view");
 assert.equal(render({...props, savedTitle: "alternate fictional title"}), "", "matching original title uses the normal view");
 assert.equal(render({...props, expectedId: 43}), "", "old metadata is not displayed for a changed ID");
