@@ -117,7 +117,7 @@ function App() {
   const [pendingPreview, setPendingPreview] = useState(null), [pendingNavigation, setPendingNavigation] = useState(null), [discardFailed, setDiscardFailed] = useState(false), [saveUncertain, setSaveUncertain] = useState(false);
   const [restoringLocation, setRestoringLocation] = useState(false);
   const [comments, setComments] = useState(null), [commentDrafts, setCommentDrafts] = useState({}), [newTitle, setNewTitle] = useState("");
-  const [createUncertain, setCreateUncertain] = useState(false);
+  const [createUncertain, setCreateUncertain] = useState(false), [createChecked, setCreateChecked] = useState(false), [createProject, setCreateProject] = useState(null);
   const [liveResults, setLiveResults] = useState({}), [liveBusy, setLiveBusy] = useState(false), [liveRateLimited, setLiveRateLimited] = useState(false);
   const [cacheGeneration, setCacheGeneration] = useState(0);
   const [liveBatch, setLiveBatch] = useState(null), [liveSummary, setLiveSummary] = useState("");
@@ -398,11 +398,30 @@ function App() {
       const created = await boundedRead(() => host.fetchYouTrack("issues", { method: "POST", query: { fields: "idReadable" }, body }), 30000);
       if (typeof created?.idReadable !== "string") throw new Error("Creation response was incomplete");
       submitting = false;
-      setNewFilmTitle(""); setNewFilmTmdbId("");
-      if (await refresh()) await selectFilm(created.idReadable);
-      else setError("Film created, but refresh failed. Reload to confirm the displayed record.");
-    } catch (e) { if (submitting) setCreateUncertain(true); setNotice(""); setError(submitting ? "Creation may have completed. Reload this page and search for the film before retrying." : `Could not create film: ${e.message}`); }
+      if (await refresh()) {
+        setNewFilmTitle(""); setNewFilmTmdbId("");
+        await selectFilm(created.idReadable);
+      } else {
+        setCreateUncertain(true); setCreateChecked(false); setCreateProject(project);
+        setError("Film created, but refresh failed. Reload and check the film list before adding another film.");
+      }
+    } catch (e) { if (submitting) { setCreateUncertain(true); setCreateChecked(false); setCreateProject(project); } setNotice(""); setError(submitting ? "Creation may have completed. Reload and check the film list before retrying." : `Could not create film: ${e.message}`); }
     finally { setWorking(false); }
+  }
+  async function reviewCreate() {
+    const targetProject = project;
+    if (targetProject !== createProject) { setError("Return to the original project to check the film list."); return; }
+    setCreateChecked(false); setWorking(true);
+    try {
+      if (await refresh(targetProject) && projectRef.current === targetProject) {
+        setCreateChecked(true);
+        setError("Check the film list for your draft before allowing another creation attempt. Filters can hide films; clear them or search the title.");
+      }
+    } finally { setWorking(false); }
+  }
+  function allowCreateRetry() {
+    if (!createChecked || project !== createProject) return;
+    setCreateUncertain(false); setCreateChecked(false); setCreateProject(null); setError("");
   }
   async function loadLiveMetadata() {
     if (!film || !suppliedTmdbId(film) || liveRequest.current || liveRateLimited) return;
@@ -570,6 +589,7 @@ function App() {
           <small>{year} · Interest {preferences?.[item.idReadable]?.interest_score ?? "unknown"} · Critic score (source not recorded) {criticScore(field(item, "FilmIQ Critic Score"))}</small><small>{field(item, "FilmIQ Lifecycle")?.name || "State unknown"} · {boundMovaryFilm(movary, item.idReadable, suppliedTmdbId(item)) ? "Watched in Movary" : "Movary watched status unknown"}</small><small>{localWatchlistLabel(preferences, item.idReadable)} · Local watched status: {localWatchLabel(preferences, item.idReadable)}</small><small>{available?.source || "Provider"} subscriptions: {providerDescription(available, "subscription")}</small>{metadata?.poster_from_previous && <small>Poster from an earlier lookup.</small>}{refresh && <small>{refresh}</small>}{metadata && <small>Supplied TMDB identity is unverified.</small>}</button>;})}</div>
         {Object.values(liveResults).some((item) => item.data) && <TmdbCredits />}
         <form onSubmit={addFilm} onKeyDown={(e) => submitOnEnter(e, addFilm)}><label>Add film title<input disabled={locked} value={newTitle} onChange={(e) => setNewFilmTitle(e.target.value)} /></label><label>Supplied TMDB ID (optional)<input inputMode="numeric" disabled={locked} value={newTmdbId} onChange={(e) => setNewFilmTmdbId(e.target.value)} /></label><p>IDs are unverified. Duplicate checks cover visible project records; live lookup remains subject to existing authorization.</p>{(newTitle.trim() || newTmdbId.trim()) && <DraftExitWarning kind="new-film details" />}<button type="button" onClick={addFilm} disabled={locked || !project || createUncertain}>Add film</button></form>
+        {createUncertain && <p role="status">The last film creation needs review in {createProject}. Return to that project if needed; any remaining draft is preserved. <button type="button" disabled={locked || project !== createProject} onClick={reviewCreate}>Reload films to check</button>{" "}<button type="button" disabled={locked || project !== createProject || !createChecked} onClick={allowCreateRetry}>I checked the list; allow another attempt</button></p>}
       </section>}
     </main>
   </>;
