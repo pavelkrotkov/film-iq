@@ -26,7 +26,7 @@ exports.httpHandler = {
         connection.addHeader('Content-Type', 'application/json');
         const response = connection.postSync('/metadata', null, JSON.stringify({tmdb_id: id}));
         if (response.code === 429) return reply(ctx, 429, {error: 'TMDB rate limit reached'});
-        if (response.code === 403) return reply(ctx, 403, {error: 'Film not approved'});
+        if (response.code === 403) return reply(ctx, 403, {error: 'Metadata access denied'});
         if (response.code === 503) return reply(ctx, 503, {error: 'Live refresh temporarily unavailable'});
         if (response.code !== 200) return reply(ctx, 502, {error: 'TMDB unavailable'});
         const data = response.json();

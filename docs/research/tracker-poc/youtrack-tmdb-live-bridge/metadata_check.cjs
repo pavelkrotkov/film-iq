@@ -47,7 +47,7 @@ assert.equal(invoke({id:0}).code, 400);
 assert.equal(calls, 0);
 assert.equal(invoke().code, 200);
 assert.equal(sent.tmdb_id, 101); // Caller-supplied body never chooses the ID.
-responseCode = 403; assert.equal(invoke().code, 403);
+responseCode = 403; assert.equal(invoke().code, 403); assert.equal(invoke().body.error, 'Metadata access denied');
 responseCode = 429; assert.equal(invoke().code, 429);
 responseCode = 503; assert.equal(invoke().code, 503); assert.equal(invoke().body.error, 'Live refresh temporarily unavailable');
 responseCode = 200; responseId = 999; assert.equal(invoke().code, 502);

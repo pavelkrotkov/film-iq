@@ -34,6 +34,15 @@ complete watched property, visible preferences, settings, usages and attachment
 metadata were unchanged. These are readback and fictional-test results: no
 real-film browser walkthrough or live 401/403 denial was performed.
 
+The current source also corrects an upstream authorization gap: a TMDB 401 or
+403 previously became a generic 502 at both bridges, so a Kaneo batch could
+continue making requests. Both bridge candidates now return a sanitized 403,
+the YouTrack issue handler forwards it without assuming which authorization
+failed, and the shared UI message includes the provider credential among the
+possible checks. Fictional adapter, issue-handler, batch and cache checks cover
+denial propagation, stopping, no secret disclosure, and preservation of the
+previous observation. This source change is not yet deployed or live-tested.
+
 With caching enabled, Kaneo's explicit refresh is also task-scoped and the old
 ID-only refresh route is disabled. With caching disabled, the existing ID-only
 route remains unchanged: it requires a signed-in user and approved ID but does

@@ -17,7 +17,7 @@ from tmdb_live_cache import MAX_AGE, LiveCache, from_env
 from tmdb_live_cache_downgrade import downgrade
 from tmdb_live_check import invoke as kaneo_invoke
 from tmdb_payload import movie_payload
-from tmdb_readonly import Movie, TMDbError
+from tmdb_readonly import Movie, TMDbAccessDenied, TMDbError
 
 from film_iq.availability.tmdb import Observation, Offer
 from film_iq.retention import CachePolicy
@@ -208,6 +208,25 @@ def main():
         assert "availability_attempt" not in initial_yt["body"]
         assert calls == [101, 101]
         assert LiveCache(directory, policy).get(101) is not None  # new process-equivalent instance
+
+        # A provider authorization failure must stop a batch and retain the
+        # earlier cached metadata and availability without exposing secrets.
+        prior = cache.get(101)
+
+        def denied(_):
+            raise TMDbAccessDenied("fictional credential must not escape")
+
+        denied_kaneo = kaneo_app(
+            denied, lambda _: "fictional-user", lambda: approval, get_upstream=upstream, cache=cache
+        )
+        denied_yt = live.app(live.Config(live_check.TOKEN), lambda: approval, denied, cache=cache)
+        for result in (
+            kaneo_invoke(denied_kaneo, "/refresh/task-1"),
+            live_check.invoke(denied_yt, 101),
+        ):
+            assert result["status"] == "403 Forbidden"
+            assert result["body"] == {"error": "Metadata access denied"}
+            assert cache.get(101) == prior
 
         # A refresh can omit an existing synopsis and return only partial
         # availability. Both endpoints must show the same retained values as

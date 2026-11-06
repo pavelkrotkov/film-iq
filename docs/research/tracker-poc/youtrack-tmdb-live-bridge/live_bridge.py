@@ -10,7 +10,12 @@ from urllib.parse import urlsplit
 from wsgiref.simple_server import WSGIRequestHandler, make_server
 
 from tmdb_payload import movie_payload
-from tmdb_readonly import TMDbRateLimited, configured_reader, configured_refresh_enabled
+from tmdb_readonly import (
+    TMDbAccessDenied,
+    TMDbRateLimited,
+    configured_reader,
+    configured_refresh_enabled,
+)
 
 DESTINATIONS = frozenset({"api.themoviedb.org", "image.tmdb.org"})
 ALLOWLIST_PATH = Path("/run/filmiq/approval/approved-ids.json")
@@ -234,6 +239,8 @@ def app(
                 payload = cache.put(payload)
         except TMDbRateLimited:
             return send("429 Too Many Requests", {"error": "TMDB rate limit reached"})
+        except TMDbAccessDenied:
+            return send("403 Forbidden", {"error": "Metadata access denied"})
         except Exception:
             return send("502 Bad Gateway", {"error": "TMDB unavailable"})
         return send("200 OK", payload)

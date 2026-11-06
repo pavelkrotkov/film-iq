@@ -109,9 +109,10 @@ def check():
         raise TMDbAccessDenied("secret must not be returned")
 
     failure = invoke(app(denied, lambda _: "synthetic-user", lambda: policy), "/movie/12")
-    assert failure["status"] == "502 Bad Gateway" and failure["body"] == {
-        "error": "TMDB unavailable"
+    assert failure["status"] == "403 Forbidden" and failure["body"] == {
+        "error": "Metadata access denied"
     }
+    assert failure["headers"]["Cache-Control"] == "no-store"
 
     def limited(_):
         raise TMDbRateLimited("secret must not be returned")

@@ -18,6 +18,7 @@ from preferences import current_user, upstream
 from reviewed_catalog import catalog_facts
 from tmdb_payload import movie_payload
 from tmdb_readonly import (
+    TMDbAccessDenied,
     TMDbError,
     TMDbRateLimited,
     configured_reader,
@@ -218,6 +219,8 @@ def app(
             return response(
                 start, "429 Too Many Requests", {"error": "TMDB rate limit reached"}, origin
             )
+        except TMDbAccessDenied:
+            return response(start, "403 Forbidden", {"error": "Metadata access denied"}, origin)
         except (TMDbError, ValueError, OSError):
             return response(start, "502 Bad Gateway", {"error": "TMDB unavailable"}, origin)
         payload = movie_payload(movie)

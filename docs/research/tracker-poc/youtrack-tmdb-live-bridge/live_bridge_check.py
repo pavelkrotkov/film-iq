@@ -306,8 +306,8 @@ def check():
         raise TMDbAccessDenied("secret must not be returned")
 
     failure = invoke(app(config_from_env(env), lambda: policy, denied), 101)
-    assert failure["status"] == "502 Bad Gateway" and failure["body"] == {
-        "error": "TMDB unavailable"
+    assert failure["status"] == "403 Forbidden" and failure["body"] == {
+        "error": "Metadata access denied"
     }
     policy["allowed_ids"] = []
     count = len(calls)

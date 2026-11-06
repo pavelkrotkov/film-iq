@@ -3,7 +3,7 @@ export const BATCH_LIMIT = 30;
 
 export class RateLimitError extends Error {}
 export class AccessDeniedError extends Error {}
-export const ACCESS_DENIED_MESSAGE = "Metadata access was denied. Check your sign-in and the film's lookup authorization before retrying.";
+export const ACCESS_DENIED_MESSAGE = "Metadata access was denied. Check your sign-in, the film's lookup authorization and the provider credential before retrying.";
 
 export function accessDenied(value) {
   return [value?.status, value?.statusCode, value?.code, value?.response?.status].some((status) => status === 401 || status === 403 || status === "401" || status === "403") ||
