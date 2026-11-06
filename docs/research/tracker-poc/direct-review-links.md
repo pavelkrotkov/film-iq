@@ -21,19 +21,26 @@ activity before filling a null field and preserves it if the review field has
 changed. Unreadable history stops the import. The YouTrack history safeguard is
 covered by fictional offline checks. A local FILMPOC test assigned and cleared
 the text field on one fictional issue, then found the changes using the same
-guard across multiple one-item activity pages. The full import/reimport test
-stopped before its first import because two existing fictional issues shared
-an ID; it does not establish end-to-end reimport behavior. The full test now
-checks for duplicate and malformed IDs before creating its fixture. The one
-new fictional issue from the stopped run remains in FILMPOC with its review
-field cleared. Replacing a field definition or incomplete tracker history may
-lose the distinction. The direct history check was later changed to create and
-retain a uniquely marked fictional issue on each run, instead of selecting the
-latest issue. The revised procedure has not been rerun live. Existing fields are not augmented when a
-later batch contains additional links; reconcile those manually. Both
-importers recheck identity and title, but neither provides compare-and-swap.
-Run one importer with no concurrent field editing, and inspect records before
-retrying an uncertain failure.
+guard across multiple one-item activity pages. The full import test initially
+stopped because two existing fictional issues shared a reserved fixture ID.
+After checking their roles, a single old runtime-test issue was given an unused
+fictional ID; the documented cache UI fixture was unchanged, and its isolated
+endpoint still returned the expected fictional metadata and subscription.
+The old and new IDs and readback evidence are retained privately. A subsequent
+full live test passed initial import, repeat, clear, paginated history and
+reimport without replacing the clear, while preserving the fictional synopsis
+and source evidence. Both newly created test issues were retained. The full
+test now checks for invalid or duplicate IDs before creating a fixture.
+
+Replacing a field definition or incomplete tracker history may lose the
+distinction between an untouched and cleared field. The separate direct history
+check was later changed to create and retain a uniquely marked fictional issue
+on each run instead of selecting the latest issue; that revised procedure has
+not been rerun live. Existing fields are not augmented when a later batch
+contains additional links; reconcile those manually. Both importers recheck
+identity and title, but neither provides compare-and-swap. Run one importer
+with no concurrent field editing, and inspect records before retrying an
+uncertain failure.
 
 With the local POC services and credentials configured, run fictional checks:
 
