@@ -156,6 +156,8 @@ export async function readLiveMetadata(host, film, {cacheOnly = false, requireEx
     directors: strings(result.directors),
     poster_url: safePosterUrl(result.poster_url),
     imdb_title_url: imdbUrl(result.imdb_title_url),
+    ...(result.metadata_attempt === "incomplete" ? {metadata_attempt: "incomplete"} : {}),
+    ...(["partial", "unknown"].includes(result.availability_attempt) ? {availability_attempt: result.availability_attempt} : {}),
     availability: availability(result.availability),
   };
 }

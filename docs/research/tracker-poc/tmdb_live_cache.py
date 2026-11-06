@@ -85,12 +85,21 @@ class LiveCache:
         now = now or datetime.now(UTC)
         with self.lock:
             self._purge(now)
-            write_film(
+            outcome = write_film(
                 self.root, self.policy, payload, now, now, authority=self.authority, max_age=MAX_AGE
             )
             result = self.get(payload["tmdb_id"], now)
             if result is None:
                 raise ValueError("Cache write could not be verified")
+            if outcome["metadata"] == "preserved_incomplete":
+                result["metadata_attempt"] = "incomplete"
+            availability = payload.get("availability")
+            attempted = availability.get("status") if isinstance(availability, dict) else None
+            retained = result["availability"]["status"]
+            if (attempted == "unknown" and retained in ("partial", "complete")) or (
+                attempted == "partial" and retained == "complete"
+            ):
+                result["availability_attempt"] = attempted
             return result
 
 

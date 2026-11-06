@@ -223,7 +223,7 @@ def app(
         payload = movie_payload(movie)
         if cache is not None:
             try:
-                payload["cache_expires_at"] = cache.put(payload)["cache_expires_at"]
+                payload = cache.put(payload)
             except (OSError, ValueError, TypeError, KeyError):
                 return response(
                     start, "503 Service Unavailable", {"error": "Cache unavailable"}, origin

@@ -65,11 +65,18 @@ export function tmdbId(film) {
     Number(value) <= 2147483647 ? Number(value) : null;
 }
 
+export function availabilityTimeLabel(status, checkedAt) {
+  if (!checkedAt) return status === "unknown" ? "Attempt time unknown" : "Check time unknown";
+  return `${status === "unknown" ? "Attempted" : "Checked"}: ${checkedAt}`;
+}
+
 // Only report on the current ID; displayed is already gated by the title match.
 export function refreshNotice(result, expectedId, displayed) {
   if (!expectedId || (result?.requestedId ?? result?.data?.tmdb_id) !== expectedId) return null;
   const previousShown = !!displayed && displayed === result?.data;
   if (result?.error) return previousShown ? "Latest refresh failed; previous data shown." : "Latest refresh failed.";
+  if (previousShown && displayed.metadata_attempt && displayed.availability_attempt) return "Latest metadata and provider check incomplete; earlier data shown.";
+  if (previousShown && displayed.metadata_attempt) return "Latest metadata incomplete; earlier details shown.";
   if (previousShown && displayed.availability_attempt) return "Latest provider check incomplete; previous availability shown.";
   return null;
 }

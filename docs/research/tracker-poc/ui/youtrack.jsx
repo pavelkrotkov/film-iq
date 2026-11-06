@@ -11,7 +11,7 @@ import { filterMayExcludeUnknown } from "./metadata_filter_coverage.js";
 import { movaryHistory } from "./movary_history.js";
 import { ReviewedCatalog } from "./reviewed_catalog_view.jsx";
 import {storedGenreDisplay, storedGenreLabels} from "./stored_genres.js";
-import {expireCachedResults, refreshNotice} from "./live_batch.js";
+import {availabilityTimeLabel, expireCachedResults, refreshNotice} from "./live_batch.js";
 import {Poster} from "./poster.jsx";
 import {IdentityReview} from "./identity_review.jsx";
 import {ReviewIdentity} from "./review_identity.jsx";
@@ -442,19 +442,20 @@ function App() {
           {!liveMatches ? <IdentityReview expectedId={suppliedTmdbId(film)} savedTitle={film.summary} sourceYear={field(film, "FilmIQ Source Year")} sourceDirector={field(film, "FilmIQ Director")} data={live} provider={cacheFixture ? "Fictional cache" : "TMDB"} /> : <>
             <p>{cacheFixture ? "Fictional cache returned" : "TMDB returned"}: {live.title} ({live.year ?? "year unknown"}).</p>
             {live.original_title && <p>TMDB original title: {live.original_title} (identity not independently verified).</p>}
+            {live.metadata_attempt && <p>Latest metadata was incomplete; earlier details are shown.</p>}
             {live.poster_url && <div className="poster"><Poster url={live.poster_url} alt={`TMDB poster for ${live.title}`} transient={liveCache} /></div>}
             {live.poster_from_previous && <p>Poster from an earlier lookup.</p>}
             <p>Directors: {live.directors?.join(", ") || "unknown"}; genres: {live.genres?.join(", ") || "unknown"}.</p>
             <p>{live.synopsis || "Synopsis unavailable."}</p>
-            <p>US provider status: {live.availability.status}. {live.availability.offers.map((offer) => `${offer.provider} (${offer.kind})`).join(", ") || (live.availability.status === "complete" ? "No offers reported." : "Availability unknown.")} Checked: {live.availability.checked_at || "unknown"}. Personal subscription entitlement is not established.</p>
-            {live.availability_attempt && <p>Latest provider check was {live.availability_attempt}; the earlier complete observation is shown.</p>}
+            <p>US provider status: {live.availability.status}. {live.availability.offers.map((offer) => `${offer.provider} (${offer.kind})`).join(", ") || (live.availability.status === "complete" ? "No offers reported." : "Availability unknown.")} {availabilityTimeLabel(live.availability.status, live.availability.checked_at)}. Personal subscription entitlement is not established.</p>
+            {live.availability_attempt && <p>Latest provider check was {live.availability_attempt}; the earlier provider observation is shown.</p>}
             {live.availability.provider_url && <ExternalLink url={live.availability.provider_url} label="Provider information on TMDB" />}
             {live.imdb_title_url && <p><ExternalLink url={live.imdb_title_url} label="IMDb title page" /> · supplied by TMDB; match not independently verified.</p>}
           </>}
           {!cacheFixture && <TmdbCredits />}
         </section>}
         <h3>Streaming availability</h3>
-        <p>{observation ? `${observation.source} observation: ${observation.status}. Checked ${observation.checked_at || "time unknown"}.` : "Availability unknown."}</p>
+        <p>{observation ? `${observation.source} observation: ${observation.status}. ${availabilityTimeLabel(observation.status, observation.checked_at)}.` : "Availability unknown."}</p>
         <p>Subscriptions: {providerDescription(observation, "subscription")}. Rentals: {providerDescription(observation, "rent")}.</p>
         <form onSubmit={saveFilm} onKeyDown={(e) => submitOnEnter(e, saveFilm)}><label>Title<input value={title} required disabled={filmEditLocked} onChange={(e) => {setTitle(e.target.value); markFilmDirty(true);}} /></label><label>Supplied TMDB ID (optional)<input inputMode="numeric" value={tmdbId} disabled={filmEditLocked} onChange={(e) => {setTmdbId(e.target.value); markFilmDirty(true);}} /></label><label>Stored release year<input inputMode="numeric" value={releaseYear} disabled={filmEditLocked || !editBaseline?.yearEditable} onChange={(e) => {setReleaseYear(e.target.value); markFilmDirty(true);}} /></label><label>Stored genres (one per line)<textarea value={filmGenre} disabled={filmEditLocked || !editBaseline?.genreEditable} onChange={(e) => {setFilmGenre(e.target.value); setGenreReset(false); markFilmDirty(true);}} /></label>{editBaseline?.genreStatus === "known" && editBaseline.genre === "" && filmGenre === "" && <p>No stored genres. <button type="button" disabled={filmEditLocked || !editBaseline.genreEditable} onClick={() => {setGenreReset(true); markFilmDirty(true);}}>Set genres to unknown</button>{genreReset && " Will reset when saved."}</p>}<label>Synopsis<textarea value={synopsis} disabled={filmEditLocked} onChange={(e) => {setSynopsis(e.target.value); markFilmDirty(true);}} /></label><label>Lifecycle<select value={state} disabled={filmEditLocked} onChange={(e) => {setState(e.target.value); markFilmDirty(true);}}><option value="">Unknown</option>{states.map((s) => <option key={s}>{s}</option>)}</select></label>{filmDirty && <DraftExitWarning kind="film edits" />}<button type="button" onClick={saveFilm} disabled={filmEditLocked}>Save film</button></form>
         {(!editBaseline?.yearEditable || !editBaseline?.genreEditable) && <p>Release year or genre cannot be edited because its project field is unavailable or invalid.</p>}

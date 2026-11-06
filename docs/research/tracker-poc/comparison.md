@@ -152,6 +152,20 @@ runs, not a controlled browser comparison, and exclude requests, rendering and
 images. See the [Kaneo](kaneo-filter-benchmark.md) and
 [YouTrack](youtrack-filter-benchmark.md) methods and full samples.
 
+In one uncontrolled local run, 130 sequential authenticated cache-only GETs
+using existing approved tracker mappings took 7.38 seconds for Kaneo (p50
+56.4 ms; p95 60.2 ms) and 10.93 seconds for YouTrack (p50 82.7 ms; p95
+92.7 ms). Mapping construction, provider calls, browser rendering and images
+were excluded. These samples are not production benchmarks.
+
+Separately, one in-process run against 130 fictional fresh records took 2.577
+seconds for the current cache reader, which scans the cache for purge work on
+each read. A lower-bound loop that read the policy and individual record took
+0.090 seconds but omitted payload conversion and full-directory purge checks.
+This difference identifies repeated scanning as a candidate for investigation;
+it is not a measured result of an implemented optimization. The current scan
+continues to detect policy changes and unresolved corrupt records on each read.
+
 In separate, uncontrolled browser walkthroughs, Kaneo displayed approximately
 1,003 fictional cards in roughly 0.9–1.9 seconds. The embedded YouTrack page
 displayed 763 active cards from its roughly 1,000-issue project at about 11

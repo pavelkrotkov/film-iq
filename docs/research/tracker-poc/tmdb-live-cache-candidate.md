@@ -130,6 +130,63 @@ counts. Investigate them separately without assuming they are expired. This
 covers only the named cache and its authority, not browser copies,
 backups, exports or other locations. The command does not contact TMDB.
 
+### Renewing the policy window
+
+The current authorization window ends December 6, 2026 UTC. Before renewing,
+review the applicable source terms and the [POC use decision](tmdb-private-pilot-policy.md).
+Renewal is a local operator decision; it does not grant new provider rights or
+change the seven-day observation limit. A blocked or terminated policy cannot
+be renewed by this command.
+
+Stop both cache writers first, from the worktree root. The Kaneo command stops
+only its recorded bridge and refuses an unrecognized listener:
+
+```sh
+.venv/bin/python docs/research/tracker-poc/kaneo_live_pilot.py --stop
+docker stop film-iq-tracker-poc-tmdb-live-bridge-1
+```
+
+Preview each cache separately; `--days` is an explicit new window of 1–30 days.
+The preview does not write, contact TMDb, or reveal film identifiers:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=docs/research/tracker-poc:src \
+  .venv/bin/python docs/research/tracker-poc/tmdb_live_cache_renew.py \
+  --directory "$PWD/.cache/tracker-poc/private/tmdb-live-cache/kaneo" --days 30 --writers-stopped
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=docs/research/tracker-poc:src \
+  .venv/bin/python docs/research/tracker-poc/tmdb_live_cache_renew.py \
+  --directory "$PWD/.cache/tracker-poc/private/tmdb-live-cache/youtrack" --days 30 --writers-stopped
+```
+
+Add `--execute` to each command to record the renewed authority and policy.
+The new deadline must be later than the current one. Existing cached sections
+keep their original deadlines, including after renewal; if those deadlines have
+passed, a bridge's startup cleanup removes the expired sections. This command
+does not fetch replacement data. Stop if either execution fails: leave both
+bridges stopped and inspect the local authority and policy before restarting,
+because an interrupted update can leave them mismatched. Never restore an older
+authority alongside a newer cache. After both renewals succeed, start the
+bridges using the [local runbook](local-runbook.md).
+
+### Rolling back an older cache reader
+
+The current reader can store unknown availability attempts with their attempt
+times. Earlier readers reject those sections. Before starting an older reader,
+stop every writer for the affected cache and, while the current code is still
+checked out, preview the compatibility conversion:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=docs/research/tracker-poc:src \
+  .venv/bin/python docs/research/tracker-poc/tmdb_live_cache_downgrade.py \
+  --directory "$PWD/.cache/tracker-poc/private/tmdb-live-cache/kaneo" --writers-stopped
+```
+
+Repeat with the `youtrack` child. Add `--execute` after reviewing the count.
+The conversion removes only unknown availability sections and their attempt
+timestamps; it keeps metadata, complete/partial observations and authority
+unchanged. If either command fails, keep that writer stopped and inspect its
+cache before rollback. No provider or tracker request is made.
+
 ## Review and verification
 
 The collection run uses the reviewed policy and independently initialized

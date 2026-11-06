@@ -108,7 +108,7 @@ def _metadata(film: dict[str, Any]) -> dict[str, Any]:
 
 
 def _availability(value: Any, now: datetime) -> tuple[datetime, dict[str, Any]] | None:
-    if not isinstance(value, dict) or value.get("status") not in ("complete", "partial"):
+    if not isinstance(value, dict) or value.get("status") not in ("complete", "partial", "unknown"):
         return None
     try:
         checked = _time(value["checked_at"])
@@ -131,6 +131,8 @@ def _availability(value: Any, now: datetime) -> tuple[datetime, dict[str, Any]] 
                 return None
             cleaned.append({"provider": provider, "kind": kind})
         link = _url(value.get("provider_url"), "www.themoviedb.org")
+        if value["status"] == "unknown" and (cleaned or link is not None):
+            return None
         return checked, {"status": value["status"], "offers": cleaned, "provider_url": link}
     except (ValueError, TypeError, KeyError):
         return None
@@ -498,10 +500,10 @@ def write_film(
             marks["availability"] is None or checked > _time(marks["availability"])
         ):
             previous = current["availability"]
+            previous_status = previous["data"].get("status") if previous else None
             if not (
-                previous
-                and previous["data"].get("status") == "complete"
-                and data["status"] == "partial"
+                (previous_status == "complete" and data["status"] in ("partial", "unknown"))
+                or (previous_status == "partial" and data["status"] == "unknown")
             ):
                 section = _section(_observation_policy(journal, checked), checked, data)
                 section["expires_at"] = min(

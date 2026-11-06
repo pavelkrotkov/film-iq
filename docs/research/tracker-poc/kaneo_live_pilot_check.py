@@ -129,6 +129,33 @@ def main() -> None:
                 "1",
             )
 
+            # Stop requires no credentials and acts only on the recorded bridge.
+            kill.reset_mock()
+            wait.reset_mock()
+            with (
+                patch.object(pilot, "environment", side_effect=AssertionError("credentials read")),
+                patch.object(pilot, "listener", return_value=None),
+            ):
+                pilot.main(["--stop"])
+            kill.assert_not_called()
+            ps.return_value = f"python {pilot.BRIDGE}\n"
+            with (
+                patch.object(pilot, "environment", side_effect=AssertionError("credentials read")),
+                patch.object(pilot, "listener", return_value=606),
+            ):
+                pilot.main(["--stop"])
+            kill.assert_called_once_with(606, pilot.signal.SIGTERM)
+            wait.assert_called_once_with(False)
+            kill.reset_mock()
+            with patch.object(pilot, "listener", return_value=404):
+                try:
+                    pilot.main(["--stop"])
+                except RuntimeError:
+                    pass
+                else:
+                    raise AssertionError("Stop accepted an unrecognized listener")
+            kill.assert_not_called()
+
         # Synthetic configuration proves the collection uses only the original
         # validated 130-ID approval, with a separate one-film rollback scope.
         fake_root = root / "workspace" / "nested" / "project"

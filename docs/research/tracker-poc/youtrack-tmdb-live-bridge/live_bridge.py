@@ -231,7 +231,7 @@ def app(
             payload = movie_payload(movie)
             payload["poster_url"] = safe_poster(payload["poster_url"])
             if cache is not None:
-                payload["cache_expires_at"] = cache.put(payload)["cache_expires_at"]
+                payload = cache.put(payload)
         except TMDbRateLimited:
             return send("429 Too Many Requests", {"error": "TMDB rate limit reached"})
         except Exception:

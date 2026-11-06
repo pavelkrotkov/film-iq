@@ -140,27 +140,44 @@ def environment(scope: str, pace: str, refresh: str) -> dict[str, str]:
     return env
 
 
+def verified_listener() -> int | None:
+    """Identify the recorded bridge, refusing any other listener."""
+    pid = listener()
+    if pid is None:
+        return None
+    try:
+        recorded = json.loads(PID_FILE.read_text())["pid"]
+    except (OSError, ValueError, KeyError, TypeError):
+        raise RuntimeError("The bridge listener is not the recorded pilot") from None
+    if pid != recorded:
+        raise RuntimeError("The bridge listener is not the recorded pilot")
+    command = subprocess.check_output(["ps", "-p", str(pid), "-o", "command="], text=True).strip()
+    if not command.endswith(BRIDGE):
+        raise RuntimeError("The bridge listener is not the recorded pilot")
+    return pid
+
+
 def main(argv=None) -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--collection", action="store_const", const="collection", dest="scope")
     group.add_argument("--pilot", action="store_const", const="pilot", dest="scope")
+    group.add_argument("--stop", action="store_true", help="stop only the recorded bridge")
     args = parser.parse_args(argv)
+    if args.stop:
+        pid = verified_listener()
+        if pid is not None:
+            os.kill(pid, signal.SIGTERM)
+            wait_for_listener(False)
+        print(
+            "Kaneo pilot bridge stopped"
+            if pid is not None
+            else "Kaneo pilot bridge already stopped"
+        )
+        return
     scope, pace, refresh = intended_configuration(os.environ, PID_FILE, args.scope)
     env = environment(scope, pace, refresh)
-    pid = listener()
-    if pid is not None:
-        try:
-            recorded = json.loads(PID_FILE.read_text())["pid"]
-        except (OSError, ValueError, KeyError, TypeError):
-            raise RuntimeError("The bridge listener is not the recorded pilot") from None
-        if pid != recorded:
-            raise RuntimeError("The bridge listener is not the recorded pilot")
-        command = subprocess.check_output(
-            ["ps", "-p", str(pid), "-o", "command="], text=True
-        ).strip()
-        if not command.endswith(BRIDGE):
-            raise RuntimeError("The bridge listener is not the recorded pilot")
+    pid = verified_listener()
     flags = os.O_WRONLY | os.O_CREAT | os.O_APPEND | os.O_NOFOLLOW
     fd = os.open(LOG_FILE, flags, 0o600)
     try:

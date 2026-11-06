@@ -173,6 +173,10 @@ listener does not match, investigate it before proceeding.
 An hourly cleanup only runs while the bridge is running; host-off deletion
 still requires an operator. Cache-only reads do not call TMDb. The original UI
 bundle is saved at `.cache/tracker-poc/kaneo-live-pilot-original.js` for rollback.
+To stop only this recorded bridge, run
+`.venv/bin/python docs/research/tracker-poc/kaneo_live_pilot.py --stop`; it
+leaves an unrecognized listener untouched. For an offline policy renewal, stop
+both writers and follow the [renewal procedure](tmdb-live-cache-candidate.md#renewing-the-policy-window).
 
 ### Ordinary Kaneo bridge without the cache pilot
 

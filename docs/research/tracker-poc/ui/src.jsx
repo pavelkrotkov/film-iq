@@ -5,7 +5,7 @@ import {
   providers,
   syntheticAvailability,
 } from "./film_filters.js";
-import { BATCH_LIMIT, chooseBatch, chooseRemaining, expireCachedResults, fetchCachedMovie, fetchLiveMovie, fetchTaskLiveMovie, mergeResult, refreshNotice, runBatch, runRemainingBatch, safeImdbTitleUrl, tmdbId } from "./live_batch.js";
+import { BATCH_LIMIT, availabilityTimeLabel, chooseBatch, chooseRemaining, expireCachedResults, fetchCachedMovie, fetchLiveMovie, fetchTaskLiveMovie, mergeResult, refreshNotice, runBatch, runRemainingBatch, safeImdbTitleUrl, tmdbId } from "./live_batch.js";
 import { fetchRatings } from "./mdblist_ui.js";
 import { evidenceExplanation, evidenceLabel, sourceLabel } from "./source_evidence.js";
 import { clearSavedDraft, currentComments, setCommentDraft } from "./comment_drafts.js";
@@ -695,11 +695,12 @@ function App() {
                       <div>
                         <p>{cacheFixture ? "Fictional cache" : "TMDB"}: {liveMovie.title} ({liveMovie.year || "year unknown"})</p>
                         {liveMovie.original_title && <p>TMDB original title: {liveMovie.original_title}</p>}
+                        {liveMovie.metadata_attempt && <p>Latest metadata was incomplete; earlier details are shown.</p>}
                         {liveMovie.synopsis && <p>{liveMovie.synopsis}</p>}
                         <p>Genres: {liveMovie.genres?.join(", ") || "Unknown"}. Directors: {liveMovie.directors?.join(", ") || "Unknown"}.</p>
                         {safeImdbTitleUrl(liveMovie.imdb_title_url) ? <p><a href={safeImdbTitleUrl(liveMovie.imdb_title_url)} target="_blank" rel="noreferrer">IMDb title page ↗</a> · IMDb ID supplied by TMDB; match not independently verified. IMDb ratings are audience ratings.</p> : <p>IMDb title link unknown; TMDB did not supply a usable ID.</p>}
-                        <p>US availability: {liveMovie.availability.status}. {liveMovie.availability.offers.map((offer) => `${offer.provider} (${offer.kind})`).join(", ") || (liveMovie.availability.status === "complete" ? "No offers reported" : "Availability unknown")}. Checked: {liveMovie.availability.checked_at}.</p>
-                        {liveMovie.availability_attempt && <p>Latest check was {liveMovie.availability_attempt}; showing the earlier complete observation.</p>}
+                        <p>US availability: {liveMovie.availability.status}. {liveMovie.availability.offers.map((offer) => `${offer.provider} (${offer.kind})`).join(", ") || (liveMovie.availability.status === "complete" ? "No offers reported" : "Availability unknown")}. {availabilityTimeLabel(liveMovie.availability.status, liveMovie.availability.checked_at)}.</p>
+                        {liveMovie.availability_attempt && <p>Latest check was {liveMovie.availability_attempt}; showing the earlier provider observation.</p>}
                         {liveMovie.availability.provider_url && <p><a href={liveMovie.availability.provider_url} target="_blank" rel="noreferrer">View provider information on TMDB ↗</a></p>}
                         <p>{cacheFixture ? "These fictional details come from a local cache and are not saved to Kaneo." : liveCache ? "Film details may come from a local cache for up to seven days; they are not saved to Kaneo. Provider entitlement is unverified." : "Fetched on demand; these results are not saved to Kaneo. Provider entitlement is unverified."}</p>
                       </div>

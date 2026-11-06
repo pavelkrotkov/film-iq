@@ -8,11 +8,15 @@ from datetime import UTC, datetime, timedelta
 from email.message import Message
 from importlib import import_module
 from pathlib import Path
+from unittest.mock import patch
 
-from tmdb_cache import initialize_authority, record_policy
+import tmdb_cache
+from tmdb_cache import _load, initialize_authority, record_policy
 from tmdb_live import app as kaneo_app
 from tmdb_live_cache import MAX_AGE, LiveCache, from_env
+from tmdb_live_cache_downgrade import downgrade
 from tmdb_live_check import invoke as kaneo_invoke
+from tmdb_payload import movie_payload
 from tmdb_readonly import Movie, TMDbError
 
 from film_iq.availability.tmdb import Observation, Offer
@@ -126,7 +130,10 @@ def main():
             )["status"]
             == "401 Unauthorized"
         )
-        assert kaneo_invoke(kaneo, "/refresh/task-1")["status"] == "200 OK"
+        initial = kaneo_invoke(kaneo, "/refresh/task-1")
+        assert initial["status"] == "200 OK"
+        assert "metadata_attempt" not in initial["body"]
+        assert "availability_attempt" not in initial["body"]
         assert calls == [101]
         fetched = kaneo_invoke(kaneo, "/cache/task-1")
         assert fetched["status"] == "200 OK" and fetched["body"]["title"] == "Fictional"
@@ -195,9 +202,156 @@ def main():
             == "200 OK"
         )
         assert calls == [101], "Paused refresh or status must not call the provider"
-        assert live_check.invoke(yt, 101)["status"] == "200 OK"
+        initial_yt = live_check.invoke(yt, 101)
+        assert initial_yt["status"] == "200 OK"
+        assert "metadata_attempt" not in initial_yt["body"]
+        assert "availability_attempt" not in initial_yt["body"]
         assert calls == [101, 101]
         assert LiveCache(directory, policy).get(101) is not None  # new process-equivalent instance
+
+        # A refresh can omit an existing synopsis and return only partial
+        # availability. Both endpoints must show the same retained values as
+        # their next cache read, even if the page has no previous UI state.
+        for attempted in ("partial", "unknown"):
+            incomplete = replace(
+                movie,
+                synopsis=None,
+                availability=Observation((), attempted, datetime.now(UTC)),
+            )
+            partial_kaneo = kaneo_app(
+                lambda _, result=incomplete: result,
+                lambda _: "fictional-user",
+                lambda: approval,
+                get_upstream=upstream,
+                cache=cache,
+            )
+            partial_yt = live.app(
+                live.Config(live_check.TOKEN),
+                lambda: approval,
+                lambda _, result=incomplete: result,
+                cache=cache,
+            )
+            for result in (
+                kaneo_invoke(partial_kaneo, "/refresh/task-1"),
+                live_check.invoke(partial_yt, 101),
+            ):
+                assert result["status"] == "200 OK"
+                assert result["body"]["synopsis"] == "Fictional synopsis"
+                assert result["body"]["availability"]["status"] == "complete"
+                assert result["body"]["availability_attempt"] == attempted
+                assert result["body"]["metadata_attempt"] == "incomplete"
+
+        # A genuine unknown is an attempted check, not a negative provider
+        # result. Its timestamp must survive a cache read/restart.
+        checked_at = datetime.now(UTC)
+        unknown_movie = replace(
+            movie, tmdb_id=102, availability=Observation((), "unknown", checked_at)
+        )
+        unknown_response = cache.put(movie_payload(unknown_movie))
+        assert unknown_response["availability"]["status"] == "unknown"
+        assert unknown_response["availability"]["checked_at"] == checked_at.isoformat()
+        unknown_after_reload = cache.get(102)
+        assert unknown_after_reload and unknown_after_reload["availability"] == {
+            "status": "unknown",
+            "checked_at": checked_at.isoformat(),
+            "provider_url": None,
+            "offers": [],
+        }
+        restarted_unknown = LiveCache(directory, policy).get(102)
+        assert (
+            restarted_unknown
+            and restarted_unknown["availability"] == unknown_after_reload["availability"]
+        )
+
+        # A partial observation survives a later unknown attempt; the old
+        # timestamp remains the observation time and the attempt is labeled.
+        partial_time = datetime.now(UTC)
+        partial_movie = replace(
+            movie, tmdb_id=103, availability=Observation((), "partial", partial_time)
+        )
+        cache.put(movie_payload(partial_movie))
+        later_unknown = replace(
+            partial_movie, availability=Observation((), "unknown", datetime.now(UTC))
+        )
+        retained_partial = cache.put(movie_payload(later_unknown))
+        assert retained_partial["availability"]["status"] == "partial"
+        assert retained_partial["availability"]["checked_at"] == partial_time.isoformat()
+        assert retained_partial["availability_attempt"] == "unknown"
+        partial_after_reload = cache.get(103)
+        assert (
+            partial_after_reload
+            and partial_after_reload["availability"] == retained_partial["availability"]
+        )
+
+        # Rollback is a stopped-writer, preview-first operation. Only unknown
+        # sections are removed; known observations and authority stay byte-identical.
+        authority_before = (directory / "authority.json").read_bytes()
+        known_before = {i: (directory / "cache" / f"{i}.json").read_bytes() for i in (101, 103)}
+        unknown_before = _load(directory / "cache/102.json", 102)
+        try:
+            downgrade(Path("/"), execute=True)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("Downgrade allowed a non-project directory")
+        # Validate every file before changing any: one corrupt record must
+        # abort the operation without changing even the unknown observation.
+        fixture_path = directory / "cache/103.json"
+        fixture_path.write_text("invalid fictional JSON", encoding="utf-8")
+        try:
+            downgrade(directory / "cache", execute=True)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("Downgrade accepted a corrupt record")
+        assert _load(directory / "cache/102.json", 102) == unknown_before
+        fixture_path.write_bytes(known_before[103])
+        # Emulate the old reader: before downgrade its validator rejects the
+        # new section, and after downgrade all records remain readable.
+        validator = tmdb_cache._availability
+
+        def legacy_availability(value, now):
+            return None if value.get("status") == "unknown" else validator(value, now)
+
+        with patch.object(tmdb_cache, "_availability", side_effect=legacy_availability):
+            try:
+                _load(directory / "cache/102.json", 102)
+            except ValueError:
+                pass
+            else:
+                raise AssertionError("Old reader unexpectedly accepted unknown availability")
+        assert downgrade(directory / "cache") == 1
+        assert _load(directory / "cache/102.json", 102) == unknown_before
+        assert downgrade(directory / "cache", execute=True) == 1
+        downgraded = _load(directory / "cache/102.json", 102)
+        assert downgraded == {**unknown_before, "availability": None}
+        assert (directory / "authority.json").read_bytes() == authority_before
+        assert all(
+            (directory / "cache" / f"{i}.json").read_bytes() == raw
+            for i, raw in known_before.items()
+        )
+        assert downgrade(directory / "cache", execute=True) == 0
+        with patch.object(tmdb_cache, "_availability", side_effect=legacy_availability):
+            for ident in (101, 102, 103):
+                _load(directory / "cache" / f"{ident}.json", ident)
+
+        # An unknown containing offers or a provider URL is invalid and must
+        # not be retained as if it were a successful or negative observation.
+        for ident, extra in (
+            (104, {"offers": [{"provider": "Fixture Stream", "kind": "subscription"}]}),
+            (105, {"provider_url": "https://www.themoviedb.org/movie/105/watch"}),
+        ):
+            invalid = movie_payload(replace(unknown_movie, tmdb_id=ident))
+            invalid["availability"].update(extra)
+            rejected = cache.put(invalid)
+            assert rejected["availability"]["checked_at"] is None
+            result = cache.get(ident)
+            assert result and result["availability"] == {
+                "status": "unknown",
+                "checked_at": None,
+                "provider_url": None,
+                "offers": [],
+            }
 
         def failed(_):
             raise TMDbError("fixture")
@@ -238,10 +392,18 @@ def main():
             directory / "cache", directory / "authority.json", policy, now - timedelta(seconds=1)
         )
         cache = LiveCache(directory, policy)
-        from tmdb_payload import movie_payload
-
         cache.put(movie_payload(movie), now)
         assert cache.get(101, now + MAX_AGE - timedelta(seconds=1)) is not None
+        # Unknown attempts expire on the same deadline, even if another
+        # metadata-only refresh extends the metadata section.
+        expiry_film = movie_payload(
+            replace(movie, tmdb_id=106, availability=Observation((), "unknown", now))
+        )
+        cache.put(expiry_film, now)
+        metadata_only = {**expiry_film, "availability": {"status": "unknown", "offers": []}}
+        cache.put(metadata_only, now + MAX_AGE - timedelta(seconds=1))
+        expired_unknown = cache.get(106, now + MAX_AGE)
+        assert expired_unknown and expired_unknown["availability"]["checked_at"] is None
         assert cache.get(101, now + MAX_AGE) is None
         assert not (directory / "cache/101.json").exists()
     print("Offline cache TTL, live bridge authorization, restart, failure and policy checks passed")

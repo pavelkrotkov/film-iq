@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
-import {expireCachedResults, fetchCachedMovie, fetchTaskLiveMovie, mergeResult} from './live_batch.js';
+import {availabilityTimeLabel, expireCachedResults, fetchCachedMovie, fetchTaskLiveMovie, mergeResult, refreshNotice} from './live_batch.js';
 import {mergeLiveMetadata, mergeLiveResult, readLiveMetadata} from './youtrack_tmdb.js';
+import {providerObservation, providerFreshness} from './youtrack_filters.js';
 
 const expiry = new Date(Date.now() + 60000).toISOString();
 const data = {tmdb_id:123, title:'Fictional', cache_expires_at:expiry, availability:{status:'unknown', offers:[]}};
@@ -23,6 +24,22 @@ const cached = await readLiveMetadata({fetchYouTrack:async (url, options) => {
   return data;
 }},issue,{cacheOnly:true});
 assert.equal(cached.cache_expires_at,expiry);
+const attemptTime = new Date().toISOString();
+const attempt = await readLiveMetadata({fetchYouTrack:async () => ({...data,availability:{status:'unknown',offers:[],checked_at:attemptTime}})},issue,{cacheOnly:true});
+assert.equal(attempt.availability.checked_at,attemptTime);
+assert.equal(providerFreshness(providerObservation({live:attempt})),'unknown');
+assert.equal(availabilityTimeLabel('unknown',attemptTime),`Attempted: ${attemptTime}`);
+assert.equal(availabilityTimeLabel('unknown',null),'Attempt time unknown');
+assert.equal(availabilityTimeLabel('complete',attemptTime),`Checked: ${attemptTime}`);
+const retained = await readLiveMetadata({fetchYouTrack:async () => ({
+  ...data, synopsis:'Earlier synopsis', metadata_attempt:'incomplete', availability_attempt:'partial',
+  availability:{status:'complete', offers:[{provider:'Fixture Stream',kind:'subscription'}]},
+})},issue,{requireExpiry:true});
+assert.equal(retained.synopsis,'Earlier synopsis');
+assert.equal(retained.metadata_attempt,'incomplete');
+assert.equal(retained.availability_attempt,'partial');
+assert.equal(retained.availability.status,'complete');
+assert.equal(refreshNotice({requestedId:123,data:retained},123,retained),'Latest metadata and provider check incomplete; earlier data shown.');
 await assert.rejects(readLiveMetadata({fetchYouTrack:async () => ({...data, cache_expires_at:null})}, issue, {requireExpiry:true}));
 await assert.rejects(readLiveMetadata({fetchYouTrack:async () => ({...data, cache_expires_at:'2000-01-01T00:00:00Z'})}, issue, {requireExpiry:true}));
 const original = {cached:{data:cached},live:{data:{tmdb_id:123}}};
