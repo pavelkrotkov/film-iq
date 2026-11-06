@@ -64,6 +64,15 @@ result without a page reload; fictional regression checks cover both UIs.
 These interface changes were deployed, but have not been verified in a
 real-film browser walkthrough.
 
+When a genre filter matches only a loaded live genre, both grids identify the
+matching source as TMDB or, in fixture mode, fictional cache; saved genres
+remain separately labeled. Filtering behavior and saved metadata do not
+change. Fictional in-process checks cover conflicting, missing, invalid and
+unknown genre data in both UIs. Both bundles were deployed and verified by
+package or served-byte readback; the complete current-user YouTrack watched
+property and the checked app state were unchanged. This change has not had
+a real-film browser walkthrough or live genre-filter verification.
+
 The current Kaneo bundle distinguishes an acknowledged film save followed by
 a failed reload from an uncertain or partial write. After a failed reload or
 uncertain write, it blocks further film saves until the film list reloads and
