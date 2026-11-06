@@ -5,7 +5,7 @@ import {
   providers,
   syntheticAvailability,
 } from "./film_filters.js";
-import { BATCH_LIMIT, availabilityTimeLabel, chooseBatch, chooseRemaining, expireCachedResults, fetchCachedMovie, fetchLiveMovie, fetchTaskLiveMovie, hydrateCachedResult, mergeResult, refreshNotice, runBatch, runRemainingBatch, safeImdbTitleUrl, tmdbId } from "./live_batch.js";
+import { ACCESS_DENIED_MESSAGE, AccessDeniedError, BATCH_LIMIT, accessDenied, availabilityTimeLabel, chooseBatch, chooseRemaining, expireCachedResults, fetchCachedMovie, fetchLiveMovie, fetchTaskLiveMovie, hydrateCachedResult, mergeResult, refreshNotice, runBatch, runRemainingBatch, safeImdbTitleUrl, tmdbId } from "./live_batch.js";
 import { fetchRatings } from "./mdblist_ui.js";
 import { evidenceExplanation, evidenceLabel, sourceEvidenceLinks, sourceLabel } from "./source_evidence.js";
 import { clearSavedDraft, currentComments, saveComment, setCommentDraft } from "./comment_drafts.js";
@@ -35,6 +35,7 @@ const fixtureIds = new Set([900000001, 900000002]);
 async function fixtureMovie(item, signal) {
   if (!item || !fixtureIds.has(tmdbId(item))) throw new Error("Fictional ID required");
   const response = await fetch(`http://localhost:15179/cache/${encodeURIComponent(item.id)}`, {credentials: "include", cache: "no-store", signal});
+  if (accessDenied(response)) throw new AccessDeniedError();
   if (!response.ok) throw new Error("Fictional cache unavailable");
   return response.json();
 }
@@ -558,7 +559,7 @@ function App() {
         setLiveResults((previous) => ({ ...previous, [id]: mergeResult(previous[id], result) }));
         setBatch({total: items.length, done});
       });
-      setBatchSummary(`${result.rateLimited ? "Stopped: TMDB rate limit reached. Wait before retrying failed films or fetching the remainder." : result.cancelled ? "Cancelled." : all && result.failed ? "Stopped after an unavailable response." : "Finished."} ${result.succeeded} loaded, ${result.failed} failed. No results were saved to Kaneo.`);
+      setBatchSummary(`${result.rateLimited ? "Stopped: TMDB rate limit reached. Wait before retrying failed films or fetching the remainder." : result.accessDenied ? `Stopped: ${ACCESS_DENIED_MESSAGE}` : result.cancelled ? "Cancelled." : all && result.failed ? "Stopped after an unavailable response." : "Finished."} ${result.succeeded} loaded, ${result.failed} failed. No results were saved to Kaneo.`);
     } finally {
       batchController.current = null;
       setBatch(null);

@@ -19,6 +19,18 @@ catalog only. When unset, the catalog uses `FILMIQ_APPROVAL_DIR` as before; an
 invalid configured catalog approval fails that catalog request closed. Cache
 reads and live refreshes always use `FILMIQ_APPROVAL_DIR`, so a broader local
 catalog approval cannot authorize additional provider requests.
+
+The current UI source candidate reports an explicit HTTP 401 or 403 from a
+user-initiated metadata lookup as access denied and stops the active batch. It
+asks the user to check sign-in and the film's lookup authorization without
+claiming which caused the denial; adding a film does not add its ID to the
+approved set. A failed refresh preserves an earlier still-valid display, and
+429 rate limits remain separate. YouTrack's Host API can conceal error status,
+so an opaque failure remains generic; its batch still stops. The fictional
+`ui/access_denied_workflow_check.mjs` exercises both adapters, batch stopping,
+and the YouTrack single-film action. This change has not yet been deployed or
+verified against a live denial.
+
 With caching enabled, Kaneo's explicit refresh is also task-scoped and the old
 ID-only refresh route is disabled. With caching disabled, the existing ID-only
 route remains unchanged: it requires a signed-in user and approved ID but does

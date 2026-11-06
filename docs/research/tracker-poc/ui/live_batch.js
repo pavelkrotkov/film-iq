@@ -2,6 +2,13 @@
 export const BATCH_LIMIT = 30;
 
 export class RateLimitError extends Error {}
+export class AccessDeniedError extends Error {}
+export const ACCESS_DENIED_MESSAGE = "Metadata access was denied. Check your sign-in and the film's lookup authorization before retrying.";
+
+export function accessDenied(value) {
+  return [value?.status, value?.statusCode, value?.code, value?.response?.status].some((status) => status === 401 || status === 403 || status === "401" || status === "403") ||
+    (typeof value?.message === "string" && /\b(?:HTTP\s+40[13]|401\s+Unauthorized|403\s+Forbidden)\b/i.test(value.message));
+}
 
 export function safeImdbTitleUrl(value) {
   return typeof value === "string" && /^https:\/\/www\.imdb\.com\/title\/tt[0-9]{7,15}\/$/.test(value) ? value : null;
@@ -12,6 +19,7 @@ export async function fetchLiveMovie(id, signal, fetcher = fetch) {
     cache: "no-store", credentials: "include", signal,
   });
   if (response.status === 429) throw new RateLimitError();
+  if (accessDenied(response)) throw new AccessDeniedError();
   if (!response.ok) throw new Error("Live metadata unavailable");
   const data = await response.json();
   if (!data.availability || !Array.isArray(data.availability.offers)) throw new Error("Invalid metadata response");
@@ -25,6 +33,7 @@ export async function fetchCachedMovie(film, signal, fetcher = fetch) {
   const response = await fetcher(`http://localhost:15176/cache/${encodeURIComponent(film.id)}`, {
     cache: "no-store", credentials: "include", signal,
   });
+  if (accessDenied(response)) throw new AccessDeniedError();
   if (!response.ok) throw new Error("Cached metadata unavailable");
   const data = await response.json();
   if (data.tmdb_id !== id || !data.availability || !Array.isArray(data.availability.offers) || !Number.isFinite(Date.parse(data.cache_expires_at)) || Date.parse(data.cache_expires_at) <= Date.now()) throw new Error("Invalid or expired cached metadata");
@@ -38,6 +47,7 @@ export async function fetchTaskLiveMovie(film, signal, fetcher = fetch) {
     cache: "no-store", credentials: "include", signal,
   });
   if (response.status === 429) throw new RateLimitError();
+  if (accessDenied(response)) throw new AccessDeniedError();
   if (!response.ok) throw new Error("Live metadata unavailable");
   const data = await response.json();
   if (data.tmdb_id !== id || !data.availability || !Array.isArray(data.availability.offers) || !Number.isFinite(Date.parse(data.cache_expires_at)) || Date.parse(data.cache_expires_at) <= Date.now()) throw new Error("Invalid or expired metadata response");
@@ -144,7 +154,7 @@ export function mergeResult(previous, result) {
 }
 
 export async function runBatch(films, fetchMovie, signal, onResult, {stopOnError = false} = {}) {
-  let succeeded = 0, failed = 0, rateLimited = false;
+  let succeeded = 0, failed = 0, rateLimited = false, denied = false;
   for (const film of films.slice(0, BATCH_LIMIT)) {
     if (signal.aborted) break;
     const requestedId = tmdbId(film);
@@ -158,16 +168,17 @@ export async function runBatch(films, fetchMovie, signal, onResult, {stopOnError
       if (signal.aborted) break;
       failed++;
       rateLimited = error instanceof RateLimitError;
-      onResult(film.id, { requestedId, error: rateLimited ? "TMDB rate limit reached; wait before retrying." : "Live metadata unavailable; retry when ready." }, succeeded + failed);
-      if (rateLimited || stopOnError) break;
+      denied = error instanceof AccessDeniedError;
+      onResult(film.id, { requestedId, error: rateLimited ? "TMDB rate limit reached; wait before retrying." : denied ? ACCESS_DENIED_MESSAGE : "Live metadata unavailable; retry when ready." }, succeeded + failed);
+      if (rateLimited || denied || stopOnError) break;
     }
   }
-  return { succeeded, failed, cancelled: signal.aborted, rateLimited };
+  return { succeeded, failed, cancelled: signal.aborted, rateLimited, ...(denied ? {accessDenied:true} : {}) };
 }
 
 // Each chunk uses the existing 30-film runner; callers must invoke this explicitly.
 export async function runRemaining(films, runChunk, active, onResult) {
-  let succeeded = 0, failed = 0, rateLimited = false, done = 0;
+  let succeeded = 0, failed = 0, rateLimited = false, denied = false, done = 0;
   for (let start = 0; start < films.length && active(); start += BATCH_LIMIT) {
     const result = await runChunk(films.slice(start, start + BATCH_LIMIT), (...args) => {
       if (active()) onResult(...args, ++done, films.length);
@@ -175,9 +186,10 @@ export async function runRemaining(films, runChunk, active, onResult) {
     succeeded += result.succeeded;
     failed += result.failed;
     rateLimited ||= result.rateLimited;
+    denied ||= !!result.accessDenied;
     if (result.failed || result.cancelled || !active()) break;
   }
-  return {succeeded, failed, rateLimited, cancelled: !active()};
+  return {succeeded, failed, rateLimited, cancelled: !active(), ...(denied ? {accessDenied:true} : {})};
 }
 
 export function runRemainingBatch(films, fetchMovie, signal, onResult) {

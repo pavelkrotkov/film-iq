@@ -11,7 +11,7 @@ import { filterMayExcludeUnknown } from "./metadata_filter_coverage.js";
 import { MOVARY_MAPPING_NOTICE, boundMovaryFilm, historicalMovaryHistories, movaryHistory, unboundMovaryHistory } from "./movary_history.js";
 import { ReviewedCatalog } from "./reviewed_catalog_view.jsx";
 import {storedGenreDisplay, storedGenreLabels} from "./stored_genres.js";
-import {availabilityTimeLabel, expireCachedResults, hydrateCachedResult, refreshNotice} from "./live_batch.js";
+import {ACCESS_DENIED_MESSAGE, AccessDeniedError, availabilityTimeLabel, expireCachedResults, hydrateCachedResult, refreshNotice} from "./live_batch.js";
 import {Poster} from "./poster.jsx";
 import {IdentityReview} from "./identity_review.jsx";
 import {ReviewIdentity} from "./review_identity.jsx";
@@ -384,7 +384,7 @@ function App() {
     } catch (error) {
       const limited = error instanceof LiveRateLimited;
       if (limited) setLiveRateLimited(true);
-      if (projectRef.current === targetProject) setLiveResults((previous) => ({...previous, [target.idReadable]: mergeLiveResult(previous[target.idReadable], {requestedId: suppliedTmdbId(target), error: limited ? "TMDB rate limit reached. Wait and reload the page before trying again." : "Live metadata is unavailable. No automatic retry was made."})}));
+      if (projectRef.current === targetProject) setLiveResults((previous) => ({...previous, [target.idReadable]: mergeLiveResult(previous[target.idReadable], {requestedId: suppliedTmdbId(target), error: limited ? "TMDB rate limit reached. Wait and reload the page before trying again." : error instanceof AccessDeniedError ? ACCESS_DENIED_MESSAGE : "Live metadata is unavailable. No automatic retry was made."})}));
     } finally { liveRequest.current = false; setLiveBusy(false); }
   }
   async function loadNextLiveBatch(all = false, retry = false, entireProject = false) {
@@ -402,7 +402,7 @@ function App() {
         setLiveBatch({done: ++done, total: items.length});
       });
       if (sameContext() && result.rateLimited) setLiveRateLimited(true);
-      if (sameContext()) setLiveSummary(`${result.rateLimited ? "Stopped after a rate limit. Wait and reload before trying again." : result.cancelled ? "Stopped." : result.failed ? "Stopped after an unavailable response." : "Finished."} ${result.succeeded} loaded; ${result.failed} unavailable. No automatic retries or tracker writes.`);
+      if (sameContext()) setLiveSummary(`${result.rateLimited ? "Stopped after a rate limit. Wait and reload before trying again." : result.accessDenied ? `Stopped: ${ACCESS_DENIED_MESSAGE}` : result.cancelled ? "Stopped." : result.failed ? "Stopped after an unavailable response." : "Finished."} ${result.succeeded} loaded; ${result.failed} unavailable. No automatic retries or tracker writes.`);
     } finally { liveRequest.current = false; setLiveBusy(false); setLiveBatch(null); }
   }
   function changePreference(values) { setPref((current) => ({...current, ...values})); markPrefDirty(true); }

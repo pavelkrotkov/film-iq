@@ -1,5 +1,5 @@
 import { field } from "./youtrack_filters.js";
-import { carryEarlierDeadline, carryIsFresh, preserveEarlierPoster, runRemaining } from "./live_batch.js";
+import { ACCESS_DENIED_MESSAGE, AccessDeniedError, accessDenied, carryEarlierDeadline, carryIsFresh, preserveEarlierPoster, runRemaining } from "./live_batch.js";
 
 export class LiveRateLimited extends Error {}
 export const LIVE_BATCH_LIMIT = 30;
@@ -113,7 +113,7 @@ export function failedLiveFilms(films, results) {
 }
 
 export async function runLiveBatch(host, films, active, onResult) {
-  let succeeded = 0, failed = 0, rateLimited = false;
+  let succeeded = 0, failed = 0, rateLimited = false, denied = false;
   for (const film of films.slice(0, LIVE_BATCH_LIMIT)) {
     if (!active()) break;
     try {
@@ -123,14 +123,15 @@ export async function runLiveBatch(host, films, active, onResult) {
       onResult(film, {data, requestedId: suppliedTmdbId(film)});
     } catch (error) {
       rateLimited = error instanceof LiveRateLimited;
+      denied = error instanceof AccessDeniedError;
       if (active()) {
         failed++;
-        onResult(film, {requestedId: suppliedTmdbId(film), error: rateLimited ? "TMDB rate limit reached. Wait and reload the page before trying again." : "Live metadata is unavailable. No automatic retry was made."});
+        onResult(film, {requestedId: suppliedTmdbId(film), error: rateLimited ? "TMDB rate limit reached. Wait and reload the page before trying again." : denied ? ACCESS_DENIED_MESSAGE : "Live metadata is unavailable. No automatic retry was made."});
       }
       break; // The Host API does not guarantee an error shape, so unknown failures stop too.
     }
   }
-  return {succeeded, failed, rateLimited, cancelled: !active()};
+  return {succeeded, failed, rateLimited, cancelled: !active(), ...(denied ? {accessDenied:true} : {})};
 }
 
 export function runRemainingLive(host, films, active, onResult) {
@@ -148,9 +149,11 @@ export async function readLiveMetadata(host, film, {cacheOnly = false, requireEx
     result = await host.fetchYouTrack(`issues/${encodeURIComponent(film.idReadable)}/extensionEndpoints/${app}/metadata/${cacheOnly ? "cached" : "read"}`, cacheOnly ? {method: "GET"} : {method: "POST", body: {}});
   } catch (error) {
     if ([error?.status, error?.statusCode, error?.code, error?.response?.status].some((value) => Number(value) === 429) || /\b429\b/.test(error?.message || "")) throw new LiveRateLimited("TMDB rate limit reached");
+    if (accessDenied(error)) throw new AccessDeniedError();
     throw new Error("Live metadata unavailable");
   }
   if ([result?.status, result?.code].some((value) => Number(value) === 429)) throw new LiveRateLimited("TMDB rate limit reached");
+  if (accessDenied(result)) throw new AccessDeniedError();
   if (!result || result.tmdb_id !== id || typeof result.title !== "string" || !result.title.trim()) throw new Error("Metadata identity mismatch or invalid response");
   if (requireExpiry && (!Number.isFinite(Date.parse(result.cache_expires_at)) || Date.parse(result.cache_expires_at) <= Date.now())) throw new Error("Cached metadata expired");
   return {
