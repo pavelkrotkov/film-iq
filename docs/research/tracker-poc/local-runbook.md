@@ -16,6 +16,41 @@ the documented initial setup; do not run the bootstrap or seed commands against
 this existing installation. Keep the ignored `.cache/tracker-poc/` directory,
 including credentials, private inputs and both tracker databases, private.
 
+## One-command manual startup
+
+With Docker Desktop running, start the existing configured POCs from the
+worktree root:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python docs/research/tracker-poc/start_local_pocs.py
+```
+
+The command checks the existing containers, built UI, preference database and
+recorded collection pilot settings before starting anything. It reads the
+preference database schema without reading preference rows or initializing a
+missing table; a database whose schema is unavailable in the main file is
+rejected. It starts only
+stopped named containers, waits for PostgreSQL and the tracker web endpoints,
+and starts the separate UI, preference bridge and Kaneo metadata bridge only
+when their ports are free. It preserves the recorded pilot scope, pacing and
+refresh setting. The UI and preference bridge run in the background with
+owner-only logs in `.cache/tracker-poc/private/`; the pilot uses its existing
+private log. The pilot's normal startup performs its configured expired-cache
+cleanup. No metadata provider lookup is made by this command.
+
+An occupied port is left untouched and reported as **not verified**; the
+command exits with status 2 in that case. A missing prerequisite, unavailable
+Docker service or failed readiness check stops the command with status 1;
+services already started during that run remain running. Inspect the message
+and the commands below before retrying. HTTP reachability does not verify a
+signed-in session or the full film workflow. On 2026-11-06, a run against the
+already-running installation found all four named containers running and left
+the occupied UI, preference and Kaneo metadata listeners untouched and marked
+unverified. It exited with status 2 and made no provider requests. This did
+not test starting stopped services: cold startup and the complete cross-service
+restart sequence remain untested. This is manual startup, not an automatic
+reboot service; startup ordering has fictional tests.
+
 ## Tracker containers
 
 Start the existing PostgreSQL first and check that it reports `accepting

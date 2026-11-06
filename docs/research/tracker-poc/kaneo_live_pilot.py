@@ -163,6 +163,7 @@ def main(argv=None) -> None:
     group.add_argument("--collection", action="store_const", const="collection", dest="scope")
     group.add_argument("--pilot", action="store_const", const="pilot", dest="scope")
     group.add_argument("--stop", action="store_true", help="stop only the recorded bridge")
+    group.add_argument("--start-only", action="store_true", help="leave a running bridge untouched")
     args = parser.parse_args(argv)
     if args.stop:
         pid = verified_listener()
@@ -175,9 +176,12 @@ def main(argv=None) -> None:
             else "Kaneo pilot bridge already stopped"
         )
         return
+    pid = verified_listener()
+    if args.start_only and pid is not None:
+        print("Kaneo pilot bridge already running; left unchanged")
+        return
     scope, pace, refresh = intended_configuration(os.environ, PID_FILE, args.scope)
     env = environment(scope, pace, refresh)
-    pid = verified_listener()
     flags = os.O_WRONLY | os.O_CREAT | os.O_APPEND | os.O_NOFOLLOW
     fd = os.open(LOG_FILE, flags, 0o600)
     try:

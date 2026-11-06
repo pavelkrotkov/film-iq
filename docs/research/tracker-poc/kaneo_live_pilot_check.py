@@ -65,6 +65,17 @@ def main() -> None:
             assert wait.call_args_list == [((False,), {}), ((True,), {})]
             assert json.loads(pidfile.read_text())["pid"] == 303
 
+            # Start-only never stops or replaces an already running bridge.
+            kill.reset_mock()
+            start.reset_mock()
+            with (
+                patch.object(pilot, "environment", side_effect=AssertionError("credentials read")),
+                patch.object(pilot, "listener", return_value=303),
+            ):
+                pilot.main(["--start-only"])
+            kill.assert_not_called()
+            start.assert_not_called()
+
             # An unrelated listener is never stopped, even with a stale PID file.
             kill.reset_mock()
             start.reset_mock()
