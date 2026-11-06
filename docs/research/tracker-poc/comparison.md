@@ -45,10 +45,10 @@ unfinished browser, recovery and upgrade checks have been resolved.
 | --- | --- | --- | --- |
 | Custom UI freedom, 30% | A separate React UI uses the logged-in Kaneo session and local APIs. An isolated Brave session opened a fictional film and persisted a synopsis, lifecycle and interest score through reload. Source is available for a fork, but this experiment did not require one. | The latest main-menu iframe rendered 763 active fictional cards. A Brave walkthrough created and edited a fictional film, persisted interest and watched status, opened a direct link and exercised archive filtering. The iframe omits `allow-forms`, requiring direct button handlers; the YouTrack sidebar remains visible. | Verify live metadata and posters in YouTrack and remaining navigation. Test standalone YouTrack authentication in a browser. |
 | Data model, 15% | Numeric and multiselect task fields were read and written. Per-user data uses a small separate SQLite bridge and is not native task-field data. Current task-wide provenance is neutral, but the original import named the personal source and historical storage exposure is unassessed. | Typed issue fields and a separate lifecycle field were exercised; shared provenance was sanitized. A fictional preference and watched snapshot passed live single-user tests, and the real watched snapshot was read back. Deleting the app also deletes its extension properties. | Assess old Kaneo provenance in history/backups, and verify deletion and recovery behavior and practical per-user size limits. |
-| API and agents, 15% | The running OpenAPI document and REST endpoints were inspected; a synthetic external worker repeats without duplicate creation in sequential tests. | A token-authenticated external worker created and updated fictional issues. A local import contains 130 canonical records, with validated source identity and sanitized field provenance. | Test narrow credentials and signed-in permissions. Measure upgrade stability and repeat behavior with the complete app. |
+| API and agents, 15% | The running OpenAPI document and REST endpoints were inspected; a synthetic external worker repeats without duplicate creation in sequential tests. | A token-authenticated external worker created and updated fictional issues. A local import contains 130 film records with supplied IDs, checked import mappings and sanitized field provenance; the film identities are not independently verified. | Test narrow credentials and signed-in permissions. Measure upgrade stability and repeat behavior with the complete app. |
 | Search and sorting, 10% | Board pagination returned 1,000 synthetic tasks. The observed broad native search was capped at 50; the UI joins preferences and sorts them numerically. | A typed global critic-score sort returned 1,000 synthetic issues through paginated REST. Per-user interest sorting is performed by the proposed UI, not that native query. | Exercise identical provider, interest, genre and freshness filters in both browsers, including unknown data and 1,000-film rendering. |
 | Lifecycle and automation, 10% | Fictional tasks moved through columns; synthetic archive/restore and history were checked via API. External orchestration is still needed for the demonstrated enrichment. | Typed lifecycle updates and history were checked through REST. The installed on-change rule rejected one transition and allowed another on its guarded fictional issue; the scheduled rule wrote its marker. | Verify workflow history and the user-facing lifecycle experience in both browsers. |
-| Deployment and operations, 10% | Docker and PostgreSQL run locally with separate bridges. A fictional database dump restored a record, field and comment into a separate Kaneo instance and survived its restart. Four point-in-time samples showed about 245 MiB combined container memory, excluding bridges and Docker overhead. | The local Docker server uses its integrated database and one app package; the external enrichment path remains separate. The same brief sample showed about 2.07 GiB container memory. Cloud is documented but untested. | Test YouTrack recovery and Kaneo attachments/preferences; measure controlled startup, secret rotation and Hermes. The sampled workloads and data are not identical. |
+| Deployment and operations, 10% | Docker and PostgreSQL run locally with separate bridges. A fictional database dump restored a record, field and comment into a separate Kaneo instance and survived its restart. Four point-in-time samples showed about 245 MiB combined container memory, excluding bridges and Docker overhead. | The local Docker server uses its integrated database, a film-browser app and a separate metadata-bridge app plus service. The same brief sample showed about 2.07 GiB container memory, excluding the bridge and other overhead. Cloud is documented but untested. | Test YouTrack recovery and Kaneo attachments/preferences; measure controlled startup, secret rotation and Hermes. The sampled workloads and data are not identical. |
 | Upgrades and maintenance, 10% | The separate UI avoids an upstream source fork but depends on version-specific API behavior and separate bridge maintenance. | Official app and host APIs avoid modifying private UI internals, but app updates, iframe constraints and app-owned data lifecycle need verification. | Perform a pinned-version upgrade rehearsal and record actual merge and migration work. |
 
 ## Shared data and enrichment
@@ -69,13 +69,20 @@ settings, usages and attachments were unchanged in the checked observations.
 Owner-only full-property exports were saved before and after the v3 refresh;
 the older v1 project projections were visibility-filtered, not full backups.
 A full-property restore passed in an isolated fictional app; real restoration
-and full server recovery remain unverified. Neither import writes to Movary or
-changes a watchlist.
+and full server recovery remain unverified. The Kaneo sidecar was subsequently
+updated to the newer observation time after its 27 watched IDs and event arrays
+were verified identical; the sidecar's other bytes were unchanged. Neither
+import writes to Movary or changes a watchlist.
 
 An aggregate read of the 130 YouTrack issues on 2026-11-06 found no nonempty
 issue description, stored release year, stored genre, critic score or critic
 summary. The source-listed director field was populated for 54 issues and the
-direct-review-links field for 50. The private input likewise has no synopsis,
+direct-review-links field for 50. A later targeted import added one previously
+researched critic-review link to an untouched YouTrack issue, bringing its
+review-field coverage to 51 films; Kaneo had not received that additional
+link at the time of the import. The source match is not an independently
+verified film identity. See [direct-review links](direct-review-links.md) for
+the import and its limits. The private input likewise has no synopsis,
 canonical release year or genre. These counts describe the issue fields, not
 the separate TMDB cache. They expose a material gap against the requested
 persistent canonical film model: the POC can display cached synopsis, year and
