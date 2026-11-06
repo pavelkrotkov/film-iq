@@ -57,6 +57,14 @@ mismatched artwork and streaming offers. Exact title agreement is also not
 proof of identity. The current cache data can be refreshed in six bounded
 windows, but no recurring job is installed.
 
+Both deployed mismatch panels can show an explicitly unverified IMDb candidate
+link when the current-ID TMDB response contains a valid IMDb URL. The link is
+hidden for fictional fixtures; opening it is a user-initiated visit to IMDb,
+not an automatic request or independent identity verification. A local aggregate
+check against the original manifest found a cached candidate URL for all 11
+title-guard mismatches in each backend. Fictional rendering tests checked the
+ID and URL guards; real-film browser interaction remains unverified.
+
 Both grids flag loaded title differences and provide a “Title differences to
 review” filter. It covers only loaded data and does not identify every possible
 identity error. Correcting an ID can replace the previous identity's cached
