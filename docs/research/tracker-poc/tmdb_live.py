@@ -37,6 +37,13 @@ def load_allowlist():
     if not directory:
         raise ValueError("Approval configuration unavailable")
     path = Path(directory) / "approved-ids.json"
+    addendum_dir = os.environ.get("FILMIQ_TMDB_ADDENDUM_DIR")
+    if addendum_dir is not None:
+        if not Path(addendum_dir).is_absolute():
+            raise ValueError("Addendum directory must be absolute")
+        from tmdb_addendum_candidate import load_on_demand_allowlist
+
+        return load_on_demand_allowlist(path, Path(addendum_dir))
     return approval.decode_allowlist(path.read_text(encoding="utf-8"))
 
 

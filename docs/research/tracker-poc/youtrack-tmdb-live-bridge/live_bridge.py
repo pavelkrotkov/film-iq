@@ -270,8 +270,18 @@ def main():
         else:
             read_reviewed = None
 
-        def load():
-            return decode_allowlist(ALLOWLIST_PATH.read_text(encoding="utf-8"))
+        addendum_dir = os.environ.get("FILMIQ_TMDB_ADDENDUM_DIR")
+        if addendum_dir is not None:
+            if not Path(addendum_dir).is_absolute():
+                raise ValueError("Addendum directory must be absolute")
+            from tmdb_addendum_candidate import load_on_demand_allowlist
+
+            def load():
+                return load_on_demand_allowlist(ALLOWLIST_PATH, Path(addendum_dir))
+        else:
+
+            def load():
+                return decode_allowlist(ALLOWLIST_PATH.read_text(encoding="utf-8"))
 
         parse_allowlist(load())
         catalog_approval = os.environ.get("FILMIQ_CATALOG_APPROVAL_DIR")
