@@ -72,3 +72,19 @@ showed a fictional individual-review link and a fictional aggregator link with
 the expected distinct labels; the links were not opened. Both custom views hide
 links when the current title differs from the reviewed source title, pending
 revalidation. Real-film link rendering has not been checked in the browser.
+
+Both deployed film interfaces can also show director names already recorded in
+the direct-review identity evidence, and search those names without fetching
+new data or changing tracker fields. They retain all reported names and label
+them as review identity evidence whose film identity has not been independently verified;
+the names are not promoted to canonical directors. The existing matching-ID and
+matching-title guards apply to both search and display. A local read of 130
+YouTrack film issues counted 50 with matching-ID and matching-title review
+evidence, including 13 whose separate source-director field was empty. This
+aggregate read was not a browser rendering check or independent identity
+verification. Fictional tests exercised the two filters, display labels,
+conflicting names, malformed or missing data, and changed title or ID.
+The deployed YouTrack package and Kaneo bundle matched the reviewed builds;
+the checked watched property, preferences, settings, usages and attachment
+metadata were unchanged. No real-film browser walkthrough was performed for
+this change.
