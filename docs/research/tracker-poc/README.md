@@ -24,6 +24,14 @@ snapshot is unknown rather than an off-watchlist assertion. No Movary or
 provider write was made. See the [local runbook](local-runbook.md#movary-watchlist-projection)
 for rollout evidence and the one-time initializer's limitations.
 
+The local YouTrack app also includes the Movary watchlist view. Its admin
+user's FILMREAL snapshot has two entries, neither matched to a visible tracker
+record. The app package and full-property import were verified by readback; the
+watched property, visible preferences, app settings and usages were unchanged.
+The real-film browser view remains unverified. See the [watchlist rollout and
+recovery notes](youtrack-watchlist-poc.md) for the private backup and manual
+refresh limitations.
+
 Both POCs are running with the 103 candidate and 27 Movary-watched records.
 A paced collection run populated a separate seven-day metadata and US-provider
 cache for all 130 approved IDs in each backend. Cache-only comparison found
