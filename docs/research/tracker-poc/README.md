@@ -24,7 +24,8 @@ identity, individual streaming entitlement, or overall usability.
 An aggregate 2026-11-06 read found no nonempty synopsis, release-year or genre
 values on the 130 YouTrack issues themselves; those details currently rely on
 the separate expiring cache. See the [comparison](comparison.md) for coverage
-and the unresolved persistent-data limitation.
+and the unresolved persistent-data limitation, and the [source assessment](durable-metadata-sources.md)
+for potential durable alternatives.
 Fictional mounted-browser tests exercised cache rehydration and transient poster
 rendering. In an isolated Kaneo browser, the real 130-card grid loaded all
 cache records and a selected film’s cached details survived reload and back
