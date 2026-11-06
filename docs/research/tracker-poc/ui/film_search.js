@@ -1,7 +1,7 @@
-// Only search source-listed and already-matched live directors; absent data is unknown.
-export function matchesFilmSearch(query, title, sourceDirector, liveDirectors) {
+// Search only stored source assertions and already-matched live directors.
+export function matchesFilmSearch(query, title, sourceDirector, liveDirectors, reviewDirectors = []) {
   if (!query) return true;
   const needle = query.toLowerCase();
-  return [title, sourceDirector, ...(Array.isArray(liveDirectors) ? liveDirectors : [])]
+  return [title, sourceDirector, ...(Array.isArray(liveDirectors) ? liveDirectors : []), ...reviewDirectors]
     .some((value) => typeof value === "string" && value.toLowerCase().includes(needle));
 }

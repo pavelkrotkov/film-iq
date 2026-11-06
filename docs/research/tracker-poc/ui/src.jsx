@@ -23,6 +23,7 @@ import {liveGenreOnlyMatch, storedGenreDisplay, storedGenreLabels} from "./store
 import {Poster} from "./poster.jsx";
 import {IdentityReview} from "./identity_review.jsx";
 import {ReviewIdentity} from "./review_identity.jsx";
+import {ReviewDirectorEvidence} from "./review_director_evidence.jsx";
 import {criticScore, CriticFields} from "./critic_fields.jsx";
 import {titleNeedsReview} from "./youtrack_tmdb.js";
 import {MetadataUnavailable} from "./metadata_status.jsx";
@@ -705,6 +706,7 @@ function App() {
                   {film.fields["POC Year"] || "YEAR UNKNOWN"}
                 </div>
                 <h2>{film.title}</h2>
+                <ReviewDirectorEvidence raw={film.fields["POC Direct Review Links"]} filmId={film.fields["POC TMDB ID"]} title={film.title} />
                 {liveMovie?.poster_from_previous && <p>Poster from an earlier lookup.</p>}
                 {movary?.status === "available" && movary?.films?.[film.fields["POC TMDB ID"]]?.watched === true && <section>
                   <h3>Watched in Movary</h3>
@@ -1029,7 +1031,7 @@ function App() {
                 </label>
               </div>
             </div>
-            {query && <p>Director search uses source-listed or loaded live metadata; films with unknown directors may be missing.</p>}
+            {query && <p>Director search uses source-listed, review identity evidence or loaded live metadata; films with unknown directors may be missing.</p>}
             {missingLinkedFilm(selected, film, loaded, busy) && <p role="alert">The linked film is unavailable in this project. It may have been removed or you may not have access. <a href="#">Clear film link</a></p>}
             {busy ? (
               <p>Loading records…</p>
@@ -1054,6 +1056,7 @@ function App() {
                       </div>
                       {liveGenreOnlyMatch(item.fields["POC Genre"], item.live?.genres, genre) && <p>{cacheFixture ? "Fictional cache" : "TMDB"} genre match: {genre}</p>}
                       <h3>{item.title}</h3>
+                      {query && <ReviewDirectorEvidence raw={item.fields["POC Direct Review Links"]} filmId={item.fields["POC TMDB ID"]} title={item.title} query={query} />}
                       {item.titleNeedsReview && <p>Title differs from TMDB; open to review.</p>}
                       {item.live && <p>TMDB match not independently verified</p>}
                       {item.live?.poster_from_previous && <p>Poster from an earlier lookup.</p>}

@@ -5,13 +5,18 @@ export function routeLocation(route) {
 }
 
 export function hasUnsavedPageDraft({filmDirty, prefDirty, commentDrafts, newTitle, newTmdbId}) {
-  return Boolean(filmDirty || prefDirty || newTitle.trim() || newTmdbId.trim() ||
+  return Boolean(filmDirty || prefDirty || hasNewFilmDraft(newTitle, newTmdbId) ||
     Object.values(commentDrafts).some((text) => typeof text === "string" && text.trim()));
+}
+
+export function hasNewFilmDraft(title, tmdbId) {
+  return Boolean((typeof title === "string" && title.trim()) || (typeof tmdbId === "string" && tmdbId.trim()));
 }
 
 export async function handleExternalRoute(current, next, guards, {apply, queue, restore, notify}) {
   if (current.project === next.project && current.film === next.film) return;
-  if (!current.project || !(guards.pendingPreview || guards.pendingNavigation || guards.busy || guards.filmDirty || guards.prefDirty)) {
+  const newFilmDraft = current.project !== next.project && hasNewFilmDraft(guards.newTitle, guards.newTmdbId);
+  if (!current.project || !(guards.pendingPreview || guards.pendingNavigation || guards.busy || guards.filmDirty || guards.prefDirty || newFilmDraft)) {
     apply(next);
     return;
   }

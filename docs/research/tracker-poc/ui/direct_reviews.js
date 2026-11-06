@@ -21,3 +21,11 @@ export function readDirectReviews(raw, filmId) {
 export function reviewsMatchTitle(links, title) {
   return Array.isArray(links) && typeof title === "string" && links.every((link) => link.identity_evidence.input_title === title);
 }
+
+// These are source assertions, not a canonical director field or verified ID.
+export function reviewDirectorNames(raw, filmId, title) {
+  const links = readDirectReviews(raw, filmId);
+  if (!links?.length || !reviewsMatchTitle(links, title)) return [];
+  return [...new Set(links.flatMap((link) => link.identity_evidence.source_directors)
+    .map((name) => name.trim()).filter(Boolean))];
+}

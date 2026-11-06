@@ -5,7 +5,7 @@ import { field, filmYearLabel, filterYoutrackFilms, localWatchLabel, localWatchl
 import { boundedRead, loadFilmView, publishFilmBatch } from "./youtrack_loading.js";
 import { attachMatchedLive, eligibleLiveFilms, failedLiveFilms, liveMetadataMatches, LiveRateLimited, mergeLiveResult, readLiveMetadata, remainingLiveFilms, runLiveBatch, runRemainingLive, suppliedTmdbId } from "./youtrack_tmdb.js";
 import { filmBaseline, filmChanges, hasDuplicateTmdbId, parseOptionalTmdbId } from "./youtrack_edit.js";
-import { handleExternalRoute, hasUnsavedPageDraft, routeLocation } from "./youtrack_navigation.js";
+import { handleExternalRoute, hasNewFilmDraft, hasUnsavedPageDraft, routeLocation } from "./youtrack_navigation.js";
 import { TmdbCredits } from "./tmdb_credits.jsx";
 import { filterMayExcludeUnknown } from "./metadata_filter_coverage.js";
 import { MOVARY_MAPPING_NOTICE, boundMovaryFilm, historicalMovaryHistories, movaryHistory, unboundMovaryHistory } from "./movary_history.js";
@@ -15,6 +15,7 @@ import {ACCESS_DENIED_MESSAGE, AccessDeniedError, availabilityTimeLabel, expireC
 import {Poster} from "./poster.jsx";
 import {IdentityReview} from "./identity_review.jsx";
 import {ReviewIdentity} from "./review_identity.jsx";
+import {ReviewDirectorEvidence} from "./review_director_evidence.jsx";
 import {criticScore, CriticFields} from "./critic_fields.jsx";
 import {clearSavedDraft, currentComments, saveComment} from "./comment_drafts.js";
 import {MetadataUnavailable} from "./metadata_status.jsx";
@@ -118,12 +119,14 @@ function App() {
   const sequence = useRef(0), selectedRef = useRef(selected), projectRef = useRef(project), restoringCount = useRef(0), guardsRef = useRef({});
   selectedRef.current = selected;
   projectRef.current = project;
-  guardsRef.current = {filmDirty, prefDirty, pendingPreview, pendingNavigation, busy};
+  guardsRef.current = {filmDirty, prefDirty, pendingPreview, pendingNavigation, busy, newTitle, newTmdbId};
   function setWorking(value) { guardsRef.current.busy = value; setBusy(value); }
   function markFilmDirty(value) { guardsRef.current.filmDirty = value; setFilmDirty(value); }
   function markPrefDirty(value) { guardsRef.current.prefDirty = value; setPrefDirty(value); }
   function setPreview(value) { guardsRef.current.pendingPreview = value; setPendingPreview(value); }
   function setQueued(value) { guardsRef.current.pendingNavigation = value; setPendingNavigation(value); }
+  function setNewFilmTitle(value) { guardsRef.current.newTitle = value; setNewTitle(value); }
+  function setNewFilmTmdbId(value) { guardsRef.current.newTmdbId = value; setNewTmdbId(value); }
 
   async function refresh(target = project) {
     if (!target || target !== projectRef.current) return;
@@ -250,6 +253,7 @@ function App() {
   }, [film?.idReadable, preferences, prefDirty]);
   async function navigateRoute(next) {
     markFilmDirty(false); markPrefDirty(false);
+    if (next.project !== projectRef.current) { setNewFilmTitle(""); setNewFilmTmdbId(""); }
     projectRef.current = next.project; selectedRef.current = next.film;
     setProject(next.project); setSelected(next.film);
     try { await host.navigation.updateAppLocation(routeLocation(next)); }
@@ -262,7 +266,7 @@ function App() {
   }
   async function selectProject(next, discard = false) {
     if (pendingPreview || (pendingNavigation && !discard)) return;
-    if ((filmDirty || prefDirty) && !discard) { setQueued({kind: "project", value: next}); return; }
+    if ((filmDirty || prefDirty || (next !== projectRef.current && hasNewFilmDraft(guardsRef.current.newTitle, guardsRef.current.newTmdbId))) && !discard) { setQueued({kind: "project", value: next}); return; }
     await navigateRoute({project: next, film: null});
   }
   const shownFilms = useMemo(() => attachMatchedLive(films, liveResults), [films, liveResults]);
@@ -384,7 +388,7 @@ function App() {
       const created = await boundedRead(() => host.fetchYouTrack("issues", { method: "POST", query: { fields: "idReadable" }, body }), 30000);
       if (typeof created?.idReadable !== "string") throw new Error("Creation response was incomplete");
       submitting = false;
-      setNewTitle(""); setNewTmdbId("");
+      setNewFilmTitle(""); setNewFilmTmdbId("");
       if (await refresh()) await selectFilm(created.idReadable);
       else setError("Film created, but refresh failed. Reload to confirm the displayed record.");
     } catch (e) { if (submitting) setCreateUncertain(true); setNotice(""); setError(submitting ? "Creation may have completed. Reload this page and search for the film before retrying." : `Could not create film: ${e.message}`); }
@@ -450,12 +454,13 @@ function App() {
       {error && <p role="alert">{error}</p>}{notice && <p className="notice">{notice}</p>}
       {unboundWatched && <p role="status">Some Movary entries cannot be associated with the current supplied TMDB IDs. Their watched status is unknown until the snapshot mapping is reviewed and refreshed.</p>}
       {liveRateLimited && <p role="alert">TMDB rate limit reached. Wait and reload the page before trying live lookups again.</p>}
-      {pendingNavigation && <section aria-labelledby="discard-title"><h2 id="discard-title">Discard unsaved edits?</h2><p>Your film and preference drafts have not been saved.</p><button disabled={busy || restoringLocation} autoFocus onClick={() => setQueued(null)}>Keep editing</button><button disabled={busy || restoringLocation} onClick={() => {const target = pendingNavigation; setQueued(null); if (target.kind === "film") selectFilm(target.value, true); else if (target.kind === "project") selectProject(target.value, true); else navigateRoute(target.value);}}>Discard and continue</button></section>}
+      {pendingNavigation && <section aria-labelledby="discard-title"><h2 id="discard-title">Discard unsaved edits?</h2><p>Your film, preference or new-film details have not been saved.</p><button disabled={busy || restoringLocation} autoFocus onClick={() => setQueued(null)}>Keep editing</button><button disabled={busy || restoringLocation} onClick={() => {const target = pendingNavigation; setQueued(null); if (target.kind === "film") selectFilm(target.value, true); else if (target.kind === "project") selectProject(target.value, true); else navigateRoute(target.value);}}>Discard and continue</button></section>}
       {pendingPreview && <section aria-labelledby="preference-preview-title"><h2 id="preference-preview-title">Review preference changes</h2><p>Film: {pendingPreview.issue_id}</p><p>Interest: {preferenceLabel((pendingPreview.before || emptyPreference).interest_score)} → {preferenceLabel(pendingPreview.after.interest_score)}</p><p>Watchlist: {preferenceLabel((pendingPreview.before || emptyPreference).watchlist)} → {preferenceLabel(pendingPreview.after.watchlist)}</p><p>Watched date: {preferenceLabel((pendingPreview.before || emptyPreference).watched_at)} → {preferenceLabel(pendingPreview.after.watched_at)}</p><p>Notes before: {(pendingPreview.before || emptyPreference).personal_notes || "(empty)"}</p><p>Notes after: {pendingPreview.after.personal_notes || "(empty)"}</p><button disabled={busy || restoringLocation} autoFocus onClick={discardPreference}>Cancel preview</button><button disabled={busy || restoringLocation || saveUncertain || !previewMatchesFilm(pendingPreview, selected)} onClick={confirmPreference}>Save local preference</button>{discardFailed && <><p>The server preview may remain until another preview or app removal. Draft notes are not stored in it.</p><button disabled={busy || restoringLocation} onClick={() => {setPreview(null); setDiscardFailed(false); setNotice(saveUncertain ? "Preview closed locally; the save outcome and server preview remain unverified. Open a new preview to compare the server's Before value." : "Preview closed locally; the server preview may remain."); setSaveUncertain(false);}}>Close preview locally</button></>}</section>}
       {film ? <section>
         <button disabled={locked} onClick={() => selectFilm(null)}>← Back to films</button>
         <h2>{film.summary}</h2><p>{film.idReadable} · {filmYearLabel(film)}</p>
-        <p>{field(film, "FilmIQ Director") ? `Source-listed director: ${field(film, "FilmIQ Director")}` : "Director unknown"}</p>
+        <p>{field(film, "FilmIQ Director") ? `Source-listed director: ${field(film, "FilmIQ Director")}` : "Source-listed director unknown"}</p>
+        <ReviewDirectorEvidence raw={field(film, "FilmIQ Direct Review Links")?.text} filmId={field(film, "FilmIQ TMDB ID")} title={film.summary} />
         {watchedHistory ? <section>
           <h3>Watched in Movary</h3><p>Snapshot observed {watchedHistory.observedAt || "time unknown"}. Watch dates and counts come from Movary; unknown dates remain unknown.</p><p>{MOVARY_MAPPING_NOTICE}</p>
           {watchedHistory.plays === null ? <p>Play entries unavailable.</p> : watchedHistory.plays.length ? <ul>{watchedHistory.plays.map((entry, index) => <li key={index}>{entry.date || "Date unknown"} · {entry.plays} play(s)</li>)}</ul> : <p>No play entries in this snapshot.</p>}
@@ -539,7 +544,7 @@ function App() {
           <label><input type="checkbox" checked={excludeMovaryWatched} disabled={movary?.status !== "available" && !excludeMovaryWatched} onChange={(e) => {setExcludeMovaryWatched(e.target.checked); if (e.target.checked) setMovaryOnly(false);}} /> Exclude known watched in Movary</label>
           <label><input type="checkbox" checked={sortInterest} disabled={preferences === null && !sortInterest} onChange={(e) => setSortInterest(e.target.checked)} /> Sort by interest</label>
         </div>
-        {query && <p>Director search uses source-listed or loaded live metadata; films with unknown directors may be missing.</p>}
+        {query && <p>Director search uses source-listed, review identity evidence or loaded live metadata; films with unknown directors may be missing.</p>}
         <p>{cacheFixture ? "Fictional cache details can reappear after reload until they expire." : liveCache ? "Cached film details can reappear after reload until they expire, up to seven days." : "Live film details stay available until you close or reload this page."}</p>
         <button type="button" disabled={locked || liveBusy || liveRateLimited || !eligibleLiveFilms(visible, liveResults).length} onClick={() => loadNextLiveBatch()}>{liveBatch ? `Loading ${liveBatch.done}/${liveBatch.total}…` : "Load live metadata for next 30 displayed films"}</button>{" "}
         <button type="button" disabled={locked || liveBusy || liveRateLimited || !remainingVisible.length} onClick={() => loadNextLiveBatch(true)}>Load all {remainingVisible.length} remaining visible films (up to {remainingVisible.length * 3} requests)</button>{" "}
@@ -550,10 +555,11 @@ function App() {
         {preferences === null && localWatched && <p role="status">Local watched filtering is unavailable while preferences are loading or unavailable.</p>}
         {visible.some((item) => boundMovaryFilm(movary, item.idReadable, suppliedTmdbId(item))) && <p>{MOVARY_MAPPING_NOTICE}</p>}
         <h2>Discovery · {visible.length}</h2><div className="grid">{visible.map((item) => {const metadata = item.live; const poster = metadata?.poster_url; const available = providerObservation(item); const year = filmYearLabel(item, metadata?.year); const refresh = refreshNotice(liveResults[item.idReadable], suppliedTmdbId(item), metadata); return <button className="card" key={item.id} disabled={locked} onClick={() => selectFilm(item.idReadable)}><span className="poster"><Poster url={poster} alt={`TMDB poster for ${metadata?.title}`} loading="lazy" transient={liveCache} /></span><strong>{item.summary}</strong>{item.titleNeedsReview && <small>Title differs from TMDB; open to review.</small>}<small>{storedGenreDisplay(field(item, "FilmIQ Genre")) ?? (metadata?.genres?.join(", ") || "Genre unknown")}</small>
+          {query && <ReviewDirectorEvidence raw={field(item, "FilmIQ Direct Review Links")?.text} filmId={field(item, "FilmIQ TMDB ID")} title={item.summary} query={query} />}
           {liveGenreOnlyMatch(field(item, "FilmIQ Genre"), metadata?.genres, genre) && <small>{cacheFixture ? "Fictional cache" : "TMDB"} genre match: {genre}</small>}
           <small>{year} · Interest {preferences?.[item.idReadable]?.interest_score ?? "unknown"} · Critic score (source not recorded) {criticScore(field(item, "FilmIQ Critic Score"))}</small><small>{field(item, "FilmIQ Lifecycle")?.name || "State unknown"} · {boundMovaryFilm(movary, item.idReadable, suppliedTmdbId(item)) ? "Watched in Movary" : "Movary watched status unknown"}</small><small>{localWatchlistLabel(preferences, item.idReadable)} · Local watched status: {localWatchLabel(preferences, item.idReadable)}</small><small>{available?.source || "Provider"} subscriptions: {providerDescription(available, "subscription")}</small>{metadata?.poster_from_previous && <small>Poster from an earlier lookup.</small>}{refresh && <small>{refresh}</small>}{metadata && <small>Supplied TMDB identity is unverified.</small>}</button>;})}</div>
         {Object.values(liveResults).some((item) => item.data) && <TmdbCredits />}
-        <form onSubmit={addFilm} onKeyDown={(e) => submitOnEnter(e, addFilm)}><label>Add film title<input disabled={locked} value={newTitle} onChange={(e) => setNewTitle(e.target.value)} /></label><label>Supplied TMDB ID (optional)<input inputMode="numeric" disabled={locked} value={newTmdbId} onChange={(e) => setNewTmdbId(e.target.value)} /></label><p>IDs are unverified. Duplicate checks cover visible project records; live lookup remains subject to existing authorization.</p>{(newTitle.trim() || newTmdbId.trim()) && <DraftExitWarning kind="new-film details" />}<button type="button" onClick={addFilm} disabled={locked || !project || createUncertain}>Add film</button></form>
+        <form onSubmit={addFilm} onKeyDown={(e) => submitOnEnter(e, addFilm)}><label>Add film title<input disabled={locked} value={newTitle} onChange={(e) => setNewFilmTitle(e.target.value)} /></label><label>Supplied TMDB ID (optional)<input inputMode="numeric" disabled={locked} value={newTmdbId} onChange={(e) => setNewFilmTmdbId(e.target.value)} /></label><p>IDs are unverified. Duplicate checks cover visible project records; live lookup remains subject to existing authorization.</p>{(newTitle.trim() || newTmdbId.trim()) && <DraftExitWarning kind="new-film details" />}<button type="button" onClick={addFilm} disabled={locked || !project || createUncertain}>Add film</button></form>
       </section>}
     </main>
   </>;

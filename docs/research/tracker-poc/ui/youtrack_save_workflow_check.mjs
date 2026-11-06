@@ -83,8 +83,8 @@ const navigateEnd = source.indexOf("  async function selectFilm(id, discard = fa
 assert.ok(navigateStart >= 0 && navigateEnd > navigateStart);
 const selectedRef = {current:"FILMPOC-1"}, projectRef = {current:"FILMPOC"};
 let routeGuard = true;
-const navigate = new Function("markFilmDirty", "markPrefDirty", "setFilmNeedsReload", "projectRef", "selectedRef", "setProject", "setSelected", "host", "routeLocation", "setError", `${source.slice(navigateStart, navigateEnd)}; return navigateRoute;`)(
-  () => {}, () => {}, (value) => {routeGuard=value;}, projectRef, selectedRef, () => {}, () => {}, {navigation:{updateAppLocation:async () => {}}}, (value) => value, () => {},
+const navigate = new Function("markFilmDirty", "markPrefDirty", "setFilmNeedsReload", "setNewFilmTitle", "setNewFilmTmdbId", "projectRef", "selectedRef", "setProject", "setSelected", "host", "routeLocation", "setError", `${source.slice(navigateStart, navigateEnd)}; return navigateRoute;`)(
+  () => {}, () => {}, (value) => {routeGuard=value;}, () => {}, () => {}, projectRef, selectedRef, () => {}, () => {}, {navigation:{updateAppLocation:async () => {}}}, (value) => value, () => {},
 );
 await navigate({project:"FILMPOC",film:null});
 await navigate({project:"OTHER",film:null});

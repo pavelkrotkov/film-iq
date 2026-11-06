@@ -25,6 +25,13 @@ await handleExternalRoute(current, next, {filmDirty: true}, callbacks);
 assert.deepEqual(events.splice(0), [["queue", next], ["restore", current]]);
 await handleExternalRoute(current, next, {prefDirty: true}, callbacks);
 assert.deepEqual(events.splice(0), [["queue", next], ["restore", current]]);
+const otherProject = {project: "FILMREAL", film: null};
+for (const draft of [{newTitle:"Fictional title",newTmdbId:""}, {newTitle:"",newTmdbId:"123"}]) {
+  await handleExternalRoute(current, otherProject, draft, callbacks);
+  assert.deepEqual(events.splice(0), [["queue", otherProject], ["restore", current]], "project change must confirm before discarding a new-film draft");
+  await handleExternalRoute(current, next, draft, callbacks);
+  assert.deepEqual(events.splice(0), [["apply", next]], "same-project film navigation retains the new-film draft");
+}
 await handleExternalRoute(current, next, {pendingPreview: {}}, callbacks);
 assert.equal(events.some(([kind]) => kind === "queue" || kind === "apply"), false);
 assert.equal(events.filter(([kind]) => kind === "restore").length, 1);
