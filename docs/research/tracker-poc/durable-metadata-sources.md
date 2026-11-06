@@ -64,9 +64,14 @@ generally make project text available under CC BY-SA 4.0, with attribution,
 license and modification notices and share-alike requirements for relevant
 reuse; imported text or media may have additional terms. Keep the source page,
 revision and applicable attribution with any copied passage, and assess the
-terms for the intended use before adopting it. API extracts are available via
-[TextExtracts](https://www.mediawiki.org/wiki/Extension:TextExtracts), but an
-article lead is not necessarily a synopsis, a plot can reveal spoilers, and
+terms for the intended use before adopting it. Wikimedia's
+[Page Content Service](https://www.mediawiki.org/wiki/Page_Content_Service)
+documents a stable page-summary endpoint for first-paragraph extracts and
+third-party reading clients. Its
+[TextExtracts](https://www.mediawiki.org/wiki/Extension:TextExtracts) extension
+is not actively maintained and points Wikimedia-production summary features to
+that service; check the selected endpoint and its status before implementation.
+An article lead is not necessarily a synopsis, a plot can reveal spoilers, and
 neither article nor text coverage is assured. A sitelink is an identity lead,
 not independent verification of the intended film.
 
