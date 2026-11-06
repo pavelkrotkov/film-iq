@@ -179,9 +179,38 @@ project to the same complete source observation, previewed two entries, and
 created a separate owner-only `movary-watchlist.json` without altering the
 watched sidecar. Matching the observation supports continuity but does not
 independently verify the user's identity. The initializer refuses an existing
-target and assumes a single writer. It does not refresh an existing sidecar;
-a later changed watchlist needs a separately designed refresh path. Do not
-remove or overwrite this sidecar to force a refresh.
+target and assumes a single writer. For later observations use the manual
+refresh below rather than removing or overwriting the sidecar to force a refresh.
+
+For a future manual refresh, first refresh the existing watched sidecar to the
+same complete Movary snapshot using its separately documented procedure. Stop
+any other sidecar writers. Matching observations establish continuity, not
+independent account identity. Then preview the watchlist projection using an
+owner-only project-local snapshot and status file:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python docs/research/tracker-poc/kaneo_watchlist_refresh.py --snapshot <project-private-snapshot.json>
+```
+
+Review the observation times and aggregate additions and no-longer-observed
+counts. The latter are not off-watchlist assertions. For a confirmed refresh,
+run the same command with `--apply --backup <new-owner-only-project-backup>`;
+the backup path must be unused inside an owner-only project directory. The
+helper requires exactly one existing watched-sidecar owner and a matching project
+and complete source, accepts a newer observation, copies and verifies the exact
+old bytes, rechecks inputs, and changes only that owner's watchlist projection.
+Other watchlist-sidecar users are preserved. A same observation is a no-op; older
+or conflicting same-time data is rejected. It assumes a single writer. It
+contacts neither Movary, the tracker, nor any provider. No real refresh has
+been exercised by this helper.
+
+Recovery is manual, not an automatic guarded restore: stop concurrent sidecar
+writers; verify the owner-only backup and current sidecar belong to the same
+owner and project; first save the entire current sidecar to a separate unused
+owner-only project file, then restore the exact selected backup and verify
+readback byte for byte before restarting writers. If any ownership or integrity
+check is unclear, stop and investigate. Do not restore merely because an apply
+reported an error: inspect the current sidecar and retained backup first.
 
 A private SQLite online backup passed integrity verification. After restart,
 the preferences database's complete SQL-dump digest matched the backup; source
