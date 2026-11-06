@@ -39,10 +39,10 @@ const preserved = mergeResult(prior, {data: {tmdb_id: 2, availability: {status: 
 assert.deepEqual(preserved.data.availability, prior.data.availability);
 assert.equal(preserved.data.availability_attempt, "unknown");
 assert.deepEqual(mergeResult(prior, {error: "failed"}).data, prior.data);
-assert.equal(refreshNotice(preserved, 2, preserved.data), "Latest provider check incomplete; previous availability shown.");
+assert.equal(refreshNotice(preserved, 2, preserved.data), "Your last in-app provider check was incomplete; shown availability may come from another check.");
 const failedRefresh = mergeResult(prior, {requestedId: 2, error: "failed"});
-assert.equal(refreshNotice(failedRefresh, 2, failedRefresh.data), "Latest refresh failed; previous data shown.");
-assert.equal(refreshNotice(failedRefresh, 2, null), "Latest refresh failed.");
+assert.equal(refreshNotice(failedRefresh, 2, failedRefresh.data), "Your last in-app refresh failed; available data shown.");
+assert.equal(refreshNotice(failedRefresh, 2, null), "Your last in-app refresh failed.");
 assert.equal(refreshNotice(failedRefresh, 3, failedRefresh.data), null);
 assert.equal(refreshNotice({requestedId: 2, data: prior.data, error: null}, 2, prior.data), null);
 const calls = [], limitedEvents = [];

@@ -20,20 +20,22 @@ await assert.rejects(fetchTaskLiveMovie(task, null, async () => ({ok:true,json:a
 await assert.rejects(fetchCachedMovie(task,null,async () => ({ok:true,json:async () => ({...data,cache_expires_at:'2000-01-01T00:00:00Z'})})));
 const issue = {idReadable:'FILMPOC-1', customFields:[{name:'FilmIQ TMDB ID',value:123}]};
 // Correcting an ID should replace only the old identity's cached entry, even
-// when it previously failed. A same-ID refresh/error must not be overwritten.
+// when it previously failed. An in-flight read must not overwrite a newer result.
 const older = {requestedId:122,data:{tmdb_id:122,title:'Fictional'}};
 const taskWithTitle = {...task,title:'Fictional'};
 const issueWithTitle = {...issue,summary:'Fictional'};
 for (const entry of [older,{requestedId:122,error:'Fictional failure'}]) {
-  const k = hydrateCachedResult({'fictional-task':entry},'fictional-task',123,data);
-  const y = hydrateCachedResult({'FILMPOC-1':entry},'FILMPOC-1',123,data);
+  const k = hydrateCachedResult({'fictional-task':entry},'fictional-task',123,data,entry);
+  const y = hydrateCachedResult({'FILMPOC-1':entry},'FILMPOC-1',123,data,entry);
   assert.equal(matchedLive(taskWithTitle,k['fictional-task']),data);
   assert.equal(attachMatchedLive([issueWithTitle],y)[0].live,data);
 }
 const current = {'fictional-task':{requestedId:123,error:'Latest refresh failed'}};
-assert.equal(hydrateCachedResult(current,'fictional-task',123,data),current,'same-ID cache must not hide a refresh failure');
+const recovered = hydrateCachedResult(current,'fictional-task',123,data,current['fictional-task']);
+assert.equal(recovered['fictional-task'].error,'Latest refresh failed','cache must not hide a refresh failure');
+assert.equal(recovered['fictional-task'].data,data,'cache can supply data beneath the failure');
 const currentSuccess = {'fictional-task':{requestedId:123,data:{...data,title:'Fresh explicit refresh'}}};
-assert.equal(hydrateCachedResult(currentSuccess,'fictional-task',123,data),currentSuccess,'same-ID cache must not replace current live data');
+assert.equal(hydrateCachedResult(currentSuccess,'fictional-task',123,data,older),currentSuccess,'older pending read must not replace current live data');
 assert.equal(hydrateCachedResult({},'fictional-task',123,{...data,tmdb_id:122})['fictional-task'],undefined);
 const cached = await readLiveMetadata({fetchYouTrack:async (url, options) => {
   assert.equal(url,'issues/FILMPOC-1/extensionEndpoints/filmiq-tmdb-live-isolated/metadata/cached');
@@ -56,7 +58,7 @@ assert.equal(retained.synopsis,'Earlier synopsis');
 assert.equal(retained.metadata_attempt,'incomplete');
 assert.equal(retained.availability_attempt,'partial');
 assert.equal(retained.availability.status,'complete');
-assert.equal(refreshNotice({requestedId:123,data:retained},123,retained),'Latest metadata and provider check incomplete; earlier data shown.');
+assert.equal(refreshNotice({requestedId:123,data:retained},123,retained),'Your last in-app metadata and provider check was incomplete; shown data may come from another check.');
 await assert.rejects(readLiveMetadata({fetchYouTrack:async () => ({...data, cache_expires_at:null})}, issue, {requireExpiry:true}));
 await assert.rejects(readLiveMetadata({fetchYouTrack:async () => ({...data, cache_expires_at:'2000-01-01T00:00:00Z'})}, issue, {requireExpiry:true}));
 const original = {cached:{data:cached},live:{data:{tmdb_id:123}}};

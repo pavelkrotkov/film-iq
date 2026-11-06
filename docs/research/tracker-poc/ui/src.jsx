@@ -7,7 +7,7 @@ import {
 } from "./film_filters.js";
 import { ACCESS_DENIED_MESSAGE, AccessDeniedError, BATCH_LIMIT, accessDenied, availabilityTimeLabel, chooseBatch, chooseRemaining, expireCachedResults, fetchCachedMovie, fetchLiveMovie, fetchTaskLiveMovie, hydrateCachedResult, mergeResult, refreshNotice, runBatch, runRemainingBatch, safeImdbTitleUrl, tmdbId } from "./live_batch.js";
 import { fetchRatings } from "./mdblist_ui.js";
-import { evidenceExplanation, evidenceLabel, sourceEvidenceLinks, sourceLabel } from "./source_evidence.js";
+import { evidenceExplanation, evidenceLabel, kaneoCardYear, sourceEvidenceLinks, sourceLabel } from "./source_evidence.js";
 import { clearSavedDraft, currentComments, saveComment, setCommentDraft } from "./comment_drafts.js";
 import { emptyPreference, markPreferenceSaved, mergeFilmDraft, syncPreferenceDraft } from "./preference_draft.js";
 import { missingLinkedFilm, unavailableFilterSources } from "./availability_state.js";
@@ -205,6 +205,8 @@ function App() {
   const [liveResults, setLiveResults] = useState({}),
     [batch, setBatch] = useState(null),
     [batchSummary, setBatchSummary] = useState("");
+  const liveResultsRef = useRef(liveResults);
+  liveResultsRef.current = liveResults;
   const [cacheGeneration, setCacheGeneration] = useState(0);
   const [mdbResults, setMdbResults] = useState({}),
     [mdbPending, setMdbPending] = useState(false);
@@ -274,8 +276,9 @@ function App() {
         const id = tmdbId(item);
         if (!id || !active) continue;
         try {
+          const expected = liveResultsRef.current[item.id];
           const data = await fetchCachedMovie(item, controller.signal);
-          if (active) setLiveResults((previous) => hydrateCachedResult(previous, item.id, id, data));
+          if (active) setLiveResults((previous) => hydrateCachedResult(previous, item.id, id, data, expected));
         } catch { /* An absent cache remains unknown and never triggers a live request. */ }
       }
     })();
@@ -775,12 +778,12 @@ function App() {
                       <div>
                         <p>{cacheFixture ? "Fictional cache" : "TMDB"}: {liveMovie.title} ({liveMovie.year || "year unknown"})</p>
                         {liveMovie.original_title && <p>TMDB original title: {liveMovie.original_title}</p>}
-                        {liveMovie.metadata_attempt && <p>Latest metadata was incomplete; earlier details are shown.</p>}
+                        {liveMovie.metadata_attempt && <p>Your last in-app metadata check was incomplete; shown details may come from another check.</p>}
                         <p>{liveMovie.synopsis || "TMDB synopsis unknown."}</p>
                         <p>Genres: {liveMovie.genres?.join(", ") || "Unknown"}. Directors: {liveMovie.directors?.join(", ") || "Unknown"}.</p>
                         {safeImdbTitleUrl(liveMovie.imdb_title_url) ? <p><a href={safeImdbTitleUrl(liveMovie.imdb_title_url)} target="_blank" rel="noreferrer">IMDb title page ↗</a> · IMDb ID supplied by TMDB; match not independently verified. IMDb ratings are audience ratings.</p> : <p>IMDb title link unknown; TMDB did not supply a usable ID.</p>}
                         <p>US availability: {liveMovie.availability.status}. {liveMovie.availability.offers.map((offer) => `${offer.provider} (${offer.kind})`).join(", ") || (liveMovie.availability.status === "complete" ? "No offers reported" : "Availability unknown")}. {availabilityTimeLabel(liveMovie.availability.status, liveMovie.availability.checked_at)}.</p>
-                        {liveMovie.availability_attempt && <p>Latest check was {liveMovie.availability_attempt}; showing the earlier provider observation.</p>}
+                        {liveMovie.availability_attempt && <p>Your last in-app provider check was {liveMovie.availability_attempt}; shown availability may come from another check.</p>}
                         {liveMovie.availability.provider_url && <p><a href={liveMovie.availability.provider_url} target="_blank" rel="noreferrer">View provider information on TMDB ↗</a></p>}
                         <p>{cacheFixture ? "These fictional details come from a local cache and are not saved to Kaneo." : liveCache ? "Film details may come from a local cache for up to seven days; they are not saved to Kaneo. Provider entitlement is unverified." : "Fetched on demand; these results are not saved to Kaneo. Provider entitlement is unverified."}</p>
                       </div>
@@ -1097,7 +1100,7 @@ function App() {
                     <div className="card-body">
                       <div className="card-meta">
                         {storedGenreDisplay(item.fields["POC Genre"]) ?? (item.live?.genres?.join(", ") || "UNKNOWN GENRE")} ·{" "}
-                        {item.fields["POC Year"] || item.live?.year || "UNKNOWN YEAR"}
+                        {kaneoCardYear(item, tmdbId(item))}
                       </div>
                       {liveGenreOnlyMatch(item.fields["POC Genre"], item.live?.genres, genre) && <p>{cacheFixture ? "Fictional cache" : "TMDB"} genre match: {genre}</p>}
                       <h3>{item.title}</h3>

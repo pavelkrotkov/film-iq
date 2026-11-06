@@ -2,6 +2,7 @@ import {hasStoredGenre} from "./stored_genres.js";
 import {matchesFilmSearch} from "./film_search.js";
 import {boundMovaryFilm} from "./movary_history.js";
 import {reviewDirectorNames} from "./direct_reviews.js";
+import {sourceYearLabel} from "./source_evidence.js";
 
 // Pure extraction of YouTrack's existing client-side filtering logic.
 export const field = (film, name) => film.customFields?.find((item) => item.name === name)?.value ?? null;
@@ -12,7 +13,8 @@ export function filmYearLabel(film, liveYear = null) {
   const source = field(film, "FilmIQ Source Year");
   const valid = (year) => Number.isInteger(year) && year > 0 && year <= 9999;
   if (valid(release)) labels.push(`Stored release year ${release}`);
-  if (valid(source)) labels.push(`Source-listed year ${source}`);
+  const sourceLabel = valid(source) ? sourceYearLabel(field(film, "FilmIQ Source Evidence")?.text, field(film, "FilmIQ TMDB ID"), String(source)) : null;
+  if (sourceLabel) labels.push(sourceLabel);
   if (!labels.length && valid(liveYear)) labels.push(`TMDB-supplied year ${liveYear}`);
   return labels.join(" · ") || "Year unknown";
 }

@@ -120,6 +120,8 @@ function App() {
   const [commentRecovery, setCommentRecovery] = useState({});
   const [createUncertain, setCreateUncertain] = useState(false), [createChecked, setCreateChecked] = useState(false), [createProject, setCreateProject] = useState(null);
   const [liveResults, setLiveResults] = useState({}), [liveBusy, setLiveBusy] = useState(false), [liveRateLimited, setLiveRateLimited] = useState(false);
+  const liveResultsRef = useRef(liveResults);
+  liveResultsRef.current = liveResults;
   const [cacheGeneration, setCacheGeneration] = useState(0);
   const [liveBatch, setLiveBatch] = useState(null), [liveSummary, setLiveSummary] = useState("");
   const liveRequest = useRef(false), liveCancel = useRef(false);
@@ -187,8 +189,9 @@ function App() {
       for (const item of films) {
         if (!suppliedTmdbId(item) || !active) continue;
         try {
+          const expected = liveResultsRef.current[item.idReadable];
           const data = await readLiveMetadata(host, item, {cacheOnly:true});
-          if (active) setLiveResults((previous) => hydrateCachedResult(previous, item.idReadable, suppliedTmdbId(item), data));
+          if (active) setLiveResults((previous) => hydrateCachedResult(previous, item.idReadable, suppliedTmdbId(item), data, expected));
         } catch { /* Cache misses remain unknown and never cause provider requests. */ }
       }
     })();
@@ -547,13 +550,13 @@ function App() {
           {!liveMatches ? <IdentityReview expectedId={suppliedTmdbId(film)} savedTitle={film.summary} sourceYear={field(film, "FilmIQ Source Year")} sourceDirector={field(film, "FilmIQ Director")} data={live} provider={cacheFixture ? "Fictional cache" : "TMDB"} /> : <>
             <p>{cacheFixture ? "Fictional cache returned" : "TMDB returned"}: {live.title} ({live.year ?? "year unknown"}).</p>
             {live.original_title && <p>TMDB original title: {live.original_title} (identity not independently verified).</p>}
-            {live.metadata_attempt && <p>Latest metadata was incomplete; earlier details are shown.</p>}
+            {live.metadata_attempt && <p>Your last in-app metadata check was incomplete; shown details may come from another check.</p>}
             {live.poster_url && <div className="poster"><Poster url={live.poster_url} alt={`TMDB poster for ${live.title}`} transient={liveCache} /></div>}
             {live.poster_from_previous && <p>Poster from an earlier lookup.</p>}
             <p>Directors: {live.directors?.join(", ") || "unknown"}; genres: {live.genres?.join(", ") || "unknown"}.</p>
             <p>{live.synopsis || "TMDB synopsis unknown."}</p>
             <p>US provider status: {live.availability.status}. {live.availability.offers.map((offer) => `${offer.provider} (${offer.kind})`).join(", ") || (live.availability.status === "complete" ? "No offers reported." : "Availability unknown.")} {availabilityTimeLabel(live.availability.status, live.availability.checked_at)}. Personal subscription entitlement is not established.</p>
-            {live.availability_attempt && <p>Latest provider check was {live.availability_attempt}; the earlier provider observation is shown.</p>}
+            {live.availability_attempt && <p>Your last in-app provider check was {live.availability_attempt}; shown availability may come from another check.</p>}
             {live.availability.provider_url && <ExternalLink url={live.availability.provider_url} label="Provider information on TMDB" />}
             {live.imdb_title_url && <p><ExternalLink url={live.imdb_title_url} label="IMDb title page" /> · supplied by TMDB; match not independently verified.</p>}
           </>}

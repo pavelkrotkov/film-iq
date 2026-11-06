@@ -69,14 +69,23 @@ export function expireCachedResults(results, now = Date.now()) {
   return {results: changed ? remaining : results, next};
 }
 
-// A cached result for a newly selected external identity must replace an old
-// result for the same tracker record, but not overwrite a current refresh.
-export function hydrateCachedResult(previous, key, id, data) {
+// A cache-only read may update an unchanged result, but must not overwrite an
+// explicit refresh or failure that finished while the cache read was pending.
+export function hydrateCachedResult(previous, key, id, data, expected) {
   if (!Number.isInteger(id) || id <= 0 || data?.tmdb_id !== id) return previous;
   const current = previous[key];
+  if (current !== expected) return previous;
   const currentId = current?.requestedId ?? current?.data?.tmdb_id;
-  if (current && currentId === id) return previous;
-  return {...previous, [key]: {data, requestedId:id}};
+  const sameId = currentId === id;
+  // Cache-only responses do not include the latest interactive-attempt flags.
+  // Keep those warnings, and any failure, until another explicit attempt.
+  const notices = sameId ? {
+    ...(current?.data?.metadata_attempt === 'incomplete' ? {metadata_attempt:'incomplete'} : {}),
+    ...(['partial','unknown'].includes(current?.data?.availability_attempt)
+      ? {availability_attempt:current.data.availability_attempt} : {}),
+  } : {};
+  const hydrated = Object.keys(notices).length ? {...data, ...notices} : data;
+  return {...previous, [key]: {...(sameId && current?.error ? {error:current.error} : {}), data:hydrated, requestedId:id}};
 }
 
 export function tmdbId(film) {
@@ -94,10 +103,10 @@ export function availabilityTimeLabel(status, checkedAt) {
 export function refreshNotice(result, expectedId, displayed) {
   if (!expectedId || (result?.requestedId ?? result?.data?.tmdb_id) !== expectedId) return null;
   const previousShown = !!displayed && displayed === result?.data;
-  if (result?.error) return previousShown ? "Latest refresh failed; previous data shown." : "Latest refresh failed.";
-  if (previousShown && displayed.metadata_attempt && displayed.availability_attempt) return "Latest metadata and provider check incomplete; earlier data shown.";
-  if (previousShown && displayed.metadata_attempt) return "Latest metadata incomplete; earlier details shown.";
-  if (previousShown && displayed.availability_attempt) return "Latest provider check incomplete; previous availability shown.";
+  if (result?.error) return previousShown ? "Your last in-app refresh failed; available data shown." : "Your last in-app refresh failed.";
+  if (previousShown && displayed.metadata_attempt && displayed.availability_attempt) return "Your last in-app metadata and provider check was incomplete; shown data may come from another check.";
+  if (previousShown && displayed.metadata_attempt) return "Your last in-app metadata check was incomplete; shown details may come from another check.";
+  if (previousShown && displayed.availability_attempt) return "Your last in-app provider check was incomplete; shown availability may come from another check.";
   return null;
 }
 
