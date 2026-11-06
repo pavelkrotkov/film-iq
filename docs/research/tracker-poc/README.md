@@ -18,21 +18,26 @@ cache for all 130 approved IDs in each backend. Cache-only comparison found
 identical metadata and availability status for all 130, with matching provider
 sets for the 109 complete observations and 21 unknown observations in both.
 All 130 cached entries remained readable after each bridge restarted.
-YouTrack's mixed-v2 watched snapshot retains all 27 issue/event histories:
-16 entries are ID-bound and 11 remain unbound and unknown in the UI. A repeat
-read-only preview returned the same 27/16 counts. The binding uses matching
-source events and current supplied IDs; it does not independently verify film
+YouTrack's newer v3 watched snapshot contains 27 current entries derived from a
+fresh, complete TMDb-keyed Movary observation. The prior mixed-v2 snapshot had
+16 bound and 11 unbound entries; those 11 unbound histories remain separate,
+with their original observation time and uncertain identity. The old and new
+source IDs and ordered events matched, but do not independently verify film
 identity. No tracker or Movary record was modified by enrichment. These
 observations do not establish individual streaming entitlement or overall usability.
-The YouTrack detail view can display an unbound entry's retained events as
-unverified history for that issue, warning that it may not belong to the
-current film. It does not mark the film watched. Fictional rendering checks
-passed; the real-film browser path remains unverified.
+The YouTrack detail view can display retained historical events as unverified
+issue history. Such history does not itself mark a film watched; a current
+direct-ID observation can do so separately. Fictional rendering checks passed;
+the real-film browser path remains unverified.
 The guarded app update and migration left the other project's watched projection,
 visible preferences, settings, usages and attachments unchanged in the checked
 before/after observations. The owner-only v1 projections are visibility-filtered,
-not full extension-property backups; real rollback and full recovery remain
-unverified. See [watched migration and rollback](youtrack-app/MOVARY.md).
+not full extension-property backups. A subsequent full watched-property export
+was saved before the verified v3 refresh; a post-refresh export confirms the
+expected complete property. Real-data restoration and full server recovery
+remain unverified. See [watched-property recovery](watched-property-backup.md)
+and the [manual newer-observation refresh](watched-refresh-proposal.md), which
+is not scheduled and requires a single writer.
 An aggregate 2026-11-06 read found no nonempty synopsis, release-year or genre
 values on the 130 YouTrack issues themselves; those details currently rely on
 the separate expiring cache. See the [comparison](comparison.md) for coverage

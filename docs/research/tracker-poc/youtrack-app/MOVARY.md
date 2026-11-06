@@ -7,8 +7,10 @@ editable preferences. It has been installed in the local YouTrack instance; a
 fictional single-user test and anonymous-denial checks passed, and the local
 administrator's 27-film snapshot was imported and read back. A later guarded
 update migrated the `FILMREAL` snapshot to mixed v2: all 27 issue/event histories
-were preserved, with 16 ID-bound and 11 unbound. Independent-user isolation
-and full recovery remain unverified.
+were preserved, with 16 ID-bound and 11 unbound. A subsequent newer-observation
+v3 refresh added 27 current directly mapped entries while retaining the 11
+unbound histories separately. Independent identity verification, independent-user
+isolation and full server recovery remain unverified.
 
 The global handler offers `GET movary/watched?project=FILMPOC` and
 `POST movary/import`. Both require an explicit `FILMPOC` or `FILMREAL` project.
@@ -57,6 +59,11 @@ events or earlier edits can still misidentify a film. Ambiguous records are not
 bound. The migration requires complete input, a full current issue listing and
 the same source observation; it is not a general importer for later refreshes or
 new users. Fictional tests alone do not verify the real migration.
+The installed app also has a separate [newer-observation refresh path](../watched-refresh-proposal.md)
+that preserves prior historical evidence. It passed fictional tests and was
+applied once to the local real snapshot; it is not scheduled. The source IDs
+and ordered events matched the prior observation, which is continuity evidence
+but not independent identity verification.
 
 The importer must independently establish that its source refresh is complete;
 the handler only checks the supplied `complete` assertion. It validates all
@@ -105,7 +112,7 @@ fictional tests, including mixed bound/unbound entries and a v1 rollback. Those
 tests do not verify recovery of the real app or its data. The real snapshot was
 migrated but has not been rolled back.
 
-## Real migration and rollback procedure
+## Earlier v2 migration and rollback procedure
 
 The guarded local `FILMREAL` migration has been completed once. Its readback
 preserved all **27 issue/event histories**, with **16 ID-bound and 11 unbound**;
@@ -119,7 +126,10 @@ issue-to-film bindings.
 
 Owner-only pre-migration v1 projections were retained for both app projects.
 They are visibility-filtered API results, not complete raw extension-property
-backups. Full app-property or server recovery remains unverified. The following
+backups. A later full current-user property export was saved before the v3
+refresh; the post-refresh export verified the expected complete property.
+Real-data restoration and server recovery remain unverified. See the
+[full-property recovery notes](../watched-property-backup.md). The following
 steps record the method and precautions for any future operation; they are not
 an instruction to rerun the migration now.
 
@@ -170,7 +180,7 @@ an instruction to rerun the migration now.
    and other projects remain intact. A successful HTTP response or matching
    aggregate count alone is insufficient. Preserve the pre-migration projections.
 
-For rollback, keep the compatible candidate handler installed. Call its
+For an eligible v2 rollback, keep the compatible handler installed. Call its
 `POST extensionEndpoints/filmiq-poc/movary/restore-legacy` for each v2 project
 with only its project key in the JSON body. The authenticated current user's
 stored v2 snapshot supplies the events; the endpoint refuses unavailable
@@ -179,7 +189,10 @@ other projects. Compare the resulting v1 data with the protected snapshots and
 confirm every project has been restored before reverting the handler and UI. An
 `already-legacy` response is a no-op. If observations changed after migration,
 this conversion does not restore an earlier observation; recovery of one requires
-a separately established recovery procedure. Never uninstall
+a separately established recovery procedure. The current real v3 snapshot has
+historical entries, so `restore-legacy` rejects converting it: do not discard
+that history or downgrade the handler. The full-property restore path has been
+tested with fictional data only and requires a single writer. Never uninstall
 the app to roll back: doing so deletes its extension properties.
 
 Legacy snapshots without a project field are read by grouping their existing
@@ -197,8 +210,9 @@ calling importer, which checks its input before the local import. The handler
 itself cannot independently validate that provenance or completeness.
 
 YouTrack app removal deletes extension-property values. Deleting or renaming a
-property in an app reimport also deletes that property's old values. Backup,
-retention, safe updates and production access control are not designed yet.
+property in an app reimport also deletes that property's old values. Property
+exports do not establish app-removal or full-server recovery; retention and
+production access control require further work.
 See [JetBrains' extension property documentation](https://www.jetbrains.com/help/youtrack/devportal/apps-extension-properties.html).
 
 ```sh

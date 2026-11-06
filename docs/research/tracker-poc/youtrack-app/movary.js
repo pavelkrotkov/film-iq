@@ -4,6 +4,7 @@ const VERSION = 'youtrack-poc-movary-watched-v1';
 const BOUND_VERSION = 'youtrack-poc-movary-watched-v2';
 const REFRESH_VERSION = 'youtrack-poc-movary-watched-v3';
 const STORE_VERSION = 'youtrack-poc-movary-projects-v2';
+const EXPORT_VERSION = 'filmiq-watched-property-export-v1';
 const PROJECTS = ['FILMPOC', 'FILMREAL'];
 
 function allowedUser(ctx) {
@@ -128,8 +129,74 @@ function stored(raw) {
 
 function error(ctx, code, message) { ctx.response.code = code; ctx.response.json({error: message}); }
 
+function rawProperty(ctx) {
+  const raw = ctx.currentUser.extensionProperties.filmMovarySnapshot;
+  if (raw === null || raw === undefined) return null;
+  if (typeof raw !== 'string') throw new Error('Invalid watched property');
+  return raw;
+}
+
+function fullVisibility(ctx, raw) {
+  const state = stored(raw);
+  for (const project of Object.keys(state.projects)) {
+    const saved = state.projects[project];
+    const ids = [...Object.keys(saved.films), ...(saved.historical || []).map(item => item.issue_id)];
+    if (ids.some(id => !visible(ctx, project, id))) return false;
+  }
+  return true;
+}
+
+function exportOwner(ctx) {
+  const user = ctx.currentUser;
+  if (!user || typeof user.login !== 'string' || !user.login ||
+      typeof user.ringId !== 'string' || !user.ringId) throw new Error('User identity unavailable');
+  return {login: user.login, ring_id: user.ringId};
+}
+
+function exportValid(value, owner) {
+  return keys(value, 'owner,raw,version') && value.version === EXPORT_VERSION &&
+    keys(value.owner, 'login,ring_id') && value.owner.login === owner.login &&
+    value.owner.ring_id === owner.ring_id && (value.raw === null || typeof value.raw === 'string');
+}
+
 exports.httpHandler = {
   endpoints: [
+    {
+      scope: 'global', method: 'GET', path: '/property-export',
+      handle: function(ctx) {
+        ctx.response.addHeader('Cache-Control', 'no-store');
+        if (!allowedUser(ctx)) return error(ctx, 401, 'Sign-in required');
+        try {
+          const owner = exportOwner(ctx), raw = rawProperty(ctx);
+          if (!fullVisibility(ctx, raw)) return error(ctx, 409, 'Stored watched entries are unavailable');
+          ctx.response.json({version: EXPORT_VERSION, owner, raw});
+        } catch (_) { error(ctx, 500, 'Stored watched property unavailable'); }
+      }
+    },
+    {
+      scope: 'global', method: 'POST', path: '/property-restore',
+      handle: function(ctx) {
+        ctx.response.addHeader('Cache-Control', 'no-store');
+        if (!allowedUser(ctx)) return error(ctx, 401, 'Sign-in required');
+        let input, owner, current;
+        try {
+          input = ctx.request.json(); owner = exportOwner(ctx);
+          if (!keys(input, 'backup,expected') || !exportValid(input.expected, owner) || !exportValid(input.backup, owner)) {
+            return error(ctx, 400, 'Invalid watched-property restore');
+          }
+        } catch (_) { return error(ctx, 400, 'Invalid watched-property restore'); }
+        try {
+          current = rawProperty(ctx);
+          if (!fullVisibility(ctx, current) || !fullVisibility(ctx, input.expected.raw) || !fullVisibility(ctx, input.backup.raw)) {
+            return error(ctx, 409, 'Stored watched entries are unavailable');
+          }
+        } catch (_) { return error(ctx, 409, 'Watched property could not be validated'); }
+        if (current !== input.expected.raw) return error(ctx, 409, 'Watched property changed; export again');
+        if (current === input.backup.raw) return ctx.response.json({status: 'unchanged'});
+        ctx.currentUser.extensionProperties.filmMovarySnapshot = input.backup.raw;
+        ctx.response.json({status: 'restored'});
+      }
+    },
     {
       scope: 'global', method: 'GET', path: '/watched',
       handle: function(ctx) {

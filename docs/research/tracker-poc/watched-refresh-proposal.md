@@ -1,10 +1,10 @@
-# Newer Movary watched observations: offline proposal
+# Newer Movary watched observations
 
-This is an undeployed candidate, not a scheduled job or completed migration.
+This is an installed, manually invoked POC, not a scheduled job.
 `youtrack_watched_refresh_proposal.py` builds a pure preview;
 `youtrack_watched_refresh.py` adds a dry-run-first importer and an explicit
-`--apply` path for the candidate v3 app's `/refresh` endpoint. The currently
-deployed v2 importer remains a same-observation migration only. No real
+`--apply` path for the v3 app's `/refresh` endpoint. The v2 importer remains
+a same-observation migration only. No real
 snapshot, YouTrack record, Movary data, browser session or network service is
 used by the fictional tests.
 
@@ -44,8 +44,49 @@ downgrading the handler, and removing or renaming an app property can delete
 app-owned data. The handler passed a live test in a separate fictional YouTrack
 app, including mixed v2-to-v3 refresh, original history timestamps, retry and
 refusal of a lossy downgrade. Hidden-existing-entry rejection remains an
-offline check. This candidate has not been installed in FilmIQ or applied to
-real data.
+offline check. The FilmIQ app was updated in place with this handler and UI;
+the existing watched projections, visible preferences, app settings and usages
+matched before and after. These pre-update project projections did
+not constitute a full-property backup.
+
+A separately authorized read-only Movary refresh later produced a new
+owner-only project-local snapshot. Its 27 watched IDs and event arrays matched
+the prior source observation, and the new importer preview proposed 27 current
+films with 11 prior historical entries. After an exact full-property export,
+the reviewed single-writer procedure applied this observation once. Readback
+confirmed 27 current entries and 11 prior unbound entries retained separately
+with their original observation times. The original and newer source IDs and
+ordered event arrays matched; other projects and legacy-empty state in the
+property, visible preferences, and app settings/usages were unchanged. The
+pre-refresh export and the verified post-refresh export remain owner-only in
+the project-local private cache. The post-refresh full-property comparison was
+semantic JSON equality; the pre-refresh export preserves the raw property.
+
+This is supporting continuity evidence, not independent account or
+film-identity verification. The earlier 11 unbound entries remain historical
+evidence rather than proof of the identities of those earlier issues. No
+Movary, issue or watchlist writes were made during this refresh. Full server
+disaster recovery has not been demonstrated. See the
+[watched-property recovery notes](watched-property-backup.md); stop other
+property writers during export and refresh because atomic concurrent
+compare-and-swap has not been established.
+
+To preview a newer complete project-local snapshot after obtaining it through
+the [read-only Movary refresh workflow](../../usage/personal-refresh.md), run:
+
+```sh
+UV_CACHE_DIR="$PWD/.cache/tracker-poc/uv-cache" uv run --no-sync python \
+  docs/research/tracker-poc/youtrack_watched_refresh.py \
+  --snapshot .cache/epic-c/personal/snapshot.json
+```
+
+The path is an example; use the actual snapshot with its adjacent `.status`
+file. The command reports aggregate counts and does not write. `--apply`
+submits the validated observation to the local app and verifies readback; it
+does not run the Movary refresh or write to Movary. A presence-only check found
+the existing project-root credential configuration. A later read-only refresh
+using those credentials and exporters succeeded; no automatic schedule was
+installed. Do not treat an old snapshot as a new observation.
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 .venv/bin/python docs/research/tracker-poc/youtrack_watched_refresh_proposal_check.py

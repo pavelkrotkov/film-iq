@@ -4,7 +4,7 @@ const path = require('node:path');
 const readline = require('node:readline');
 const vm = require('node:vm');
 
-const users = {login:'admin', isBanned:false, extensionProperties:{}};
+const users = {login:'admin', ringId:'ring-fictional-admin', isBanned:false, extensionProperties:{}};
 const events = day => ({watched:true,played_watch_dates:[{date:day,plays:2}],history_export_dates:[]});
 const original = {version:'youtrack-poc-movary-watched-v2',source:'Movary',complete:true,
   observed_at:'2026-11-05T12:00:00+00:00',project:'FILMREAL',films:{
@@ -30,7 +30,7 @@ const lines = readline.createInterface({input:process.stdin,crlfDelay:Infinity})
       if(message.action==='hidden') { hidden=message.value===true; process.stdout.write('{"ok":true}\n'); continue; }
       if(message.action==='raw') { process.stdout.write(JSON.stringify({raw:users.extensionProperties.filmMovarySnapshot})+'\n'); continue; }
       const ctx={currentUser:users,request:{json:()=>message.body,getParameter:key=>message.query?.[key]??null},
-        response:{code:200,json(value){this.value=value;}}};
+        response:{code:200,addHeader(){},json(value){this.value=value;}}};
       const endpoint=endpoints.find(item=>item.method===message.method && item.path===message.path);
       if(!endpoint) throw Error('Unknown endpoint');
       endpoint.handle(ctx);
