@@ -11,8 +11,50 @@ from urllib.parse import quote
 
 from youtrack_client import YouTrackClient, YouTrackError
 from youtrack_enrich import custom_value
-from youtrack_review_import import ISSUE_FIELDS, REVIEW_FIELD, combine, run
+from youtrack_review_import import (
+    ISSUE_FIELDS,
+    REVIEW_FIELD,
+    combine,
+    empty_review_field,
+    review_field_was_changed,
+    run,
+)
 from youtrack_setup import project_id
+
+
+class SmallActivityPages(YouTrackClient):
+    """Exercise real pagination with one fictional activity per page."""
+
+    def __init__(self, client: YouTrackClient, activity_path: str) -> None:
+        self.client = client
+        self.activity_path = activity_path
+        self.nonempty_pages = 0
+        self.skips: list[int] = []
+
+    def request(self, path, *, query=None, body=None):
+        if path == self.activity_path and query and "$top" in query:
+            query = {**query, "$top": 1}
+            self.skips.append(int(query["$skip"]))
+            result = self.client.request(path, query=query, body=body)
+            if result:
+                self.nonempty_pages += 1
+            return result
+        return self.client.request(path, query=query, body=body)
+
+
+def used_identities(issues: list[dict]) -> set[int]:
+    """Fail before creating a test issue if the project cannot be imported."""
+    used: set[int] = set()
+    for issue in issues:
+        identity = custom_value(issue, "FilmIQ TMDB ID")
+        if identity is None:
+            continue
+        if type(identity) is not int or identity <= 0 or identity in used:
+            raise YouTrackError(
+                "Synthetic project has invalid or duplicate IDs; no fixture created"
+            )
+        used.add(identity)
+    return used
 
 
 def main() -> None:
@@ -22,7 +64,7 @@ def main() -> None:
         "issues",
         query={"fields": ISSUE_FIELDS, "query": "project: {FILMPOC} sort by: {issue id} asc"},
     )
-    used = {custom_value(issue, "FilmIQ TMDB ID") for issue in issues}
+    used = used_identities(issues)
     identity = next(
         (
             value
@@ -102,8 +144,29 @@ def main() -> None:
         "tmdb_id": identity,
         "links": combine([manifest], source)[0]["links"],
     }
+    if not str(issue.get("idReadable", "")).startswith("FILMPOC-"):
+        raise YouTrackError("Fixture was not in the synthetic project; no clear allowed")
+    client.request(
+        path,
+        body={
+            "customFields": [{"name": REVIEW_FIELD, "$type": "TextIssueCustomField", "value": None}]
+        },
+    )
+    cleared = client.request(path, query={"fields": ISSUE_FIELDS + ",description"})
+    if not empty_review_field(cleared, required=True):
+        raise YouTrackError("Fictional clear was not confirmed; no retry allowed")
+    paged = SmallActivityPages(client, path + "/activities")
+    assert review_field_was_changed(paged, created["id"])
+    if paged.nonempty_pages < 2 or len(paged.skips) < 3:
+        raise YouTrackError("Fictional history did not span multiple pages")
+    assert run(paged, [manifest], source, "FILMPOC") == (0, 1, 0, 0)
+    after = client.request(path, query={"fields": ISSUE_FIELDS + ",description"})
+    assert empty_review_field(after, required=True)
+    assert after["description"] == "Edited fictional synopsis"
+    assert custom_value(after, "FilmIQ Source Evidence")["text"] == "Fictional preexisting evidence"
     print(
-        "FILMPOC: fictional import and unchanged retry passed; edited synopsis and evidence preserved"
+        "FILMPOC: fictional initial import, clear, paginated history, preservation and readback passed; "
+        "fixture retained"
     )
 
 
