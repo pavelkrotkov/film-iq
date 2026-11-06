@@ -4,7 +4,7 @@ import json
 from datetime import UTC, datetime
 from urllib.parse import quote
 
-from enrichment import FixtureSource, enrich
+from enrichment import AvailabilityRefreshError, FixtureSource, enrich
 from youtrack_client import YouTrackClient
 from youtrack_enrich import YouTrackFixtureBackend, custom_value
 
@@ -73,8 +73,10 @@ def main() -> None:
     assert enrich(PartialAvailability(), backend, identity, now) == record
     try:
         enrich(FailedAvailability(), backend, identity, now)
-    except RuntimeError as error:
-        assert str(error) == "simulated provider failure"
+    except AvailabilityRefreshError as error:
+        assert error.record_id == record
+        assert isinstance(error.source_error, RuntimeError)
+        assert str(error.source_error) == "simulated provider failure"
     else:
         raise AssertionError("provider failure was not propagated")
     after = client.request(observation_path, query={"fields": "id,value(text)"})["value"]["text"]

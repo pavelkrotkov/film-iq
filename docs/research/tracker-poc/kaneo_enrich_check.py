@@ -5,7 +5,7 @@ import json
 from datetime import UTC, datetime
 from pathlib import Path
 
-from enrichment import FixtureSource, enrich
+from enrichment import AvailabilityRefreshError, FixtureSource, enrich
 from kaneo_enrich import KaneoBackend
 from kaneo_smoke import call, ensure_field
 
@@ -55,8 +55,10 @@ def check(base: str, directory: Path):
     assert enrich(FailedSource(), backend, 42, now) == record
     try:
         enrich(RaisingSource(), backend, 42, now)
-    except RuntimeError as error:
-        assert str(error) == "simulated provider failure"
+    except AvailabilityRefreshError as error:
+        assert error.record_id == record
+        assert isinstance(error.source_error, RuntimeError)
+        assert str(error.source_error) == "simulated provider failure"
     else:
         raise AssertionError("provider failure was not propagated")
     refreshed = call(backend.opener, base, f"/custom-field/task/{record}")

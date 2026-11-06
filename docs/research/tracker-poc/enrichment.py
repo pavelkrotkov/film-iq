@@ -31,16 +31,42 @@ class Backend(Protocol):
     def set_availability(self, record_id: str, value: dict) -> None: ...
 
 
+class AvailabilityRefreshError(RuntimeError):
+    """Film persistence succeeded but the separate provider request failed.
+
+    Callers can inspect ``source_error`` for rate-limit or authorization
+    handling. Its text is not included in the displayed error, as an upstream
+    exception may contain a credential-bearing URL.
+    """
+
+    def __init__(self, record_id: str, source_error: Exception) -> None:
+        super().__init__("Film saved, but availability refresh failed")
+        self.record_id = record_id
+        self.source_error = source_error
+
+
 def enrich(source: Source, backend: Backend, source_id: int, now: datetime) -> str:
-    """Fetch first; never replace availability after a failed or partial response."""
+    """Save film metadata even when availability fails, without replacing offers."""
     if type(source_id) is not int or source_id <= 0:
         raise ValueError("source ID must be a positive integer")
+    if not isinstance(now, datetime) or now.utcoffset() is None:
+        raise ValueError("checked_at must be timezone-aware")
     film = source.film(source_id)
     if film.source_id != source_id or not film.title.strip():
         raise ValueError("source returned invalid film identity")
-    observation = normalize(source_id, source.availability(source_id), now)
+    source_failure = None
+    try:
+        payload = source.availability(source_id)
+    except Exception as error:
+        source_failure = error
+        payload = None
+    observation = normalize(source_id, payload, now) if source_failure is None else None
     record_id = backend.ensure_film(film)
-    if observation.status == "complete":
+    if not isinstance(record_id, str) or not record_id.strip():
+        raise ValueError("Film persistence returned no record ID")
+    if source_failure is not None:
+        raise AvailabilityRefreshError(record_id, source_failure) from None
+    if observation is not None and observation.status == "complete":
         backend.set_availability(
             record_id,
             {
