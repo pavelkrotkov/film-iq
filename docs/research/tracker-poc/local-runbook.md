@@ -258,9 +258,17 @@ docker ps -a --filter label=com.docker.compose.project=film-iq-tracker-poc --for
 lsof -nP -iTCP:15173 -iTCP:15174 -iTCP:15175 -iTCP:15176 -iTCP:18180 -sTCP:LISTEN
 ```
 
-For the three foreground terminals, use Ctrl-C in each terminal. If an older
-copy was launched elsewhere, identify its owner before stopping it; do not kill
-an unknown listener. Then stop only the configured Docker services:
+Stop the UI and preference bridge with Ctrl-C in their respective terminals.
+If using the ordinary non-pilot TMDB bridge, stop its foreground terminal too.
+The active collection pilot is a background process, so stop it separately:
+
+```sh
+.venv/bin/python docs/research/tracker-poc/kaneo_live_pilot.py --stop
+```
+
+The command leaves an unrecognized listener untouched. If a copy was launched
+elsewhere, identify its owner before stopping it; do not kill an unknown
+listener. Then stop only the configured Docker services:
 
 ```sh
 docker stop film-iq-tracker-poc-tmdb-live-bridge-1
