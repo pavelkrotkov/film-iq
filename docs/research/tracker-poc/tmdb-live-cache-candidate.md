@@ -22,7 +22,8 @@ catalog approval cannot authorize additional provider requests.
 
 Both deployed UI bundles report an explicit HTTP 401 or 403 from a
 user-initiated metadata lookup as access denied and stop the active batch. They
-ask the user to check sign-in and the film's lookup authorization without
+ask the user to check sign-in, the film's lookup authorization and the provider
+credential without
 claiming which caused the denial; adding a film does not add its ID to the
 approved set. A failed refresh preserves an earlier still-valid display, and
 429 rate limits remain separate. YouTrack's Host API can conceal error status,
@@ -34,14 +35,21 @@ complete watched property, visible preferences, settings, usages and attachment
 metadata were unchanged. These are readback and fictional-test results: no
 real-film browser walkthrough or live 401/403 denial was performed.
 
-The current source also corrects an upstream authorization gap: a TMDB 401 or
+The deployed bridges also correct an upstream authorization gap: a TMDB 401 or
 403 previously became a generic 502 at both bridges, so a Kaneo batch could
-continue making requests. Both bridge candidates now return a sanitized 403,
+continue making requests. Both bridges now return a sanitized 403,
 the YouTrack issue handler forwards it without assuming which authorization
 failed, and the shared UI message includes the provider credential among the
 possible checks. Fictional adapter, issue-handler, batch and cache checks cover
 denial propagation, stopping, no secret disclosure, and preservation of the
-previous observation. This source change is not yet deployed or live-tested.
+previous observation. The separate YouTrack bridge app was updated in place and
+matched the prepared package; both existing processes restarted with their
+checked configuration unchanged. Validated cache-only reads retained metadata
+for all 130 approved films in each cache, with 109 complete availability
+observations and 21 without a retained observation. The full main-app watched
+property, preferences, settings, usages and checked attachment metadata were
+unchanged. This verifies deployment and fictional behavior, not a live TMDB
+denial or real-film browser workflow.
 
 With caching enabled, Kaneo's explicit refresh is also task-scoped and the old
 ID-only refresh route is disabled. With caching disabled, the existing ID-only
