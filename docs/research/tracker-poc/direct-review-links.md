@@ -145,3 +145,16 @@ this change. A 1,000-film fictional review-evidence search measured 3.18 ms
 median / 3.65 ms p95 for Kaneo's extracted filter and 3.48 ms / 3.70 ms for
 YouTrack's, in 50 warmed Node samples. These are CPU-only measurements; they
 exclude browser rendering, network and data loading.
+
+Both film filters also search the separate source-director field only when the
+record's current supplied TMDB ID matches valid stored source evidence. A changed
+ID or missing or malformed evidence no longer causes a search for the earlier
+director to match that film. Title, matched live-director and direct-review
+director searches remain separate. The source evidence does not retain an
+original title, so this ID check cannot detect a later title edit or establish
+the film's identity. The private import input contained source directors with
+available source evidence for 54 films; this is input coverage, not a current
+live tracker readback. Fictional filter tests cover matching and changed IDs,
+missing or malformed evidence and the other search paths. Both deployed bundles
+matched the reviewed builds; the complete YouTrack watched property and checked
+app state were unchanged. Real-film browser behavior remains unverified.
