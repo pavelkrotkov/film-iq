@@ -15,8 +15,7 @@ already configured Mac, see the [local runbook](local-runbook.md) and
 On 2026-11-06, the local Kaneo POC received a read-only Movary watchlist
 projection and the corresponding UI bundle. The snapshot contains two
 source-only entries, neither of whose TMDb IDs appeared in the original import
-manifest. A current authenticated tracker listing has not independently
-verified their match status. The interface can prepare an Add film draft for an
+manifest; they remain unmatched to canonical Kaneo records. The interface can prepare an Add film draft for an
 unmatched entry; it does not create a tracker record or query a provider merely
 by showing the watchlist. Source identifiers and titles remain unverified.
 Both IDs are outside the current TMDb lookup approval.
@@ -26,14 +25,21 @@ provider write was made. See the [local runbook](local-runbook.md#movary-watchli
 for rollout evidence and the one-time initializer's limitations.
 
 The local YouTrack app also includes the Movary watchlist view. Its admin
-user's FILMREAL snapshot has two entries, neither matched to a visible tracker
-record. The app package and full-property import were verified by readback; the
+user's FILMREAL snapshot has two entries, now matched to two newly created,
+neutral canonical issues. A read-only listing found 132 visible issues with no
+duplicate supplied IDs, and an in-memory rendering of the shared component
+produced links for both entries. The app package and full-property import were verified by readback; the
 watched property, visible preferences, app settings and usages were unchanged.
-The real-film browser view remains unverified. See the [watchlist rollout and
+No Movary, watchlist-property or provider change accompanied the two issue
+creations; their IDs remain outside the TMDb lookup approval. Their titles and
+IDs are source assertions, not independently verified identities. The real-film
+browser view remains unverified. See the [record evidence](youtrack-watchlist-film-records.md)
+and [watchlist rollout and
 recovery notes](youtrack-watchlist-poc.md) for the private backup and manual
 refresh limitations.
 
-Both POCs are running with the 103 candidate and 27 Movary-watched records.
+Both POCs are running with the original 103 candidate and 27 Movary-watched
+records; YouTrack also contains the two neutral watchlist-film issues described above.
 A paced collection run populated a separate seven-day metadata and US-provider
 cache for all 130 approved IDs in each backend. Cache-only comparison found
 identical metadata and availability status for all 130, with matching provider
@@ -60,7 +66,7 @@ remain unverified. See [watched-property recovery](watched-property-backup.md)
 and the [manual newer-observation refresh](watched-refresh-proposal.md), which
 is not scheduled and requires a single writer.
 An aggregate 2026-11-06 read found no nonempty synopsis, release-year or genre
-values on the 130 YouTrack issues themselves; those details currently rely on
+values on the original 130 YouTrack issues themselves; those details currently rely on
 the separate expiring cache. See the [comparison](comparison.md) for coverage
 and the unresolved persistent-data limitation, and the [source assessment](durable-metadata-sources.md)
 for potential durable alternatives.
@@ -672,10 +678,11 @@ The pinned `2026.2.19728` server runs at `http://localhost:18180/`. Database,
 configuration, logs and backup directories are bind-mounted under
 `.cache/tracker-poc/`. The user completed setup and granted a local integration
 token, stored only in the ignored project cache. The `FILMPOC` project is for
-fictional tests; `FILMREAL` holds the 130 authorized canonical film records.
+fictional tests; `FILMREAL` now holds 132 administrator-visible canonical film
+records: the original 130 and two neutral watchlist-film issues.
 Repeated canonical imports created no duplicates and never copied personal
 ratings, notes, watchlist state, or TMDB API response bodies into issues.
-The 130 records now have a sanitized source-provenance field, backfilled only
+The original 130 records have a sanitized source-provenance field, backfilled only
 where missing; exact input provenance remains in the ignored private manifest.
 A repeat backfill changed zero records. Source evidence IDs and links are
 validated before any import writes, and source-listed years remain assertions.
