@@ -64,6 +64,15 @@ result without a page reload; fictional regression checks cover both UIs.
 These interface changes were deployed, but have not been verified in a
 real-film browser walkthrough.
 
+The current Kaneo bundle distinguishes an acknowledged film save followed by
+a failed reload from an uncertain or partial write. After a failed reload or
+uncertain write, it blocks further film saves until the film list reloads and
+keeps draft text available to copy. Fictional in-process checks exercised the
+actual save and refresh handlers, including a change back to an earlier title
+after reloading. The guarded bundle-only update matched its served bytes and
+retained a private code rollback; no live browser or real-record walkthrough
+of this change was performed.
+
 Both interfaces display the source title and year for review links. Incomplete
 refreshes retain earlier usable cache data and identify the latest attempt as
 incomplete; a new unknown provider response records an attempt time without
