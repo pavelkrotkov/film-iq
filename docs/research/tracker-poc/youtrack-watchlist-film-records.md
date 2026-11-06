@@ -21,8 +21,21 @@ owner-only project cache and contain private titles and IDs; do not commit them.
 
 The import affects YouTrack only. The two entries remain unmatched to canonical
 Kaneo records; no Kaneo credentials or browser sessions were used. The two IDs
-remain outside the existing provider allowlist. Matching and rendering the new
-YouTrack records in the film UI have not been verified by this import.
+remain outside the existing provider allowlist.
+
+An independent read-only check after the import paginated all 132 issues visible
+to the local administrator in `FILMREAL` and found no duplicate supplied TMDb
+IDs. It passed those records and the current watchlist view through the shared
+React component and its actual supplied-ID extractor in memory. Both entries
+matched and rendered tracker links, with no missing or ambiguous match and no
+title warning. The full watched and watchlist property exports, visible
+preferences, and watched and watchlist views for both projects matched the saved
+pre-import baseline. The preference check covers the visible projection only.
+
+This verifies the current administrator-visible listing and server-rendered
+component output, not uniqueness across records that account cannot see or a
+live browser walkthrough, navigation, focus, or iframe behavior. It did not
+contact a provider or change tracker data.
 
 ## Guarded tool
 
