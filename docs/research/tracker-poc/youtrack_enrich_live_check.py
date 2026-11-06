@@ -8,10 +8,11 @@ film projects, external services, or live TMDB metadata are accessed.
 import json
 import secrets
 import sys
+from datetime import UTC, datetime
 from typing import Any
 from urllib.parse import quote
 
-from enrichment import FilmMetadata
+from enrichment import FilmMetadata, FixtureSource, enrich
 from youtrack_client import YouTrackClient
 from youtrack_enrich import YouTrackFixtureBackend, custom_value
 
@@ -29,6 +30,45 @@ def simple(name: str, value: Any) -> dict[str, Any]:
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise ValueError(message)
+
+
+class Availability(FixtureSource):
+    def __init__(self, *, changed: bool = False, partial: bool = False, failed: bool = False):
+        self.changed, self.partial, self.failed = changed, partial, failed
+
+    def availability(self, source_id: int) -> dict | None:
+        if self.failed:
+            raise RuntimeError("Synthetic source failure")
+        return {
+            "id": source_id,
+            "results": {
+                "US": {
+                    "link": "https://example.invalid/fictional",
+                    "flatrate": [{}]
+                    if self.partial
+                    else [
+                        {
+                            "provider_id": 101,
+                            "provider_name": "Fixture Stream 2"
+                            if self.changed
+                            else "Fixture Stream",
+                        }
+                    ],
+                    "rent": [{"provider_id": 102, "provider_name": "Fixture Rental"}],
+                    "buy": [{"provider_id": 103, "provider_name": "Fixture Purchase"}],
+                }
+            },
+        }
+
+
+def observation(client: YouTrackClient, path: str) -> dict:
+    issue = client.request(path, query={"fields": "id,customFields(id,name,value)"})
+    field = next(f for f in issue["customFields"] if f["name"] == "FilmIQ Provider Observation")
+    detail = client.request(
+        path + "/customFields/" + quote(field["id"], safe=""),
+        query={"fields": "id,value(text)"},
+    )
+    return json.loads(detail["value"]["text"])
 
 
 def main() -> int:
@@ -124,6 +164,52 @@ def main() -> int:
             and (custom_value(final, "FilmIQ Lifecycle") or {}).get("name") == "Evaluation",
             "An existing fictional value or explicit clear was not preserved",
         )
+
+        stage = "fictional-availability-refresh"
+        now = datetime.now(UTC)
+        require(enrich(Availability(), backend, identities[1], now) == second, "Issue changed")
+        initial = observation(client, issue_path)
+        require(
+            initial["subscription"] == ["Fixture Stream"]
+            and initial["rent"] == ["Fixture Rental"]
+            and initial["buy"] == ["Fixture Purchase"],
+            "Fictional offer categories were not stored separately",
+        )
+        require(
+            enrich(Availability(changed=True), backend, identities[1], now) == second,
+            "Issue changed",
+        )
+        refreshed = observation(client, issue_path)
+        require(
+            refreshed["subscription"] == ["Fixture Stream 2"]
+            and refreshed["rent"] == ["Fixture Rental"]
+            and refreshed["buy"] == ["Fixture Purchase"],
+            "Fictional availability refresh did not persist",
+        )
+        require(
+            enrich(Availability(partial=True), backend, identities[1], now) == second,
+            "Issue changed",
+        )
+        try:
+            enrich(Availability(failed=True), backend, identities[1], now)
+        except RuntimeError:
+            pass
+        else:
+            raise ValueError("Synthetic provider failure was not reported")
+        require(observation(client, issue_path) == refreshed, "Failed refresh changed availability")
+        after = client.request(
+            issue_path, query={"fields": "id,description,customFields(name,value(name))"}
+        )
+        require(
+            after["description"] == "User-edited fictional synopsis."
+            and (custom_value(after, "FilmIQ Lifecycle") or {}).get("name") == "Evaluation"
+            and sum(
+                custom_value(issue, "FilmIQ Fixture ID") == identities[1]
+                for issue in backend.issues()
+            )
+            == 1,
+            "Fictional refresh changed user edits, lifecycle, or created a duplicate",
+        )
     except Exception as error:
         print(
             json.dumps({"passed": False, "stage": stage, "errorType": type(error).__name__}),
@@ -138,6 +224,8 @@ def main() -> int:
                 "explicitNulls": True,
                 "historyPreservedClear": True,
                 "synopsisLifecycleAndYearPreserved": True,
+                "separateSubscriptionRentalPurchase": True,
+                "refreshedAndFailurePreserved": True,
             }
         )
     )

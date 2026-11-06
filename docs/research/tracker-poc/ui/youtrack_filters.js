@@ -41,7 +41,7 @@ export function providerObservation(film) {
       if (!["complete", "partial", "unknown"].includes(live.status) || !Array.isArray(live.offers) ||
           !live.offers.every((item) => item && typeof item.provider === "string" && item.provider.trim() && ["subscription", "rent", "buy", "free", "ads"].includes(item.kind))) return null;
       const providers = (kind) => [...new Set(live.offers.filter((item) => item.kind === kind).map((item) => item.provider))];
-      return {source: "TMDB / JustWatch", status: live.status, subscription: providers("subscription"), rent: providers("rent"), checked_at: live.checked_at};
+      return {source: "TMDB / JustWatch", status: live.status, subscription: providers("subscription"), rent: providers("rent"), buy: providers("buy"), free: providers("free"), ads: providers("ads"), checked_at: live.checked_at};
     }
     const raw = field(film, "FilmIQ Provider Observation");
     const value = JSON.parse(typeof raw === "string" ? raw : raw?.text || "null");
@@ -51,7 +51,7 @@ export function providerObservation(film) {
     const list = (v) => Array.isArray(v) && v.every((item) => typeof item === "string" && item.trim()) ? v : null;
     const subscription = list(value.subscription), rent = list(value.rent);
     if (status === "complete" && (!subscription || !rent)) return null;
-    return {source: "Synthetic fixture", status, subscription, rent, checked_at: typeof value.checked_at === "string" ? value.checked_at : null};
+    return {source: "Synthetic fixture", status, subscription, rent, buy: list(value.buy), free: list(value.free), ads: list(value.ads), checked_at: typeof value.checked_at === "string" ? value.checked_at : null};
   } catch { return null; }
 }
 

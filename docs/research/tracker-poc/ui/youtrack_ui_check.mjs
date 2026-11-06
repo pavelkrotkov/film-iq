@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { build } from "esbuild";
-import { filmYearLabel, localWatchlistLabel } from "./youtrack_filters.js";
+import { filmYearLabel, filterYoutrackFilms, localWatchlistLabel } from "./youtrack_filters.js";
 
 let onLocationChange;
 globalThis.YTApp = {register: async (callbacks) => {
@@ -32,6 +32,26 @@ const fixture = {source: "synthetic fixture, not TMDB", subscription: ["Fixture 
 const complete = providerObservation(film(fixture));
 assert.equal(providerDescription(complete, "subscription"), "Fixture Stream");
 assert.equal(providerDescription(complete, "rent"), "None reported");
+assert.equal(providerDescription(complete, "buy"), "Unknown", "older synthetic fixtures do not report purchases");
+const syntheticPurchase = providerObservation(film({...fixture, buy: ["Fixture Purchase"]}));
+assert.equal(providerDescription(syntheticPurchase, "buy"), "Fixture Purchase");
+assert.equal(providerDescription(syntheticPurchase, "free"), "Unknown");
+const liveOffers = providerObservation({live:{availability:{status:"complete",checked_at:"2026-11-05T00:00:00Z",offers:[
+  {provider:"Fixture Stream",kind:"subscription"},{provider:"Fixture Rent",kind:"rent"},
+  {provider:"Fixture Buy",kind:"buy"},{provider:"Fixture Free",kind:"free"},{provider:"Fixture Ads",kind:"ads"},
+]}}});
+assert.equal(providerDescription(liveOffers, "buy"), "Fixture Buy");
+assert.equal(providerDescription(liveOffers, "free"), "Fixture Free");
+assert.equal(providerDescription(liveOffers, "ads"), "Fixture Ads");
+const noLiveOffers = providerObservation({live:{availability:{status:"complete",offers:[]}}});
+assert.equal(providerDescription(noLiveOffers, "buy"), "None reported");
+const partialLiveOffers = providerObservation({live:{availability:{status:"partial",offers:[]}}});
+assert.equal(providerDescription(partialLiveOffers, "buy"), "Unknown (partial response)");
+const availabilityFilm = {idReadable:"FILMPOC-1", customFields:[], live:{availability:{status:"complete",offers:[
+  {provider:"Fixture Buy",kind:"buy"}, {provider:"Fixture Stream",kind:"subscription"},
+]}}};
+assert.equal(filterYoutrackFilms([availabilityFilm], {provider:"Fixture Buy"}).length, 0, "purchase providers are not subscription matches");
+assert.equal(filterYoutrackFilms([availabilityFilm], {provider:"Fixture Stream"}).length, 1);
 assert.equal(providerFreshness(complete, Date.parse("2026-11-06T00:00:00Z")), "recent");
 assert.equal(providerFreshness(complete, Date.parse("2026-11-20T00:00:00Z")), "stale");
 const partial = providerObservation(film({...fixture, status: "partial", subscription: []}));

@@ -415,7 +415,11 @@ It assumes a single worker with no concurrent edits. A live FILMPOC-only check
 created two fictional issues and verified creation, backfill, explicit clear,
 synopsis and lifecycle preservation. The repeatable
 `youtrack_enrich_live_check.py` leaves two new fictional issues per run. The
-page displays stored and source-listed years separately; neither establishes
+same check verified that a changed fictional subscription, rental and purchase
+observation persisted separately and that partial or failed source responses
+preserved the last complete observation, edited synopsis and lifecycle. It did
+not call a live provider or modify real films or Movary. The page displays
+stored and source-listed years separately; neither establishes
 the identity of a real film. The year-label helper passed deterministic tests.
 An isolated fictional Brave walkthrough filtered two title matches by genre,
 then showed the stored year on the matching card and its detail page, including
