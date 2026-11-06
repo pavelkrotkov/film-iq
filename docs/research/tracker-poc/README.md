@@ -12,6 +12,18 @@ already configured Mac, see the [local runbook](local-runbook.md) and
 
 ## Current local state
 
+On 2026-11-06, the local Kaneo POC received a read-only Movary watchlist
+projection and the corresponding UI bundle. The snapshot contains two
+source-only entries, neither of whose TMDb IDs appeared in the original import
+manifest. A current authenticated tracker listing has not independently
+verified their match status. The interface can prepare an Add film draft for an
+unmatched entry; it does not create a tracker record or query a provider merely
+by showing the watchlist. Source identifiers and titles remain unverified.
+The projection is separate from editable POC preferences, and absence from a
+snapshot is unknown rather than an off-watchlist assertion. No Movary or
+provider write was made. See the [local runbook](local-runbook.md#movary-watchlist-projection)
+for rollout evidence and the one-time initializer's limitations.
+
 Both POCs are running with the 103 candidate and 27 Movary-watched records.
 A paced collection run populated a separate seven-day metadata and US-provider
 cache for all 130 approved IDs in each backend. Cache-only comparison found

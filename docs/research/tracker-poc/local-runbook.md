@@ -160,6 +160,44 @@ bridge uses the existing project-local SQLite file and separately scoped
 read-only watched snapshot. Restarting it invalidates pending preview tokens;
 start a new preview if needed. It does not change Movary.
 
+## Movary watchlist projection
+
+On 2026-11-06, the Kaneo bridge and UI were updated to display positive
+Movary watchlist observations separately from editable POC preferences. The
+complete source snapshot yielded two entries, and neither ID was in the
+original film-import manifest. No tracker records were created during this
+rollout; creating an unmatched entry requires an explicit user submission.
+Current live tracker matching and authenticated UI rendering have not been
+independently verified. The UI
+preserves the source observation time, displays source titles and IDs as
+unverified, and treats missing observations as unknown. Showing the entries
+does not query TMDb or another provider; no real Movary watchlist or provider
+writes were made.
+
+The one-time initializer matched the existing single watched-sidecar owner and
+project to the same complete source observation, previewed two entries, and
+created a separate owner-only `movary-watchlist.json` without altering the
+watched sidecar. Matching the observation supports continuity but does not
+independently verify the user's identity. The initializer refuses an existing
+target and assumes a single writer. It does not refresh an existing sidecar;
+a later changed watchlist needs a separately designed refresh path. Do not
+remove or overwrite this sidecar to force a refresh.
+
+A private SQLite online backup passed integrity verification. After restart,
+the preferences database's complete SQL-dump digest matched the backup; source
+and watched-sidecar hashes and the new sidecar readback were unchanged. The
+bridge returned 403 to an anonymous watchlist request. The first restart
+attempt resolved the `.venv/bin/python` symlink and thus bypassed the virtual
+environment; it exited before binding because the project package was missing.
+Launching the exact `.venv/bin/python` path restored the service. Restarting
+invalidates pending preference preview tokens, so those must be previewed again.
+
+The new UI asset was checked against the bytes served by the local web server.
+The exact previous bundle and database backup are retained under
+`.cache/tracker-poc/private/kaneo-watchlist-rollout-laaym4pe/`; the bridge log
+there records the initial failed launch. These delivery and denial checks do not
+establish authenticated real-film browser behavior or full recovery.
+
 ## Approved-ID TMDB bridges
 
 The YouTrack bridge is the Docker container started above. Its existing
