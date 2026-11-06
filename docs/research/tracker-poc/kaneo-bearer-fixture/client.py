@@ -7,6 +7,7 @@ import time
 import urllib.error
 import urllib.request
 from datetime import UTC, datetime
+from typing import Any
 
 from direct_review_links_check import fixtures
 from enrichment import FixtureSource, enrich
@@ -15,6 +16,10 @@ from kaneo_enrich import KaneoBackend
 from kaneo_smoke import call, ensure_field
 from kaneo_watched_refresh import prepare
 from kaneo_watchlist_auth_check import check as check_watchlist_auth
+from kaneo_watchlist_films import apply as apply_films
+from kaneo_watchlist_films import inventory as inventory_films
+from kaneo_watchlist_films import plan as plan_films
+from movary_watchlist_projection import project as project_watchlist
 
 BASE = "http://kaneo:5173"
 stage = "readiness"
@@ -116,6 +121,8 @@ def main():
     stage = "fields"
     identity = ensure_field(setup, BASE, project, IDENTITY_FIELD, "text")
     review = ensure_field(setup, BASE, project, FIELD, "text")
+    ensure_field(setup, BASE, project, "POC Identity Provenance", "text")
+    ensure_field(setup, BASE, project, "POC Field Provenance", "text")
     columns = call(setup, BASE, f"/column/{project}")
     names = {"to-do": "Discovery", "in-progress": "Evaluation", "in-review": "Watchlist"}
     assert names.keys() <= {column["slug"] for column in columns}
@@ -214,6 +221,53 @@ def main():
     )
     stage = "lifecycle"
     lifecycle_round_trip(opener, project)
+    stage = "watchlist-film"
+    when = "2026-11-06T12:34:56+00:00"
+    movies: list[dict[str, Any]] = [
+        {"ids": {"tmdb": 111, "movary": 501}, "title": "Fictional Candidate One"},
+        {"ids": {"tmdb": 112, "movary": 502}, "title": "Fictional Candidate Two"},
+    ]
+    source = {
+        "version": "movary-personal-v1",
+        "last_successful_refresh": when,
+        "films": [
+            {
+                "tmdb_id": row["ids"]["tmdb"],
+                "movary_id": row["ids"]["movary"],
+                "title": row["title"],
+                "watchlist": True,
+            }
+            for row in movies
+        ],
+        "provenance": {
+            "api": {"played": [], "history": [], "watchlist": [{"movie": row} for row in movies]}
+        },
+    }
+    source_status = {"stale": False, "last_successful_refresh": when}
+    projected = project_watchlist(source, source_status, [])
+    sidecar = {
+        "version": "tracker-poc-movary-watchlist-users-v1",
+        "project_id": project,
+        "users": {
+            owner_id: {k: projected[k] for k in ("version", "source", "observed_at", "entries")}
+        },
+    }
+
+    def request(path, payload=None):
+        return call(opener, BASE, path, payload)
+
+    def load_films():
+        return plan_films(
+            request, project, sidecar, source, source_status, {42}, "source", "status"
+        )
+
+    call(opener, BASE, f"/task/status/{task}", {"status": "archived"}, "PUT")
+    assert task in {row["id"] for row in inventory_films(request, project)[1]}
+    preview = load_films()
+    assert len(preview["pending"]) == 2 and preview["conflicts"] == 0
+    assert apply_films(request, preview, load_films)["created"] == 2
+    assert apply_films(request, load_films(), load_films)["created"] == 0
+    assert call(opener, BASE, f"/task/{task}")["description"] == "User-entered fictional synopsis"
     stage = "denial"
     try:
         call(urllib.request.build_opener(urllib.request.ProxyHandler({})), BASE, f"/task/{task}")

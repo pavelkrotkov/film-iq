@@ -31,12 +31,13 @@ def command(args, *, timeout=120):
     if result.returncode:
         # Child output can contain fictional credentials; do not surface it.
         safe = re.search(
-            rb"Fictional bearer check failed at (?:readiness|signup|workspace|project|fields|task|key|owner|watched|watchlist-auth|preview|apply|retry|clear|lifecycle|denial): [A-Za-z]+(?: HTTP [0-9]{3})?",
+            rb"Fictional bearer check failed at (?:readiness|signup|workspace|project|fields|task|key|owner|watched|watchlist-auth|preview|apply|retry|clear|lifecycle|watchlist-film|denial): [A-Za-z]+(?: HTTP [0-9]{3})?",
             result.stderr,
         )
         if safe:
             raise RuntimeError(safe.group().decode())
-        raise RuntimeError("Fictional fixture command failed")
+        action = next((arg for arg in ("config", "up", "exec", "stop") if arg in args), "unknown")
+        raise RuntimeError(f"Fictional fixture {action} command failed")
     return result.stdout
 
 
@@ -94,6 +95,8 @@ def main():
         "kaneo_direct_reviews.py",
         "kaneo_enrich.py",
         "kaneo_movary_mapping.py",
+        "kaneo_private_import.py",
+        "kaneo_watchlist_films.py",
         "kaneo_smoke.py",
         "kaneo_watchlist_auth_check.py",
         "movary_watchlist_projection.py",
