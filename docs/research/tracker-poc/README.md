@@ -12,6 +12,18 @@ already configured Mac, see the [local runbook](local-runbook.md) and
 
 ## Current local state
 
+On 2026-11-06, both POC interfaces received a cache-loading fix: a stalled
+read no longer blocks all later films. Kaneo aborts timed-out requests;
+YouTrack stops after two unresolved Host API reads and shows a notice because
+that API does not expose cancellation here. Fictional effect tests cover
+timeouts, late responses and navigation. The installed YouTrack app matched the
+reviewed widget-only candidate, and the Kaneo server returned the reviewed
+bundle. Full watched and watchlist properties, visible preferences, app
+settings, usages and checked attachment metadata matched their pre-update
+snapshots. This does not establish the cause of the previously reported empty
+boxes or verify real-film poster rendering in the browser. Owner-only backups
+and the rollout record remain in the project-local private cache.
+
 On 2026-11-06, the local Kaneo POC received a read-only Movary watchlist
 projection and the corresponding UI bundle. The snapshot contains two
 source-only entries, neither of whose TMDb IDs appeared in the original import
