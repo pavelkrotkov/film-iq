@@ -6,8 +6,8 @@ deployment or Cloud instance has been tested. The detailed evidence and
 reproduction instructions are in [README.md](README.md).
 
 These scores are provisional: the latest YouTrack interface has passed a
-fictional browser walkthrough, but live metadata there, upgrades and complete
-recovery still need verification. The user
+fictional browser walkthrough, but the real-film browser path, upgrades and
+complete recovery still need verification. The user
 prioritized the single-user workflow over additional multi-account tests. An
 attractive API or a passing mock is not evidence that the complete workflow
 works.
@@ -33,8 +33,8 @@ experience and its app-owned data requires a recovery plan. Both operating
 scores reflect extra local services and untested recovery; the substantially
 larger YouTrack memory sample is not a production sizing comparison.
 
-**Provisional recommendation: continue with YouTrack** if the remaining live
-metadata and operational checks confirm the embedded page is usable. It has demonstrated
+**Provisional recommendation: continue with YouTrack** if the remaining
+browser and operational checks confirm the embedded page is usable. It has demonstrated
 more of the requested persistence, query and automation capabilities without a
 source fork, which may reduce ongoing backend work. Kaneo remains the stronger
 candidate if a tracker-free interface is decisive or YouTrack's app/data
@@ -61,18 +61,24 @@ imported into the local YouTrack administrator's app-owned property after a
 fictional single-user and anonymous-denial check. Readback matched the source;
 neither import writes to Movary or changes a watchlist.
 
-The opt-in TMDB reader retrieves metadata into page memory, with no tracker
-write of the response body; a public example ID worked for a signed-in
-synthetic user after anonymous access was rejected. This does not establish
-accuracy, individual streaming entitlement, or rights for indefinite storage.
+The opt-in TMDB reader can retain normalized metadata in a separate local
+seven-day cache without writing the response to tracker history. Both trackers
+have cached all 130 approved records. A cache-only comparison found identical
+metadata and availability statuses for all 130; the 109 comparable complete
+provider sets matched, and 21 observations were unknown in both. Each bridge
+was restarted, after which all 130 cache entries remained readable. This does not
+establish identity accuracy, individual streaming entitlement, or rights for
+indefinite storage. Browser verification of the actual real-film path remains
+outstanding; fictional mounted browsers verified cache rehydration and transient
+poster rendering.
 An aggregate live details check returned valid records for all 130 input IDs;
 110 titles exactly matched after normalization and 20 did not. Alternate titles
 can explain differences, so those results do not settle film identity. A later
 non-retaining check found nine additional original-title matches under its
 Unicode/casefold/whitespace comparison. The UI now accepts an exact normalized
 current or original title as a display guard; this comparison uses slightly
-different normalization and neither establishes identity. No
-provider response bodies were retained, and this is not a completed enrichment.
+different normalization and neither establishes identity. The earlier
+identity checks retained no provider response bodies.
 Both film-detail pages can now also read limited facts from the existing
 reviewed catalog without copying it into either tracker or making a TMDB API
 request. The shared credits component requests TMDB's generic logo without a
@@ -80,15 +86,15 @@ film referrer when catalog facts are displayed.
 A collection-wide local check of all 130 approved records found that both
 tracker endpoints returned facts for the same 95 films, with no disagreements.
 Fictional browser checks verified the display and reload with mocked endpoint
-responses. Catalog expiry is enforced; synopsis, posters and providers remain
-outside this restart-safe read path. See [the POC README](README.md).
+responses. Catalog expiry is enforced; synopsis, poster references and provider
+observations instead use the separate seven-day cache. See [the POC README](README.md).
 In later sequential non-retaining checks, both local backends read all 130
 authorized IDs: each returned 130 poster paths and 109 complete US provider
 responses; 21 provider results were unknown. An isolated Kaneo browser check
 confirmed a matching film's poster loaded and provider information appeared;
 another returned title differed, so the interface withheld that artwork and
-availability. The new YouTrack widget can request live data on demand, but its browser integration and image caching remain
-unverified for real films. A trusted-keyboard browser check reached the actual
+availability. The YouTrack widget can request live data on demand; the real-film browser
+integration remains unverified. A trusted-keyboard browser check reached the actual
 fictional fixture handler and rendered its title and synopsis; the provider
 and poster were locally mocked. The fixture's HTTP 429 also produced a visible
 rate-limit message and prevented another request. The optional MDBList endpoint returned HTTP 403, so no live MDBList enrichment

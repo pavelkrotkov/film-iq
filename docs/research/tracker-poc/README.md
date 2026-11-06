@@ -9,6 +9,32 @@ The [working comparison](comparison.md) maps the evidence and gaps to the
 requested evaluation criteria and includes provisional scores. For the
 already configured Mac, see the [local runbook](local-runbook.md).
 
+## Current local state
+
+Both POCs are running with the 103 candidate and 27 Movary-watched records.
+A paced collection run populated a separate seven-day metadata and US-provider
+cache for all 130 approved IDs in each backend. Cache-only comparison found
+identical metadata and availability status for all 130, with matching provider
+sets for the 109 complete observations and 21 unknown observations in both.
+All 130 cached entries remained readable after each bridge restarted. The
+YouTrack watched snapshot still matched its 27-film source; no tracker or Movary
+record was modified by enrichment. These observations do not establish film
+identity, individual streaming entitlement, or real-film browser behavior.
+Fictional mounted-browser tests exercised cache rehydration and transient poster
+rendering; the real-film browser path has not been verified.
+
+The current policy authorization expires on December 6, 2026 UTC; each
+observation remains fresh for at most seven days. The 130 existing entries
+retain their original deadlines, no later than November 13, 2026 UTC. The
+renewal did not extend those deadlines. Refresh is currently manual; no real
+provider refresh schedule has been installed. Cleanup runs hourly while each
+bridge is running and on startup, but not while the bridge or host is stopped. The cache root is
+excluded from Time Machine; other backup/sync coverage and older browser copies
+remain unverified. See [cache operation and limits](tmdb-live-cache-candidate.md),
+[batch method](tmdb-cache-batch.md) and [source-use decision](tmdb-private-pilot-policy.md).
+The detailed entries below record observations from earlier stages and can
+refer to the configuration in effect at the time.
+
 ## Evidence collected so far
 
 * The local YouTrack `2026.2.19728` instance completed initial setup and its
@@ -685,8 +711,8 @@ and title, both interfaces retain it in page memory and label it as coming from
 an earlier lookup; fictional browser checks covered both interfaces.
 
 A separate [fictional cache experiment](tmdb-cache-experiment.md) exercises
-deadlines, purge, recovery and both tracker adapters. It is not connected to
-the running interfaces or enabled for real provider data.
+deadlines, purge, recovery and both tracker adapters. The later real-data
+cache uses the related code and is limited as described in the current state.
 
 An isolated YouTrack browser test activated a fictional metadata lookup with a
 trusted keyboard click. The main-menu widget reached the real local fixture app
@@ -697,9 +723,8 @@ trusted-keyboard check received a fixture 429, showed a rate-limit message and
 prevented a second request.
 
 The [comparison](comparison.md) includes provisional weighted scores and a
-conditional recommendation. The YouTrack live metadata and poster controls,
-YouTrack recovery, Kaneo attachment/live preference-service recovery and an upgrade rehearsal
-remain outstanding. A [fictional Kaneo database restore and restart](kaneo-recovery-rehearsal.md)
+conditional recommendation. The real-film YouTrack browser path, YouTrack recovery, Kaneo attachment/live
+preference-service recovery and an upgrade rehearsal remain outstanding. A [fictional Kaneo database restore and restart](kaneo-recovery-rehearsal.md)
 passed in a separate isolated instance. The user prioritized the single-user
 workflow over additional multi-account testing. These limitations make the
 scores provisional. Docker Desktop's external runtime storage under

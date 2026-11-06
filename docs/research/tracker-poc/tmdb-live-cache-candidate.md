@@ -1,9 +1,12 @@
-# Seven-day live-cache candidate and one-film pilot
+# Seven-day live cache for the local POCs
 
-The candidate is enabled locally for **one approved film** in each tracker.
-A real refresh and cache-only read succeeded in each bridge, and each retained
-the cached result across a bridge restart. No tracker or Movary record was
-modified. The existing noncommercial private-use assessment and its unresolved qualifications are in
+The cache is enabled locally for **130 approved films** in each tracker.
+Both bridges refreshed and returned the records through cache-only reads. An
+aggregate comparison found matching metadata and availability status for all
+130 films, including 109 matching complete provider sets and 21 unknown
+observations in both. After a separate restart of each bridge, all 130 cache
+entries remained readable. No tracker or Movary record was modified. The existing
+noncommercial private-use assessment and its unresolved qualifications are in
 [intended-use-20261031.md](../availability/intended-use-20261031.md); the
 seven-day period is a conservative local choice, not a claim about TMDB's terms.
 
@@ -67,8 +70,8 @@ disposable cache on uncertain recovery instead of treating it as current.
 
 On 2026-11-05 the empty intended root was created and a narrow Time Machine
 exclusion for it was verified. Its existing private parent is included in a
-configured Time Machine backup. After that check, the one-film pilot initialized separate policies and stored
-one normalized cache record per tracker. A process-only check detected OneDrive
+configured Time Machine backup. After that check, the pilot initialized separate policies, and the collection
+run stored 130 normalized cache records per tracker. A process-only check detected OneDrive
 but did not establish its sync roots. Other backup/sync software and existing
 browser caches remain unverified.
 
@@ -129,10 +132,10 @@ backups, exports or other locations. The command does not contact TMDB.
 
 ## Review and verification
 
-The one-film pilot uses the reviewed policy and independently initialized
+The collection run uses the reviewed policy and independently initialized
 authorities described above. Other backup/sync coverage, pre-existing browser
 copies, and the offline physical-deletion limitation remain open. Reassess
-these boundaries and source use before expanding the pilot. Both bridges and the
+these boundaries and source use before expanding beyond the authorized set. Both bridges and the
 UI require deliberate configuration and the updated YouTrack issue handler
 before cache hydration can work. `FILMIQ_TMDB_CACHE_ENABLE=1` and
 `FILMIQ_TMDB_CACHE_DIRECTORY` are explicit server opt-ins. The UI build flag

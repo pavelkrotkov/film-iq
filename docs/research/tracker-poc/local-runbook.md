@@ -106,12 +106,12 @@ publishes no separate host port. To restart it alone, run:
 docker restart film-iq-tracker-poc-tmdb-live-bridge-1
 ```
 
-### YouTrack one-film cache pilot
+### YouTrack collection cache
 
-The existing bridge container now runs the one-film cache pilot. The restart
+The existing bridge container now runs the 130-film cache POC. The restart
 command above preserves its current mounts and environment. It does not apply
 changes to the Compose files. The pilot keeps the original approved collection
-for local catalog reads and limits provider refreshes to one approved film.
+for local catalog reads and provider refreshes.
 Its separate private cache is under
 `.cache/tracker-poc/private/tmdb-live-cache/youtrack/`. Check the container's
 state and its logs for the generic `TMDB cache maintenance failed` message;
@@ -124,11 +124,11 @@ reviewed catalog and separate approval scopes remain available. From the
 worktree root, with Docker Desktop and YouTrack running:
 
 ```sh
-export FILMIQ_APPROVAL_DIR="$PWD/.cache/tracker-poc/private/tmdb-pilot-approval"
+export FILMIQ_APPROVAL_DIR="$PWD/.cache/tracker-poc/private/tmdb-approval"
 export FILMIQ_CATALOG_APPROVAL_HOST_DIR="$PWD/.cache/tracker-poc/private/tmdb-approval"
 export FILMIQ_YOUTRACK_CACHE_DIR="$PWD/.cache/tracker-poc/private/tmdb-live-cache/youtrack"
 export FILMIQ_BRIDGE_UID="$(id -u)" FILMIQ_BRIDGE_GID="$(id -g)"
-export FILMIQ_TMDB_BRIDGE_ENABLE_LIVE=1
+export FILMIQ_TMDB_BRIDGE_ENABLE_LIVE=1 FILMIQ_TMDB_PACE=1 FILMIQ_TMDB_REFRESH_ENABLED=1
 export FILMIQ_REVIEWED_CATALOG_FILE="$PWD/../../.cache/epic-c/results/reviewed-display-catalog-expanded-20261031.json"
 docker compose -f docs/research/tracker-poc/compose.yaml \
   -f docs/research/tracker-poc/youtrack-tmdb-live-bridge/compose.live.yaml \
@@ -147,16 +147,16 @@ full approval directory and live plus catalog overrides without the two
 pilot overrides. See the [cache candidate notes](tmdb-live-cache-candidate.md)
 for the stopped-writer purge procedure and retention limits.
 
-### Kaneo one-film cache pilot
+### Kaneo collection cache
 
-The active pilot uses one provider-approved film, the original broader local
-catalog approval, and the seven-day policy in the separate private Kaneo cache.
+The active POC uses the 130-film approved collection, a seven-day observation
+limit and a fixed policy window in the separate private Kaneo cache.
 Its bridge runs in the background. To start the pilot after a reboot or restart
 its currently running bridge without changing either tracker, its UI, or Movary:
 
 ```sh
 cd /Users/pavel/dev/film-iq/.worktrees/kaneo-youtrack
-.venv/bin/python docs/research/tracker-poc/kaneo_live_pilot.py
+FILMIQ_TMDB_PACE=1 FILMIQ_TMDB_REFRESH_ENABLED=1 .venv/bin/python docs/research/tracker-poc/kaneo_live_pilot.py --collection
 ```
 
 If the port is free, the command starts the pilot even when its PID record is
