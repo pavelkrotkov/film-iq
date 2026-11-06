@@ -222,19 +222,25 @@ def main():
 
         parse_allowlist(load())
         cache = None
+        stop_purge = None
         if os.environ.get("FILMIQ_TMDB_CACHE_ENABLE", "0") != "0":
-            from tmdb_live_cache import from_env
+            from tmdb_live_cache import from_env, start_purge_worker
 
             cache = from_env(os.environ)
+            stop_purge = start_purge_worker(cache)
     except (OSError, ValueError, TypeError):
         raise SystemExit("Live bridge configuration unavailable") from None
-    with make_server(
-        "127.0.0.1",
-        15178,
-        app(config, load, read_movie, read_reviewed, cache),
-        handler_class=QuietHandler,
-    ) as server:
-        server.serve_forever()
+    try:
+        with make_server(
+            "127.0.0.1",
+            15178,
+            app(config, load, read_movie, read_reviewed, cache),
+            handler_class=QuietHandler,
+        ) as server:
+            server.serve_forever()
+    finally:
+        if stop_purge:
+            stop_purge()
 
 
 if __name__ == "__main__":

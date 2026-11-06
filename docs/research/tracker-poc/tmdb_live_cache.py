@@ -5,15 +5,17 @@ Initializing the cache and reviewing retention are separate operator actions.
 """
 
 import json
+import logging
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
-from threading import RLock
+from threading import Event, RLock, Thread
 
 from tmdb_cache import purge_due, read_film, write_film
 
-from film_iq.retention import CachePolicy
+from film_iq.retention import CachePolicy, status
 
 MAX_AGE = timedelta(days=7)
+PURGE_INTERVAL_SECONDS = 3600
 
 
 class LiveCache:
@@ -31,6 +33,8 @@ class LiveCache:
     def _purge(self, now: datetime) -> None:
         if self.load_policy is not None:
             self.policy = self.load_policy()
+        if status(self.policy, now) == "blocked":
+            raise PermissionError("Cache policy is blocked")
         actions = purge_due(self.root, self.policy, now, authority=self.authority, execute=True)
         if any("corrupt_unresolved" in sections for _, sections in actions):
             raise ValueError("Cache contains unresolved records")
@@ -72,6 +76,10 @@ class LiveCache:
             self._purge(now)
             if not self.policy.allowed or self.policy.terminated or self.policy.expires_at <= now:
                 raise PermissionError("Cache policy is not active")
+
+    def purge(self, now: datetime | None = None) -> None:
+        with self.lock:
+            self._purge(now or datetime.now(UTC))
 
     def put(self, payload: dict, now: datetime | None = None) -> dict:
         now = now or datetime.now(UTC)
@@ -129,3 +137,35 @@ def from_env(env) -> LiveCache | None:
     ):
         raise ValueError("Cache policy is not active")
     return cache
+
+
+def _periodic_purge(cache, stop, interval, report_failure) -> None:
+    while not stop.wait(interval):
+        try:
+            cache.purge()
+        except Exception:
+            # Never log film IDs, paths, provider data, or exception payloads.
+            report_failure()
+
+
+def start_purge_worker(cache, *, interval: float = PURGE_INTERVAL_SECONDS):
+    """Start one idle purge worker per enabled cache; caller must stop it."""
+    if cache is None:
+        return None
+    if interval <= 0:
+        raise ValueError("Purge interval must be positive")
+    stop = Event()
+
+    def report_failure() -> None:
+        logging.getLogger(__name__).error("TMDB cache maintenance failed")
+
+    thread = Thread(
+        target=_periodic_purge, args=(cache, stop, interval, report_failure), daemon=True
+    )
+    thread.start()
+
+    def close() -> None:
+        stop.set()
+        thread.join()
+
+    return close

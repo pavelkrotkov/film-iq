@@ -83,17 +83,42 @@ but is not the same as the termination purge. Stop the bridges while recording
 and replacing the policy so no request races with the update. Already-rendered
 browser data cannot be remotely recalled: close or reload open pages when a
 decision is shortened or terminated. Earlier copied data needs its own purge.
+An active, nonterminated policy marked `allowed=false` blocks maintenance as
+well as reads and writes; it emits the generic maintenance failure and does not
+delete retained files. Use the termination procedure when deletion is required.
 
-Expired sections are purged on bridge startup and cache operations, with all
-writers serialized within that one bridge process. **Seven days is a display
-deadline, not a guarantee of physical deletion by that exact time.** When the
-bridge is stopped, or the host is off, no process can delete files; overdue
-data remains on disk until a later purge. A stopped bridge on an otherwise
-running host likewise has no automatic purge in this candidate. The project's
-existing [operations guidance](../../operations-recovery.md) recommends the
-host's native scheduler; no schedule is registered here. Real activation needs
-an operator-owned purge arrangement for stopped bridges, monitoring of missed
-purges and the host-off limitation, and a decision on the permissible delay.
+Expired sections are purged on bridge startup, cache operations, and an hourly
+in-process maintenance pass while that bridge is running. The maintenance pass
+uses the same process-local lock as reads and writes; failures emit a generic
+error without paths or film IDs. There is no worker when caching is disabled.
+**Seven days is a display deadline, not a guarantee of physical deletion by
+that exact time:** the next hourly pass can be almost an hour later, and an
+error can delay it further. When the bridge is stopped, or the host is off, no
+process can delete files; overdue data remains on disk until a later purge.
+The project's existing [operations guidance](../../operations-recovery.md)
+recommends the host's native scheduler; no separate schedule is registered
+here. Real activation needs monitoring, an operator-owned purge arrangement for
+stopped bridges, and a decision on the permissible host-off delay.
+
+### Stopped-writer manual purge
+
+Stop the corresponding bridge **and all other writers for that cache directory**
+first. Confirm this operationally; the command does not inspect processes and
+cannot prove the absence of a racing writer. With the worktree root as the
+working directory, the following previews one directory and prints counts only:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=docs/research/tracker-poc:src \
+  .venv/bin/python docs/research/tracker-poc/tmdb_live_cache_purge.py \
+  --directory "$PWD/.cache/tracker-poc/private/tmdb-live-cache/kaneo" --writers-stopped
+```
+
+Repeat with the `youtrack` child for that bridge. Add `--execute` to perform the
+purge after the preview. Unresolved corrupt records are counted and return a
+nonzero exit status; they are excluded from the affected record and section
+counts. Investigate them separately without assuming they are expired. This
+covers only the named cache and its authority, not browser copies,
+backups, exports or other locations. The command does not contact TMDB.
 
 ## Review and verification
 
@@ -114,6 +139,8 @@ Fictional-only checks:
 ```sh
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=docs/research/tracker-poc/youtrack-tmdb-live-bridge:docs/research/tracker-poc:src \
   .venv/bin/python docs/research/tracker-poc/tmdb_live_cache_check.py
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=docs/research/tracker-poc:src \
+  .venv/bin/python docs/research/tracker-poc/tmdb_live_cache_maintenance_check.py
 node docs/research/tracker-poc/youtrack-tmdb-live-bridge/metadata_check.cjs
 node docs/research/tracker-poc/ui/live_cache_ui_check.mjs
 (cd docs/research/tracker-poc/ui && node poster_check.mjs)

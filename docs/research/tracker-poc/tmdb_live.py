@@ -198,8 +198,14 @@ def app(
 
 if __name__ == "__main__":
     cache = None
+    stop_purge = None
     if os.environ.get("FILMIQ_TMDB_CACHE_ENABLE", "0") != "0":
-        from tmdb_live_cache import from_env
+        from tmdb_live_cache import from_env, start_purge_worker
 
         cache = from_env(os.environ)
-    serve(app(cache=cache), host="127.0.0.1", port=15176)
+        stop_purge = start_purge_worker(cache)
+    try:
+        serve(app(cache=cache), host="127.0.0.1", port=15176)
+    finally:
+        if stop_purge:
+            stop_purge()
