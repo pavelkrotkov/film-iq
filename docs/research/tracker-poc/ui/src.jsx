@@ -22,6 +22,7 @@ import { ReviewedCatalog } from "./reviewed_catalog_view.jsx";
 import {storedGenreDisplay, storedGenreLabels} from "./stored_genres.js";
 import {Poster} from "./poster.jsx";
 import {IdentityReview} from "./identity_review.jsx";
+import {ReviewIdentity} from "./review_identity.jsx";
 
 const api = "http://localhost:15173/api";
 const cacheFixture = typeof __FILMIQ_CACHE_FIXTURE__ !== "undefined" && __FILMIQ_CACHE_FIXTURE__;
@@ -73,9 +74,7 @@ function DirectReviews({ film }) {
     {stale ? <p>The film title differs from the reviewed source title; links are hidden until revalidated.</p> : links?.length ? <ul>{links.map((link, index) => {
       const evidence = link.identity_evidence;
       return <li key={index}><a href={safeReviewUrl(link.url)} target="_blank" rel="noreferrer">{link.provider} ↗</a> · {link.type === "individual_critic_review" ? "Individual critic review" : "Review aggregator title page"} · checked {link.checked_at}
-        <p>Page title: {evidence.source_page_title}; source title: {evidence.input_title}; director: {evidence.source_directors.join(", ")}.</p>
-        {typeof evidence.source_year === "number" ? <p>Source-listed year: {evidence.source_year}.</p> : <p>Source year unknown.</p>}
-        <p>{evidence.identity_caveat} {evidence.details_note}</p>
+        <ReviewIdentity evidence={evidence} />
       </li>;
     })}</ul> : <p>Direct review links unavailable; coverage is unknown.</p>}
     {!!links?.length && <p>Page identity was reviewed against the source record; the TMDB identity was not independently reverified.</p>}

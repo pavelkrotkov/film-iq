@@ -14,6 +14,7 @@ import {storedGenreDisplay, storedGenreLabels} from "./stored_genres.js";
 import {expireCachedResults, refreshNotice} from "./live_batch.js";
 import {Poster} from "./poster.jsx";
 import {IdentityReview} from "./identity_review.jsx";
+import {ReviewIdentity} from "./review_identity.jsx";
 export { providerObservation, providerFreshness } from "./youtrack_filters.js";
 
 let locationListener = () => {};
@@ -470,7 +471,7 @@ function App() {
           <label>Personal notes<textarea disabled={locked} value={pref.personal_notes} onChange={(e) => changePreference({ personal_notes: e.target.value })} /></label>{prefDirty && <DraftExitWarning kind="preferences" />}<button type="button" onClick={savePreference} disabled={locked}>Preview preference changes</button><p className="notice">Local experiment only; Movary remains authoritative.</p>
         </form>}
         <h3>Source evidence</h3>{sourceLinks.length ? <ul>{sourceLinks.map((item, index) => { const url = safeLink(item.url); return <li key={index}>{url ? <ExternalLink url={url} label={item.source_id || "Source"} /> : "Source link unavailable"} · {item.kind || "type unknown"} · lineage: {item.lineage_kind || "unknown"}</li>; })}</ul> : <p>Accepted source evidence unavailable.</p>}
-        <h3>Direct reviews and aggregators</h3>{staleReviews ? <p>The film title differs from the reviewed source title; links are hidden until revalidated.</p> : reviews?.length ? <ul>{reviews.map((link, index) => <li key={index}><ExternalLink url={safeReviewUrl(link.url)} label={link.provider} /> · {link.type === "individual_critic_review" ? "Individual critic review" : "Review aggregator title page"} · checked {link.checked_at}<p>Page title: {link.identity_evidence.source_page_title}; directors: {link.identity_evidence.source_directors.join(", ")}. {link.identity_evidence.identity_caveat} {link.identity_evidence.details_note}</p></li>)}</ul> : <p>Direct review links unavailable; coverage is unknown.</p>}
+        <h3>Direct reviews and aggregators</h3>{staleReviews ? <p>The film title differs from the reviewed source title; links are hidden until revalidated.</p> : reviews?.length ? <ul>{reviews.map((link, index) => <li key={index}><ExternalLink url={safeReviewUrl(link.url)} label={link.provider} /> · {link.type === "individual_critic_review" ? "Individual critic review" : "Review aggregator title page"} · checked {link.checked_at}<ReviewIdentity evidence={link.identity_evidence} /></li>)}</ul> : <p>Direct review links unavailable; coverage is unknown.</p>}
         <h3>Comments</h3>{comments === null ? <p>Comments unavailable.</p> : <ul>{comments.map((item) => <li key={item.id}>{item.author?.name || "Unknown"}: {item.text}</li>)}</ul>}
         <form onSubmit={addComment}><label>Add comment<textarea disabled={locked} value={commentDrafts[film.idReadable] || ""} onChange={(e) => setCommentDrafts((drafts) => ({...drafts, [film.idReadable]: e.target.value}))} /></label>{commentDrafts[film.idReadable]?.trim() && <DraftExitWarning kind="comments" />}<button type="button" onClick={addComment} disabled={locked}>Add comment</button></form>
         <a href={`/issue/${film.idReadable}`} target="_blank" rel="noreferrer">View tracker record and history ↗</a>
