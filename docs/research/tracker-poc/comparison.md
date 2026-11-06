@@ -81,7 +81,16 @@ non-retaining check found nine additional original-title matches under its
 Unicode/casefold/whitespace comparison. The UI now accepts an exact normalized
 current or original title as a display guard; this comparison uses slightly
 different normalization and neither establishes identity. The earlier
-identity checks retained no provider response bodies.
+identity checks retained no provider response bodies. A later local comparison
+against the imported manifest found 11 titles withheld by the UI guard. Five
+of those differed only under a broader accent/punctuation comparison; ten had
+matching source years and six matching source directors. Those counts overlap,
+source years can represent a different date, and none proves a match. The
+comparison used the imported manifest rather than any subsequently edited
+tracker title. The new detail panel shows the available source and returned
+facts for manual review while continuing to withhold mismatched artwork and
+offers. Conversely, an exact title match can still identify the wrong film;
+the current guard does not automatically resolve conflicting year or director.
 Both film-detail pages can now also read limited facts from the existing
 reviewed catalog without copying it into either tracker or making a TMDB API
 request. The shared credits component requests TMDB's generic logo without a

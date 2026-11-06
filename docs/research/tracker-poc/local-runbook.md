@@ -32,10 +32,11 @@ docker start film-iq-tracker-poc-tmdb-live-bridge-1
 
 These processes stay in Docker; this terminal can be closed. YouTrack can take
 some time to become responsive. Sign in to Kaneo at
-[localhost:15173](http://localhost:15173/auth/sign-in), using the existing POC
-account, then open its film UI at [localhost:15174](http://localhost:15174/).
-Sign in to [YouTrack](http://localhost:18180/) with the existing administrator
-account and open **FilmIQ POC** from the main menu. The installed YouTrack app
+[localhost:15173](http://localhost:15173/auth/sign-in), using the generated POC
+account in the owner-only `.cache/tracker-poc/kaneo-test-user.json`, then open
+the film UI at [localhost:15174](http://localhost:15174/) and select **FilmIQ
+Private Input POC / Private Film Records**. Sign in to
+[YouTrack](http://localhost:18180/) with the existing administrator account and open **FilmIQ POC** from the main menu. The installed YouTrack app
 runs inside YouTrack; it does not use the separate Kaneo UI server.
 
 YouTrack's configured backups are under `.cache/tracker-poc/youtrack/backups`.

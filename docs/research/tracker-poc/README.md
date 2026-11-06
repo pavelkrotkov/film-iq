@@ -27,6 +27,13 @@ navigation; poster bytes were substituted locally. A fresh isolated YouTrack
 browser reached sign-in, but the API token did not create a browser session,
 so the real-film YouTrack browser path remains unverified.
 
+A local comparison against the imported source manifest found 11 title
+mismatches under the interface guard. The detail screens show the saved and
+returned title, year and director as unverified evidence, while withholding
+mismatched artwork and streaming offers. Exact title agreement is also not
+proof of identity. The current cache data can be refreshed in six bounded
+windows, but no recurring job is installed.
+
 The current policy authorization expires on December 6, 2026 UTC; each
 observation remains fresh for at most seven days. The 130 existing entries
 retain their original deadlines, no later than November 13, 2026 UTC. The
