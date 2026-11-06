@@ -36,6 +36,12 @@ export function directReviews(film) {
 export function previewMatchesFilm(preview, filmId) {
   return !!preview && typeof filmId === "string" && preview.issue_id === filmId && !!preview.after;
 }
+export function samePreference(left, right) {
+  const keys = ["interest_score", "watchlist", "watched_at", "personal_notes"];
+  return !!left && !!right && typeof left === "object" && typeof right === "object" &&
+    Object.keys(left).length === keys.length && Object.keys(right).length === keys.length &&
+    keys.every((key) => Object.hasOwn(left, key) && Object.hasOwn(right, key) && left[key] === right[key]);
+}
 // The YouTrack full-page widget iframe lacks allow-forms, so native submit is blocked.
 export function submitOnEnter(event, action) {
   if (event.key !== "Enter" || event.shiftKey || event.nativeEvent?.isComposing || event.target?.tagName !== "INPUT") return;
@@ -335,11 +341,15 @@ function App() {
     if (!previewMatchesFilm(pendingPreview, selectedRef.current)) { setError("The selected film changed; cancel and preview again."); return; }
     setWorking(true); setError(""); let saved = false; const target = pendingPreview.issue_id;
     try {
-      await host.fetchApp("preferences/confirm", { method: "POST", body: pendingPreview });
+      const result = await host.fetchApp("preferences/confirm", { method: "POST", body: pendingPreview });
+      if (result?.issue_id !== target || result.recorded !== true || !samePreference(result.preference, pendingPreview.after)) throw new Error("Unconfirmed preference response");
       saved = true;
       setPreview(null); setDiscardFailed(false); setSaveUncertain(false);
-      setPreferences(await readPreferences());
+      setPreferences((current) => ({...current, [target]: result.preference}));
       if (selectedRef.current === target) markPrefDirty(false);
+      const updated = await readPreferences();
+      if (!samePreference(updated[target], result.preference)) throw new Error("The confirmed preference was not returned");
+      setPreferences(updated);
       setNotice(`Local preference for ${target} saved; Movary was not changed.`);
     } catch (e) {
       if (saved) setError(`Preference saved, but refresh failed: ${e.message}`);
