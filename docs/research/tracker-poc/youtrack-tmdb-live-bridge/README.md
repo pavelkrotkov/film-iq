@@ -25,10 +25,12 @@ fail. It is off by default; values other than `0` or `1` fail startup. The
 Kaneo bridge accepts the same setting, but the two processes do not coordinate
 their limiters, nor do they control other clients using the same credential.
 For a bounded batch, run the two passes sequentially and avoid other live
-refreshes. TMDB 401/403 errors, including those from optional poster
-configuration or provider requests, now stop the read and surface as a generic
-502; 429 still surfaces as 429. No automatic retry is made and the bridge does
-not expose `Retry-After`.
+refreshes. In the deployed bridge, TMDB 401/403 errors, including those from
+optional poster configuration or provider requests, stop the read but surface
+as a generic 502. The reviewed source candidate instead propagates a sanitized
+403 through the issue handler so the UI can stop a batch; fictional checks pass,
+but the change has not yet been deployed. Rate limits remain 429. No automatic
+retry is made and the bridge does not expose `Retry-After`.
 
 For the approved collection run, pause live refresh on the idle bridge with
 `FILMIQ_TMDB_REFRESH_ENABLED=0`; its authenticated cache and catalog reads
