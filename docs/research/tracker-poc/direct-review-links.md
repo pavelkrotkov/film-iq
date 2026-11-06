@@ -64,6 +64,25 @@ FILMREAL`. Add `--apply` only after reviewing the counts. See each script's
 `--help` for the complete arguments. Do not run a subset of related batches:
 the holdback check only considers the manifests supplied in the invocation.
 
+The Kaneo importer also accepts `--api-key-env` instead of `--cookie-file`.
+This reads an independently provisioned `KANEO_API_KEY` from the environment,
+sends it as a bearer header only to the configured loopback instance, and
+refuses redirects; do not put the key in the command line, logs or Git. Use
+the exact same complete set of input batches, preview first, and add `--apply`
+only when the preview is correct. Stop on 401, 403, 429 or uncertain write
+outcomes; inspect before retrying. No existing browser session or cookie is
+needed by this mode.
+
+The pinned v2.49.0 source checks project-read and task-read permissions for
+the importer's reads and task-update for setting an existing value; creating
+a missing field additionally requires project-update. API key restrictions
+intersect with the owner's workspace permissions. The v2.49.0 key-creation
+dialog exposes name and expiry but no scope selector, so a UI-created key's
+access should not be described as narrowly scoped. The documented API key
+mode has only been exercised with fictional in-process transport, not a live
+key or real tracker. The mode does not itself provision a credential or
+authorize access to one.
+
 On 2026-11-05, eight batches identified 50 eligible films with 78 links and one
 held-back identity. Both local POC imports filled empty fields, and readback
 matched all links. A repeat made zero writes. The Kaneo film view can display

@@ -8,6 +8,7 @@ Kaneo does not expose compare-and-swap.
 import argparse
 import http.cookiejar
 import json
+import os
 import urllib.request
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -17,6 +18,22 @@ from kaneo_smoke import call, ensure_field
 
 FIELD = "POC Direct Review Links"
 IDENTITY_FIELD = "POC TMDB ID"
+
+
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    """Never forward an integration credential to a redirect target."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+def api_key_opener(key: str | None):
+    """Build an opt-in, server-side bearer client without browser sessions."""
+    if not key or any(not 33 <= ord(char) <= 126 for char in key):
+        raise ValueError("KANEO_API_KEY must be a nonempty ASCII key without whitespace")
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirect())
+    opener.addheaders = [("Authorization", f"Bearer {key}")]
+    return opener
 
 
 def import_reviews(
@@ -113,7 +130,11 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base", default="http://localhost:15173")
     parser.add_argument("--project", required=True)
-    parser.add_argument("--cookie-file", type=Path, required=True)
+    auth = parser.add_mutually_exclusive_group(required=True)
+    auth.add_argument("--cookie-file", type=Path)
+    auth.add_argument(
+        "--api-key-env", action="store_true", help="read KANEO_API_KEY from the environment"
+    )
     parser.add_argument("--input", type=Path, action="append", required=True)
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument(
@@ -123,9 +144,12 @@ def main() -> None:
     base = urlsplit(args.base)
     if base.scheme != "http" or base.hostname not in ("localhost", "127.0.0.1"):
         raise ValueError("only local Kaneo is supported")
-    cookies = http.cookiejar.MozillaCookieJar(str(args.cookie_file))
-    cookies.load(ignore_discard=True)
-    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cookies))
+    if args.api_key_env:
+        opener = api_key_opener(os.environ.get("KANEO_API_KEY"))
+    else:
+        cookies = http.cookiejar.MozillaCookieJar(str(args.cookie_file))
+        cookies.load(ignore_discard=True)
+        opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cookies))
     result = import_reviews(
         opener,
         args.base.rstrip("/"),
