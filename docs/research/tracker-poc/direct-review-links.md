@@ -10,6 +10,9 @@ viewing. Source-page terms still apply, and a link can become stale.
 `direct_review_links.py` validates all supplied batches before a write. It
 requires a matching source identity and title/director evidence, retains
 uncertainty, and holds conflicting identities out across every supplied batch.
+Each `checked_at` may be a calendar date when that is the only recorded
+precision, or a timestamp with an explicit timezone; the date-only form does
+not assert a particular time of day.
 The shared field has the same source-neutral shape for every film; detailed
 identity evidence remains in the private research manifests. Do not infer
 watched or unwatched status from a shared field.

@@ -2,7 +2,7 @@
 
 import re
 from copy import deepcopy
-from datetime import datetime
+from datetime import date, datetime
 from ipaddress import ip_address
 from urllib.parse import urlsplit
 
@@ -114,9 +114,13 @@ def validate_review_manifest(manifest: dict, source: dict) -> list[dict]:
                 raise ValueError("invalid or duplicated review link")
             urls.add(link["url"])
             try:
-                checked = datetime.fromisoformat(link["checked_at"].replace("Z", "+00:00"))
-                if checked.tzinfo is None or checked.utcoffset() is None:
-                    raise ValueError("timezone missing")
+                checked_at = link["checked_at"]
+                if isinstance(checked_at, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", checked_at):
+                    date.fromisoformat(checked_at)
+                else:
+                    checked = datetime.fromisoformat(checked_at.replace("Z", "+00:00"))
+                    if checked.tzinfo is None or checked.utcoffset() is None:
+                        raise ValueError("timezone missing")
             except (TypeError, ValueError, AttributeError) as exc:
                 raise ValueError("invalid review timestamp") from exc
             evidence = link["identity_evidence"]

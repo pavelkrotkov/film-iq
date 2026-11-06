@@ -63,12 +63,16 @@ def run():
     manifest, source = fixtures()
     discovery_output = validate_review_manifest(manifest, source)
     assert discovery_output[0]["tmdb_id"] == 42
+    day_only = deepcopy(manifest)
+    day_only["films"][0]["links"][0]["checked_at"] = "2026-11-06"
+    assert validate_review_manifest(day_only, source)[0]["links"][0]["checked_at"] == "2026-11-06"
     for mutation in (
         "duplicate",
         "director",
         "title",
         "alternate",
         "naive_time",
+        "invalid_day",
         "private_url",
         "extra_prose",
         "source_unreviewed",
@@ -85,6 +89,8 @@ def run():
             link["identity_evidence"]["source_page_title"] = "Alternate"
         if mutation == "naive_time":
             link["checked_at"] = "2026-11-05T12:00:00"
+        if mutation == "invalid_day":
+            link["checked_at"] = "2026-02-30"
         if mutation == "private_url":
             link["url"] = "http://127.0.0.1/review"
         if mutation == "extra_prose":
