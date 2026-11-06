@@ -76,6 +76,19 @@ the expected distinct labels; the links were not opened. Both custom views hide
 links when the current title differs from the reviewed source title, pending
 revalidation. Real-film link rendering has not been checked in the browser.
 
+On 2026-11-06, a previously researched critic-review page and revisioned source
+evidence supported one additional link. The retained evidence recorded the
+check day but not a time, so the imported value preserves date-only precision.
+All eight earlier batches plus the new batch validated together: 51 eligible
+films and the same one held-back identity. A single YouTrack write filled the
+new film's empty, previously unedited review field; readback confirmed the link.
+The other 129 issue projections, the target's other projected fields, the full
+watched property and preferences matched before and after. The source's film
+identity is not independently verified. Kaneo has not received this additional
+link; a separate candidate aggregator page remains unimported because its
+director comparison is unresolved. No new external requests or Movary writes
+were made during this import. The operation assumes no concurrent writer.
+
 Both deployed film interfaces can also show director names already recorded in
 the direct-review identity evidence, and search those names without fetching
 new data or changing tracker fields. They retain all reported names and label

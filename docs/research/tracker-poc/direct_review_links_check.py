@@ -116,6 +116,7 @@ def run():
     )
     watched = deepcopy(manifest)
     watched_link = watched["films"][0]["links"][0]
+    watched_link["checked_at"] = "2026-11-06"
     watched_link["identity_evidence"] = {
         "input_title": "Fictional Title",
         "source_page_title": "Fictional Title",
@@ -126,6 +127,7 @@ def run():
         "personal_identity_caveat": "PRIVATE Movary viewing evidence",
     }
     clean = validate_review_manifest(watched, private_source)
+    assert clean[0]["links"][0]["checked_at"] == "2026-11-06"
     rendered = str(clean).casefold()
     assert all(
         term not in rendered
