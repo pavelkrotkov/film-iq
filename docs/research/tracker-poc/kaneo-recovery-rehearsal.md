@@ -59,6 +59,16 @@ were uploaded. Image attachment storage and its backup/recovery are therefore
 not demonstrated by the database-only restore; this check does not issue an
 upload request against the real film project.
 
+An additional fictional API round-trip ran the actual Python enrichment
+adapter against the internal-network recovery instance. It created one new
+fictional task, repeated its import, changed a complete provider observation,
+and verified that subscriptions, rentals and purchases remain separate.
+Partial and failed fixture responses preserved the prior observation and the
+edited synopsis and lifecycle. The test uses a fresh API-only login created
+inside the fixture container and kept in memory; it does not use a browser
+session or call a metadata provider. It exercises the adapter with a local RPC
+transport; it does not test the real POC's authentication or personal records.
+
 ## Repeat with fresh fictional directories
 
 Run from this worktree root. The pinned images must already be local. These
@@ -124,6 +134,7 @@ done
 test "$(docker compose -f "$REHEARSAL_DIR/compose.yaml" exec -T restored-db psql -U kaneo -d kaneo -Atc "SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='public' AND c.relkind IN ('r','p');")" = 0
 docker compose -f "$REHEARSAL_DIR/compose.yaml" exec -T source-app node - create < "$REHEARSAL_DIR/fixture.js"
 docker compose -f "$REHEARSAL_DIR/compose.yaml" exec -T source-app node - < docs/research/tracker-poc/kaneo-recovery-fixture/image-config-check.js
+.venv/bin/python docs/research/tracker-poc/kaneo_fixture_enrich_live_check.py --fixture-app "${COMPOSE_PROJECT_NAME}-source-app-1"
 umask 077
 docker compose -f "$REHEARSAL_DIR/compose.yaml" exec -T source-db pg_dump -U kaneo -d kaneo -Fc > "$REHEARSAL_DIR/archive/fixture.dump"
 docker compose -f "$REHEARSAL_DIR/compose.yaml" exec -T restored-db pg_restore -U kaneo -d kaneo --exit-on-error < "$REHEARSAL_DIR/archive/fixture.dump"
