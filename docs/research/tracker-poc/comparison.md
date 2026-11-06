@@ -80,8 +80,15 @@ summary. The source-listed director field was populated for 54 issues and the
 direct-review-links field for 50. A later targeted import added one previously
 researched critic-review link to an untouched YouTrack issue, bringing its
 review-field coverage to 51 films; Kaneo had not received that additional
-link at the time of the import. The source match is not an independently
-verified film identity. See [direct-review links](direct-review-links.md) for
+link at the time of the import. A subsequent read-only YouTrack comparison
+validated all nine existing review batches together and found all 51 eligible
+groups present and matching across 130 uniquely identified issues; the same
+one identity remained held back. This is local API readback, not
+a browser rendering check. A separately provisioned Kaneo API key or an
+authorized browser workflow is still needed to apply the additional link in
+that POC; browser-associated session files were not accessed. The source
+matches are not independently verified film identities. See
+[direct-review links](direct-review-links.md) for
 the import and its limits. The private input likewise has no synopsis,
 canonical release year or genre. These counts describe the issue fields, not
 the separate TMDB cache. They expose a material gap against the requested
