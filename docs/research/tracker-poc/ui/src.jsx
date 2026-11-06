@@ -192,6 +192,7 @@ function App() {
   const {title, description, status, tmdb, year, genre: filmGenre} = filmDraft;
   const [newTitle, setNewTitle] = useState("");
   const [newTmdb, setNewTmdb] = useState("");
+  const [createUncertain, setCreateUncertain] = useState(false), [createChecked, setCreateChecked] = useState(false);
   const [comments, setComments] = useState(null),
     [commentDrafts, setCommentDrafts] = useState({});
   const selectedRef = useRef(selected);
@@ -520,6 +521,8 @@ function App() {
   }
   async function addFilm(event) {
     event.preventDefault();
+    if (createUncertain) { setError("Reload and check the film list before another creation attempt."); return; }
+    if (!loaded) { setError("Reload films before creating a film."); return; }
     if (!newTitle.trim()) return;
     setBusy(true);
     setError("");
@@ -538,14 +541,27 @@ function App() {
           ...(fieldId ? {customFields: [{fieldId, value: newTmdb}]} : {}),
         }, fieldId, newTmdb,
       );
-      setNewTitle("");
-      setNewTmdb("");
-      await refresh();
-      location.hash = `film=${encodeURIComponent(created.id)}`;
+      if (await refresh()) {
+        setNewTitle("");
+        setNewTmdb("");
+        location.hash = `film=${encodeURIComponent(created.id)}`;
+      } else {
+        setCreateUncertain(true); setCreateChecked(false);
+        setError("Film created, but films could not be reloaded. Reload and check the list before adding another film.");
+      }
     } catch (e) {
+      if (creating) { setCreateUncertain(true); setCreateChecked(false); }
       setError(e instanceof CreatedFilmUnverified ? e.message : creating ? `Creation may be incomplete; reload before retrying: ${e.message}` : `Could not create film: ${e.message}`);
       setBusy(false);
     }
+  }
+  async function reviewCreate() {
+    setCreateChecked(false);
+    if (await refresh()) { setCreateChecked(true); setError("Check the film list for your draft before allowing another creation attempt."); }
+  }
+  function allowCreateRetry() {
+    if (!createChecked) return;
+    setCreateUncertain(false); setCreateChecked(false); setError("");
   }
   async function addComment(event) {
     event.preventDefault();
@@ -677,16 +693,18 @@ function App() {
               Add a film to this shared project
               <input
                 value={newTitle}
+                disabled={busy}
                 onChange={(e) => setNewTitle(e.target.value)}
                 maxLength="200"
                 placeholder="Film title"
                 required
               />
             </label>
-            <label>Optional supplied TMDB ID<input inputMode="numeric" value={newTmdb} onChange={(e) => setNewTmdb(e.target.value)} placeholder="Positive integer" /></label>
-            <button disabled={busy || !defaultState}>Add film</button>
+            <label>Optional supplied TMDB ID<input inputMode="numeric" value={newTmdb} disabled={busy} onChange={(e) => setNewTmdb(e.target.value)} placeholder="Positive integer" /></label>
+            <button disabled={busy || !defaultState || !loaded || createUncertain}>Add film</button>
           </form>
         )}
+        {createUncertain && <p role="status">The last film creation needs review. Your draft is preserved. <button type="button" disabled={busy} onClick={reviewCreate}>Reload films to check</button>{" "}<button type="button" disabled={busy || !createChecked} onClick={allowCreateRetry}>I checked the list; allow another attempt</button></p>}
         {error && (
           <p className="error" role="alert">
             {error}
