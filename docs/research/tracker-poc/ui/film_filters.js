@@ -1,6 +1,8 @@
 import {hasStoredGenre} from "./stored_genres.js";
 import {matchesFilmSearch} from "./film_search.js";
 import {reviewDirectorNames} from "./direct_reviews.js";
+import {sourceDirectorForSearch} from "./source_evidence.js";
+import {tmdbId} from "./live_batch.js";
 
 export function syntheticAvailability(film) {
   try {
@@ -68,7 +70,7 @@ export function filterFilms(films, options) {
       (item) =>
         (showArchived || lifecycle === "archived" || String(item.status).toLowerCase() !== "archived") &&
         (!titleReviewOnly || item.titleNeedsReview) &&
-        matchesFilmSearch(query, item.title, item.fields["POC Source Director"], item.live?.directors,
+        matchesFilmSearch(query, item.title, query ? sourceDirectorForSearch(item.fields["POC Evidence"], tmdbId(item), item.fields["POC Source Director"]) : null, item.live?.directors,
           query ? reviewDirectorNames(item.fields["POC Direct Review Links"], item.fields["POC TMDB ID"], item.title) : []) &&
         (!provider || providers(item)?.includes(provider)) &&
         (!watchlistOnly || preferences?.[item.id]?.watchlist) &&

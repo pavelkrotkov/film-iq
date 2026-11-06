@@ -15,9 +15,8 @@ export function sourceEvidenceLinks(evidence, currentId) {
   return {status: evidence.status, links: evidence.status === "available" ? evidence.links.filter((item) => item && typeof item === "object") : []};
 }
 
-// A source field is not a verified release year or proof that its value is unchanged.
-export function sourceYearLabel(rawEvidence, currentId, year) {
-  if (typeof year !== "string" || !/^[1-9][0-9]{3}$/.test(year) || Number(year) < 1800 || Number(year) > 2200) return null;
+// Source assertions remain attached to the ID from their original evidence.
+export function sourceEvidenceMatches(rawEvidence, currentId) {
   try {
     const evidence = JSON.parse(rawEvidence);
     const {status, links} = sourceEvidenceLinks(evidence, currentId);
@@ -26,10 +25,20 @@ export function sourceYearLabel(rawEvidence, currentId, year) {
       const url = new URL(link.url);
       return ["http:", "https:"].includes(url.protocol) && !url.username && !url.password;
     };
-    return status === "available" && links.length && links.length === evidence.links.length && links.every(validLink)
-      ? `Source-listed year ${year} (source field; verify identity and edits)`
-      : null;
-  } catch { return null; }
+    return status === "available" && links.length > 0 && links.length === evidence.links.length && links.every(validLink);
+  } catch { return false; }
+}
+
+// A source field is not a verified release year or proof that its value is unchanged.
+export function sourceYearLabel(rawEvidence, currentId, year) {
+  if (typeof year !== "string" || !/^[1-9][0-9]{3}$/.test(year) || Number(year) < 1800 || Number(year) > 2200) return null;
+  return sourceEvidenceMatches(rawEvidence, currentId)
+    ? `Source-listed year ${year} (source field; verify identity and edits)`
+    : null;
+}
+
+export function sourceDirectorForSearch(rawEvidence, currentId, director) {
+  return typeof director === "string" && director.trim() && sourceEvidenceMatches(rawEvidence, currentId) ? director : null;
 }
 
 export function kaneoCardYear(film, currentId) {
