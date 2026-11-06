@@ -16,6 +16,7 @@ import {Poster} from "./poster.jsx";
 import {IdentityReview} from "./identity_review.jsx";
 import {ReviewIdentity} from "./review_identity.jsx";
 import {criticScore, CriticFields} from "./critic_fields.jsx";
+import {clearSavedDraft, currentComments, saveComment} from "./comment_drafts.js";
 export { providerObservation, providerFreshness } from "./youtrack_filters.js";
 
 let locationListener = () => {};
@@ -338,13 +339,16 @@ function App() {
     event.preventDefault();
     const target = film, text = commentDrafts[target.idReadable] || "";
     if (!text.trim()) return;
-    setWorking(true);
+    setWorking(true); setError("");
     try {
-      await host.fetchYouTrack(`issues/${encodeURIComponent(target.id)}/comments`, { method: "POST", body: { text } });
-      setCommentDrafts((drafts) => ({ ...drafts, [target.idReadable]: "" }));
-      const updated = await getComments(target);
-      if (selectedRef.current === target.idReadable) setComments(updated);
-    } catch (e) { setError(`Comment may not have saved: ${e.message}`); }
+      const result = await saveComment(
+        () => host.fetchYouTrack(`issues/${encodeURIComponent(target.id)}/comments`, { method: "POST", body: { text } }),
+        () => getComments(target),
+        () => setCommentDrafts((drafts) => clearSavedDraft(drafts, target.idReadable, text)),
+      );
+      setComments((current) => currentComments(selectedRef.current, target.idReadable, current, result.comments));
+      if (!result.refreshed) setError("Comment saved, but comments could not be reloaded. Reload to see it.");
+    } catch (e) { setError(`Comment may have been saved; check before retrying: ${e.message}`); }
     finally { setWorking(false); }
   }
   async function addFilm(event) {

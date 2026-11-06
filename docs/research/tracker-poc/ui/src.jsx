@@ -8,7 +8,7 @@ import {
 import { BATCH_LIMIT, availabilityTimeLabel, chooseBatch, chooseRemaining, expireCachedResults, fetchCachedMovie, fetchLiveMovie, fetchTaskLiveMovie, hydrateCachedResult, mergeResult, refreshNotice, runBatch, runRemainingBatch, safeImdbTitleUrl, tmdbId } from "./live_batch.js";
 import { fetchRatings } from "./mdblist_ui.js";
 import { evidenceExplanation, evidenceLabel, sourceLabel } from "./source_evidence.js";
-import { clearSavedDraft, currentComments, setCommentDraft } from "./comment_drafts.js";
+import { clearSavedDraft, currentComments, saveComment, setCommentDraft } from "./comment_drafts.js";
 import { emptyPreference, markPreferenceSaved, mergeFilmDraft, syncPreferenceDraft } from "./preference_draft.js";
 import { missingLinkedFilm, unavailableFilterSources } from "./availability_state.js";
 import { accessibleProjects, projectUrl } from "./project_picker.js";
@@ -529,12 +529,13 @@ function App() {
     setBusy(true);
     setError("");
     try {
-      await request(`/comment/${encodeURIComponent(target)}`, "POST", {
-        content: draft.trim(),
-      });
-      setCommentDrafts((current) => clearSavedDraft(current, target, draft));
-      const updated = await request(`/comment/${encodeURIComponent(target)}`);
-      setComments((current) => currentComments(selectedRef.current, target, current, updated));
+      const result = await saveComment(
+        () => request(`/comment/${encodeURIComponent(target)}`, "POST", {content: draft.trim()}),
+        () => request(`/comment/${encodeURIComponent(target)}`),
+        () => setCommentDrafts((current) => clearSavedDraft(current, target, draft)),
+      );
+      setComments((current) => currentComments(selectedRef.current, target, current, result.comments));
+      if (!result.refreshed) setError("Comment saved, but comments could not be reloaded. Reload to see it.");
     } catch (e) {
       setError(
         `Comment may have been saved; reload before retrying: ${e.message}`,
