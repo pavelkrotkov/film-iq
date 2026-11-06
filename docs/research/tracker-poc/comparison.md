@@ -128,6 +128,18 @@ across reload and back navigation; its poster bytes were substituted locally. A 
 YouTrack browser reached sign-in, but the API token did not create a browser
 session, so the real-film YouTrack browser path remains outstanding. Fictional
 mounted browsers verified cache rehydration and transient poster rendering.
+On November 6, a separate read-only YouTrack API check returned 130 current
+issues with nonempty titles and matching cached metadata, including 130 poster
+URLs; the sequential list-and-cache read took 11.05 seconds on that local run.
+A matched cache-only comparison of 40 films over three runs per mode measured
+median times of 3.372 seconds sequentially and 3.124 seconds with four local
+requests in flight. This small sample used direct REST rather than the Host API,
+and excludes browser rendering and image requests; it does not justify assuming
+that concurrency would materially improve the interface. One separately
+approved cached poster URL returned an image response with HTTP 200 and CORS
+allowing an opaque origin, without saving image bytes. This one direct request
+does not establish iframe CSP, poster rendering, or full-collection image
+availability. No browser session was used.
 An aggregate live details check returned valid records for all 130 input IDs;
 110 titles exactly matched after normalization and 20 did not. Alternate titles
 can explain differences, so those results do not settle film identity. A later
