@@ -439,6 +439,7 @@ function App() {
     event.preventDefault();
     setBusy(true);
     setError("");
+    let submitting = false;
     try {
       const path = encodeURIComponent(film.id);
       const preview = await preferenceRequest(`/preview/${path}`, "POST", {
@@ -447,16 +448,30 @@ function App() {
       const watchlistLabel = value => value === null ? "unknown" : value ? "yes" : "no";
       const text = `Preview local preference change:\nInterest: ${preview.before.interest_score ?? "unknown"} → ${preview.after.interest_score ?? "unknown"}\nWatchlist: ${watchlistLabel(preview.before.watchlist)} → ${watchlistLabel(preview.after.watchlist)}\nWatched date: ${preview.before.watched_at || "none recorded"} → ${preview.after.watched_at || "none recorded"}\nNotes before: ${preview.before.personal_notes || "(empty)"}\nNotes after: ${preview.after.personal_notes || "(empty)"}\n\nSave these changes?`;
       if (window.confirm(text)) {
-        await preferenceRequest(`/preferences/${path}`, "PUT", {
+        submitting = true;
+        const saved = await preferenceRequest(`/preferences/${path}`, "PUT", {
           preference,
           token: preview.token,
         });
-        const updated = (await preferenceRequest("/preferences")).preferences;
-        setPreferences(updated);
+        const fields = ["interest_score", "watchlist", "watched_at", "personal_notes"];
+        if (!saved?.preference || typeof saved.preference !== "object" || Array.isArray(saved.preference) ||
+            Object.keys(saved.preference).length !== fields.length ||
+            !fields.every((key) => Object.hasOwn(saved.preference, key) && saved.preference[key] === preview.after[key] && saved.preference[key] === preference[key])) {
+          throw new Error("Invalid save response");
+        }
+        setPreferences((current) => current ? {...current, [film.id]: saved.preference} : current);
         setPreferenceDraft((current) => markPreferenceSaved(current, film.id, preference));
+        try {
+          const updated = (await preferenceRequest("/preferences")).preferences;
+          if (!updated || typeof updated !== "object" || Array.isArray(updated)) throw new Error("Invalid preference list");
+          if (!updated[film.id] || fields.some((key) => updated[film.id][key] !== saved.preference[key])) throw new Error("Preference readback differs");
+          setPreferences(updated);
+        } catch (_) {
+          setError("Preferences saved, but the full preference list could not be refreshed. Reload to check the latest values.");
+        }
       }
     } catch (e) {
-      setError(e.message);
+      setError(submitting ? "Preference save could not be confirmed; it may have saved. Reload and check before retrying." : e.message);
     } finally {
       setBusy(false);
     }
