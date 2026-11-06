@@ -34,6 +34,13 @@ mismatched artwork and streaming offers. Exact title agreement is also not
 proof of identity. The current cache data can be refreshed in six bounded
 windows, but no recurring job is installed.
 
+Both grids flag loaded title differences and provide a “Title differences to
+review” filter. It covers only loaded data and does not identify every possible
+identity error. Correcting an ID can replace the previous identity's cached
+result without a page reload; fictional regression checks cover both UIs.
+These interface changes were deployed, but have not been verified in a
+real-film browser walkthrough.
+
 Both interfaces display the source title and year for review links. Incomplete
 refreshes retain earlier usable cache data and identify the latest attempt as
 incomplete; a new unknown provider response records an attempt time without
