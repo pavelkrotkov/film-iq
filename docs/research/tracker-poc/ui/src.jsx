@@ -289,11 +289,15 @@ function App() {
       for (const item of films) {
         const id = tmdbId(item);
         if (!id || !active) continue;
+        const request = new AbortController();
+        const abortRequest = () => request.abort();
+        controller.signal.addEventListener("abort", abortRequest, {once:true});
         try {
           const expected = liveResultsRef.current[item.id];
-          const data = await fetchCachedMovie(item, controller.signal);
+          const data = await boundedRead(() => fetchCachedMovie(item, request.signal));
           if (active) setLiveResults((previous) => hydrateCachedResult(previous, item.id, id, data, expected));
         } catch { /* An absent cache remains unknown and never triggers a live request. */ }
+        finally { controller.signal.removeEventListener("abort", abortRequest); request.abort(); }
       }
     })();
     return () => { active = false; controller.abort(); };

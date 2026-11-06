@@ -126,6 +126,8 @@ function App() {
   const liveResultsRef = useRef(liveResults);
   liveResultsRef.current = liveResults;
   const [cacheGeneration, setCacheGeneration] = useState(0);
+  const [cacheNotice, setCacheNotice] = useState("");
+  const pendingCacheReads = useRef(0);
   const [liveBatch, setLiveBatch] = useState(null), [liveSummary, setLiveSummary] = useState("");
   const liveRequest = useRef(false), liveCancel = useRef(false);
   const sequence = useRef(0), selectedRef = useRef(selected), projectRef = useRef(project), restoringCount = useRef(0), guardsRef = useRef({});
@@ -193,12 +195,20 @@ function App() {
   useEffect(() => {
     if (!liveCache) return;
     let active = true;
+    setCacheNotice("");
     void (async () => {
       for (const item of films) {
         if (!suppliedTmdbId(item) || !active) continue;
+        if (pendingCacheReads.current >= 2) {
+          setCacheNotice("Cached details paused because earlier reads have not finished. Reload this page after the cache service recovers.");
+          break;
+        }
         try {
           const expected = liveResultsRef.current[item.idReadable];
-          const data = await readLiveMetadata(host, item, {cacheOnly:true});
+          pendingCacheReads.current++;
+          const pending = readLiveMetadata(host, item, {cacheOnly:true});
+          pending.then(() => { pendingCacheReads.current--; }, () => { pendingCacheReads.current--; });
+          const data = await boundedRead(() => pending);
           if (active) setLiveResults((previous) => hydrateCachedResult(previous, item.idReadable, suppliedTmdbId(item), data, expected));
         } catch { /* Cache misses remain unknown and never cause provider requests. */ }
       }
@@ -618,6 +628,7 @@ function App() {
         </div>
         {query && <p>Director search uses source-listed, review identity evidence or loaded live metadata; films with unknown directors may be missing.</p>}
         <p>{cacheFixture ? "Fictional cache details can reappear after reload until they expire." : liveCache ? "Cached film details can reappear after reload until they expire, up to seven days." : "Live film details stay available until you close or reload this page."}</p>
+        {cacheNotice && <p role="status">{cacheNotice}</p>}
         <button type="button" disabled={locked || liveBusy || liveRateLimited || !eligibleLiveFilms(visible, liveResults).length} onClick={() => loadNextLiveBatch()}>{liveBatch ? `Loading ${liveBatch.done}/${liveBatch.total}…` : "Load live metadata for next 30 displayed films"}</button>{" "}
         <button type="button" disabled={locked || liveBusy || liveRateLimited || !remainingVisible.length} onClick={() => loadNextLiveBatch(true)}>Load all {remainingVisible.length} remaining visible films (up to {remainingVisible.length * 3} requests)</button>{" "}
         {incompleteMetadataFilter && <><p>Active metadata filters can exclude films with unknown metadata, so results may be incomplete. Loading the remaining project films also includes hidden and archived films; failed films require retry, and films without a supplied ID cannot be loaded. Title review only identifies loaded title differences; it does not verify matches.</p><button type="button" disabled={locked || liveBusy || liveRateLimited || !remainingProject.length} onClick={() => loadNextLiveBatch(true, false, true)}>Load all {remainingProject.length} remaining project films, including archived (up to {remainingProject.length * 3} TMDB API requests, plus poster images)</button>{" "}</>}
