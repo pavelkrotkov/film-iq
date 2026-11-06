@@ -19,9 +19,13 @@ sets for the 109 complete observations and 21 unknown observations in both.
 All 130 cached entries remained readable after each bridge restarted. The
 YouTrack watched snapshot still matched its 27-film source; no tracker or Movary
 record was modified by enrichment. These observations do not establish film
-identity, individual streaming entitlement, or real-film browser behavior.
+identity, individual streaming entitlement, or overall usability.
 Fictional mounted-browser tests exercised cache rehydration and transient poster
-rendering; the real-film browser path has not been verified.
+rendering. In an isolated Kaneo browser, the real 130-card grid loaded all
+cache records and a selected film’s cached details survived reload and back
+navigation; poster bytes were substituted locally. A fresh isolated YouTrack
+browser reached sign-in, but the API token did not create a browser session,
+so the real-film YouTrack browser path remains unverified.
 
 The current policy authorization expires on December 6, 2026 UTC; each
 observation remains fresh for at most seven days. The 130 existing entries

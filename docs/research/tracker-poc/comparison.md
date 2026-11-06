@@ -68,9 +68,12 @@ metadata and availability statuses for all 130; the 109 comparable complete
 provider sets matched, and 21 observations were unknown in both. Each bridge
 was restarted, after which all 130 cache entries remained readable. This does not
 establish identity accuracy, individual streaming entitlement, or rights for
-indefinite storage. Browser verification of the actual real-film path remains
-outstanding; fictional mounted browsers verified cache rehydration and transient
-poster rendering.
+indefinite storage. An isolated Kaneo browser displayed the real 130-card
+grid, loaded all cache records and retained a selected film’s cached detail
+across reload and back navigation; its poster bytes were substituted locally. A fresh isolated
+YouTrack browser reached sign-in, but the API token did not create a browser
+session, so the real-film YouTrack browser path remains outstanding. Fictional
+mounted browsers verified cache rehydration and transient poster rendering.
 An aggregate live details check returned valid records for all 130 input IDs;
 110 titles exactly matched after normalization and 20 did not. Alternate titles
 can explain differences, so those results do not settle film identity. A later
