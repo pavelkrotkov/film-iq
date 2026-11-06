@@ -349,6 +349,77 @@ def main():
                 assert len(clients["youtrack"].calls) == 2
                 assert clients["youtrack"].calls[1][0].endswith("/metadata/status")
 
+            class YouTrackOnlyHTTP(FixtureHTTP):
+                def __init__(self):
+                    super().__init__("youtrack")
+
+                def request(self, _base, path, *, post=False, query=None):
+                    if path.endswith("/metadata/status"):
+                        assert not post
+                        return {"pace_enabled": True, "refresh_enabled": True}
+                    return super().request(_base, path, post=post, query=query)
+
+            # YouTrack-only mode must never instantiate the Kaneo client or
+            # load its browser-associated cookie jar. A listener appearing
+            # during the batch stops before the next provider refresh.
+            for listener_values, expected_result, attempted in (
+                ([None] * 30, "complete", 25),
+                ([123], "pacing_not_established", 0),
+                ([RuntimeError("inspection failed")], "pacing_not_established", 0),
+                ([None, None, 123], "pacing_not_established", 1),
+            ):
+                youtrack = YouTrackOnlyHTTP()
+
+                def make_client(name, client=youtrack):
+                    assert name == "youtrack", "Kaneo client must not be constructed"
+                    return client
+
+                with (
+                    patch.object(batch, "identities", return_value=IDS),
+                    patch.object(batch, "LocalHTTP", side_effect=make_client) as factory,
+                    patch.object(batch, "kaneo_listener", side_effect=listener_values),
+                    patch.object(
+                        batch.sys,
+                        "argv",
+                        [
+                            "batch",
+                            "--backend",
+                            "youtrack",
+                            "--kaneo-offline",
+                            "--run",
+                            "--refresh-window",
+                            "0",
+                        ],
+                    ),
+                    patch("sys.stdout", new_callable=io.StringIO) as output,
+                ):
+                    expected_exit = 0 if expected_result == "complete" else 1
+                    assert batch.main() == expected_exit
+                    report = json.loads(output.getvalue())
+                    assert report["result"] == expected_result
+                    assert report["attempted"] == report["refreshed"] == attempted
+                    factory.assert_called_once_with("youtrack")
+                    assert youtrack.refreshes == attempted
+
+            with (
+                patch.object(batch, "identities") as load,
+                patch.object(batch, "LocalHTTP") as factory,
+                patch.object(
+                    batch.sys,
+                    "argv",
+                    ["batch", "--backend", "kaneo", "--kaneo-offline", "--run"],
+                ),
+                patch("sys.stderr", new_callable=io.StringIO),
+            ):
+                try:
+                    batch.main()
+                except SystemExit as error:
+                    assert error.code == 2
+                else:
+                    raise AssertionError("Kaneo-only mode accepted --kaneo-offline")
+                load.assert_not_called()
+                factory.assert_not_called()
+
     with (
         patch.object(batch, "identities") as load,
         patch.object(batch, "LocalHTTP") as factory,

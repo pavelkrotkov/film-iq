@@ -56,6 +56,27 @@ The aggregate report separately counts complete, partial and unknown provider
 observations; a successful metadata refresh does not imply complete streaming
 availability, and unknown is not treated as absent.
 
+### YouTrack-only on-demand mode without a Kaneo session
+
+The `--kaneo-offline` option is a fictional-test-verified alternative for
+`--backend youtrack`. It constructs only the YouTrack API-token client and
+does not load the Kaneo cookie jar. The runner requires no listener on the
+local Kaneo bridge port before starting and checks again before each provider
+refresh; an occupied port or failed listener inspection stops the run. It
+still verifies the approved collection, issue identities, and the YouTrack
+bridge's enabled, paced settings. Do not start the Kaneo bridge or another
+client using the same provider credential during the run: local preflight and
+per-film checks do not provide an atomic cross-process rate limiter.
+
+For an explicitly chosen on-demand run, stop only the recorded Kaneo pilot
+using its `--stop` command, then run the batch with `--backend youtrack
+--kaneo-offline --run`; use `--refresh-window 0` through `5` only when an
+existing cache entry should be refreshed. Kaneo's cache and catalog reads are
+unavailable while its bridge is stopped. Afterward, restart it with the
+documented [recorded-configuration startup](local-runbook.md#kaneo-collection-cache).
+The mode has not been exercised against the real trackers or provider, and it
+does not install or authorize a schedule.
+
 ## Optional periodic refresh windows
 
 The default runner only fills cache misses. To refresh an existing observation
@@ -76,16 +97,18 @@ Unknown availability remains unknown; the window does not infer that a
 provider is absent or treat a metadata timestamp as a successful provider
 check.
 
-This is a schedulable one-shot, not an installed schedule. No cadence is
-selected and the command does not switch bridges, renew a source policy, or
-manage other clients. An operator must keep the other bridge refresh-paused and
-the selected bridge paced and enabled for each invocation, as above. If both
-bridges are enabled, the command fails its preflight without contacting TMDb.
-An external scheduler would need to arrange those settings and call all six
-windows separately for each backend; this implementation does not do that.
-The scope is the authorized collection, not a watchlist-only selection. The
-existing 30-day policy window, cache expiry and stopped-host limitations still
-apply.
+These are manually invoked one-shots; no schedule is installed. The windows
+include the watched-history IDs, whose existing provider-request authorization
+covers on-demand refreshes, not unattended scheduled requests. Do not schedule
+these windows under the current authorization. A discovery-only subset from
+an old snapshot cannot guarantee that a film has not since been watched.
+
+The command does not switch bridges, renew a source policy, or manage other
+clients. An operator must keep the other bridge refresh-paused and the selected
+bridge paced and enabled for each invocation, as above. If both bridges are
+enabled, the command fails its preflight without contacting TMDb. The scope is
+the authorized collection, not a watchlist-only selection. The existing
+30-day policy window, cache expiry and stopped-host limitations still apply.
 
 The read-only comparison can be repeated after both bridges are running. It
 reads the approved tracker mappings and cache-only endpoints; it makes no

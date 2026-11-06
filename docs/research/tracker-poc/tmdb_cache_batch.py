@@ -11,6 +11,7 @@ import urllib.request
 from datetime import UTC, datetime
 from pathlib import Path
 
+from kaneo_live_pilot import listener as kaneo_listener
 from tmdb_live import approval
 from youtrack_client import NoRedirect
 
@@ -94,7 +95,23 @@ def identities() -> set[int]:
         raise BatchError("approval") from None
 
 
-def require_pacing(backend: str, allowed: set[int], kaneo: LocalHTTP, youtrack: LocalHTTP) -> None:
+def require_kaneo_offline() -> None:
+    """Require the local Kaneo bridge to have no listener, without a session."""
+    try:
+        if kaneo_listener() is not None:
+            raise ValueError
+    except (OSError, RuntimeError, TypeError, ValueError):
+        raise BatchError("pacing_not_established") from None
+
+
+def require_pacing(
+    backend: str,
+    allowed: set[int],
+    kaneo: LocalHTTP | None,
+    youtrack: LocalHTTP,
+    *,
+    kaneo_offline: bool = False,
+) -> None:
     """Check effective settings through authenticated local-only status endpoints."""
     try:
         selected = json.loads((PRIVATE / "tmdb-pilot-approval/selection.json").read_text())
@@ -112,10 +129,18 @@ def require_pacing(backend: str, allowed: set[int], kaneo: LocalHTTP, youtrack: 
         )
         if issue_identity(detail) != (ident, issue):
             raise ValueError
-        kaneo_status = kaneo.request("http://localhost:15176", "/status/config")
         path = f"/issues/{issue}/extensionEndpoints/filmiq-tmdb-live-isolated/metadata/status"
         youtrack_status = youtrack.request("http://localhost:18180/api", path)
-        statuses = {"kaneo": kaneo_status, "youtrack": youtrack_status}
+        if kaneo_offline:
+            if backend != "youtrack" or kaneo is not None:
+                raise ValueError
+            require_kaneo_offline()
+            statuses = {"youtrack": youtrack_status}
+        else:
+            if kaneo is None:
+                raise ValueError
+            kaneo_status = kaneo.request("http://localhost:15176", "/status/config")
+            statuses = {"kaneo": kaneo_status, "youtrack": youtrack_status}
         for value in statuses.values():
             if (
                 not isinstance(value, dict)
@@ -124,8 +149,12 @@ def require_pacing(backend: str, allowed: set[int], kaneo: LocalHTTP, youtrack: 
             ):
                 raise ValueError
         active = statuses[backend]
-        other = statuses["youtrack" if backend == "kaneo" else "kaneo"]
-        if not active["pace_enabled"] or not active["refresh_enabled"] or other["refresh_enabled"]:
+        if not active["pace_enabled"] or not active["refresh_enabled"]:
+            raise ValueError
+        if (
+            not kaneo_offline
+            and statuses["youtrack" if backend == "kaneo" else "kaneo"]["refresh_enabled"]
+        ):
             raise ValueError
     except (OSError, ValueError, TypeError, KeyError, BatchError):
         raise BatchError("pacing_not_established") from None
@@ -266,7 +295,13 @@ def validate_result(value, ident: int, now: datetime) -> str:
 
 
 def run(
-    http, backend: str, allowed: set[int], report: dict, *, refresh_window: int | None = None
+    http,
+    backend: str,
+    allowed: set[int],
+    report: dict,
+    *,
+    refresh_window: int | None = None,
+    before_refresh=None,
 ) -> None:
     records = (
         kaneo_records(http, allowed) if backend == "kaneo" else youtrack_records(http, allowed)
@@ -289,6 +324,8 @@ def run(
                 continue
         if report["refreshed"] >= MAX_REFRESHES:
             break
+        if before_refresh is not None:
+            before_refresh()
         report["attempted"] += 1
         fresh = endpoint(http, backend, record, refresh=True)
         validate_result(fresh, ident, datetime.now(UTC))
@@ -303,12 +340,19 @@ def main() -> int:
     parser.add_argument("--backend", choices=("kaneo", "youtrack"), required=True)
     parser.add_argument("--run", action="store_true", help="explicitly enable provider refreshes")
     parser.add_argument(
+        "--kaneo-offline",
+        action="store_true",
+        help="YouTrack only: require the local Kaneo bridge offline and do not load its session",
+    )
+    parser.add_argument(
         "--refresh-window",
         type=int,
         choices=range(6),
         help="refresh one deterministic 25-film window, including existing cache entries (0–5)",
     )
     args = parser.parse_args()
+    if args.kaneo_offline and args.backend != "youtrack":
+        parser.error("--kaneo-offline is available only with --backend youtrack")
     report = {
         "validated": 0,
         "skipped_fresh": 0,
@@ -325,10 +369,19 @@ def main() -> int:
         return 2
     try:
         allowed = identities()
-        clients = {name: LocalHTTP(name) for name in ("kaneo", "youtrack")}
-        require_pacing(args.backend, allowed, clients["kaneo"], clients["youtrack"])
+        clients = {"youtrack": LocalHTTP("youtrack")}
+        if not args.kaneo_offline:
+            clients["kaneo"] = LocalHTTP("kaneo")
+        require_pacing(
+            args.backend,
+            allowed,
+            clients.get("kaneo"),
+            clients["youtrack"],
+            kaneo_offline=args.kaneo_offline,
+        )
+        before_refresh = require_kaneo_offline if args.kaneo_offline else None
         if args.refresh_window is None:
-            run(clients[args.backend], args.backend, allowed, report)
+            run(clients[args.backend], args.backend, allowed, report, before_refresh=before_refresh)
             report["result"] = (
                 "complete" if report["refreshed"] < MAX_REFRESHES else "limit_reached"
             )
@@ -340,6 +393,7 @@ def main() -> int:
                 allowed,
                 report,
                 refresh_window=args.refresh_window,
+                before_refresh=before_refresh,
             )
             report["result"] = "complete"
     except BatchError as error:
