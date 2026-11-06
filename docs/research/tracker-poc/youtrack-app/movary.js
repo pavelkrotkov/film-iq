@@ -1,6 +1,7 @@
 /* Imports only a caller-supplied Movary watched snapshot; never writes Movary. */
 const entities = require('@jetbrains/youtrack-scripting-api/entities');
 const VERSION = 'youtrack-poc-movary-watched-v1';
+const BOUND_VERSION = 'youtrack-poc-movary-watched-v2';
 const STORE_VERSION = 'youtrack-poc-movary-projects-v2';
 const PROJECTS = ['FILMPOC', 'FILMREAL'];
 
@@ -43,23 +44,40 @@ function older(left, right) {
   return tail(left) < tail(right);
 }
 
+function sameObservationEntries(previous, proposed) {
+  const oldKeys = Object.keys(previous.films).sort();
+  const newKeys = Object.keys(proposed.films).sort();
+  if (JSON.stringify(oldKeys) !== JSON.stringify(newKeys)) return false;
+  const events = film => JSON.stringify([film.watched, film.history_export_dates,
+    film.played_watch_dates.map(event => [event.date, event.plays])]);
+  return oldKeys.every(id => {
+    const before = previous.films[id], after = proposed.films[id];
+    return events(before) === events(after) &&
+      (!Object.prototype.hasOwnProperty.call(before, 'tmdb_id') || before.tmdb_id === after.tmdb_id);
+  });
+}
+
 function snapshot(value, legacy = false) {
   const expected = legacy ? 'complete,films,observed_at,source,version' : 'complete,films,observed_at,project,source,version';
-  if (!keys(value, expected) || value.version !== VERSION ||
+  if (!keys(value, expected) || ![VERSION, BOUND_VERSION].includes(value.version) || (legacy && value.version !== VERSION) ||
       value.source !== 'Movary' || value.complete !== true || !observed(value.observed_at) ||
       (!legacy && !PROJECTS.includes(value.project)) ||
       !value.films || typeof value.films !== 'object' || Array.isArray(value.films)) {
     throw new Error('Invalid watched snapshot');
   }
+  const identities = new Set();
   for (const id of Object.keys(value.films)) {
     const film = value.films[id];
+    const bound = value.version === BOUND_VERSION;
     if (!/^(FILMPOC|FILMREAL)-[1-9]\d*$/.test(id) || (!legacy && !id.startsWith(value.project + '-')) ||
-        !keys(film, 'history_export_dates,played_watch_dates,watched') || film.watched !== true ||
+        !keys(film, bound ? 'history_export_dates,played_watch_dates,tmdb_id,watched' : 'history_export_dates,played_watch_dates,watched') || film.watched !== true ||
+        (bound && film.tmdb_id !== null && (!Number.isSafeInteger(film.tmdb_id) || film.tmdb_id <= 0 || film.tmdb_id > 2147483647 || identities.has(film.tmdb_id))) ||
         !Array.isArray(film.history_export_dates) || !film.history_export_dates.every(date) ||
         !Array.isArray(film.played_watch_dates) || !film.played_watch_dates.every(event =>
           keys(event, 'date,plays') && date(event.date) && Number.isSafeInteger(event.plays) && event.plays > 0)) {
       throw new Error('Invalid watched film');
     }
+    if (bound && film.tmdb_id !== null) identities.add(film.tmdb_id);
   }
   return value;
 }
@@ -123,6 +141,9 @@ exports.httpHandler = {
         try {
           for (const id of Object.keys(proposed.films)) {
             if (!visible(ctx, proposed.project, id)) return error(ctx, 404, 'One or more films are unavailable');
+            if (proposed.version === BOUND_VERSION && proposed.films[id].tmdb_id !== null && entities.Issue.findById(id).fields['FilmIQ TMDB ID'] !== proposed.films[id].tmdb_id) {
+              return error(ctx, 409, 'A supplied film identity no longer matches its issue');
+            }
           }
         } catch (_) { return error(ctx, 500, 'Film visibility could not be checked'); }
         let current;
@@ -130,14 +151,47 @@ exports.httpHandler = {
           const raw = ctx.currentUser.extensionProperties.filmMovarySnapshot;
           current = stored(raw);
           const previous = current.projects[proposed.project];
+          if (previous && Object.keys(previous.films).some(id => !visible(ctx, proposed.project, id))) {
+            return error(ctx, 409, 'Existing watched entries are unavailable; no snapshot was replaced');
+          }
           if (previous && older(proposed.observed_at, previous.observed_at)) {
             return error(ctx, 409, 'A newer watched snapshot already exists');
+          }
+          if (previous && !older(previous.observed_at, proposed.observed_at) && !older(proposed.observed_at, previous.observed_at) &&
+              !sameObservationEntries(previous, proposed)) {
+            return error(ctx, 409, 'Same-observation watched mapping differs; no snapshot was replaced');
           }
         } catch (_) { return error(ctx, 500, 'Stored watched snapshot unavailable'); }
         // Validate every row and check access before the single property write.
         current.projects[proposed.project] = proposed;
         ctx.currentUser.extensionProperties.filmMovarySnapshot = JSON.stringify(current);
         ctx.response.json({status: 'imported', films: Object.keys(proposed.films).length});
+      }
+    },
+    {
+      scope: 'global', method: 'POST', path: '/restore-legacy',
+      handle: function(ctx) {
+        if (!allowedUser(ctx)) return error(ctx, 401, 'Sign-in required');
+        let request, current;
+        try {
+          request = ctx.request.json();
+          if (!keys(request, 'project') || !PROJECTS.includes(request.project)) return error(ctx, 400, 'Project is required');
+          current = stored(ctx.currentUser.extensionProperties.filmMovarySnapshot);
+          const previous = current.projects[request.project];
+          if (!previous) return error(ctx, 404, 'Watched snapshot unavailable');
+          if (Object.keys(previous.films).some(id => !visible(ctx, request.project, id))) {
+            return error(ctx, 409, 'Existing watched entries are unavailable; no snapshot was replaced');
+          }
+          if (previous.version === VERSION) return ctx.response.json({status: 'already-legacy', films: Object.keys(previous.films).length});
+          const films = {};
+          for (const id of Object.keys(previous.films)) {
+            const film = previous.films[id];
+            films[id] = {watched: film.watched, played_watch_dates: film.played_watch_dates, history_export_dates: film.history_export_dates};
+          }
+          current.projects[request.project] = {...previous, version: VERSION, films};
+        } catch (_) { return error(ctx, 500, 'Stored watched snapshot unavailable'); }
+        ctx.currentUser.extensionProperties.filmMovarySnapshot = JSON.stringify(current);
+        ctx.response.json({status: 'restored', films: Object.keys(current.projects[request.project].films).length});
       }
     }
   ]

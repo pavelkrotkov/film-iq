@@ -6,7 +6,7 @@ const vm = require('node:vm');
 
 let visible = true;
 const registry = {
-  'FILMPOC-1': {project: {key: 'FILMPOC'}, isReported: true, isVisibleTo: () => visible},
+  'FILMPOC-1': {project: {key: 'FILMPOC'}, fields:{'FilmIQ TMDB ID':42}, isReported: true, isVisibleTo: () => visible},
   'FILMREAL-1': {project: {key: 'FILMREAL'}, isReported: true, isVisibleTo: () => true},
   'OTHER-1': {project: {key: 'OTHER'}, isReported: true, isVisibleTo: () => true},
 };
@@ -19,7 +19,7 @@ const context = {
 };
 vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../movary.js'), 'utf8'), context);
 const endpoints = context.exports.httpHandler.endpoints;
-const users = Object.fromEntries(['alice', 'bob', 'legacy', 'empty', 'guest'].map(login => [login, {
+const users = Object.fromEntries(['alice', 'bob', 'legacy', 'empty', 'bound', 'mixed', 'guest'].map(login => [login, {
   login, isBanned: false, extensionProperties: {filmPreferences: 'unchanged'},
 }]));
 
@@ -77,6 +77,7 @@ visible = false;
 assert.deepEqual(Object.keys(call('alice', 'GET', '/watched', {project: 'FILMPOC'}).value.films), []);
 assert.deepEqual(Object.keys(call('alice', 'GET', '/watched', {project: 'FILMREAL'}).value.films), ['FILMREAL-1']);
 assert.equal(call('alice', 'POST', '/import', poc).status, 404);
+assert.equal(call('alice', 'POST', '/import', {...poc,films:{}}).status, 409, 'inaccessible prior entries cannot be erased');
 assert.equal(users.alice.extensionProperties.filmMovarySnapshot, old);
 users.bob.extensionProperties.filmMovarySnapshot = 'malformed';
 assert.equal(call('bob', 'POST', '/import', bobInput).status, 500);
@@ -98,4 +99,55 @@ assert.deepEqual(JSON.parse(users.empty.extensionProperties.filmMovarySnapshot).
 assert.equal(call('empty', 'POST', '/import', poc).status, 200);
 assert.deepEqual(JSON.parse(users.empty.extensionProperties.filmMovarySnapshot).legacy_empty, {...v1, films: {}});
 assert.deepEqual(call('empty', 'GET', '/watched', {project: 'FILMREAL'}).value.films, real.films);
+// v1 reads do not mutate old app-owned data. A v2 reimport adds an explicit
+// identity without changing other projects or the watched-event values.
+const previousLegacy = users.legacy.extensionProperties.filmMovarySnapshot;
+assert.deepEqual(call('legacy', 'GET', '/watched', {project: 'FILMPOC'}).value.films, poc.films);
+assert.equal(users.legacy.extensionProperties.filmMovarySnapshot, previousLegacy);
+const bound = {...poc, version:'youtrack-poc-movary-watched-v2', films:{'FILMPOC-1':{...watched,tmdb_id:42}}};
+assert.equal(call('legacy', 'POST', '/import', bound).status, 200);
+assert.deepEqual(call('legacy', 'GET', '/watched', {project: 'FILMPOC'}).value.films, bound.films);
+assert.deepEqual(call('legacy', 'GET', '/watched', {project: 'FILMREAL'}).value.films, real.films);
+assert.equal(call('bound', 'POST', '/import', bound).status, 200);
+const boundStored = users.bound.extensionProperties.filmMovarySnapshot;
+assert.equal(call('bound', 'POST', '/import', {...bound,films:{}}).status, 409, 'same-observation import cannot discard entries');
+assert.equal(call('bound', 'POST', '/import', {...bound,films:{'FILMPOC-1':{...watched,tmdb_id:43}}}).status, 409, 'issue identity must match');
+assert.equal(call('bound', 'POST', '/import', {...bound,films:{'FILMPOC-1':{...watched,tmdb_id:42,history_export_dates:[]}}}).status, 409, 'same-observation import cannot alter events');
+for (const bad of [0, '42', 2147483648]) {
+  assert.equal(call('bound', 'POST', '/import', {...bound,films:{'FILMPOC-1':{...watched,tmdb_id:bad}}}).status, 400);
+  assert.equal(users.bound.extensionProperties.filmMovarySnapshot, boundStored);
+}
+registry['FILMPOC-2'] = {project:{key:'FILMPOC'}, fields:{'FilmIQ TMDB ID':42}, isReported:true, isVisibleTo:() => true};
+assert.equal(call('bound','POST','/import',{...bound,films:{...bound.films,'FILMPOC-2':{...watched,tmdb_id:42}}}).status,400);
+assert.equal(users.bound.extensionProperties.filmMovarySnapshot,boundStored);
+const mixedV1 = {...poc,films:{'FILMPOC-1':watched,'FILMPOC-2':watched}};
+const mixedV2 = {...mixedV1,version:'youtrack-poc-movary-watched-v2',films:{
+  'FILMPOC-1':{...watched,tmdb_id:42},'FILMPOC-2':{...watched,tmdb_id:null},
+}};
+assert.equal(call('mixed','POST','/import',mixedV1).status,200);
+assert.equal(call('mixed','POST','/import',mixedV2).status,200);
+const mixedRaw = users.mixed.extensionProperties.filmMovarySnapshot;
+assert.deepEqual(call('mixed','GET','/watched',{project:'FILMPOC'}).value.films,mixedV2.films);
+assert.equal(call('mixed','POST','/import',mixedV2).status,200);
+assert.equal(users.mixed.extensionProperties.filmMovarySnapshot,mixedRaw);
+assert.equal(call('mixed','POST','/import',{...mixedV2,films:{...mixedV2.films,'FILMPOC-2':{...watched,tmdb_id:42}}}).status,400);
+assert.equal(users.mixed.extensionProperties.filmMovarySnapshot,mixedRaw);
+assert.equal(call('mixed','POST','/restore-legacy',{project:'FILMPOC'}).status,200);
+assert.deepEqual(JSON.parse(users.mixed.extensionProperties.filmMovarySnapshot).projects.FILMPOC,mixedV1);
+// Explicit rollback derives v1 from the stored v2, not a caller-supplied
+// history; it preserves all issue/event data and the other project.
+const preRestore = users.legacy.extensionProperties.filmMovarySnapshot;
+visible = false;
+assert.equal(call('legacy','POST','/restore-legacy',{project:'FILMPOC'}).status,409);
+assert.equal(users.legacy.extensionProperties.filmMovarySnapshot,preRestore);
+visible = true;
+assert.equal(call('guest','POST','/restore-legacy',{project:'FILMPOC'}).status,401);
+assert.equal(call('legacy','POST','/restore-legacy',{project:'FILMPOC',films:{}}).status,400);
+assert.deepEqual(call('legacy','POST','/restore-legacy',{project:'FILMPOC'}).value,{status:'restored',films:1});
+const restored = JSON.parse(users.legacy.extensionProperties.filmMovarySnapshot);
+assert.deepEqual(restored.projects.FILMPOC,poc);
+assert.deepEqual(restored.projects.FILMREAL,JSON.parse(preRestore).projects.FILMREAL);
+const restoredRaw = users.legacy.extensionProperties.filmMovarySnapshot;
+assert.deepEqual(call('legacy','POST','/restore-legacy',{project:'FILMPOC'}).value,{status:'already-legacy',films:1});
+assert.equal(users.legacy.extensionProperties.filmMovarySnapshot,restoredRaw);
 console.log('Synthetic Movary snapshot validation, isolation, repeats, and visibility checks passed');

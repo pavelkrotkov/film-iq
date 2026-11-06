@@ -1,5 +1,6 @@
 import {hasStoredGenre} from "./stored_genres.js";
 import {matchesFilmSearch} from "./film_search.js";
+import {boundMovaryFilm} from "./movary_history.js";
 
 // Pure extraction of YouTrack's existing client-side filtering logic.
 export const field = (film, name) => film.customFields?.find((item) => item.name === name)?.value ?? null;
@@ -78,8 +79,9 @@ export function filterYoutrackFilms(films, {preferences, query, stateFilter, min
     if (minimum && (personal?.interest_score == null || personal.interest_score < Number(minimum))) return false;
     if (watchlistOnly && personal?.watchlist !== true) return false;
     if (localWatched && (!preferences || localWatchStatus(preferences, item.idReadable) !== localWatched)) return false;
-    if (movaryOnly && (movary?.status !== "available" || movary?.films?.[item.idReadable]?.watched !== true)) return false;
-    if (excludeMovaryWatched && (movary?.status !== "available" || movary?.films?.[item.idReadable]?.watched === true)) return false;
+    const watchedInMovary = boundMovaryFilm(movary, item.idReadable, field(item, "FilmIQ TMDB ID"));
+    if (movaryOnly && !watchedInMovary) return false;
+    if (excludeMovaryWatched && (movary?.status !== "available" || watchedInMovary)) return false;
     return true;
   });
   if (sortInterest) matching.sort((a, b) => (preferences?.[b.idReadable]?.interest_score ?? -1) - (preferences?.[a.idReadable]?.interest_score ?? -1));

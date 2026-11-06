@@ -1,4 +1,6 @@
 // Preserve the two Movary observations separately; an absent film is unknown.
+export const MOVARY_MAPPING_NOTICE = "Shown watched entries are associated using supplied TMDB IDs and may be inferred from matching source events. Film identity has not been independently verified.";
+
 function validDate(value) {
   if (value === null) return true;
   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
@@ -6,9 +8,14 @@ function validDate(value) {
   return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value;
 }
 
-export function movaryHistory(snapshot, issueId) {
+export function boundMovaryFilm(snapshot, issueId, tmdbId) {
   const film = snapshot?.status === "available" && snapshot.films?.[issueId];
-  if (!film || film.watched !== true) return null;
+  return film && film.watched === true && Number.isSafeInteger(tmdbId) && tmdbId > 0 && film.tmdb_id === tmdbId ? film : null;
+}
+
+export function movaryHistory(snapshot, issueId, tmdbId) {
+  const film = boundMovaryFilm(snapshot, issueId, tmdbId);
+  if (!film) return null;
   const plays = film.played_watch_dates;
   const exports = film.history_export_dates;
   return {
