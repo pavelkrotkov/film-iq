@@ -117,6 +117,7 @@ function App() {
   const [pendingPreview, setPendingPreview] = useState(null), [pendingNavigation, setPendingNavigation] = useState(null), [discardFailed, setDiscardFailed] = useState(false), [saveUncertain, setSaveUncertain] = useState(false);
   const [restoringLocation, setRestoringLocation] = useState(false);
   const [comments, setComments] = useState(null), [commentDrafts, setCommentDrafts] = useState({}), [newTitle, setNewTitle] = useState("");
+  const [commentRecovery, setCommentRecovery] = useState({});
   const [createUncertain, setCreateUncertain] = useState(false), [createChecked, setCreateChecked] = useState(false), [createProject, setCreateProject] = useState(null);
   const [liveResults, setLiveResults] = useState({}), [liveBusy, setLiveBusy] = useState(false), [liveRateLimited, setLiveRateLimited] = useState(false);
   const [cacheGeneration, setCacheGeneration] = useState(0);
@@ -371,6 +372,7 @@ function App() {
     event.preventDefault();
     const target = film, text = commentDrafts[target.idReadable] || "";
     if (!text.trim()) return;
+    if (commentRecovery[target.idReadable]) { setError("Reload and check comments before another attempt."); return; }
     setWorking(true); setError("");
     try {
       const result = await saveComment(
@@ -380,8 +382,31 @@ function App() {
       );
       setComments((current) => currentComments(selectedRef.current, target.idReadable, current, result.comments));
       if (!result.refreshed) setError("Comment saved, but comments could not be reloaded. Reload to see it.");
-    } catch (e) { setError(`Comment may have been saved; check before retrying: ${e.message}`); }
+    } catch (e) { setCommentRecovery((current) => ({...current, [target.idReadable]: "pending"})); setError(`Comment may have been saved; reload and check comments before retrying: ${e.message}`); }
     finally { setWorking(false); }
+  }
+  async function reviewComment() {
+    const target = film;
+    if (!target || !commentRecovery[target.idReadable]) return;
+    setWorking(true);
+    setCommentRecovery((current) => ({...current, [target.idReadable]: "pending"}));
+    try {
+      const rows = await getComments(target);
+      if (!Array.isArray(rows)) throw new Error("Invalid comments response");
+      if (selectedRef.current === target.idReadable) {
+        setComments(rows);
+        setCommentRecovery((current) => ({...current, [target.idReadable]: "checked"}));
+        setError("Check the comments before allowing another attempt.");
+      }
+    } catch { setError("Comments could not be reloaded; the draft remains blocked."); }
+    finally { setWorking(false); }
+  }
+  function allowCommentRetry() {
+    const target = film?.idReadable;
+    if (target && commentRecovery[target] === "checked") {
+      setCommentRecovery((current) => { const next = {...current}; delete next[target]; return next; });
+      setError("");
+    }
   }
   async function addFilm(event) {
     event.preventDefault(); if (!newTitle.trim() || createUncertain) return;
@@ -555,7 +580,8 @@ function App() {
         <h3>Source evidence</h3>{sourceEvidenceState.status === "mismatch" && <p role="alert">The supplied TMDB ID differs from the original source evidence. Links are hidden until reviewed; source-listed year and director may refer to the previous ID.</p>}{sourceLinks.length ? <ul>{sourceLinks.map((item, index) => { const url = safeLink(item.url); return <li key={index}>{url ? <ExternalLink url={url} label={item.source_id || "Source"} /> : "Source link unavailable"} · {item.kind || "type unknown"} · lineage: {item.lineage_kind || "unknown"}</li>; })}</ul> : <p>Accepted source evidence unavailable.</p>}
         <h3>Direct reviews and aggregators</h3>{staleReviews ? <p>The film title differs from the reviewed source title; links are hidden until revalidated.</p> : reviews?.length ? <ul>{reviews.map((link, index) => <li key={index}><ExternalLink url={safeReviewUrl(link.url)} label={link.provider} /> · {link.type === "individual_critic_review" ? "Individual critic review" : "Review aggregator title page"} · checked {link.checked_at}<ReviewIdentity evidence={link.identity_evidence} /></li>)}</ul> : <p>Direct review links unavailable; coverage is unknown.</p>}
         <h3>Comments</h3>{comments === null ? <p>Comments unavailable.</p> : <ul>{comments.map((item) => <li key={item.id}>{item.author?.name || "Unknown"}: {item.text}</li>)}</ul>}
-        <form onSubmit={addComment}><label>Add comment<textarea disabled={locked} value={commentDrafts[film.idReadable] || ""} onChange={(e) => setCommentDrafts((drafts) => ({...drafts, [film.idReadable]: e.target.value}))} /></label>{commentDrafts[film.idReadable]?.trim() && <DraftExitWarning kind="comments" />}<button type="button" onClick={addComment} disabled={locked}>Add comment</button></form>
+        <form onSubmit={addComment}><label>Add comment<textarea disabled={locked} value={commentDrafts[film.idReadable] || ""} onChange={(e) => setCommentDrafts((drafts) => ({...drafts, [film.idReadable]: e.target.value}))} /></label>{commentDrafts[film.idReadable]?.trim() && <DraftExitWarning kind="comments" />}<button type="button" onClick={addComment} disabled={locked || !!commentRecovery[film.idReadable]}>Add comment</button></form>
+        {commentRecovery[film.idReadable] && <p role="status">The comment may have been saved. Your draft is preserved. <button type="button" disabled={locked} onClick={reviewComment}>Reload comments to check</button>{" "}<button type="button" disabled={locked || commentRecovery[film.idReadable] !== "checked"} onClick={allowCommentRetry}>I checked; allow another attempt</button></p>}
         <a href={`/issue/${film.idReadable}`} target="_blank" rel="noreferrer">View tracker record and history ↗</a>
       </section> : <section>
         <div className="filters">

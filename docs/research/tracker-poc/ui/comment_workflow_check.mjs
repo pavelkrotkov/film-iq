@@ -12,27 +12,35 @@ function handlerSource(name, next) {
 
 async function exercise(kind, mode) {
   const id = kind === "kaneo" ? "fictional-task" : "FILMPOC-1";
-  const film = kind === "kaneo" ? {id} : {id:"fictional-issue",idReadable:id};
-  let drafts = {[id]: "Fictional comment"}, comments = ["Earlier"], error = "", posts = 0, reads = 0;
-  const post = async () => { posts++; if (mode === "post-fails") throw new Error("Fictional post failure"); };
-  const reload = async () => { reads++; if (mode === "read-fails") throw new Error("Fictional read failure"); return ["Fictional comment"]; };
+  let film = kind === "kaneo" ? {id} : {id:"fictional-issue",idReadable:id};
+  let drafts = {[id]: "Fictional comment"}, comments = ["Earlier"], error = "", posts = 0, reads = 0, recovery = {}, currentMode = mode;
+  const selected = {current:id};
+  const post = async () => { posts++; if (currentMode === "post-fails") throw new Error("Fictional post failure"); };
+  const reload = async () => { reads++; if (currentMode === "read-fails") throw new Error("Fictional read failure"); return ["Fictional comment"]; };
   const setters = {
     setError: value => { error = value; },
     setCommentDrafts: update => { drafts = update(drafts); },
     setComments: update => { comments = typeof update === "function" ? update(comments) : update; },
+    setCommentRecovery: update => { recovery = update(recovery); },
   };
-  let handler;
-  if (kind === "kaneo") {
-    const source = handlerSource("./src.jsx", "startLiveBatch");
-    const make = new Function("film", "commentDrafts", "setBusy", "setError", "request", "setCommentDrafts", "setComments", "selectedRef", "saveComment", "clearSavedDraft", "currentComments", `${source}; return addComment;`);
-    handler = make(film, drafts, () => {}, setters.setError, async (_path, method) => method === "POST" ? post() : reload(), setters.setCommentDrafts, setters.setComments, {current:id}, saveComment, clearSavedDraft, currentComments);
-  } else {
+  const handlers = () => {
+    if (kind === "kaneo") {
+      const source = handlerSource("./src.jsx", "startLiveBatch");
+      const make = new Function("film", "commentDrafts", "commentRecovery", "setCommentRecovery", "setBusy", "setError", "request", "setCommentDrafts", "setComments", "selectedRef", "saveComment", "clearSavedDraft", "currentComments", `${source}; return {addComment, reviewComment, allowCommentRetry};`);
+      return make(film, drafts, recovery, setters.setCommentRecovery, () => {}, setters.setError, async (_path, method) => method === "POST" ? post() : reload(), setters.setCommentDrafts, setters.setComments, selected, saveComment, clearSavedDraft, currentComments);
+    }
     const source = handlerSource("./youtrack.jsx", "addFilm");
-    const make = new Function("film", "commentDrafts", "setWorking", "setError", "host", "setCommentDrafts", "getComments", "selectedRef", "setComments", "saveComment", "clearSavedDraft", "currentComments", `${source}; return addComment;`);
-    handler = make(film, drafts, () => {}, setters.setError, {fetchYouTrack:post}, setters.setCommentDrafts, reload, {current:id}, setters.setComments, saveComment, clearSavedDraft, currentComments);
-  }
-  await handler({preventDefault() {}});
-  return {draft: drafts[id], comments, error, posts, reads};
+    const make = new Function("film", "commentDrafts", "commentRecovery", "setCommentRecovery", "setWorking", "setError", "host", "setCommentDrafts", "getComments", "selectedRef", "setComments", "saveComment", "clearSavedDraft", "currentComments", `${source}; return {addComment, reviewComment, allowCommentRetry};`);
+    return make(film, drafts, recovery, setters.setCommentRecovery, () => {}, setters.setError, {fetchYouTrack:post}, setters.setCommentDrafts, reload, selected, setters.setComments, saveComment, clearSavedDraft, currentComments);
+  };
+  const click = async (action) => handlers()[action]({preventDefault() {}});
+  await click("addComment");
+  const select = (next) => {
+    film = kind === "kaneo" ? {id:next} : {id:`issue-${next}`,idReadable:next};
+    selected.current = next;
+    if (!Object.hasOwn(drafts, next)) drafts[next] = "Another fictional comment";
+  };
+  return {get draft() {return drafts[id];}, get comments() {return comments;}, get error() {return error;}, get posts() {return posts;}, get reads() {return reads;}, get recovery() {return recovery[id];}, click, setMode: value => {currentMode = value;}, selected, select};
 }
 
 for (const kind of ["kaneo", "youtrack"]) {
@@ -44,5 +52,25 @@ for (const kind of ["kaneo", "youtrack"]) {
   const postFailure = await exercise(kind, "post-fails");
   assert.equal(postFailure.posts, 1); assert.equal(postFailure.reads, 0); assert.equal(postFailure.draft, "Fictional comment");
   assert.match(postFailure.error, /^Comment may have been saved/);
+  assert.equal(postFailure.recovery, "pending");
+  await postFailure.click("addComment"); assert.equal(postFailure.posts, 1, "uncertain save blocks duplicate retry");
+  postFailure.setMode("read-fails"); await postFailure.click("reviewComment");
+  assert.equal(postFailure.recovery, "pending", "failed reload keeps retry blocked");
+  await postFailure.click("allowCommentRetry"); assert.equal(postFailure.recovery, "pending");
+  postFailure.setMode("success");
+  postFailure.selected.current = "different-film"; await postFailure.click("reviewComment");
+  assert.equal(postFailure.recovery, "pending", "a reload completed after navigation cannot count as checked");
+  postFailure.selected.current = kind === "kaneo" ? "fictional-task" : "FILMPOC-1";
+  await postFailure.click("reviewComment"); assert.equal(postFailure.recovery, "checked");
+  assert.equal(postFailure.draft, "Fictional comment", "reload preserves the draft");
+  await postFailure.click("addComment"); assert.equal(postFailure.posts, 1, "review alone does not permit retry");
+  await postFailure.click("allowCommentRetry"); assert.equal(postFailure.recovery, undefined);
+  await postFailure.click("addComment"); assert.equal(postFailure.posts, 2); assert.equal(postFailure.draft, "");
+  const isolated = await exercise(kind, "post-fails");
+  isolated.setMode("success"); isolated.select(kind === "kaneo" ? "other-task" : "FILMPOC-2");
+  await isolated.click("addComment"); assert.equal(isolated.posts, 2, "another film remains usable");
+  isolated.select(kind === "kaneo" ? "fictional-task" : "FILMPOC-1");
+  await isolated.click("addComment"); assert.equal(isolated.posts, 2, "returning to the uncertain film remains blocked");
+  assert.equal(isolated.draft, "Fictional comment");
 }
-console.log("Both comment workflows distinguish an acknowledged save from a failed reload");
+console.log("Both comment workflows preserve drafts and guard uncertain retries");

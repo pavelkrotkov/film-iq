@@ -195,6 +195,7 @@ function App() {
   const [createUncertain, setCreateUncertain] = useState(false), [createChecked, setCreateChecked] = useState(false);
   const [comments, setComments] = useState(null),
     [commentDrafts, setCommentDrafts] = useState({});
+  const [commentRecovery, setCommentRecovery] = useState({});
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
   const detailDirty = useRef(false), preferenceDirty = useRef(false), skipHashPrompt = useRef(false);
@@ -568,6 +569,7 @@ function App() {
     const target = film.id;
     const draft = commentDrafts[target] || "";
     if (!draft.trim()) return;
+    if (commentRecovery[target]) { setError("Reload and check comments before another attempt."); return; }
     setBusy(true);
     setError("");
     try {
@@ -579,11 +581,35 @@ function App() {
       setComments((current) => currentComments(selectedRef.current, target, current, result.comments));
       if (!result.refreshed) setError("Comment saved, but comments could not be reloaded. Reload to see it.");
     } catch (e) {
+      setCommentRecovery((current) => ({...current, [target]: "pending"}));
       setError(
-        `Comment may have been saved; reload before retrying: ${e.message}`,
+        `Comment may have been saved; reload and check comments before retrying: ${e.message}`,
       );
     } finally {
       setBusy(false);
+    }
+  }
+  async function reviewComment() {
+    const target = film?.id;
+    if (!target || !commentRecovery[target]) return;
+    setBusy(true);
+    setCommentRecovery((current) => ({...current, [target]: "pending"}));
+    try {
+      const rows = await request(`/comment/${encodeURIComponent(target)}`);
+      if (!Array.isArray(rows)) throw new Error("Invalid comments response");
+      if (selectedRef.current === target) {
+        setComments(rows);
+        setCommentRecovery((current) => ({...current, [target]: "checked"}));
+        setError("Check the comments before allowing another attempt.");
+      }
+    } catch { setError("Comments could not be reloaded; the draft remains blocked."); }
+    finally { setBusy(false); }
+  }
+  function allowCommentRetry() {
+    const target = film?.id;
+    if (target && commentRecovery[target] === "checked") {
+      setCommentRecovery((current) => { const next = {...current}; delete next[target]; return next; });
+      setError("");
     }
   }
   async function startLiveBatch(items, all = false) {
@@ -929,10 +955,11 @@ function App() {
                         required
                       />
                     </label>
-                    <button disabled={busy || comments === null}>
+                    <button disabled={busy || comments === null || !!commentRecovery[film.id]}>
                       Add comment
                     </button>
                   </form>
+                  {commentRecovery[film.id] && <p role="status">The comment may have been saved. Your draft is preserved. <button type="button" disabled={busy} onClick={reviewComment}>Reload comments to check</button>{" "}<button type="button" disabled={busy || commentRecovery[film.id] !== "checked"} onClick={allowCommentRetry}>I checked; allow another attempt</button></p>}
                 </section>
               </div>
             </div>
