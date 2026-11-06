@@ -481,6 +481,14 @@ navigation retains comment drafts. An older-browser fallback restores the
 displayed URL after a canceled history traversal by replacing that target
 entry, so it does not preserve the original history stack.
 
+The Kaneo preference editor now acknowledges the bridge's confirmed save
+before reloading the full preference list. A failed or inconsistent reload
+reports that the save succeeded, while an unconfirmed write keeps the draft
+and prompts a check before retrying. Fictional handler checks cover these
+cases, later edits and inconsistent responses. The reviewed bundle was deployed
+with a fresh project-private code rollback and matching on-disk and HTTP-served
+bytes; this verification did not exercise a real preference or browser session.
+
 The YouTrack widget's iframe lacks `allow-modals`, so a browser reload can
 discard an unsaved draft without a confirmation dialog. The installed widget
 now shows a warning beside unsaved film, preference, comment and new-film
