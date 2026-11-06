@@ -10,6 +10,7 @@ import urllib.request
 from direct_review_links_check import fixtures
 from kaneo_direct_reviews import FIELD, IDENTITY_FIELD, api_key_opener, import_reviews
 from kaneo_smoke import call, ensure_field
+from kaneo_watched_refresh import prepare
 
 BASE = "http://kaneo:5173"
 stage = "readiness"
@@ -80,17 +81,48 @@ def main():
     key = result.get("key")
     if not isinstance(key, str) or not key:
         raise RuntimeError("Fictional key issuance returned no key")
+    owner_id = call(setup, BASE, "/auth/get-session")["user"]["id"]
     # Drop the API-only bootstrap session before any importer operation.
     jar.clear()
     del setup, jar, result
     stage = "import"
     opener = api_key_opener(key)
     del key
+    stage = "owner"
+    assert call(opener, BASE, "/user/me")["id"] == owner_id
+    stage = "watched"
+    old_time = "2026-11-05T12:00:00+00:00"
+    new_time = "2026-11-06T12:00:00+00:00"
+    prior = {"source": "Movary", "observed_at": old_time, "films": {}, "unresolved_history": []}
+    sidecar = {
+        "version": "tracker-poc-movary-watched-v1",
+        "project_id": project,
+        "users": {owner_id: prior},
+    }
+    snapshot = {
+        "version": "movary-personal-v1",
+        "last_successful_refresh": new_time,
+        "films": [{"tmdb_id": 42, "watched": True}],
+        "provenance": {
+            "api": {
+                "played": [{"movie": {"ids": {"tmdb": 42, "movary": 142}}, "watchDates": []}],
+                "history": [],
+                "watchlist": [],
+            },
+            "history_csv": [],
+        },
+    }
+    watched_status = {"stale": False, "last_successful_refresh": new_time}
+    refreshed = prepare(opener, BASE, project, sidecar, snapshot, watched_status)
+    assert set(refreshed["users"][owner_id]["films"]) == {"42"}
+    stage = "preview"
     manifest, source = fixtures()
     expected = {"pending": 1, "skipped": 0, "conflicts": 0, "written": 0}
     assert import_reviews(opener, BASE, project, manifest, source) == expected
+    stage = "apply"
     expected = {"pending": 0, "skipped": 0, "conflicts": 0, "written": 1}
     assert import_reviews(opener, BASE, project, manifest, source, apply=True) == expected
+    stage = "retry"
     expected = {"pending": 0, "skipped": 1, "conflicts": 0, "written": 0}
     assert import_reviews(opener, BASE, project, manifest, source, apply=True) == expected
     value = next(
@@ -101,6 +133,7 @@ def main():
     assert json.loads(value)["links"][0]["url"] == "https://example.com/review"
     record = call(opener, BASE, f"/task/{task}")
     assert record["description"] == "User-entered fictional synopsis" and record["status"] == status
+    stage = "clear"
     call(
         opener, BASE, "/custom-field/value", {"taskId": task, "fieldId": review, "value": ""}, "PUT"
     )

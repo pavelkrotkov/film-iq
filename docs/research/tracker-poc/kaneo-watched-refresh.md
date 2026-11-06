@@ -1,0 +1,43 @@
+# Kaneo watched snapshot refresh candidate
+
+`kaneo_watched_refresh.py` prepares a current user's Movary watched sidecar
+from an already-completed, project-local Movary snapshot and its adjacent
+`.status` file. It does not contact Movary, modify tracker records or editable
+preferences, or use a browser session. The independent Kaneo API key must be
+provided in the process environment as `KANEO_API_KEY`; do not put its value
+in a command, chat, or Git. The account's key scope must permit reading the
+current user, the project, its fields and tasks. A key has not been provisioned
+or tested on the real POC.
+
+The key owner must already exist in the sidecar. The refresh checks complete
+source provenance, unresolved events, the stored project, all project TMDb
+identity values, and each watched film's current task and identity field.
+Duplicate, missing, inaccessible or changed mappings stop the refresh. It
+preserves other users. A newer complete source can add, remove or change
+watched events; this does not independently verify film identity. The visible
+UI still treats absence from the snapshot as unknown.
+
+Preview is the default. For a changed observation, `--apply` requires a **new**
+backup path in an owner-only project directory. It writes the exact previous
+sidecar there with mode 0600, rechecks the current sidecar, atomically writes
+the replacement and checks readback. An unchanged repeat makes no backup or
+write. Run one sidecar writer at a time: the recheck is not an atomic
+compare-and-swap. If a failure or timeout occurs, inspect the sidecar and the
+private backup before retrying. A backup file contains personal watched history
+and must remain private. This is not a full tracker or server backup.
+
+Fictional checks:
+
+```sh
+UV_CACHE_DIR="$PWD/.cache/tracker-poc/uv-cache" uv run --no-sync python docs/research/tracker-poc/kaneo_watched_refresh_check.py
+UV_CACHE_DIR="$PWD/.cache/tracker-poc/uv-cache" uv run --no-sync python docs/research/tracker-poc/kaneo_watched_refresh_cli_check.py
+```
+
+Fictional CLI tests exercise preview, exact backup, update, readback, a second
+user, an unchanged retry and an intervening-sidecar-change refusal. An
+isolated pinned Kaneo 2.49.0 server test independently issued a fictional API
+key, discarded its API-only setup session, confirmed `/user/me` identified the
+key owner and used the bearer key to prepare one watched mapping from fictional
+data. The server fixture does not apply a sidecar write or exercise the CLI
+environment argument. The real POC has not been authenticated or refreshed by
+this candidate.
