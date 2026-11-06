@@ -51,6 +51,18 @@ property, preferences, settings, usages and checked attachment metadata were
 unchanged. This verifies deployment and fictional behavior, not a live TMDB
 denial or real-film browser workflow.
 
+The two deployed UI bundles also update an already displayed film after the
+user reloads the film list and a cache-only read returns an external worker's
+newer data. A per-film snapshot prevents an in-flight cache read from replacing
+a newer explicit success or failure. An existing failed or incomplete in-app
+attempt remains labeled as such when cache data is reloaded; the interfaces do
+not assert how that attempt was ordered relative to a separate worker. A
+fictional check exercises the actual cache effects and detail notices in both
+UIs, including explicit-success and failure races. The installed YouTrack
+package and served Kaneo bundle matched their reviewed builds; the complete
+watched property and checked app state were unchanged. This verifies the
+deployed bytes and fictional behavior, not a real-worker/browser walkthrough.
+
 With caching enabled, Kaneo's explicit refresh is also task-scoped and the old
 ID-only refresh route is disabled. With caching disabled, the existing ID-only
 route remains unchanged: it requires a signed-in user and approved ID but does
