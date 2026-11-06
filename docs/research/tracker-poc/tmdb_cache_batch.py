@@ -265,18 +265,28 @@ def validate_result(value, ident: int, now: datetime) -> str:
     return availability["status"]
 
 
-def run(http, backend: str, allowed: set[int], report: dict) -> None:
+def run(
+    http, backend: str, allowed: set[int], report: dict, *, refresh_window: int | None = None
+) -> None:
     records = (
         kaneo_records(http, allowed) if backend == "kaneo" else youtrack_records(http, allowed)
     )
     report["validated"] = len(records)
-    for ident, record in sorted(records.items()):
+    ordered = sorted(records.items())
+    if refresh_window is not None:
+        windows = (len(ordered) + MAX_REFRESHES - 1) // MAX_REFRESHES
+        if type(refresh_window) is not int or not 0 <= refresh_window < windows:
+            raise BatchError("window")
+        start = refresh_window * MAX_REFRESHES
+        ordered = ordered[start : start + MAX_REFRESHES]
+    for ident, record in ordered:
         cached = endpoint(http, backend, record, refresh=False)
         if cached is not CACHE_MISS:
             status = validate_result(cached, ident, datetime.now(UTC))
-            report[f"availability_{status}"] += 1
-            report["skipped_fresh"] += 1
-            continue
+            if refresh_window is None:
+                report[f"availability_{status}"] += 1
+                report["skipped_fresh"] += 1
+                continue
         if report["refreshed"] >= MAX_REFRESHES:
             break
         report["attempted"] += 1
@@ -292,6 +302,12 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--backend", choices=("kaneo", "youtrack"), required=True)
     parser.add_argument("--run", action="store_true", help="explicitly enable provider refreshes")
+    parser.add_argument(
+        "--refresh-window",
+        type=int,
+        choices=range(6),
+        help="refresh one deterministic 25-film window, including existing cache entries (0–5)",
+    )
     args = parser.parse_args()
     report = {
         "validated": 0,
@@ -311,8 +327,21 @@ def main() -> int:
         allowed = identities()
         clients = {name: LocalHTTP(name) for name in ("kaneo", "youtrack")}
         require_pacing(args.backend, allowed, clients["kaneo"], clients["youtrack"])
-        run(clients[args.backend], args.backend, allowed, report)
-        report["result"] = "complete" if report["refreshed"] < MAX_REFRESHES else "limit_reached"
+        if args.refresh_window is None:
+            run(clients[args.backend], args.backend, allowed, report)
+            report["result"] = (
+                "complete" if report["refreshed"] < MAX_REFRESHES else "limit_reached"
+            )
+        else:
+            report["window"] = args.refresh_window
+            run(
+                clients[args.backend],
+                args.backend,
+                allowed,
+                report,
+                refresh_window=args.refresh_window,
+            )
+            report["result"] = "complete"
     except BatchError as error:
         report["result"] = error.kind
     except (Exception, KeyboardInterrupt):

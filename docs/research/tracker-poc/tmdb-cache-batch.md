@@ -56,6 +56,37 @@ The aggregate report separately counts complete, partial and unknown provider
 observations; a successful metadata refresh does not imply complete streaming
 availability, and unknown is not treated as absent.
 
+## Optional periodic refresh windows
+
+The default runner only fills cache misses. To refresh an existing observation
+on a chosen cadence, supply `--refresh-window` as well as `--run`:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=docs/research/tracker-poc/youtrack-tmdb-live-bridge:docs/research/tracker-poc:src \
+  .venv/bin/python docs/research/tracker-poc/tmdb_cache_batch.py --backend kaneo --run --refresh-window 0
+```
+
+Windows `0` through `5` partition the approved 130 IDs in a deterministic
+order. Each of the first five covers 25 films; the last covers five. A window
+refreshes its films even when their cache entries are still fresh. It verifies
+each cache readback and stops at the first error; `complete` refers to that
+window only. A deliberate retry can re-fetch earlier successful films in the
+window, but does not create tracker records or alter personal preferences.
+Unknown availability remains unknown; the window does not infer that a
+provider is absent or treat a metadata timestamp as a successful provider
+check.
+
+This is a schedulable one-shot, not an installed schedule. No cadence is
+selected and the command does not switch bridges, renew a source policy, or
+manage other clients. An operator must keep the other bridge refresh-paused and
+the selected bridge paced and enabled for each invocation, as above. If both
+bridges are enabled, the command fails its preflight without contacting TMDb.
+An external scheduler would need to arrange those settings and call all six
+windows separately for each backend; this implementation does not do that.
+The scope is the authorized collection, not a watchlist-only selection. The
+existing 30-day policy window, cache expiry and stopped-host limitations still
+apply.
+
 The read-only comparison can be repeated after both bridges are running. It
 reads the approved tracker mappings and cache-only endpoints; it makes no
 provider requests and prints aggregate counts only:

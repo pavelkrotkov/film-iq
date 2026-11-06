@@ -189,6 +189,54 @@ def main():
                     raise AssertionError("Mismatched cache readback was accepted")
                 assert report["attempted"] == 1 and report["refreshed"] == 0
 
+                # Six scheduled windows refresh the approved collection exactly
+                # once, including cached and unknown availability observations.
+                http = FixtureHTTP(backend)
+                for window in range(6):
+                    report = blank_report()
+                    batch.run(http, backend, IDS, report, refresh_window=window)
+                    expected = 25 if window < 5 else 5
+                    assert report["attempted"] == report["refreshed"] == expected
+                    assert report["skipped_fresh"] == 0
+                    assert report["availability_unknown"] > 0
+                    assert (
+                        sum(
+                            report[f"availability_{status}"]
+                            for status in ("complete", "partial", "unknown")
+                        )
+                        == expected
+                    )
+                refreshed = [ident for action, ident in http.events if action == "refresh"]
+                assert len(refreshed) == 130 and set(refreshed) == IDS
+                assert len(http.cache) == 130
+
+                # A failed window stops immediately. A deliberate retry can
+                # re-fetch earlier successes but never creates extra records.
+                http = FixtureHTTP(backend, failure="rate_limited")
+                try:
+                    batch.run(http, backend, IDS, blank_report(), refresh_window=1)
+                except batch.BatchError as error:
+                    assert error.kind == "rate_limited"
+                else:
+                    raise AssertionError("Scheduled window did not stop on a failure")
+                first_attempt = [ident for action, ident in http.events if action == "refresh"]
+                assert len(first_attempt) == 3
+                http.failure = None
+                report = blank_report()
+                batch.run(http, backend, IDS, report, refresh_window=1)
+                retried = [ident for action, ident in http.events if action == "refresh"][3:]
+                assert retried[:2] == first_attempt[:2]
+                assert report["refreshed"] == 25 and len(http.cache) == 27
+
+                http = FixtureHTTP(backend)
+                try:
+                    batch.run(http, backend, IDS, blank_report(), refresh_window=6)
+                except batch.BatchError as error:
+                    assert error.kind == "window"
+                else:
+                    raise AssertionError("Invalid scheduled window was accepted")
+                assert not http.events
+
     # An expired or invalid cached response is an error, not a cache miss.
     for value in (None, result(1001, expired=True)):
         try:
@@ -276,6 +324,30 @@ def main():
                     except batch.BatchError as error:
                         assert not accepted and error.kind == "pacing_not_established"
                     assert all(not post for _, post in kaneo.calls + youtrack.calls)
+
+            # The explicit scheduled-window CLI must refuse when both bridges
+            # can refresh, before it can reach any provider-refresh path.
+            for backend in ("kaneo", "youtrack"):
+                active = {"pace_enabled": True, "refresh_enabled": True}
+                clients = {name: StatusHTTP(active) for name in ("kaneo", "youtrack")}
+                with (
+                    patch.object(batch, "identities", return_value=IDS),
+                    patch.object(batch, "LocalHTTP", side_effect=clients.__getitem__),
+                    patch.object(batch, "run") as run,
+                    patch.object(
+                        batch.sys,
+                        "argv",
+                        ["batch", "--backend", backend, "--run", "--refresh-window", "0"],
+                    ),
+                    patch("sys.stdout", new_callable=io.StringIO) as output,
+                ):
+                    assert batch.main() == 1
+                    assert json.loads(output.getvalue())["result"] == "pacing_not_established"
+                    run.assert_not_called()
+                assert all(not post for client in clients.values() for _, post in client.calls)
+                assert clients["kaneo"].calls == [("/status/config", False)]
+                assert len(clients["youtrack"].calls) == 2
+                assert clients["youtrack"].calls[1][0].endswith("/metadata/status")
 
     with (
         patch.object(batch, "identities") as load,
