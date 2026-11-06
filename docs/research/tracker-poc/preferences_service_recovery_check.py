@@ -1,22 +1,24 @@
-"""Check fictional preferences across fresh app processes and an SQLite restore.
+"""Check fictional preferences across Waitress restarts and SQLite restore.
 
-This exercises the real WSGI application with mocked Kaneo authentication; it
-does not start a server, use an existing session, or touch the live database.
+Tracker authentication is mocked; no existing session or live database is used.
 """
 
 import ast
-import io
 import json
 import os
+import select
 import sqlite3
 import subprocess
 import sys
 import tempfile
-from contextlib import closing
+import urllib.error
+import urllib.request
+from contextlib import closing, contextmanager
 from pathlib import Path
 from unittest.mock import patch
 
 import preferences
+from waitress import create_server
 
 ROOT = Path(__file__).resolve().parents[3]
 SAVED = {
@@ -28,67 +30,68 @@ SAVED = {
 NEXT = {**SAVED, "interest_score": 9}
 
 
-def request(path: str, method: str, body: dict | None = None) -> tuple[str, dict]:
-    data = json.dumps(body).encode() if body is not None else b""
-    environ = {
-        "HTTP_ORIGIN": preferences.ORIGIN,
-        "REQUEST_METHOD": method,
-        "PATH_INFO": path,
-        "CONTENT_LENGTH": str(len(data)),
-        "wsgi.input": io.BytesIO(data),
-    }
-    status = []
-    response = preferences.application(environ, lambda code, headers: status.append(code))
-    return status[0], json.loads(b"".join(response))
-
-
-def worker(database: Path, mode: str) -> None:
+def worker(database: Path) -> None:
     preferences.DATABASE = database
     with (
         patch.object(preferences, "current_user", return_value="fictionaluser"),
         patch.object(preferences, "upstream", return_value={}),
     ):
-        worker_requests(mode)
+        server = create_server(preferences.application, host="127.0.0.1", port=0)
+        print(server.effective_port, flush=True)
+        server.run()
 
 
-def worker_requests(mode: str) -> None:
-    if mode == "save":
-        status, preview = request("/preview/fictionalfilm", "POST", {"preference": SAVED})
-        assert status == "200 OK"
-        status, result = request(
-            "/preferences/fictionalfilm",
-            "PUT",
-            {"preference": SAVED, "token": preview["token"]},
-        )
-        assert status == "200 OK" and result["preference"] == SAVED
-        status, preview = request("/preview/fictionalfilm", "POST", {"preference": NEXT})
-        assert status == "200 OK"
-        print(json.dumps({"token": preview["token"]}))
-    elif mode == "verify":
-        token = json.load(sys.stdin)["token"]
-        status, result = request("/preferences", "GET")
-        assert status == "200 OK" and result["preferences"]["fictionalfilm"] == SAVED
-        status, _ = request(
-            "/preferences/fictionalfilm", "PUT", {"preference": NEXT, "token": token}
-        )
-        assert status == "400 Bad Request"
-        status, result = request("/preferences", "GET")
-        assert status == "200 OK" and result["preferences"]["fictionalfilm"] == SAVED
-    else:
-        raise ValueError("Unknown fixture worker mode")
-
-
-def run_worker(database: Path, mode: str, payload: str = "") -> str:
-    result = subprocess.run(
-        [sys.executable, __file__, "--worker", str(database), mode],
+@contextmanager
+def service(database: Path):
+    process = subprocess.Popen(
+        [sys.executable, __file__, "--worker", str(database)],
         cwd=ROOT,
-        input=payload,
-        capture_output=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
         text=True,
-        check=True,
         env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
     )
-    return result.stdout
+    try:
+        assert process.stdout is not None
+        ready, _, _ = select.select([process.stdout], [], [], 10)
+        if not ready:
+            raise RuntimeError("Fictional Waitress service did not start")
+        port = process.stdout.readline().strip()
+        if not port.isdigit():
+            raise RuntimeError("Fictional Waitress service could not bind")
+        yield int(port)
+    finally:
+        process.terminate()
+        process.wait(timeout=10)
+        if process.stdout is not None:
+            process.stdout.close()
+
+
+def request(port: int, path: str, method: str, body: dict | None = None) -> tuple[int, dict]:
+    data = json.dumps(body).encode() if body is not None else None
+    query = urllib.request.Request(
+        f"http://127.0.0.1:{port}{path}",
+        data,
+        {"Origin": preferences.ORIGIN, "Content-Type": "application/json"},
+        method=method,
+    )
+    try:
+        with urllib.request.urlopen(query, timeout=10) as response:
+            return response.status, json.load(response)
+    except urllib.error.HTTPError as error:
+        with error:
+            return error.code, json.load(error)
+
+
+def verify(port: int, token: str) -> None:
+    status, result = request(port, "/preferences", "GET")
+    assert status == 200 and result["preferences"]["fictionalfilm"] == SAVED
+    status, _ = request(
+        port, "/preferences/fictionalfilm", "PUT", {"preference": NEXT, "token": token}
+    )
+    assert status == 400
+    status, result = request(port, "/preferences", "GET")
+    assert status == 200 and result["preferences"]["fictionalfilm"] == SAVED
 
 
 def main() -> None:
@@ -113,20 +116,34 @@ def main() -> None:
         db.execute("PRAGMA journal_mode=WAL")
         db.execute(schemas[0])
         db.commit()
-    pending = run_worker(source, "save")
-    run_worker(source, "verify", pending)
-    with closing(sqlite3.connect(source)) as db, closing(sqlite3.connect(restored)) as backup:
-        db.backup(backup)
-        assert backup.execute("PRAGMA integrity_check").fetchone() == ("ok",)
-    run_worker(restored, "verify", pending)
+    with service(source) as port:
+        status, preview = request(port, "/preview/fictionalfilm", "POST", {"preference": SAVED})
+        assert status == 200
+        status, result = request(
+            port,
+            "/preferences/fictionalfilm",
+            "PUT",
+            {"preference": SAVED, "token": preview["token"]},
+        )
+        assert status == 200 and result["preference"] == SAVED
+        status, preview = request(port, "/preview/fictionalfilm", "POST", {"preference": NEXT})
+        assert status == 200
+        pending = preview["token"]
+    with service(source) as port:
+        verify(port, pending)
+        with closing(sqlite3.connect(source)) as db, closing(sqlite3.connect(restored)) as backup:
+            db.backup(backup)
+            assert backup.execute("PRAGMA integrity_check").fetchone() == ("ok",)
+    with service(restored) as port:
+        verify(port, pending)
     print(
-        "Fictional WSGI preferences survived fresh processes and SQLite restore; stale previews were rejected."
+        "Fictional Waitress preferences survived restart and SQLite restore; stale previews were rejected."
     )
     print(f"Project-local fictional artifacts retained in {directory}")
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 4 and sys.argv[1] == "--worker":
-        worker(Path(sys.argv[2]), sys.argv[3])
+    if len(sys.argv) == 3 and sys.argv[1] == "--worker":
+        worker(Path(sys.argv[2]))
     else:
         main()

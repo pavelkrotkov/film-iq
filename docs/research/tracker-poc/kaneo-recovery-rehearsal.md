@@ -41,14 +41,14 @@ load function. This is an offline one-record check, not a service-restart,
 concurrent-write or live-data recovery test. Its fictional files remain in a
 new ignored project-local directory.
 
-`uv run python docs/research/tracker-poc/preferences_service_recovery_check.py`
-adds a fictional application-process check. One fresh Python interpreter uses
-the actual preference WSGI application to preview and save a preference, then
-another reads it and rejects a preview issued by the earlier process. An SQLite
-backup is opened by a third interpreter, which repeats those assertions. Kaneo
-authentication and film access are mocked, and no network listener is started.
-This does not test a live Waitress restart, a concurrent backup, real sessions,
-or recovery of the live preference database.
+`.venv/bin/python docs/research/tracker-poc/preferences_service_recovery_check.py`
+starts a fictional Waitress service on an ephemeral loopback port with the real
+preference WSGI application. It previews and saves a preference, restarts the
+service, and checks that the preference persists while a preview issued before
+restart is rejected. SQLite's online backup runs while the restarted service is
+idle; a third service opens the restored database and repeats the assertions.
+Kaneo authentication and film access are mocked. This does not test a backup
+concurrent with writes, real sessions, or recovery of the live database.
 
 ## Repeat with fresh fictional directories
 
