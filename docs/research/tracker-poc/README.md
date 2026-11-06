@@ -413,12 +413,15 @@ the pending preview. In the live runtime, a fictional preference was previewed,
 confirmed and read back, and replay was rejected. A fictional watched snapshot
 also survived readback; anonymous reads and writes returned 401. The 27-film
 read-only Movary snapshot was then imported for the local administrator and
-its events matched on readback. A later guarded update retained all 27 histories,
-with 16 inferred ID bindings and 11 unbound; it does not update Movary or a watchlist.
+its events matched on readback. A later guarded v2 update retained all 27 histories,
+with 16 inferred ID bindings and 11 unbound. The subsequent v3 refresh added
+27 current entries and retained those 11 unbound histories separately; it does
+not update Movary or a watchlist.
 Concurrent imports and live separation between accounts remain unverified.
 For entries whose bound ID still matches the issue, YouTrack film details show
 the snapshot's play dates and counts, with unknown dates and repeated entries
-preserved. Unbound entries remain unknown. History-export dates remain a
+preserved. Unbound historical entries do not independently establish current
+watched status. History-export dates remain a
 separate observation and are not added to play counts. An isolated fictional
 browser check verified the display through reload with a mocked snapshot; that
 earlier app update left the administrator's then-existing snapshot unchanged.

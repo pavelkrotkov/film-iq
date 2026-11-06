@@ -48,3 +48,12 @@ has been verified.
 A separate unauthenticated request to the public schema endpoint also returned
 403 from this environment. The application code matches the documented route
 and key format, but this observation does not identify the source of the denial.
+
+On 2026-11-06 a fresh unauthenticated schema request returned HTTP 200. A
+single request for TMDb's public example movie 11 still returned HTTP 403 with
+the stored key; the same example also returned 403 without a key. The latter
+response identified Cloudflare as the server and had no mitigation header.
+These observations do not distinguish an edge rule from an API/account denial
+and do not verify the saved key. A separate request to the documented `/user`
+key-check endpoint also returned 403; its response body was not read. No
+response body, key, or private film ID was retained or printed.

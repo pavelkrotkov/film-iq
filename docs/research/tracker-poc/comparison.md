@@ -59,15 +59,18 @@ independently verified. Both trackers hold canonical records. Kaneo has a
 read-only, user-gated Movary sidecar, and the 27-film watched snapshot was
 imported into the local YouTrack administrator's app-owned property after a
 fictional single-user and anonymous-denial check. A later guarded app update
-migrated that snapshot: readback preserved all 27 issue/event histories, with
-16 ID-bound and 11 unbound. A repeat read-only preview returned 27/16. Binding
-uses unique same-observation source-event fingerprints and current supplied
-IDs; it is supporting evidence, not independent film-identity verification.
-The other project's watched projection and visible preferences, settings,
-usages and attachments were unchanged in the checked observations. Owner-only
-v1 projections are visibility-filtered, not complete property backups. A
-mixed-v2 rollback passed in an isolated fictional app; real rollback and full
-recovery remain unverified. Neither import writes to Movary or changes a watchlist.
+migrated that snapshot to mixed v2, preserving all 27 issue/event histories
+with 16 inferred ID bindings and 11 unbound. A later v3 refresh added 27 current
+entries from a newer Movary observation and retained the 11 unbound histories
+separately with their original observation time. The old and new source events
+matched, but the bindings and supplied IDs do not independently verify film
+identity. The other project's watched projection and visible preferences,
+settings, usages and attachments were unchanged in the checked observations.
+Owner-only full-property exports were saved before and after the v3 refresh;
+the older v1 project projections were visibility-filtered, not full backups.
+A full-property restore passed in an isolated fictional app; real restoration
+and full server recovery remain unverified. Neither import writes to Movary or
+changes a watchlist.
 
 An aggregate read of the 130 YouTrack issues on 2026-11-06 found no nonempty
 issue description, stored release year, stored genre, critic score or critic

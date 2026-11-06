@@ -46,16 +46,20 @@ local users, so check and restrict permissions for each future backup. Automatic
 backups are disabled. The existing local archive has not been restored and is
 not a separate-machine copy. See [JetBrains' backup instructions](https://www.jetbrains.com/help/youtrack/server/back-up-the-database.html).
 
-The current YouTrack `FILMREAL` watched snapshot is mixed v2: the guarded
-migration read back 27 unchanged issue/event histories, 16 bound to supplied
-TMDb IDs and 11 unbound. A repeat read-only preview returned 27/16. The bindings
-are inferred from unique source-event fingerprints and current IDs, not
-independent film-identity verification; unbound watched status is unknown.
-Owner-only pre-migration v1 projections for both app projects are
-visibility-filtered API results, not full extension-property backups. Real
-rollback and full recovery remain unverified. The mixed-v2 conversion and
-v1 rollback passed in a separate fictional app. See the [migration and rollback
-procedure](youtrack-app/MOVARY.md#real-migration-and-rollback-procedure) before
+The current YouTrack `FILMREAL` watched snapshot is v3: it contains 27 current
+entries from a newer complete Movary observation and separately preserves the
+11 unbound histories from the earlier mixed-v2 snapshot, with their original
+observation time. The prior v2 migration had 16 inferred bindings and 11
+unbound entries; neither those inferences nor the current supplied IDs
+independently verify film identity. Unbound historical evidence does not by
+itself mark the current film watched.
+
+Owner-only full current-user watched-property exports were saved before and
+after the v3 refresh; the post-refresh property matched the expected state.
+Earlier v1 project projections were visibility-filtered and were not full
+property backups. The full-property restore passed an isolated fictional test;
+real-data restoration and full server recovery remain unverified. See the
+[watched-property backup and recovery notes](watched-property-backup.md) before
 changing or downgrading the FilmIQ app.
 
 Restart Kaneo alone with `docker restart film-iq-tracker-poc-kaneo-1`. For a
@@ -154,11 +158,12 @@ docker compose -f docs/research/tracker-poc/compose.yaml \
 The credential remains in the existing private Compose env file. The saved
 pre-pilot app packages are under
 `.cache/tracker-poc/private/youtrack-pilot-rollback-i792iwgg/`. An older FilmIQ
-handler cannot read mixed-v2 watched data: before downgrading, follow the
-[v1 conversion and verification procedure](youtrack-app/MOVARY.md#real-migration-and-rollback-procedure)
-for every v2 project while the compatible handler is installed. This procedure
-has been tested on fictional data, not the real snapshot. Update existing apps
-in place; deleting an app deletes its app-owned data. Recreating the original bridge also requires the original
+handler cannot read v3 watched data. The current v3 snapshot contains historical
+entries, so `restore-legacy` refuses to discard that history; do not downgrade
+the handler. Review the [full-property recovery notes](watched-property-backup.md)
+and the compatibility of every project before any future rollback. Property
+restoration has been tested on fictional data, not the real snapshot. Update
+existing apps in place; deleting an app deletes its app-owned data. Recreating the original bridge also requires the original
 full approval directory and live plus catalog overrides without the two
 pilot overrides. See the [cache candidate notes](tmdb-live-cache-candidate.md)
 for the stopped-writer purge procedure and retention limits.
