@@ -1,6 +1,7 @@
 """Fictional checks for the task-scoped, read-only Kaneo catalog endpoint."""
 
 import json
+import os
 import urllib.error
 from datetime import UTC, datetime, timedelta
 from email.message import Message
@@ -144,6 +145,32 @@ def main():
         result["body"]["year"] == 2001 and result["body"]["attribution"] == "Fictional attribution"
     )
     assert "reviewer" not in result["body"] and "evidence" not in result["body"]
+
+    # A broader, local-only catalog approval must not expand live or cache access.
+    provider_policy = {**policy, "allowed_ids": [41]}
+    catalog_policy = {**policy, "allowed_ids": [41, 42]}
+    scoped = app(
+        no_live,
+        lambda _: "fictional-user",
+        lambda: provider_policy,
+        upstream,
+        lambda: Path("/fictional/catalog"),
+        catalog,
+        cache=object(),
+    )
+    with patch.dict(os.environ, {}, clear=True):
+        assert invoke(scoped, "/catalog/fixture-1")["status"] == "404 Not Found"
+    with (
+        patch.dict(os.environ, {"FILMIQ_CATALOG_APPROVAL_DIR": "/fictional/approval"}, clear=True),
+        patch.object(Path, "read_text", return_value=json.dumps(catalog_policy)),
+    ):
+        assert invoke(scoped, "/catalog/fixture-1")["status"] == "200 OK"
+        assert invoke(scoped, "/refresh/fixture-1")["status"] == "404 Not Found"
+        assert invoke(scoped, "/cache/fixture-1")["status"] == "404 Not Found"
+        assert invoke(scoped, "/movie/42")["status"] == "404 Not Found"
+    with patch.dict(os.environ, {"FILMIQ_CATALOG_APPROVAL_DIR": ""}, clear=True):
+        assert invoke(scoped, "/catalog/fixture-1")["status"] == "503 Service Unavailable"
+        assert invoke(scoped, "/refresh/fixture-1")["status"] == "404 Not Found"
     print("Fictional task visibility, approved identity and catalog-only checks passed")
 
 

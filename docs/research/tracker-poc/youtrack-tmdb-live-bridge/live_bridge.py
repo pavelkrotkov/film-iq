@@ -102,6 +102,7 @@ def app(
     reader: Callable,
     catalog_reader=None,
     cache=None,
+    load_catalog_allowlist=None,
 ):
     """The reader is injected so tests can never accidentally use live fetch."""
 
@@ -152,7 +153,12 @@ def app(
         except (ValueError, UnicodeDecodeError):
             return send("400 Bad Request", {"error": "Invalid request"})
         try:
-            allowed = parse_allowlist(load_allowlist())
+            approval = (
+                load_catalog_allowlist
+                if path == "/catalog" and load_catalog_allowlist
+                else load_allowlist
+            )
+            allowed = parse_allowlist(approval())
         except (OSError, ValueError, TypeError):
             return send("503 Service Unavailable", {"error": "Approval configuration unavailable"})
         if ident not in allowed:
@@ -221,6 +227,20 @@ def main():
             return decode_allowlist(ALLOWLIST_PATH.read_text(encoding="utf-8"))
 
         parse_allowlist(load())
+        catalog_approval = os.environ.get("FILMIQ_CATALOG_APPROVAL_DIR")
+        if catalog_approval is not None:
+            catalog_approval_path = Path(catalog_approval)
+            if not catalog_approval_path.is_absolute():
+                raise ValueError("Catalog approval directory must be absolute")
+
+            def load_catalog_approval():
+                return decode_allowlist(
+                    (catalog_approval_path / "approved-ids.json").read_text(encoding="utf-8")
+                )
+
+            parse_allowlist(load_catalog_approval())
+        else:
+            load_catalog_approval = None
         cache = None
         stop_purge = None
         if os.environ.get("FILMIQ_TMDB_CACHE_ENABLE", "0") != "0":
@@ -234,7 +254,7 @@ def main():
         with make_server(
             "127.0.0.1",
             15178,
-            app(config, load, read_movie, read_reviewed, cache),
+            app(config, load, read_movie, read_reviewed, cache, load_catalog_approval),
             handler_class=QuietHandler,
         ) as server:
             server.serve_forever()

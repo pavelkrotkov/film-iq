@@ -1,9 +1,14 @@
 """Synthetic in-memory checks; never reads credentials or contacts a provider."""
 
 import json
+import os
+import tempfile
 from datetime import UTC, datetime
 from io import BytesIO
+from pathlib import Path
+from unittest.mock import patch
 
+import live_bridge
 from live_bridge import (
     DESTINATIONS,
     Config,
@@ -150,6 +155,102 @@ def check():
     assert invoke(application, 101, path="/catalog", title="Fictional")["body"] == {
         "status": "unknown"
     }
+
+    # An independently approved local catalog remains available while the
+    # provider/cache allowlist is restricted to a single fictional film.
+    restricted = {**policy, "allowed_ids": [101]}
+    catalog_approval = {**policy, "allowed_ids": [101, 202]}
+    separated = app(
+        config_from_env(env),
+        lambda: restricted,
+        reader,
+        catalog_reader,
+        load_catalog_allowlist=lambda: catalog_approval,
+    )
+    assert invoke(separated, 202, path="/catalog", title="Fictional")["status"] == "200 OK"
+    assert invoke(separated, 202)["status"] == "403 Forbidden"
+    assert invoke(separated, 202, path="/cache")["status"] == "403 Forbidden"
+    assert calls == [], "A catalog read or denied film must not call the provider"
+    default_restricted = app(config_from_env(env), lambda: restricted, reader, catalog_reader)
+    assert (
+        invoke(default_restricted, 202, path="/catalog", title="Fictional")["status"]
+        == "403 Forbidden"
+    )
+    catalog_approval["allowed_ids"] = [101]
+    assert invoke(separated, 202, path="/catalog", title="Fictional")["status"] == "403 Forbidden"
+    catalog_approval["allowed_ids"] = []
+    assert (
+        invoke(separated, 101, path="/catalog", title="Fictional")["status"]
+        == "503 Service Unavailable"
+    )
+    assert invoke(separated, 202)["status"] == "403 Forbidden" and calls == []
+
+    # Exercise the actual startup wiring without binding a socket: the catalog
+    # facts file and its separate approval directory must remain distinct.
+    root = Path(__file__).resolve().parents[4] / ".cache/tracker-poc"
+    with tempfile.TemporaryDirectory(prefix="fictional-catalog-approval-", dir=root) as place:
+        directory = Path(place)
+        primary, catalog_dir = directory / "primary", directory / "catalog-approval"
+        primary.mkdir()
+        catalog_dir.mkdir()
+        (primary / "approved-ids.json").write_text(json.dumps(restricted))
+        (catalog_dir / "approved-ids.json").write_text(
+            json.dumps({**policy, "allowed_ids": [101, 202]})
+        )
+        reviewed_file = directory / "fictional-reviewed-catalog.json"
+        startup_env = {
+            **env,
+            "FILMIQ_REVIEWED_CATALOG": str(reviewed_file),
+            "FILMIQ_CATALOG_APPROVAL_DIR": str(catalog_dir),
+        }
+        observed = []
+
+        def fake_catalog(path, ident, title):
+            observed.append((path, ident, title))
+            return {"tmdb_id": ident, "title": title}
+
+        class FakeServer:
+            def __init__(self, application):
+                self.application = application
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_):
+                return None
+
+            def serve_forever(self):
+                result = invoke(self.application, 202, path="/catalog", title="Fictional")
+                assert result["status"] == "200 OK" and result["body"]["status"] == "available"
+                assert invoke(self.application, 202)["status"] == "403 Forbidden"
+
+        with (
+            patch.dict(os.environ, startup_env, clear=True),
+            patch.object(live_bridge, "ALLOWLIST_PATH", primary / "approved-ids.json"),
+            patch.object(
+                live_bridge,
+                "make_server",
+                side_effect=lambda _host, _port, application, **_kw: FakeServer(application),
+            ),
+            patch("reviewed_catalog.catalog_facts", side_effect=fake_catalog),
+        ):
+            live_bridge.main()
+        assert observed == [(reviewed_file, 202, "Fictional")]
+        for invalid in ("", "relative/path"):
+            with (
+                patch.dict(
+                    os.environ, {**startup_env, "FILMIQ_CATALOG_APPROVAL_DIR": invalid}, clear=True
+                ),
+                patch.object(live_bridge, "ALLOWLIST_PATH", primary / "approved-ids.json"),
+                patch.object(live_bridge, "make_server") as make_server,
+            ):
+                try:
+                    live_bridge.main()
+                except SystemExit as error:
+                    assert str(error) == "Live bridge configuration unavailable"
+                else:
+                    raise AssertionError("An invalid catalog approval directory was accepted")
+                make_server.assert_not_called()
 
     def missing_allowlist():
         raise FileNotFoundError("fixture path must not leak")

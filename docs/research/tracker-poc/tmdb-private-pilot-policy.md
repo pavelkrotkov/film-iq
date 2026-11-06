@@ -1,8 +1,8 @@
-# Proposed TMDb source-use decision: one-film local pilot
+# TMDb source-use decision: one-film local pilot
 
-**Status: proposed, not activated.** This is an engineering assessment for a
-temporary proof of concept, not legal advice or certification. It neither
-enables the cache nor selects a provider for the wider product.
+**Status: reviewed for a one-film local pilot; not yet activated.** This is an
+engineering assessment for a temporary proof of concept, not legal advice or
+certification. It does not select a provider for the wider product.
 
 ## Intended use and proposed decision
 
@@ -16,8 +16,8 @@ model, or provider-data training, evaluation, or improvement use. AI-assisted
 software development alone is not itself a published TMDb exception; treating
 this particular deterministic runtime as non-model use is our interpretation.
 
-Subject to the controls below and the remaining review, the proposed decision
-is to permit this single-film pilot, without treating that decision as a grant
+For this limited POC, the engineering decision is to permit this single-film
+pilot under the controls below, without treating that decision as a grant
 for additional IDs, redistribution, historical datasets, production use or
 other third-party content. A working key and the user's authorization to make
 requests do not independently establish the provider's data rights.

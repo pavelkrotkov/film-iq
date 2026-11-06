@@ -1,8 +1,8 @@
-"""Optional loopback TMDB read-through; stores no responses or credentials.
+"""Optional loopback TMDB reader with a separately enabled local cache.
 
-This service only returns public movie metadata, not personal film data. It is
-an experiment, not a rights certification. Supply the existing TMDB credential
-in the process environment and stop the service when testing is finished.
+The default read-through does not store responses; the opt-in cache retains
+normalized metadata under its local policy. Credentials stay in the process
+environment. This POC is not a source-rights certification.
 """
 
 import json
@@ -29,6 +29,16 @@ def load_allowlist():
     directory = os.environ.get("FILMIQ_APPROVAL_DIR")
     if not directory:
         raise ValueError("Approval configuration unavailable")
+    path = Path(directory) / "approved-ids.json"
+    return approval.decode_allowlist(path.read_text(encoding="utf-8"))
+
+
+def load_catalog_allowlist():
+    directory = os.environ.get("FILMIQ_CATALOG_APPROVAL_DIR")
+    if directory is None:
+        return None
+    if not directory:
+        raise ValueError("Catalog approval configuration unavailable")
     path = Path(directory) / "approved-ids.json"
     return approval.decode_allowlist(path.read_text(encoding="utf-8"))
 
@@ -62,6 +72,7 @@ def app(
     load_catalog_path=reviewed_catalog_path,
     read_catalog=catalog_facts,
     cache=None,
+    load_catalog_approval=load_catalog_allowlist,
 ):
     def application(environ: dict, start):
         origin = environ.get("HTTP_ORIGIN", "")
@@ -87,7 +98,10 @@ def app(
         except (PermissionError, OSError, ValueError):
             return response(start, "401 Unauthorized", {"error": "Kaneo session required"}, origin)
         try:
-            allowed = approval.parse_allowlist(load_approval())
+            catalog_approval = load_catalog_approval() if is_catalog else None
+            allowed = approval.parse_allowlist(
+                catalog_approval if catalog_approval is not None else load_approval()
+            )
         except (OSError, ValueError, TypeError):
             return response(
                 start,

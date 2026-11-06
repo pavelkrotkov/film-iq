@@ -27,6 +27,15 @@ missing, expired, or mismatched data is unknown. It does not verify identity or
 provide a synopsis, poster, or availability. The optional
 `compose.catalog.yaml` mounts the catalog and adapter read-only; set
 `FILMIQ_REVIEWED_CATALOG_FILE` to the existing catalog file before applying it.
+By default catalog reads use the same allowlist as live provider/cache requests.
+The optional `compose.catalog-approval.yaml` instead mounts a dedicated catalog
+approval directory read-only and sets `FILMIQ_CATALOG_APPROVAL_DIR`. This uses
+the same `approved-ids.json` schema, but is checked only for local catalog
+reads; provider and cache routes continue to use their own allowlist. Each is
+reloaded on every applicable request. A missing or malformed separate catalog
+approval fails closed; it never falls back to the provider allowlist. This
+override can preserve existing approved local catalog visibility during a
+narrower live pilot without broadening what may be sent to TMDB.
 The file mount can retain an older inode after atomic replacement, so stop or
 recreate the bridge when replacing or revoking the source. This does not purge
 the existing catalog or backup copies.

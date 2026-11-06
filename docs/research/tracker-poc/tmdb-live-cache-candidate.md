@@ -11,6 +11,11 @@ The two bridges retain their existing authentication and exact approved-ID
 allowlist checks. Kaneo's cache read requires a visible task and obtains its ID
 from the task's field; YouTrack's issue-scoped handler verifies issue visibility
 and obtains the ID from its field. Cache-only reads never contact the provider.
+Kaneo optionally accepts `FILMIQ_CATALOG_APPROVAL_DIR` for its local reviewed
+catalog only. When unset, the catalog uses `FILMIQ_APPROVAL_DIR` as before; an
+invalid configured catalog approval fails that catalog request closed. Cache
+reads and live refreshes always use `FILMIQ_APPROVAL_DIR`, so a broader local
+catalog approval cannot authorize additional provider requests.
 With caching enabled, Kaneo's explicit refresh is also task-scoped and the old
 ID-only refresh route is disabled. With caching disabled, the existing ID-only
 route remains unchanged: it requires a signed-in user and approved ID but does
