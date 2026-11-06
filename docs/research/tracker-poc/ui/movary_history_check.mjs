@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import {movaryHistory} from "./movary_history.js";
+import {movaryHistory, unboundMovaryHistory} from "./movary_history.js";
 
 const record = {tmdb_id:42,watched:true, played_watch_dates:[{date:null,plays:2},{date:"2001-02-03",plays:3},{date:"2001-02-03",plays:1}], history_export_dates:[null,"2001-02-03","2001-02-03"]};
 const snapshot = {status:"available",observed_at:"2026-11-05T12:00:00Z",films:{"FILMPOC-1":record}};
@@ -12,6 +12,11 @@ assert.equal(movaryHistory({...snapshot,status:"unknown"}, "FILMPOC-1", 42), nul
 assert.equal(movaryHistory(snapshot, "FILMPOC-1", 43), null, "a corrected ID cannot inherit old watched history");
 assert.equal(movaryHistory({...snapshot,films:{"FILMPOC-1":{...record,tmdb_id:null}}}, "FILMPOC-1", 42), null, "an explicitly unbound identity remains unknown");
 assert.equal(movaryHistory({...snapshot,films:{"FILMPOC-1":{...record,tmdb_id:undefined}}}, "FILMPOC-1", 42), null, "legacy mappings have unknown identity");
+const unbound = {...snapshot,films:{"FILMPOC-1":{...record,tmdb_id:null}}};
+assert.deepEqual(unboundMovaryHistory(unbound,"FILMPOC-1"),history, "unbound evidence preserves both histories exactly");
+assert.equal(unboundMovaryHistory(snapshot,"FILMPOC-1"),null, "a bound entry does not become unbound evidence after an ID edit");
+assert.equal(unboundMovaryHistory({...snapshot,films:{"FILMPOC-1":{...record,tmdb_id:undefined}}},"FILMPOC-1"),null, "legacy mappings remain unknown");
+assert.equal(unboundMovaryHistory({...unbound,status:"unknown"},"FILMPOC-1"),null);
 assert.equal(movaryHistory({...snapshot,films:{"FILMPOC-1":{...record,played_watch_dates:[{date:"2001-02-30",plays:1}]}}}, "FILMPOC-1", 42).plays, null);
 assert.equal(movaryHistory({...snapshot,films:{"FILMPOC-1":{...record,history_export_dates:["invalid"]}}}, "FILMPOC-1", 42).exportDates, null);
 console.log("Movary history preserves separate plays, unknown dates and repeated exports");

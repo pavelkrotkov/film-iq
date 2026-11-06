@@ -13,8 +13,7 @@ export function boundMovaryFilm(snapshot, issueId, tmdbId) {
   return film && film.watched === true && Number.isSafeInteger(tmdbId) && tmdbId > 0 && film.tmdb_id === tmdbId ? film : null;
 }
 
-export function movaryHistory(snapshot, issueId, tmdbId) {
-  const film = boundMovaryFilm(snapshot, issueId, tmdbId);
+function history(snapshot, film) {
   if (!film) return null;
   const plays = film.played_watch_dates;
   const exports = film.history_export_dates;
@@ -23,4 +22,14 @@ export function movaryHistory(snapshot, issueId, tmdbId) {
     plays: Array.isArray(plays) && plays.every((event) => event && validDate(event.date) && Number.isSafeInteger(event.plays) && event.plays > 0) ? plays : null,
     exportDates: Array.isArray(exports) && exports.every(validDate) ? exports : null,
   };
+}
+
+export function movaryHistory(snapshot, issueId, tmdbId) {
+  return history(snapshot, boundMovaryFilm(snapshot, issueId, tmdbId));
+}
+
+// Only v2's explicitly unbound entry is available as issue-scoped evidence.
+export function unboundMovaryHistory(snapshot, issueId) {
+  const film = snapshot?.status === "available" && snapshot.films?.[issueId];
+  return history(snapshot, film?.watched === true && film.tmdb_id === null ? film : null);
 }

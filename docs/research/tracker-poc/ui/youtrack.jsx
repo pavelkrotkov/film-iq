@@ -8,7 +8,7 @@ import { filmBaseline, filmChanges, hasDuplicateTmdbId, parseOptionalTmdbId } fr
 import { handleExternalRoute, hasUnsavedPageDraft, routeLocation } from "./youtrack_navigation.js";
 import { TmdbCredits } from "./tmdb_credits.jsx";
 import { filterMayExcludeUnknown } from "./metadata_filter_coverage.js";
-import { MOVARY_MAPPING_NOTICE, boundMovaryFilm, movaryHistory } from "./movary_history.js";
+import { MOVARY_MAPPING_NOTICE, boundMovaryFilm, movaryHistory, unboundMovaryHistory } from "./movary_history.js";
 import { ReviewedCatalog } from "./reviewed_catalog_view.jsx";
 import {storedGenreDisplay, storedGenreLabels} from "./stored_genres.js";
 import {availabilityTimeLabel, expireCachedResults, hydrateCachedResult, refreshNotice} from "./live_batch.js";
@@ -417,6 +417,7 @@ function App() {
   const liveMatches = liveMetadataMatches(film, live);
   const observation = film ? providerObservation(liveMatches ? {...film, live} : film) : null;
   const watchedHistory = film ? movaryHistory(movary, film.idReadable, suppliedTmdbId(film)) : null;
+  const unboundHistory = film ? unboundMovaryHistory(movary, film.idReadable) : null;
   const unboundWatched = movary?.status === "available" && shownFilms.some((item) => movary.films?.[item.idReadable]?.watched === true && !boundMovaryFilm(movary, item.idReadable, suppliedTmdbId(item)));
   const locked = busy || loadingFilms || restoringLocation || !!pendingPreview || !!pendingNavigation;
   const filmEditLocked = locked || editBaseline?.issueId !== film?.id;
@@ -443,6 +444,12 @@ function App() {
           {watchedHistory.plays === null ? <p>Play entries unavailable.</p> : watchedHistory.plays.length ? <ul>{watchedHistory.plays.map((entry, index) => <li key={index}>{entry.date || "Date unknown"} · {entry.plays} play(s)</li>)}</ul> : <p>No play entries in this snapshot.</p>}
           {watchedHistory.exportDates === null ? <p>History export dates unavailable.</p> : watchedHistory.exportDates.length ? <p>History export dates: {watchedHistory.exportDates.map((date) => date || "unknown").join(", ")}. This is a separate source and is not added to play counts.</p> : <p>No history export dates in this snapshot.</p>}
         </section> : <p>Movary watched status unknown.</p>}
+        {unboundHistory && <section>
+          <h3>Unverified Movary history for this issue</h3>
+          <p>Snapshot observed {unboundHistory.observedAt || "time unknown"}. This entry's film identity is unverified and may not match the current film. It does not mark the current film watched.</p>
+          {unboundHistory.plays === null ? <p>Play entries unavailable.</p> : unboundHistory.plays.length ? <ul>{unboundHistory.plays.map((entry, index) => <li key={index}>{entry.date || "Date unknown"} · {entry.plays} play(s)</li>)}</ul> : <p>No play entries in this snapshot.</p>}
+          {unboundHistory.exportDates === null ? <p>History export dates unavailable.</p> : unboundHistory.exportDates.length ? <p>History export dates: {unboundHistory.exportDates.map((date) => date || "unknown").join(", ")}. This is a separate source and is not added to play counts.</p> : <p>No history export dates in this snapshot.</p>}
+        </section>}
         {!cacheFixture && <ReviewedCatalog source="youtrack" filmId={film.idReadable} tmdbId={suppliedTmdbId(film)} trackerTitle={film.summary} host={host} />}
         <h3>{cacheFixture ? "Fictional cached details" : "Live TMDB details"}</h3>
         <p>{cacheFixture ? "Offline fictional data, read from the project-local fixture cache." : liveCache ? "Optional lookup for the supplied TMDB ID; verify that the result matches this film. Details may reappear from a local cache for up to seven days; they are not saved to YouTrack." : "Optional lookup for the supplied TMDB ID; verify that the result matches this film. Results stay in this page and are not saved to YouTrack."}</p>
