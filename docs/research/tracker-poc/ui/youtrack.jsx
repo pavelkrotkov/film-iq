@@ -547,7 +547,7 @@ function App() {
         {liveEntry?.error && <p role="alert">{liveEntry.error}</p>}
         {suppliedTmdbId(film) && !live && !liveEntry?.error && <MetadataUnavailable cached={liveCache || cacheFixture} />}
         {live && <section>
-          {!liveMatches ? <IdentityReview expectedId={suppliedTmdbId(film)} savedTitle={film.summary} sourceYear={field(film, "FilmIQ Source Year")} sourceDirector={field(film, "FilmIQ Director")} data={live} provider={cacheFixture ? "Fictional cache" : "TMDB"} /> : <>
+          {!liveMatches ? <IdentityReview expectedId={suppliedTmdbId(film)} savedTitle={film.summary} sourceYear={field(film, "FilmIQ Source Year")} sourceDirector={field(film, "FilmIQ Director")} reviewEvidence={field(film, "FilmIQ Direct Review Links")?.text} data={live} provider={cacheFixture ? "Fictional cache" : "TMDB"} /> : <>
             <p>{cacheFixture ? "Fictional cache returned" : "TMDB returned"}: {live.title} ({live.year ?? "year unknown"}).</p>
             {live.original_title && <p>TMDB original title: {live.original_title} (identity not independently verified).</p>}
             {live.metadata_attempt && <p>Your last in-app metadata check was incomplete; shown details may come from another check.</p>}

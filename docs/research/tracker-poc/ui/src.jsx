@@ -772,7 +772,7 @@ function App() {
                     {liveError && <p role="alert">{liveError}</p>}
                     {!tmdbId(film) ? <p>A valid supplied TMDB ID is required to load film details.</p> : !liveResult && !liveError && <MetadataUnavailable cached={liveCache || cacheFixture} />}
                     {liveResult && !liveMovie && (liveResult.tmdb_id === tmdbId(film)
-                      ? <IdentityReview expectedId={tmdbId(film)} savedTitle={film.title} sourceYear={film.fields["POC Source Year"]} sourceDirector={film.fields["POC Source Director"]} data={liveResult} provider={cacheFixture ? "Fictional cache" : "TMDB"} />
+                      ? <IdentityReview expectedId={tmdbId(film)} savedTitle={film.title} sourceYear={film.fields["POC Source Year"]} sourceDirector={film.fields["POC Source Director"]} reviewEvidence={film.fields["POC Direct Review Links"]} data={liveResult} provider={cacheFixture ? "Fictional cache" : "TMDB"} />
                       : <p role="alert">The saved ID differs from the earlier lookup. Fetch details for the current ID before using its metadata.</p>)}
                     {liveMovie && (
                       <div>
