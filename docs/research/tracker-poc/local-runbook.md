@@ -31,8 +31,11 @@ preference database schema without reading preference rows or initializing a
 missing table; a database whose schema is unavailable in the main file is
 rejected. It starts only
 stopped named containers, waits for PostgreSQL and the tracker web endpoints,
-and starts the separate UI, preference bridge and Kaneo metadata bridge only
-when their ports are free. It preserves the recorded pilot scope, pacing and
+and checks that the YouTrack metadata bridge responds to an unauthenticated
+loopback request inside its container. This checks responsiveness, not that an
+authenticated metadata request will succeed. It starts the separate UI,
+preference bridge and Kaneo metadata bridge only when their ports are free. It
+preserves the recorded pilot scope, pacing and
 refresh setting. The UI and preference bridge run in the background with
 owner-only logs in `.cache/tracker-poc/private/`; the pilot uses its existing
 private log. The pilot's normal startup performs its configured expired-cache
@@ -47,9 +50,18 @@ signed-in session or the full film workflow. On 2026-11-06, a run against the
 already-running installation found all four named containers running and left
 the occupied UI, preference and Kaneo metadata listeners untouched and marked
 unverified. It exited with status 2 and made no provider requests. This did
-not test starting stopped services: cold startup and the complete cross-service
-restart sequence remain untested. This is manual startup, not an automatic
-reboot service; startup ordering has fictional tests.
+not test starting stopped services. A separate isolated rehearsal exercised
+the actual startup orchestrator with fake Docker state and three real fictional
+loopback processes, including a repeat run and recovery after stopping the
+fictional preference process. It did not start real trackers, use provider
+credentials or test a real cross-service restart. Run it from the worktree root:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python docs/research/tracker-poc/start_local_pocs_rehearsal.py
+```
+
+Real cold startup remains untested. This is manual startup, not an automatic
+reboot service.
 
 ## Tracker containers
 

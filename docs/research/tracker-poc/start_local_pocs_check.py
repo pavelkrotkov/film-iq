@@ -38,6 +38,9 @@ class Fake:
     def postgres_ready(self):
         return True
 
+    def bridge_ready(self):
+        return startup.CONTAINERS["bridge"] in self.running
+
     def http_ready(self, url):
         return True
 
@@ -97,6 +100,32 @@ def main():
             raise AssertionError("Incomplete preflight or readiness must stop startup")
         assert ("start", startup.CONTAINERS["kaneo"]) not in failed.calls
         assert "start-only pilot" not in failed.calls
+
+    class CrashedBridge(Fake):
+        def container_start(self, name):
+            super().container_start(name)
+            if name == startup.CONTAINERS["bridge"]:
+                self.running.remove(name)
+
+    crashed = CrashedBridge()
+    try:
+        startup.start(crashed)
+    except startup.StartupError:
+        pass
+    else:
+        raise AssertionError("An unresponsive metadata bridge must stop startup")
+    assert ("wait", "YouTrack metadata bridge") in crashed.calls
+    assert not any(isinstance(call, tuple) and call[0] == "launch" for call in crashed.calls)
+
+    # The real probe executes only an unauthenticated loopback request inside the bridge.
+    probe = startup.Local()
+    with patch.object(startup.subprocess, "run", return_value=MagicMock(returncode=0)) as run:
+        assert probe.bridge_ready()
+        args = run.call_args.args[0]
+        assert args[:5] == ["docker", "exec", startup.CONTAINERS["bridge"], "python", "-c"]
+        assert "127.0.0.1" in args[5] and "15178" in args[5] and "401" in args[5]
+    with patch.object(startup.subprocess, "run", return_value=MagicMock(returncode=1)):
+        assert not probe.bridge_ready()
 
     # Exercise the real preflight with a synthetic project and absent database.
     with tempfile.TemporaryDirectory(dir=startup.ROOT / ".cache/tracker-poc") as folder:

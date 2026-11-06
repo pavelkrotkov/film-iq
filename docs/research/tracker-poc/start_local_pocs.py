@@ -139,6 +139,25 @@ class Local:
         except (OSError, subprocess.SubprocessError):
             return False
 
+    def bridge_ready(self):
+        # An unauthenticated local request reaches the bridge without calling TMDb.
+        probe = (
+            "import http.client; "
+            "c=http.client.HTTPConnection('127.0.0.1',15178,timeout=2); "
+            "c.request('GET','/status'); r=c.getresponse(); c.close(); "
+            "raise SystemExit(0 if r.status==401 else 1)"
+        )
+        try:
+            result = subprocess.run(
+                ["docker", "exec", CONTAINERS["bridge"], "python", "-c", probe],
+                capture_output=True,
+                timeout=5,
+                check=False,
+            )
+            return result.returncode == 0
+        except (OSError, subprocess.SubprocessError):
+            return False
+
     def http_ready(self, url):
         # Loopback only; ignore configured HTTP proxies and never use sessions.
         if url not in ("http://127.0.0.1:15173/", "http://127.0.0.1:18180/"):
@@ -251,6 +270,8 @@ def start(runtime, report=lambda message: None):
             runtime.wait(lambda: runtime.http_ready("http://127.0.0.1:15173/"), "Kaneo")
         elif name == "youtrack":
             runtime.wait(lambda: runtime.http_ready("http://127.0.0.1:18180/"), "YouTrack")
+        elif name == "bridge":
+            runtime.wait(runtime.bridge_ready, "YouTrack metadata bridge")
     occupied = False
     for name, port, args, cwd in (
         (
