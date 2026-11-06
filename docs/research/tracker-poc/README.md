@@ -3,7 +3,7 @@
 This is an isolated evaluation, not a change to FilmIQ's accepted architecture.
 Movary remains the source of truth for real watched history, ratings, and the
 intentional watchlist. The user authorized a separate local import of existing
-candidate records and a read-only watched-history view. Use fictional records
+candidate records and read-only personal-history views. Use fictional records
 and users for destructive, workflow, authorization, and performance tests.
 The [working comparison](comparison.md) maps the evidence and gaps to the
 requested evaluation criteria and includes provisional scores. For the
@@ -19,6 +19,7 @@ manifest. A current authenticated tracker listing has not independently
 verified their match status. The interface can prepare an Add film draft for an
 unmatched entry; it does not create a tracker record or query a provider merely
 by showing the watchlist. Source identifiers and titles remain unverified.
+Both IDs are outside the current TMDb lookup approval.
 The projection is separate from editable POC preferences, and absence from a
 snapshot is unknown rather than an off-watchlist assertion. No Movary or
 provider write was made. See the [local runbook](local-runbook.md#movary-watchlist-projection)
