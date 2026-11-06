@@ -58,8 +58,8 @@ availability, and unknown is not treated as absent.
 
 ### YouTrack-only on-demand mode without a Kaneo session
 
-The `--kaneo-offline` option is a fictional-test-verified alternative for
-`--backend youtrack`. It constructs only the YouTrack API-token client and
+The `--kaneo-offline` option is an alternative for `--backend youtrack`.
+It constructs only the YouTrack API-token client and
 does not load the Kaneo cookie jar. The runner requires no listener on the
 local Kaneo bridge port before starting and checks again before each provider
 refresh; an occupied port or failed listener inspection stops the run. It
@@ -74,8 +74,15 @@ using its `--stop` command, then run the batch with `--backend youtrack
 existing cache entry should be refreshed. Kaneo's cache and catalog reads are
 unavailable while its bridge is stopped. Afterward, restart it with the
 documented [recorded-configuration startup](local-runbook.md#kaneo-collection-cache).
-The mode has not been exercised against the real trackers or provider, and it
-does not install or authorize a schedule.
+On November 6, 2026, a guarded cache-only invocation exercised this mode
+against the local YouTrack instance. A wrapper rejected any attempted provider
+refresh and any Kaneo cookie/client construction. It validated and skipped all
+130 fresh cached records, with zero refresh dispatches. The recorded Kaneo
+bridge was temporarily stopped and restarted with its prior scope, pacing and
+refresh settings; checked watched data, preferences, issues and cache files
+matched before and after. This verifies the real cache-read path, not a live
+provider refresh or real-world scheduling. No schedule was installed or is
+authorized by that check.
 
 ## Optional periodic refresh windows
 
