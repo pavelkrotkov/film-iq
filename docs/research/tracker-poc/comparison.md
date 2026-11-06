@@ -154,8 +154,13 @@ restore also passed for one fictional row. A fictional Waitress service check
 subsequently read the restored preference and rejected an old preview across
 restart; authentication was mocked. Kaneo's local POC has no object-storage
 configuration, and an upload request against a separate fictional instance
-returned HTTP 503. Attachment storage and recovery are not demonstrated.
-YouTrack recovery and live preference-service recovery remain untested. See the official [PostgreSQL 16 dump
+returned HTTP 503. A later separate fictional fixture configured Garage as an
+S3-compatible store: database-only restore returned HTTP 404 for the original
+image even while a control upload/read succeeded; restoring the stopped store
+as well recovered the exact image bytes across app and store restart. This does
+not configure attachment storage in the live POC or establish production
+recovery. YouTrack recovery and live preference-service recovery remain
+untested. See the [fictional attachment rehearsal](kaneo-recovery-rehearsal.md#attachment-backup-and-restore-with-fictional-object-storage), official [PostgreSQL 16 dump
 documentation](https://www.postgresql.org/docs/16/app-pgdump.html) and
 [YouTrack Docker restore guide](https://www.jetbrains.com/help/youtrack/server/restore-docker-image-installation.html).
 The current Compose file does not establish automatic startup after a host

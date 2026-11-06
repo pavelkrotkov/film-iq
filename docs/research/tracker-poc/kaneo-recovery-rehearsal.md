@@ -55,9 +55,65 @@ uploads. In the running local POC, the S3 bucket, endpoint, region, access key
 and secret key variables were all absent; no configuration values were printed.
 In the separate fictional recovery instance, an authenticated request to start
 an image upload returned HTTP 503 with no object storage configured. No bytes
-were uploaded. Image attachment storage and its backup/recovery are therefore
-not demonstrated by the database-only restore; this check does not issue an
-upload request against the real film project.
+were uploaded. This check did not issue an upload request against the real film
+project.
+
+### Attachment backup and restore with fictional object storage
+
+On 2026-11-06, a separate fixture used Kaneo 2.49.0, PostgreSQL 16 and
+[Garage v2.5.0](https://garagehq.deuxfleurs.fr/documentation/quick-start/)
+as an S3-compatible object store. The official `dxflrs/garage` image was pinned
+to digest `sha256:677e5b758e4425a325b811c425c026bf35a4bf42f7ddbaa773de3f4fd779a5a5`;
+Garage is AGPL-3.0 and was used only in this fixture. Its documented
+single-node/default-bucket mode has no replication and is not a production
+storage recommendation. Source and restored services used separate internal
+Docker networks, project-local bind mounts and no published ports. Credentials,
+the authenticated API user, image and task were newly generated fictional
+fixture data. No browser session, live tracker, Movary or metadata provider was
+accessed.
+
+The source Kaneo API presigned an image PUT, finalized the object, saved the
+asset reference on a fictional task and returned the exact PNG bytes. After
+stopping the source app and object store, the fixture took a PostgreSQL dump and
+separately copied the stopped object store's complete metadata and data files to
+a new project-local backup. A database-only restore into a separate fixture
+returned HTTP 404 for the original asset. As a control, the same restored app
+and empty store successfully uploaded, finalized and read a second fictional
+image first, establishing that credentials and the object-store path worked.
+The control created one unlinked asset record in the fictional destination DB;
+its object remains in the separate stopped empty-store fixture. This verifies
+the target asset, not that every row in the modified destination DB has a
+backing object.
+
+After restoring the copied object store, the restored app returned the original
+task reference and exactly matching image bytes. The same checks passed after
+restarting both the restored app and object store. This is a stopped-writer,
+single-node filesystem-copy rehearsal for one fictional object; it is not a
+verified Garage production backup procedure, a concurrent-write test, an
+off-machine backup, or recovery of the existing POC. In particular, the existing
+Kaneo POC still has no configured object storage, so attachment upload there
+remains unavailable.
+
+The successful fixture directory and backups remain under
+`.cache/tracker-poc/private/`; its seven containers were stopped and retained.
+One `du` sample was 108 MiB for the fixture directory, including a 1.5 MiB
+backup. The image's local uncompressed size was 97,099,512 bytes; runtime peak
+memory was not measured. These figures are not a capacity estimate.
+
+To repeat with fresh fictional directories from the worktree root, first ensure
+Docker is running and the pinned PostgreSQL and Kaneo images in
+`kaneo-attachment-fixture/compose.yaml` are already present. Download the pinned
+Garage fixture image if necessary, then run:
+
+```sh
+docker pull dxflrs/garage@sha256:677e5b758e4425a325b811c425c026bf35a4bf42f7ddbaa773de3f4fd779a5a5
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python docs/research/tracker-poc/kaneo_attachment_recovery.py
+```
+
+The runner validates its Compose service names, project-local bind mounts,
+internal networks and absent published ports before creating containers. It
+leaves the generated fixture directory and stopped containers in place. It
+does not download provider data or alter the currently running POCs.
 
 An additional fictional API round-trip ran the actual Python enrichment
 adapter against the internal-network recovery instance. It created one new

@@ -1,0 +1,57 @@
+services:
+  source-db:
+    image: postgres:16-alpine@sha256:0cefaabd882e42bcb2a2f3dc56d3ce4770560ba62fd7f197f1a2e008fd5731ab
+    env_file: fixture.env
+    volumes: ["./source-db:/var/lib/postgresql/data"]
+    networks:
+      source:
+        aliases: [postgres]
+    logging: {driver: none}
+  source-garage:
+    image: dxflrs/garage@sha256:677e5b758e4425a325b811c425c026bf35a4bf42f7ddbaa773de3f4fd779a5a5
+    env_file: fixture.env
+    command: ["/garage", "server", "--single-node", "--default-bucket"]
+    volumes: ["./garage.toml:/etc/garage.toml:ro", "./source-garage:/var/lib/garage"]
+    networks:
+      source:
+        aliases: [garage]
+    logging: {driver: none}
+  source-app:
+    image: ghcr.io/usekaneo/kaneo:2.49.0@sha256:cd1826b1aba3ce736015cadf6f6c975d923aac00f4b6aaa7aedb29bc722dae49
+    env_file: fixture.env
+    networks: [source]
+    logging: {driver: none}
+  restored-db:
+    image: postgres:16-alpine@sha256:0cefaabd882e42bcb2a2f3dc56d3ce4770560ba62fd7f197f1a2e008fd5731ab
+    env_file: fixture.env
+    volumes: ["./restored-db:/var/lib/postgresql/data"]
+    networks:
+      restored:
+        aliases: [postgres]
+    logging: {driver: none}
+  empty-garage:
+    image: dxflrs/garage@sha256:677e5b758e4425a325b811c425c026bf35a4bf42f7ddbaa773de3f4fd779a5a5
+    env_file: fixture.env
+    command: ["/garage", "server", "--single-node", "--default-bucket"]
+    volumes: ["./garage.toml:/etc/garage.toml:ro", "./empty-garage:/var/lib/garage"]
+    networks:
+      restored:
+        aliases: [garage]
+    logging: {driver: none}
+  restored-garage:
+    image: dxflrs/garage@sha256:677e5b758e4425a325b811c425c026bf35a4bf42f7ddbaa773de3f4fd779a5a5
+    env_file: fixture.env
+    command: ["/garage", "server", "--single-node", "--default-bucket"]
+    volumes: ["./garage.toml:/etc/garage.toml:ro", "./restored-garage:/var/lib/garage"]
+    networks:
+      restored:
+        aliases: [garage]
+    logging: {driver: none}
+  restored-app:
+    image: ghcr.io/usekaneo/kaneo:2.49.0@sha256:cd1826b1aba3ce736015cadf6f6c975d923aac00f4b6aaa7aedb29bc722dae49
+    env_file: fixture.env
+    networks: [restored]
+    logging: {driver: none}
+networks:
+  source: {internal: true}
+  restored: {internal: true}
