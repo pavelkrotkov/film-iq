@@ -46,6 +46,11 @@ verify the film identity. Legacy v1 entries lack this binding and remain stored,
 but the candidate UI reports their watched status as unknown until a mapping is
 reviewed and reimported. The handler reads both formats and never changes stored
 data during GET. The mixed-v2 candidate has been installed in the local app.
+For an explicitly unbound v2 entry, the detail view can show its retained
+events as unverified issue history, warning that they may not belong to the
+current film. It does not mark the film watched or include it in watched-only
+results. Fictional rendering checks passed; real-film browser rendering remains
+unverified.
 V1 records contain no TMDb IDs. A unique fingerprint match is supporting evidence
 within these snapshots, not independent proof of historical identity. Coincidental
 events or earlier edits can still misidentify a film. Ambiguous records are not

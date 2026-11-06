@@ -24,6 +24,10 @@ read-only preview returned the same 27/16 counts. The binding uses matching
 source events and current supplied IDs; it does not independently verify film
 identity. No tracker or Movary record was modified by enrichment. These
 observations do not establish individual streaming entitlement or overall usability.
+The YouTrack detail view can display an unbound entry's retained events as
+unverified history for that issue, warning that it may not belong to the
+current film. It does not mark the film watched. Fictional rendering checks
+passed; the real-film browser path remains unverified.
 The guarded app update and migration left the other project's watched projection,
 visible preferences, settings, usages and attachments unchanged in the checked
 before/after observations. The owner-only v1 projections are visibility-filtered,
