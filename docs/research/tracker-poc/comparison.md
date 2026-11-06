@@ -90,6 +90,22 @@ genre while available, but has not demonstrated a rights-compatible way to
 retain those TMDB-derived details indefinitely. This is not evidence that the
 tracker cannot store those field types.
 
+Both discovery grids can display a stored source-listed year when its source
+evidence has valid links and matches the film's current supplied TMDB ID. Kaneo
+uses it when neither a stored release year nor a matched live year is available;
+YouTrack keeps its stored release year separate and uses the live year if no
+usable stored or source year is present. The label identifies an editable
+source field and asks the user to verify identity and edits: the saved evidence
+does not record the original title and cannot prove the current title or field
+value is unchanged. Changed IDs or invalid source evidence withhold the source
+year. The existing private input contains source-listed years with available
+source evidence for 87 of 130 films; this is input coverage, not a fresh live
+tracker readback, verified release-year count or real-film browser check.
+Fictional tests cover missing/malformed evidence, changed IDs and year
+precedence. Both updated UI bundles matched their reviewed builds after
+deployment; the complete YouTrack watched property and checked app state were
+unchanged. No tracker metadata was rewritten.
+
 The opt-in TMDB reader can retain normalized metadata in a separate local
 seven-day cache without writing the response to tracker history. Both trackers
 have cached all 130 approved records. A cache-only comparison found identical
