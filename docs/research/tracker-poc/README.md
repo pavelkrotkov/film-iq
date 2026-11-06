@@ -7,7 +7,8 @@ candidate records and a read-only watched-history view. Use fictional records
 and users for destructive, workflow, authorization, and performance tests.
 The [working comparison](comparison.md) maps the evidence and gaps to the
 requested evaluation criteria and includes provisional scores. For the
-already configured Mac, see the [local runbook](local-runbook.md).
+already configured Mac, see the [local runbook](local-runbook.md) and
+[fictional walkthrough screenshots](visual-evidence.md).
 
 ## Current local state
 
