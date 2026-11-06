@@ -32,6 +32,12 @@ export function hasStoredGenre(raw, genre) {
   return decoded.status === "known" && decoded.genres.includes(genre);
 }
 
+// Explain a filter match from loaded source data without altering stored labels.
+export function liveGenreOnlyMatch(raw, liveGenres, selected) {
+  return typeof selected === "string" && !!selected && !hasStoredGenre(raw, selected) &&
+    validGenres(liveGenres) && liveGenres.includes(selected);
+}
+
 export function storedGenreLabels(raw) {
   const decoded = decodeStoredGenres(raw);
   return decoded.status === "known" ? decoded.genres : [];

@@ -19,7 +19,7 @@ import { TmdbCredits } from "./tmdb_credits.jsx";
 import { filterMayExcludeUnknown } from "./metadata_filter_coverage.js";
 import { metadataChanges, storedMetadata } from "./kaneo_metadata.js";
 import { ReviewedCatalog } from "./reviewed_catalog_view.jsx";
-import {storedGenreDisplay, storedGenreLabels} from "./stored_genres.js";
+import {liveGenreOnlyMatch, storedGenreDisplay, storedGenreLabels} from "./stored_genres.js";
 import {Poster} from "./poster.jsx";
 import {IdentityReview} from "./identity_review.jsx";
 import {ReviewIdentity} from "./review_identity.jsx";
@@ -1052,6 +1052,7 @@ function App() {
                         {storedGenreDisplay(item.fields["POC Genre"]) ?? (item.live?.genres?.join(", ") || "UNKNOWN GENRE")} ·{" "}
                         {item.fields["POC Year"] || item.live?.year || "UNKNOWN YEAR"}
                       </div>
+                      {liveGenreOnlyMatch(item.fields["POC Genre"], item.live?.genres, genre) && <p>{cacheFixture ? "Fictional cache" : "TMDB"} genre match: {genre}</p>}
                       <h3>{item.title}</h3>
                       {item.titleNeedsReview && <p>Title differs from TMDB; open to review.</p>}
                       {item.live && <p>TMDB match not independently verified</p>}
