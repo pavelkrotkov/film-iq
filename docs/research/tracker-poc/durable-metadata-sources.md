@@ -45,6 +45,17 @@ is local and ignored by Git; its claim-level links, qualifiers and references
 can be inspected without changing a tracker record. A fictional check exercises
 the report renderer and its approved-scope validation.
 
+A later bounded public-source review of the same eight films opened seven
+stronger source pages. Six pages named the expected title and at least one
+director label resolved from the associated Wikidata item; for five films a
+source-listed year also appeared among that item's nondeprecated publication
+date claims. Two director comparisons remained unresolved because some person
+pages could not be read, and one distributor page was inaccessible. Similar
+titles and differing dates occurred. These observations support further review;
+they do not establish an independent TMDB-to-film match, independent data
+lineage, or one canonical release year. The detailed evidence remains in the
+ignored private project cache.
+
 ## Wikipedia: separately licensed prose
 
 Wikipedia article text is distinct from Wikidata structured data. The
