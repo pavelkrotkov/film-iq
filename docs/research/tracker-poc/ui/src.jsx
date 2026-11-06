@@ -21,6 +21,7 @@ import { metadataChanges, storedMetadata } from "./kaneo_metadata.js";
 import { ReviewedCatalog } from "./reviewed_catalog_view.jsx";
 import {storedGenreDisplay, storedGenreLabels} from "./stored_genres.js";
 import {Poster} from "./poster.jsx";
+import {IdentityReview} from "./identity_review.jsx";
 
 const api = "http://localhost:15173/api";
 const cacheFixture = typeof __FILMIQ_CACHE_FIXTURE__ !== "undefined" && __FILMIQ_CACHE_FIXTURE__;
@@ -688,7 +689,9 @@ function App() {
                       {cacheFixture ? "Read fictional cache" : "Fetch or refresh live details"}
                     </button>
                     {liveError && <p role="alert">{liveError}</p>}
-                    {liveResult && !liveMovie && <p role="alert">TMDB returned {liveResult.title || "an unknown title"}; its title or ID differs from this film. It may be another work or an alternate title and needs review before using its metadata.</p>}
+                    {liveResult && !liveMovie && (liveResult.tmdb_id === tmdbId(film)
+                      ? <IdentityReview expectedId={tmdbId(film)} savedTitle={film.title} sourceYear={film.fields["POC Source Year"]} sourceDirector={film.fields["POC Source Director"]} data={liveResult} provider={cacheFixture ? "Fictional cache" : "TMDB"} />
+                      : <p role="alert">The saved ID differs from the earlier lookup. Fetch details for the current ID before using its metadata.</p>)}
                     {liveMovie && (
                       <div>
                         <p>{cacheFixture ? "Fictional cache" : "TMDB"}: {liveMovie.title} ({liveMovie.year || "year unknown"})</p>

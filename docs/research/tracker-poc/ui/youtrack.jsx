@@ -13,6 +13,7 @@ import { ReviewedCatalog } from "./reviewed_catalog_view.jsx";
 import {storedGenreDisplay, storedGenreLabels} from "./stored_genres.js";
 import {expireCachedResults, refreshNotice} from "./live_batch.js";
 import {Poster} from "./poster.jsx";
+import {IdentityReview} from "./identity_review.jsx";
 export { providerObservation, providerFreshness } from "./youtrack_filters.js";
 
 let locationListener = () => {};
@@ -437,9 +438,9 @@ function App() {
         {!suppliedTmdbId(film) && <p>A supplied TMDB ID is required.</p>}
         {liveEntry?.error && <p role="alert">{liveEntry.error}</p>}
         {live && <section>
-          <p>{cacheFixture ? "Fictional cache returned" : "TMDB returned"}: {live.title} ({live.year ?? "year unknown"}).</p>
-          {live.original_title && <p>TMDB original title: {live.original_title} (identity not independently verified).</p>}
-          {!liveMatches ? <p role="alert">The returned title differs from this record. It may be a different film or an alternate title and requires verification before its artwork or availability can be used.</p> : <>
+          {!liveMatches ? <IdentityReview expectedId={suppliedTmdbId(film)} savedTitle={film.summary} sourceYear={field(film, "FilmIQ Source Year")} sourceDirector={field(film, "FilmIQ Director")} data={live} provider={cacheFixture ? "Fictional cache" : "TMDB"} /> : <>
+            <p>{cacheFixture ? "Fictional cache returned" : "TMDB returned"}: {live.title} ({live.year ?? "year unknown"}).</p>
+            {live.original_title && <p>TMDB original title: {live.original_title} (identity not independently verified).</p>}
             {live.poster_url && <div className="poster"><Poster url={live.poster_url} alt={`TMDB poster for ${live.title}`} transient={liveCache} /></div>}
             {live.poster_from_previous && <p>Poster from an earlier lookup.</p>}
             <p>Directors: {live.directors?.join(", ") || "unknown"}; genres: {live.genres?.join(", ") || "unknown"}.</p>
