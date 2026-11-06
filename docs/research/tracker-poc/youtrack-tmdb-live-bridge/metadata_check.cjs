@@ -10,7 +10,8 @@ class Connection {
   addHeader() {}
   postSync(path, _query, body) {
     calls++; sentPath = path; sent = JSON.parse(body);
-    return {code: responseCode, json: () => path === '/catalog' ?
+    return {code: responseCode, json: () => path === '/status' ?
+      ({pace_enabled:true,refresh_enabled:false}) : path === '/catalog' ?
       ({status:'available',film:{tmdb_id:responseId,title:'Fictional'}}) :
       ({tmdb_id: responseId, title: 'Fictional', availability: {offers: []}})};
   }
@@ -24,12 +25,13 @@ vm.runInNewContext(fs.readFileSync(path.join(__dirname, 'metadata.js'), 'utf8'),
 const endpoint = context.exports.httpHandler.endpoints[0];
 const catalogEndpoint = context.exports.httpHandler.endpoints.find(item => item.path === '/catalog');
 const cacheEndpoint = context.exports.httpHandler.endpoints.find(item => item.path === '/cached');
+const statusEndpoint = context.exports.httpHandler.endpoints.find(item => item.path === '/status');
 assert.equal(endpoint.scope, 'issue');
 assert.equal(context.exports.httpHandler.requirements.filmId.type, 'integer');
 
-function invoke({id = 101, login = 'fixture-user', project = 'FILMREAL', visible = true, banned = false, reported = true, catalog = false, cache = false} = {}) {
+function invoke({id = 101, login = 'fixture-user', project = 'FILMREAL', visible = true, banned = false, reported = true, catalog = false, cache = false, status = false} = {}) {
   const result = {headers: {}};
-  (catalog ? catalogEndpoint : cache ? cacheEndpoint : endpoint).handle({currentUser: {login, isBanned: banned}, settings: {bridgeToken: 'synthetic-setting'},
+  (catalog ? catalogEndpoint : cache ? cacheEndpoint : status ? statusEndpoint : endpoint).handle({currentUser: {login, isBanned: banned}, settings: {bridgeToken: 'synthetic-setting'},
     issue: {summary:'Fictional', project: {key: project}, isReported: reported, isVisibleTo: () => visible, fields: {'FilmIQ TMDB ID': id}},
     request: {json: () => ({tmdb_id: 999})},
     response: {addHeader(k,v) {result.headers[k]=v;}, json(v) {result.body=v;}, set code(v) {result.code=v;}}});
@@ -47,7 +49,7 @@ assert.equal(invoke().code, 200);
 assert.equal(sent.tmdb_id, 101); // Caller-supplied body never chooses the ID.
 responseCode = 403; assert.equal(invoke().code, 403);
 responseCode = 429; assert.equal(invoke().code, 429);
-responseCode = 503; assert.equal(invoke().code, 503);
+responseCode = 503; assert.equal(invoke().code, 503); assert.equal(invoke().body.error, 'Live refresh temporarily unavailable');
 responseCode = 200; responseId = 999; assert.equal(invoke().code, 502);
 responseId = 101; calls = 0;
 assert.equal(catalogEndpoint.method, 'GET');
@@ -68,4 +70,15 @@ assert.equal(invoke({cache:true}).code, 200);
 assert.equal(sentPath, '/cache'); assert.equal(sent.tmdb_id, 101);
 responseCode = 404; assert.equal(invoke({cache:true}).code, 404);
 responseCode = 403; assert.equal(invoke({cache:true}).code, 403);
+responseCode = 200; calls = 0;
+assert.equal(statusEndpoint.method, 'GET');
+assert.equal(invoke({status:true,login:'guest'}).code, 401);
+assert.equal(invoke({status:true,visible:false}).code, 404);
+assert.equal(invoke({status:true,project:'OTHER'}).code, 404);
+assert.equal(calls, 0);
+const runtime = invoke({status:true});
+assert.equal(runtime.code, 200); assert.equal(runtime.body.pace_enabled,true); assert.equal(runtime.body.refresh_enabled,false);
+assert.deepEqual(Object.keys(runtime.body).sort(),['pace_enabled','refresh_enabled']);
+assert.equal(sentPath, '/status'); assert.equal(sent.tmdb_id, 101);
+responseCode = 403; assert.equal(invoke({status:true}).code, 403);
 console.log('Synthetic issue visibility, ID derivation, secret handoff and errors passed');

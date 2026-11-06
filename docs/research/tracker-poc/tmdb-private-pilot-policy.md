@@ -1,25 +1,31 @@
-# TMDb source-use decision: one-film local pilot
+# TMDb source-use decision: temporary local POC
 
-**Status: one-film local pilot active.** This is an engineering assessment for a temporary proof of concept, not legal advice or
-certification. It does not select a provider for the wider product.
+**Status: one-film local pilot active; expanded scope assessed, not yet
+verified.** This is an engineering assessment for a temporary proof of
+concept, not legal advice or certification. It does not select a provider for
+the wider product.
 
 ## Intended use and decision
 
-For the private, self-hosted, noncommercial, deterministic POC, propose a
-limited test of current TMDb movie metadata and US watch-provider observations
-for **one TMDb ID already covered by the user's existing authorization**. The
-pilot may display a poster for that film using the existing authorized image
-scope. It will not send ratings, personal notes, watch dates, or watched-status
+For the private, self-hosted, noncommercial, deterministic POC, use current
+TMDb movie metadata and US watch-provider observations only for the **up to
+130 candidate and watched-film IDs already covered by the user's existing
+authorization**. The POC may display posters for those films within the
+existing authorized image scope. It will not send ratings, personal notes, watch dates, or watched-status
 flags to TMDb. It has no public data API, commercial use, runtime chatbot or
 model, or provider-data training, evaluation, or improvement use. AI-assisted
 software development alone is not itself a published TMDb exception; treating
 this particular deterministic runtime as non-model use is our interpretation.
 
-For this limited POC, the engineering decision is to permit this single-film
-pilot under the controls below, without treating that decision as a grant
-for additional IDs, redistribution, historical datasets, production use or
-other third-party content. A working key and the user's authorization to make
-requests do not independently establish the provider's data rights.
+The one-film pilot demonstrated a refresh and cache-only read in each tracker.
+For this same source, purpose and handling, the engineering decision extends
+the POC scope to the authorized IDs under the controls below. This is an
+inference from the existing source-use review, not a provider statement granting
+permission for a 130-film dataset. It is not a grant for other IDs,
+redistribution, historical datasets, production use or other third-party
+content. A working key and the user's authorization to make requests do not
+independently establish the provider's data rights. The expanded scope has not
+yet been verified or exercised by this decision.
 
 ## Source evidence and attribution
 
@@ -42,6 +48,14 @@ requests do not independently establish the provider's data rights.
 
 ## Storage, expiry and operation
 
+- Make explicit, paced batches within the authorized ID set: at most 60 IDs
+  and 75 HTTP attempts per batch, including retries and diagnostics, with at
+  most one API attempt per second. These are internal limits, not provider
+  entitlements. Respect a lower applicable limit and stop on 429, quota,
+  authentication or permission errors. Incomplete work remains unknown.
+  Poster requests are separate from these API-attempt counts and remain within
+  the already authorized image scope. Do not infer any provider permission for
+  bulk redistribution from a successful batch.
 - Retain only the current normalized metadata and latest usable US availability
   observation in the dedicated, ignored project-local cache. Keep subscriptions
   separate from rentals and purchases. A failed or partial provider request is
@@ -71,14 +85,16 @@ requests do not independently establish the provider's data rights.
 
 ## Operational boundaries
 
-The local pilot uses the same one approved film in each tracker, separately
-bound policies and authorities, and a seven-day policy deadline. Both bridges
-returned the cached record after restart without writing tracker records or
-Movary. The cache root is excluded from Time Machine; other backup/sync systems
-and older browser copies have not been fully inventoried. Cleanup runs hourly
-while the bridges are active and on startup, but cannot run while the host or
-bridge is stopped. The supported source-use interpretation and six-month
-ceiling rely partly on the dated review above. Reassess before changing the
-purpose, adding users or films beyond this pilot, retaining history, enabling
-commercial or model-based use, or redistributing data. The broader provider
-selection and empirical product gates remain separate.
+The demonstrated local pilot used the same one approved film in each tracker,
+separately bound policies and authorities, and a seven-day policy deadline.
+Both bridges returned the cached record after restart without writing tracker
+records or Movary. These observations do not establish that the expanded batch
+has run or that its coverage, performance or cleanup has been verified. The
+cache root is excluded from Time Machine; other backup/sync systems and older
+browser copies have not been fully inventoried. Cleanup runs hourly while the
+bridges are active and on startup, but cannot run while the host or bridge is
+stopped. The source-use interpretation and six-month ceiling rely partly on
+the dated review above. Reassess before changing the purpose, adding users or
+IDs beyond the authorized POC, retaining history, enabling commercial or
+model-based use, or redistributing data. The broader provider selection and
+empirical product gates remain separate.

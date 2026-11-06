@@ -1,5 +1,6 @@
 """Synthetic in-memory checks; never reads credentials or contacts a provider."""
 
+import hashlib
 import json
 import os
 import tempfile
@@ -18,7 +19,7 @@ from live_bridge import (
     parse_allowlist,
     safe_poster,
 )
-from tmdb_readonly import TMDbRateLimited, read_movie
+from tmdb_readonly import TMDbAccessDenied, TMDbRateLimited, read_movie
 
 TOKEN = "fixture-token-" + "x" * 32
 
@@ -59,6 +60,27 @@ def check():
     }
     assert parse_allowlist(policy) == frozenset({101, 202})
     assert config_from_env(env) == Config(TOKEN)
+    manifest = json.dumps({"films": [{"tmdb_id": item} for item in range(1, 131)]}).encode()
+    preview = b"Fictional watched preview"
+    full_document = {
+        "version": 1,
+        "allowed_ids": list(range(1, 131)),
+        "destinations": sorted(DESTINATIONS),
+        "source_manifest_sha256": hashlib.sha256(manifest).hexdigest(),
+        "watched_approval_preview_sha256": hashlib.sha256(preview).hexdigest(),
+    }
+    raw = json.dumps(full_document).encode()
+    assert live_bridge.validate_collection_approval(raw, manifest, preview) == frozenset(
+        range(1, 131)
+    )
+    changed = {**full_document, "allowed_ids": [*range(1, 130), 999]}
+    for bad_raw, bad_preview in ((json.dumps(changed).encode(), preview), (raw, preview + b"x")):
+        try:
+            live_bridge.validate_collection_approval(bad_raw, manifest, bad_preview)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("Altered collection approval was accepted")
     try:
         decode_allowlist('{"version":1,"version":1}')
     except ValueError:
@@ -279,6 +301,14 @@ def check():
     assert limited["status"] == "429 Too Many Requests" and "secret" not in json.dumps(
         limited["body"]
     )
+
+    def denied(_):
+        raise TMDbAccessDenied("secret must not be returned")
+
+    failure = invoke(app(config_from_env(env), lambda: policy, denied), 101)
+    assert failure["status"] == "502 Bad Gateway" and failure["body"] == {
+        "error": "TMDB unavailable"
+    }
     policy["allowed_ids"] = []
     count = len(calls)
     assert invoke(application, 101)["status"] == "503 Service Unavailable" and len(calls) == count

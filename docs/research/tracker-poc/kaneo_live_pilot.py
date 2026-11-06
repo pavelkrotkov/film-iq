@@ -1,5 +1,6 @@
-"""Start or restart the single-film Kaneo pilot with a private maintenance log."""
+"""Start or restart the scoped Kaneo pilot with a private maintenance log."""
 
+import argparse
 import json
 import os
 import signal
@@ -7,7 +8,10 @@ import socket
 import stat
 import subprocess
 import time
+from collections.abc import Mapping
 from pathlib import Path
+
+from tmdb_live import approval
 
 ROOT = Path(__file__).resolve().parents[3]
 PRIVATE = ROOT / ".cache/tracker-poc/private"
@@ -42,7 +46,30 @@ def wait_for_listener(expected: bool) -> None:
     raise RuntimeError("Bridge listener did not reach the expected state")
 
 
-def environment() -> dict[str, str]:
+def intended_configuration(env: Mapping[str, str], pid_file: Path, override: str | None = None):
+    try:
+        saved = json.loads(pid_file.read_text())
+    except FileNotFoundError:
+        saved = {}
+    except (OSError, ValueError, TypeError):
+        raise ValueError("Pilot configuration metadata is unavailable") from None
+    if not isinstance(saved, dict):
+        raise ValueError("Invalid pilot configuration metadata")
+    scope = override or saved.get("scope", "pilot")
+    pace = env.get("FILMIQ_TMDB_PACE", saved.get("tmdb_pace", "0"))
+    refresh = env.get("FILMIQ_TMDB_REFRESH_ENABLED", saved.get("tmdb_refresh_enabled", "1"))
+    if scope not in ("pilot", "collection") or pace not in ("0", "1") or refresh not in ("0", "1"):
+        raise ValueError("Invalid pilot scope or TMDB settings")
+    if scope == "collection" and pace != "1":
+        raise ValueError("Collection mode requires paced TMDB requests")
+    return scope, pace, refresh
+
+
+def environment(scope: str, pace: str, refresh: str) -> dict[str, str]:
+    if scope not in ("pilot", "collection") or pace not in ("0", "1") or refresh not in ("0", "1"):
+        raise ValueError("Invalid pilot scope or TMDB settings")
+    if scope == "collection" and pace != "1":
+        raise ValueError("Collection mode requires paced TMDB requests")
     names = {"TMDB_API_KEY", "TMDB_READ_ACCESS_TOKEN"}
     env = os.environ.copy()
     for name in names | {
@@ -51,6 +78,8 @@ def environment() -> dict[str, str]:
         "FILMIQ_TMDB_CACHE_ENABLE",
         "FILMIQ_TMDB_CACHE_DIRECTORY",
         "FILMIQ_REVIEWED_CATALOG",
+        "FILMIQ_TMDB_PACE",
+        "FILMIQ_TMDB_REFRESH_ENABLED",
     }:
         env.pop(name, None)
     credentials = {}
@@ -72,13 +101,23 @@ def environment() -> dict[str, str]:
         credentials[name] = value
     if not credentials:
         raise ValueError("Credential unavailable")
-    provider_dir = PRIVATE / "tmdb-pilot-approval"
+    pilot_dir = PRIVATE / "tmdb-pilot-approval"
     catalog_dir = PRIVATE / "tmdb-approval"
-    provider = json.loads((provider_dir / "approved-ids.json").read_text())["allowed_ids"]
-    catalog = json.loads((catalog_dir / "approved-ids.json").read_text())["allowed_ids"]
-    selected = json.loads((provider_dir / "selection.json").read_text())["tmdb_id"]
-    if provider != [selected] or selected not in catalog:
+    pilot = approval.parse_allowlist(
+        approval.decode_allowlist((pilot_dir / "approved-ids.json").read_text())
+    )
+    catalog_bytes = (catalog_dir / "approved-ids.json").read_bytes()
+    catalog = approval.parse_allowlist(approval.decode_allowlist(catalog_bytes.decode("utf-8")))
+    selected = json.loads((pilot_dir / "selection.json").read_text())["tmdb_id"]
+    if type(selected) is not int or pilot != {selected} or not pilot.issubset(catalog):
         raise ValueError("Pilot approval does not match the selected film")
+    if scope == "collection":
+        approval.validate_collection_approval(
+            catalog_bytes,
+            (PRIVATE / "film-input.json").read_bytes(),
+            (PRIVATE / "tmdb-watched-lookup-preview.md").read_bytes(),
+        )
+    provider_dir = catalog_dir if scope == "collection" else pilot_dir
     reviewed = (
         ROOT.parent.parent / ".cache/epic-c/results/reviewed-display-catalog-expanded-20261031.json"
     )
@@ -94,13 +133,21 @@ def environment() -> dict[str, str]:
         FILMIQ_TMDB_CACHE_ENABLE="1",
         FILMIQ_TMDB_CACHE_DIRECTORY=str(cache),
         FILMIQ_REVIEWED_CATALOG=str(reviewed),
+        FILMIQ_TMDB_PACE=pace,
+        FILMIQ_TMDB_REFRESH_ENABLED=refresh,
         PYTHONDONTWRITEBYTECODE="1",
     )
     return env
 
 
-def main() -> None:
-    env = environment()
+def main(argv=None) -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("--collection", action="store_const", const="collection", dest="scope")
+    group.add_argument("--pilot", action="store_const", const="pilot", dest="scope")
+    args = parser.parse_args(argv)
+    scope, pace, refresh = intended_configuration(os.environ, PID_FILE, args.scope)
+    env = environment(scope, pace, refresh)
     pid = listener()
     if pid is not None:
         try:
@@ -141,7 +188,17 @@ def main() -> None:
                 process.terminate()
                 process.wait(timeout=10)
             raise
-        PID_FILE.write_text(json.dumps({"pid": process.pid, "cache_enabled": True}))
+        PID_FILE.write_text(
+            json.dumps(
+                {
+                    "pid": process.pid,
+                    "cache_enabled": True,
+                    "scope": scope,
+                    "tmdb_pace": pace,
+                    "tmdb_refresh_enabled": refresh,
+                }
+            )
+        )
         PID_FILE.chmod(0o600)
     finally:
         os.close(fd)

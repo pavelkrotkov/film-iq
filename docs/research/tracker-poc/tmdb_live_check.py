@@ -7,7 +7,7 @@ from io import BytesIO
 from unittest.mock import patch
 
 from tmdb_live import app, load_allowlist
-from tmdb_readonly import Movie, TMDbError, TMDbRateLimited
+from tmdb_readonly import Movie, TMDbAccessDenied, TMDbError, TMDbRateLimited
 
 from film_iq.availability.tmdb import Observation, Offer
 
@@ -82,6 +82,7 @@ def check():
     assert invoke(application, "/movie/12", "null")["status"] == "403 Forbidden"
     assert invoke(application, "/movie/12", "")["status"] == "403 Forbidden"
     assert invoke(app(lambda _: movie), "/movie/12")["status"] == "401 Unauthorized"
+    assert invoke(app(lambda _: movie), "/status/config")["status"] == "401 Unauthorized"
     assert invoke(application, "/movie/13")["status"] == "403 Forbidden"
     assert calls == [12]
     policy["allowed_ids"] = []
@@ -103,6 +104,14 @@ def check():
     failure = invoke(app(failed, lambda _: "synthetic-user", lambda: policy), "/movie/12")
     assert failure["status"] == "502 Bad Gateway"
     assert failure["body"] == {"error": "TMDB unavailable"}
+
+    def denied(_):
+        raise TMDbAccessDenied("secret must not be returned")
+
+    failure = invoke(app(denied, lambda _: "synthetic-user", lambda: policy), "/movie/12")
+    assert failure["status"] == "502 Bad Gateway" and failure["body"] == {
+        "error": "TMDB unavailable"
+    }
 
     def limited(_):
         raise TMDbRateLimited("secret must not be returned")

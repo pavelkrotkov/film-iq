@@ -17,7 +17,13 @@ from urllib.parse import quote
 from preferences import current_user, upstream
 from reviewed_catalog import catalog_facts
 from tmdb_payload import movie_payload
-from tmdb_readonly import TMDbError, TMDbRateLimited, read_movie
+from tmdb_readonly import (
+    TMDbError,
+    TMDbRateLimited,
+    configured_reader,
+    configured_refresh_enabled,
+    read_movie,
+)
 from waitress import serve
 
 ALLOWED_ORIGINS = {"http://localhost:15174"}
@@ -73,6 +79,8 @@ def app(
     read_catalog=catalog_facts,
     cache=None,
     load_catalog_approval=load_catalog_allowlist,
+    refresh_enabled=True,
+    pace_enabled=False,
 ):
     def application(environ: dict, start):
         origin = environ.get("HTTP_ORIGIN", "")
@@ -91,12 +99,20 @@ def app(
         is_catalog = path[1] == "catalog" and bool(re.fullmatch(r"[A-Za-z0-9_-]{1,200}", path[2]))
         is_cache = path[1] == "cache" and bool(re.fullmatch(r"[A-Za-z0-9_-]{1,200}", path[2]))
         is_refresh = path[1] == "refresh" and bool(re.fullmatch(r"[A-Za-z0-9_-]{1,200}", path[2]))
-        if not (is_movie or is_catalog or is_cache or is_refresh):
+        is_status = path[1] == "status" and path[2] == "config"
+        if not (is_movie or is_catalog or is_cache or is_refresh or is_status):
             return response(start, "404 Not Found", {"error": "Not found"}, origin)
         try:
             authenticate(environ)
         except (PermissionError, OSError, ValueError):
             return response(start, "401 Unauthorized", {"error": "Kaneo session required"}, origin)
+        if is_status:
+            return response(
+                start,
+                "200 OK",
+                {"pace_enabled": pace_enabled, "refresh_enabled": refresh_enabled},
+                origin,
+            )
         try:
             catalog_approval = load_catalog_approval() if is_catalog else None
             allowed = approval.parse_allowlist(
@@ -180,6 +196,13 @@ def app(
             movie_id = int(path[2])
             if movie_id not in allowed:
                 return response(start, "403 Forbidden", {"error": "Film not approved"}, origin)
+        if not refresh_enabled:
+            return response(
+                start,
+                "503 Service Unavailable",
+                {"error": "Live refresh temporarily paused"},
+                origin,
+            )
         if cache is not None:
             try:
                 cache.check()
@@ -219,7 +242,18 @@ if __name__ == "__main__":
         cache = from_env(os.environ)
         stop_purge = start_purge_worker(cache)
     try:
-        serve(app(cache=cache), host="127.0.0.1", port=15176)
+        reader = configured_reader(os.environ)
+        refresh_enabled = configured_refresh_enabled(os.environ)
+        serve(
+            app(
+                reader=reader,
+                cache=cache,
+                refresh_enabled=refresh_enabled,
+                pace_enabled=os.environ.get("FILMIQ_TMDB_PACE", "0") == "1",
+            ),
+            host="127.0.0.1",
+            port=15176,
+        )
     finally:
         if stop_purge:
             stop_purge()

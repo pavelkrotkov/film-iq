@@ -143,6 +143,26 @@ def main():
         )
         assert kaneo_invoke(other, "/cache/task-1")["status"] == "404 Not Found"
 
+        paused_kaneo = kaneo_app(
+            reader,
+            lambda _: "fictional-user",
+            lambda: approval,
+            get_upstream=upstream,
+            cache=cache,
+            load_catalog_approval=lambda: approval,
+            read_catalog=lambda *_: {"status": "fictional"},
+            refresh_enabled=False,
+            pace_enabled=True,
+        )
+        assert kaneo_invoke(paused_kaneo, "/status/config")["body"] == {
+            "pace_enabled": True,
+            "refresh_enabled": False,
+        }
+        assert kaneo_invoke(paused_kaneo, "/refresh/task-1")["status"] == "503 Service Unavailable"
+        assert kaneo_invoke(paused_kaneo, "/cache/task-1")["status"] == "200 OK"
+        assert kaneo_invoke(paused_kaneo, "/catalog/task-1")["status"] == "200 OK"
+        assert calls == [101], "Paused refresh or status must not call the provider"
+
         yt = live.app(live.Config(live_check.TOKEN), lambda: approval, reader, cache=cache)
         assert live_check.invoke(yt, 101, path="/cache")["status"] == "200 OK"
         assert (
@@ -150,6 +170,31 @@ def main():
         )
         assert live_check.invoke(yt, 102, path="/cache")["status"] == "403 Forbidden"
         assert calls == [101]
+        paused_yt = live.app(
+            live.Config(live_check.TOKEN),
+            lambda: approval,
+            reader,
+            catalog_reader=lambda *_: {"status": "fictional"},
+            cache=cache,
+            refresh_enabled=False,
+            pace_enabled=True,
+        )
+        assert live_check.invoke(paused_yt, 101, path="/status")["body"] == {
+            "pace_enabled": True,
+            "refresh_enabled": False,
+        }
+        assert (
+            live_check.invoke(paused_yt, 101, token="wrong", path="/status")["status"]
+            == "401 Unauthorized"
+        )
+        assert live_check.invoke(paused_yt, 102, path="/status")["status"] == "403 Forbidden"
+        assert live_check.invoke(paused_yt, 101)["status"] == "503 Service Unavailable"
+        assert live_check.invoke(paused_yt, 101, path="/cache")["status"] == "200 OK"
+        assert (
+            live_check.invoke(paused_yt, 101, path="/catalog", title="Fictional")["status"]
+            == "200 OK"
+        )
+        assert calls == [101], "Paused refresh or status must not call the provider"
         assert live_check.invoke(yt, 101)["status"] == "200 OK"
         assert calls == [101, 101]
         assert LiveCache(directory, policy).get(101) is not None  # new process-equivalent instance

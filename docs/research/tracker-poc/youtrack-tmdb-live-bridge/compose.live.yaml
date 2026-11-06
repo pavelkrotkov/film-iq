@@ -12,6 +12,8 @@ services:
       PYTHONDONTWRITEBYTECODE: "1"
       PYTHONPATH: /opt/filmiq/live:/opt/filmiq/poc:/opt/filmiq/src
       FILMIQ_TMDB_BRIDGE_ENABLE_LIVE: "${FILMIQ_TMDB_BRIDGE_ENABLE_LIVE:-0}"
+      FILMIQ_TMDB_PACE: "${FILMIQ_TMDB_PACE-0}"
+      FILMIQ_TMDB_REFRESH_ENABLED: "${FILMIQ_TMDB_REFRESH_ENABLED-1}"
     volumes:
       - ./youtrack-tmdb-live-bridge:/opt/filmiq/live:ro
       - ./tmdb_readonly.py:/opt/filmiq/poc/tmdb_readonly.py:ro

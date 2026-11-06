@@ -7,11 +7,13 @@ making this data visible or persisting it. Credentials come from environment.
 import json
 import os
 import re
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass
 from datetime import UTC, date, datetime
+from threading import Lock
 
 from film_iq.availability.candidate_transport import _NoRedirect
 from film_iq.availability.tmdb import Observation, normalize
@@ -39,6 +41,10 @@ class TMDbRateLimited(TMDbError):
     pass
 
 
+class TMDbAccessDenied(TMDbError):
+    pass
+
+
 def fetch(path: str, parameters: dict | None = None) -> dict:
     token, key = os.getenv("TMDB_READ_ACCESS_TOKEN"), os.getenv("TMDB_API_KEY")
     if not token and not key:
@@ -59,6 +65,8 @@ def fetch(path: str, parameters: dict | None = None) -> dict:
     except urllib.error.HTTPError as error:
         if error.code == 429:
             raise TMDbRateLimited("TMDB returned HTTP 429") from None
+        if error.code in (401, 403):
+            raise TMDbAccessDenied("TMDB authorization denied") from None
         raise TMDbError(f"TMDB returned HTTP {error.code}") from None
     except (urllib.error.URLError, OSError, ValueError):
         raise TMDbError("TMDB request or response failed") from None
@@ -92,7 +100,7 @@ def release_year(value) -> int | None:
         return None
 
 
-def read_movie(tmdb_id: int, get=fetch, now: datetime | None = None) -> Movie:
+def read_movie(tmdb_id: int, get=fetch, now: datetime | None = None, *, strict=False) -> Movie:
     if type(tmdb_id) is not int or tmdb_id <= 0:
         raise ValueError("TMDB ID must be a positive integer")
     details = get(f"movie/{tmdb_id}", {"append_to_response": "credits,external_ids"})
@@ -131,15 +139,19 @@ def read_movie(tmdb_id: int, get=fetch, now: datetime | None = None) -> Movie:
     )
     try:
         poster = poster_url(details.get("poster_path"), get("configuration"))
-    except TMDbRateLimited:
+    except (TMDbRateLimited, TMDbAccessDenied):
         raise
     except TMDbError:
+        if strict:
+            raise
         poster = None
     try:
         available = get(f"movie/{tmdb_id}/watch/providers")
-    except TMDbRateLimited:
+    except (TMDbRateLimited, TMDbAccessDenied):
         raise
     except TMDbError:
+        if strict:
+            raise
         available = None
     synopsis = details.get("overview")
     original_title = details.get("original_title")
@@ -168,3 +180,39 @@ def read_movie(tmdb_id: int, get=fetch, now: datetime | None = None) -> Movie:
         imdb_url,
         original_title if isinstance(original_title, str) and original_title.strip() else None,
     )
+
+
+def paced_getter(get=fetch, *, clock=time.monotonic, sleep=time.sleep):
+    """Serialize opt-in attempts, starting each at least one second apart."""
+    lock = Lock()
+    last = None
+
+    def paced(path, parameters=None):
+        nonlocal last
+        with lock:
+            if last is not None:
+                remaining = 1.0 - (clock() - last)
+                if remaining > 0:
+                    sleep(remaining)
+            last = clock()
+            return get(path, parameters)
+
+    return paced
+
+
+def configured_reader(env):
+    """Keep the current reader by default; pace only when explicitly enabled."""
+    pace = env.get("FILMIQ_TMDB_PACE", "0")
+    if pace == "0":
+        return read_movie
+    if pace != "1":
+        raise ValueError("Invalid TMDB pace configuration")
+    getter = paced_getter()
+    return lambda ident: read_movie(ident, get=getter, strict=True)
+
+
+def configured_refresh_enabled(env) -> bool:
+    value = env.get("FILMIQ_TMDB_REFRESH_ENABLED", "1")
+    if value not in ("0", "1"):
+        raise ValueError("Invalid TMDB refresh configuration")
+    return value == "1"

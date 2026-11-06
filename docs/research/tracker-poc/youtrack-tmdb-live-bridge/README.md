@@ -19,6 +19,49 @@ images to the approved image host, propagates HTTP 429, and uses the same
 responses carry `Cache-Control: no-store` at both layers. The service has no
 response persistence, and its request logger is disabled.
 
+The optional `FILMIQ_TMDB_PACE=1` setting serializes this bridge's upstream
+attempts and starts them at least one second apart, including attempts that
+fail. It is off by default; values other than `0` or `1` fail startup. The
+Kaneo bridge accepts the same setting, but the two processes do not coordinate
+their limiters, nor do they control other clients using the same credential.
+For a bounded batch, run the two passes sequentially and avoid other live
+refreshes. TMDB 401/403 errors, including those from optional poster
+configuration or provider requests, now stop the read and surface as a generic
+502; 429 still surfaces as 429. No automatic retry is made and the bridge does
+not expose `Retry-After`.
+
+For the approved collection run, pause live refresh on the idle bridge with
+`FILMIQ_TMDB_REFRESH_ENABLED=0`; its authenticated cache and catalog reads
+remain available. Start with YouTrack paused and Kaneo active, then pause Kaneo
+before enabling YouTrack. Both bridges must use `FILMIQ_TMDB_PACE=1`; the
+batch preflight checks their authenticated effective settings. Live refresh is
+temporarily unavailable in the paused UI. Other clients using the credential
+must remain idle. Do not edit the approval file during the run: the bridges
+reload it and do not pin its bytes.
+
+From the worktree root, immediately before recreating the YouTrack bridge for
+the collection, validate the original approval and its source artifacts. This
+command stops on validation failure and preserves both catalog and cache mounts;
+set `refresh=0` for the first pass and `refresh=1` only after Kaneo is paused:
+
+```sh
+refresh=0
+PYTHONPATH=docs/research/tracker-poc/youtrack-tmdb-live-bridge:docs/research/tracker-poc:src \
+  .venv/bin/python -c 'from pathlib import Path; from live_bridge import validate_collection_approval; p = Path(".cache/tracker-poc/private"); validate_collection_approval((p / "tmdb-approval/approved-ids.json").read_bytes(), (p / "film-input.json").read_bytes(), (p / "tmdb-watched-lookup-preview.md").read_bytes()); print("Collection approval validated")' && \
+FILMIQ_APPROVAL_DIR="$PWD/.cache/tracker-poc/private/tmdb-approval" \
+FILMIQ_CATALOG_APPROVAL_HOST_DIR="$PWD/.cache/tracker-poc/private/tmdb-approval" \
+FILMIQ_YOUTRACK_CACHE_DIR="$PWD/.cache/tracker-poc/private/tmdb-live-cache/youtrack" \
+FILMIQ_REVIEWED_CATALOG_FILE="$(cd ../.. && pwd)/.cache/epic-c/results/reviewed-display-catalog-expanded-20261031.json" \
+FILMIQ_BRIDGE_UID="$(id -u)" FILMIQ_BRIDGE_GID="$(id -g)" \
+FILMIQ_TMDB_BRIDGE_ENABLE_LIVE=1 FILMIQ_TMDB_PACE=1 FILMIQ_TMDB_REFRESH_ENABLED="$refresh" \
+docker compose -f docs/research/tracker-poc/compose.yaml \
+  -f docs/research/tracker-poc/youtrack-tmdb-live-bridge/compose.live.yaml \
+  -f docs/research/tracker-poc/youtrack-tmdb-live-bridge/compose.catalog.yaml \
+  -f docs/research/tracker-poc/youtrack-tmdb-live-bridge/compose.cache.yaml \
+  -f docs/research/tracker-poc/youtrack-tmdb-live-bridge/compose.catalog-approval.yaml \
+  --profile tmdb-live-bridge up -d --no-deps --force-recreate --pull never tmdb-live-bridge
+```
+
 An optional issue-scoped catalog endpoint reads existing reviewed facts from a
 configured local file without a TMDB request or tracker write. It checks issue
 visibility, the issue's ID and current title, the approved-ID list, and the

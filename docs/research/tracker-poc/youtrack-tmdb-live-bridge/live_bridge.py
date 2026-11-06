@@ -1,5 +1,6 @@
 """Opt-in YouTrack TMDB bridge; the allowlist is revalidated on every request."""
 
+import hashlib
 import hmac
 import json
 from collections.abc import Callable, Mapping
@@ -9,7 +10,7 @@ from urllib.parse import urlsplit
 from wsgiref.simple_server import WSGIRequestHandler, make_server
 
 from tmdb_payload import movie_payload
-from tmdb_readonly import TMDbRateLimited, read_movie
+from tmdb_readonly import TMDbRateLimited, configured_reader, configured_refresh_enabled
 
 DESTINATIONS = frozenset({"api.themoviedb.org", "image.tmdb.org"})
 ALLOWLIST_PATH = Path("/run/filmiq/approval/approved-ids.json")
@@ -59,6 +60,34 @@ def decode_allowlist(raw: str) -> object:
     return json.loads(raw, object_pairs_hook=unique)
 
 
+def validate_collection_approval(
+    allowlist_bytes: bytes, manifest_bytes: bytes, watched_preview_bytes: bytes
+) -> frozenset[int]:
+    """Validate the approved IDs against the exact private source artifacts."""
+    decoded = decode_allowlist(allowlist_bytes.decode("utf-8"))
+    allowed = parse_allowlist(decoded)
+    if not isinstance(decoded, dict):
+        raise ValueError("Collection approval is invalid")
+    if (
+        decoded.get("source_manifest_sha256") != hashlib.sha256(manifest_bytes).hexdigest()
+        or decoded.get("watched_approval_preview_sha256")
+        != hashlib.sha256(watched_preview_bytes).hexdigest()
+    ):
+        raise ValueError("Collection approval source does not match")
+    manifest = json.loads(manifest_bytes)
+    films = manifest.get("films") if isinstance(manifest, dict) else None
+    if not isinstance(films, list) or len(films) != 130:
+        raise ValueError("Collection approval manifest is invalid")
+    values = [film.get("tmdb_id") if isinstance(film, dict) else None for film in films]
+    if (
+        any(type(value) is not int for value in values)
+        or len(set(values)) != 130
+        or set(values) != allowed
+    ):
+        raise ValueError("Collection approval identities do not match")
+    return allowed
+
+
 def config_from_env(env: Mapping[str, str]) -> Config:
     token = env.get("FILMIQ_BRIDGE_TOKEN", "")
     tmdb = env.get("TMDB_READ_ACCESS_TOKEN") or env.get("TMDB_API_KEY", "")
@@ -103,6 +132,8 @@ def app(
     catalog_reader=None,
     cache=None,
     load_catalog_allowlist=None,
+    refresh_enabled=True,
+    pace_enabled=False,
 ):
     """The reader is injected so tests can never accidentally use live fetch."""
 
@@ -131,6 +162,7 @@ def app(
             "/metadata",
             "/catalog",
             "/cache",
+            "/status",
         }:
             return send("404 Not Found", {"error": "Not found"})
         try:
@@ -163,6 +195,10 @@ def app(
             return send("503 Service Unavailable", {"error": "Approval configuration unavailable"})
         if ident not in allowed:
             return send("403 Forbidden", {"error": "Film not approved"})
+        if path == "/status":
+            return send(
+                "200 OK", {"pace_enabled": pace_enabled, "refresh_enabled": refresh_enabled}
+            )
         if path == "/cache":
             if cache is None:
                 return send("404 Not Found", {"error": "Cache unavailable"})
@@ -181,6 +217,8 @@ def app(
             return send(
                 "200 OK", {"status": "available", "film": facts} if facts else {"status": "unknown"}
             )
+        if not refresh_enabled:
+            return send("503 Service Unavailable", {"error": "Live refresh temporarily paused"})
         if cache is not None:
             try:
                 cache.check()
@@ -213,6 +251,8 @@ def main():
 
     try:
         config = config_from_env(os.environ)
+        reader = configured_reader(os.environ)
+        refresh_enabled = configured_refresh_enabled(os.environ)
         catalog = os.environ.get("FILMIQ_REVIEWED_CATALOG")
         catalog_path = Path(catalog) if catalog and Path(catalog).is_absolute() else None
         if catalog_path:
@@ -254,7 +294,16 @@ def main():
         with make_server(
             "127.0.0.1",
             15178,
-            app(config, load, read_movie, read_reviewed, cache, load_catalog_approval),
+            app(
+                config,
+                load,
+                reader,
+                read_reviewed,
+                cache,
+                load_catalog_approval,
+                refresh_enabled,
+                os.environ.get("FILMIQ_TMDB_PACE", "0") == "1",
+            ),
             handler_class=QuietHandler,
         ) as server:
             server.serve_forever()
