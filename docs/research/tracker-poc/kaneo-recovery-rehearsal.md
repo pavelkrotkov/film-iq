@@ -50,6 +50,15 @@ idle; a third service opens the restored database and repeats the assertions.
 Kaneo authentication and film access are mocked. This does not test a backup
 concurrent with writes, real sessions, or recovery of the live database.
 
+The pinned Kaneo API describes task image uploads as presigned object-storage
+uploads. In the running local POC, the S3 bucket, endpoint, region, access key
+and secret key variables were all absent; no configuration values were printed.
+In the separate fictional recovery instance, an authenticated request to start
+an image upload returned HTTP 503 with no object storage configured. No bytes
+were uploaded. Image attachment storage and its backup/recovery are therefore
+not demonstrated by the database-only restore; this check does not issue an
+upload request against the real film project.
+
 ## Repeat with fresh fictional directories
 
 Run from this worktree root. The pinned images must already be local. These
@@ -114,6 +123,7 @@ done
 # and their respective isolated networks; no live POC mounts or networks.
 test "$(docker compose -f "$REHEARSAL_DIR/compose.yaml" exec -T restored-db psql -U kaneo -d kaneo -Atc "SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='public' AND c.relkind IN ('r','p');")" = 0
 docker compose -f "$REHEARSAL_DIR/compose.yaml" exec -T source-app node - create < "$REHEARSAL_DIR/fixture.js"
+docker compose -f "$REHEARSAL_DIR/compose.yaml" exec -T source-app node - < docs/research/tracker-poc/kaneo-recovery-fixture/image-config-check.js
 umask 077
 docker compose -f "$REHEARSAL_DIR/compose.yaml" exec -T source-db pg_dump -U kaneo -d kaneo -Fc > "$REHEARSAL_DIR/archive/fixture.dump"
 docker compose -f "$REHEARSAL_DIR/compose.yaml" exec -T restored-db pg_restore -U kaneo -d kaneo --exit-on-error < "$REHEARSAL_DIR/archive/fixture.dump"

@@ -130,8 +130,10 @@ The isolated [Kaneo fictional database rehearsal](kaneo-recovery-rehearsal.md)
 passed for its small fixture; a separate offline SQLite preference backup and
 restore also passed for one fictional row. A fictional Waitress service check
 subsequently read the restored preference and rejected an old preview across
-restart; authentication was mocked. YouTrack recovery,
-Kaneo attachments and live preference-service recovery remain untested. See the official [PostgreSQL 16 dump
+restart; authentication was mocked. Kaneo's local POC has no object-storage
+configuration, and an upload request against a separate fictional instance
+returned HTTP 503. Attachment storage and recovery are not demonstrated.
+YouTrack recovery and live preference-service recovery remain untested. See the official [PostgreSQL 16 dump
 documentation](https://www.postgresql.org/docs/16/app-pgdump.html) and
 [YouTrack Docker restore guide](https://www.jetbrains.com/help/youtrack/server/restore-docker-image-installation.html).
 The current Compose file does not establish automatic startup after a host
