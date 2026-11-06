@@ -106,6 +106,7 @@ function App() {
   const [genreReset, setGenreReset] = useState(false);
   const [tmdbId, setTmdbId] = useState(""), [editBaseline, setEditBaseline] = useState(null), [newTmdbId, setNewTmdbId] = useState("");
   const [prefDirty, setPrefDirty] = useState(false), [filmDirty, setFilmDirty] = useState(false);
+  const [filmNeedsReload, setFilmNeedsReload] = useState(false);
   const [pendingPreview, setPendingPreview] = useState(null), [pendingNavigation, setPendingNavigation] = useState(null), [discardFailed, setDiscardFailed] = useState(false), [saveUncertain, setSaveUncertain] = useState(false);
   const [restoringLocation, setRestoringLocation] = useState(false);
   const [comments, setComments] = useState(null), [commentDrafts, setCommentDrafts] = useState({}), [newTitle, setNewTitle] = useState("");
@@ -276,7 +277,9 @@ function App() {
   const incompleteMetadataFilter = titleReviewOnly || filterMayExcludeUnknown({provider, genre, freshness});
   const failedFilms = failedLiveFilms(films, liveResults);
   async function saveFilm(event) {
-    event.preventDefault(); if (!film || editBaseline?.issueId !== film.id) return; setWorking(true); setError("");
+    event.preventDefault();
+    if (filmNeedsReload) { setError("Reload films and discard the film draft before saving again. You can copy it first."); return; }
+    if (!film || editBaseline?.issueId !== film.id) return; setWorking(true); setError("");
     let submitting = false;
     try {
       const {changes, tmdbId: proposedId, idChanged} = filmChanges(editBaseline, {title, synopsis, state, tmdbId, releaseYear, genre: filmGenre, genreReset});
@@ -287,9 +290,22 @@ function App() {
       submitting = false;
       const refreshed = await refresh();
       if (refreshed) { markFilmDirty(false); setNotice("Film changes saved in YouTrack."); }
-      else setError("Film changes saved, but refresh failed. Reload to confirm the displayed record.");
-    } catch (e) { setError(submitting ? "Save may have completed. Reload before retrying." : `Could not save film: ${e.message}`); }
+      else { setFilmNeedsReload(true); setError("Film changes saved, but refresh failed. Copy the draft if needed, then reload films and discard the draft."); }
+    } catch (e) {
+      if (submitting) setFilmNeedsReload(true);
+      setError(submitting ? "Save may have completed. Copy the draft if needed, then reload films and discard the draft before retrying." : `Could not save film: ${e.message}`);
+    }
     finally { setWorking(false); }
+  }
+  async function reloadFilmAndDiscardDraft() {
+    if (!filmNeedsReload || !film) return;
+    const target = film.idReadable, targetProject = project;
+    setWorking(true);
+    try {
+      if (await refresh(targetProject) && selectedRef.current === target && projectRef.current === targetProject) {
+        markFilmDirty(false); setFilmNeedsReload(false); setNotice("Films reloaded; the film draft was discarded.");
+      }
+    } finally { setWorking(false); }
   }
   async function savePreference(event) {
     event.preventDefault(); if (preferences === null || !film) return; setWorking(true); setError(""); const target = film.idReadable;
@@ -487,7 +503,8 @@ function App() {
         <h3>Streaming availability</h3>
         <p>{observation ? `${observation.source} observation: ${observation.status}. ${availabilityTimeLabel(observation.status, observation.checked_at)}.` : "Availability unknown."}</p>
         <p>Subscriptions: {providerDescription(observation, "subscription")}. Rentals: {providerDescription(observation, "rent")}. Purchases: {providerDescription(observation, "buy")}. Free: {providerDescription(observation, "free")}. Ad-supported: {providerDescription(observation, "ads")}.</p>
-        <form onSubmit={saveFilm} onKeyDown={(e) => submitOnEnter(e, saveFilm)}><label>Title<input value={title} required disabled={filmEditLocked} onChange={(e) => {setTitle(e.target.value); markFilmDirty(true);}} /></label><label>Supplied TMDB ID (optional)<input inputMode="numeric" value={tmdbId} disabled={filmEditLocked} onChange={(e) => {setTmdbId(e.target.value); markFilmDirty(true);}} /></label><label>Stored release year<input inputMode="numeric" value={releaseYear} disabled={filmEditLocked || !editBaseline?.yearEditable} onChange={(e) => {setReleaseYear(e.target.value); markFilmDirty(true);}} /></label><label>Stored genres (one per line)<textarea value={filmGenre} disabled={filmEditLocked || !editBaseline?.genreEditable} onChange={(e) => {setFilmGenre(e.target.value); setGenreReset(false); markFilmDirty(true);}} /></label>{editBaseline?.genreStatus === "known" && editBaseline.genre === "" && filmGenre === "" && <p>No stored genres. <button type="button" disabled={filmEditLocked || !editBaseline.genreEditable} onClick={() => {setGenreReset(true); markFilmDirty(true);}}>Set genres to unknown</button>{genreReset && " Will reset when saved."}</p>}<label>Synopsis<textarea value={synopsis} disabled={filmEditLocked} onChange={(e) => {setSynopsis(e.target.value); markFilmDirty(true);}} /></label><label>Lifecycle<select value={state} disabled={filmEditLocked} onChange={(e) => {setState(e.target.value); markFilmDirty(true);}}><option value="">Unknown</option>{states.map((s) => <option key={s}>{s}</option>)}</select></label>{filmDirty && <DraftExitWarning kind="film edits" />}<button type="button" onClick={saveFilm} disabled={filmEditLocked}>Save film</button></form>
+        <form onSubmit={saveFilm} onKeyDown={(e) => submitOnEnter(e, saveFilm)}><label>Title<input value={title} required disabled={filmEditLocked} readOnly={filmNeedsReload} onChange={(e) => {setTitle(e.target.value); markFilmDirty(true);}} /></label><label>Supplied TMDB ID (optional)<input inputMode="numeric" value={tmdbId} disabled={filmEditLocked} readOnly={filmNeedsReload} onChange={(e) => {setTmdbId(e.target.value); markFilmDirty(true);}} /></label><label>Stored release year<input inputMode="numeric" value={releaseYear} disabled={filmEditLocked || !editBaseline?.yearEditable} readOnly={filmNeedsReload} onChange={(e) => {setReleaseYear(e.target.value); markFilmDirty(true);}} /></label><label>Stored genres (one per line)<textarea value={filmGenre} disabled={filmEditLocked || !editBaseline?.genreEditable} readOnly={filmNeedsReload} onChange={(e) => {setFilmGenre(e.target.value); setGenreReset(false); markFilmDirty(true);}} /></label>{editBaseline?.genreStatus === "known" && editBaseline.genre === "" && filmGenre === "" && <p>No stored genres. <button type="button" disabled={filmEditLocked || filmNeedsReload || !editBaseline.genreEditable} onClick={() => {setGenreReset(true); markFilmDirty(true);}}>Set genres to unknown</button>{genreReset && " Will reset when saved."}</p>}<label>Synopsis<textarea value={synopsis} disabled={filmEditLocked} readOnly={filmNeedsReload} onChange={(e) => {setSynopsis(e.target.value); markFilmDirty(true);}} /></label><label>Lifecycle<select value={state} disabled={filmEditLocked || filmNeedsReload} onChange={(e) => {setState(e.target.value); markFilmDirty(true);}}><option value="">Unknown</option>{states.map((s) => <option key={s}>{s}</option>)}</select></label>{filmDirty && <DraftExitWarning kind="film edits" />}<button type="button" onClick={saveFilm} disabled={filmEditLocked || filmNeedsReload}>Save film</button></form>
+        {filmNeedsReload && <p role="status">The film draft is read-only because its saved state is uncertain. Copy it if needed, then <button type="button" disabled={locked} onClick={reloadFilmAndDiscardDraft}>Reload films and discard film draft</button>.</p>}
         {(!editBaseline?.yearEditable || !editBaseline?.genreEditable) && <p>Release year or genre cannot be edited because its project field is unavailable or invalid.</p>}
         <p>Stored year and genre are editable fields; clearing either leaves it unknown and does not change source-listed assertions.</p>
         <p>Supplied IDs are unverified. Duplicate checks cover visible project records; live lookup remains subject to existing authorization. Clearing an existing ID is not supported in this POC.</p>
