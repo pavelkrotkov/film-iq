@@ -33,6 +33,15 @@ experience and its app-owned data requires a recovery plan. Both operating
 scores reflect extra local services and untested recovery; the substantially
 larger YouTrack memory sample is not a production sizing comparison.
 
+The result is sensitive to how heavily UI freedom is valued. Holding the
+provisional scores fixed and rescaling the other six weights proportionally,
+the current 30% UI weight gives Kaneo 3.00 and YouTrack 3.50. At 50%, the
+scores are 3.29 and 3.36; they tie at about 53.3%, and at 60% Kaneo scores
+3.43 versus YouTrack's 3.29. This is arithmetic on subjective scores, not a
+measurement of development effort or maintenance cost. It does not replace
+the requested 30% weighting or resolve the outstanding browser and recovery
+evidence.
+
 **Provisional recommendation: continue with YouTrack** if the remaining
 browser and operational checks confirm the embedded page is usable. It has demonstrated
 more of the requested persistence, query and automation capabilities without a
