@@ -25,6 +25,7 @@ import {IdentityReview} from "./identity_review.jsx";
 import {ReviewIdentity} from "./review_identity.jsx";
 import {criticScore, CriticFields} from "./critic_fields.jsx";
 import {titleNeedsReview} from "./youtrack_tmdb.js";
+import {MetadataUnavailable} from "./metadata_status.jsx";
 
 const api = "http://localhost:15173/api";
 const cacheFixture = typeof __FILMIQ_CACHE_FIXTURE__ !== "undefined" && __FILMIQ_CACHE_FIXTURE__;
@@ -696,6 +697,7 @@ function App() {
                       {cacheFixture ? "Read fictional cache" : "Fetch or refresh live details"}
                     </button>
                     {liveError && <p role="alert">{liveError}</p>}
+                    {!tmdbId(film) ? <p>A valid supplied TMDB ID is required to load film details.</p> : !liveResult && !liveError && <MetadataUnavailable cached={liveCache || cacheFixture} />}
                     {liveResult && !liveMovie && (liveResult.tmdb_id === tmdbId(film)
                       ? <IdentityReview expectedId={tmdbId(film)} savedTitle={film.title} sourceYear={film.fields["POC Source Year"]} sourceDirector={film.fields["POC Source Director"]} data={liveResult} provider={cacheFixture ? "Fictional cache" : "TMDB"} />
                       : <p role="alert">The saved ID differs from the earlier lookup. Fetch details for the current ID before using its metadata.</p>)}
@@ -704,7 +706,7 @@ function App() {
                         <p>{cacheFixture ? "Fictional cache" : "TMDB"}: {liveMovie.title} ({liveMovie.year || "year unknown"})</p>
                         {liveMovie.original_title && <p>TMDB original title: {liveMovie.original_title}</p>}
                         {liveMovie.metadata_attempt && <p>Latest metadata was incomplete; earlier details are shown.</p>}
-                        {liveMovie.synopsis && <p>{liveMovie.synopsis}</p>}
+                        <p>{liveMovie.synopsis || "TMDB synopsis unknown."}</p>
                         <p>Genres: {liveMovie.genres?.join(", ") || "Unknown"}. Directors: {liveMovie.directors?.join(", ") || "Unknown"}.</p>
                         {safeImdbTitleUrl(liveMovie.imdb_title_url) ? <p><a href={safeImdbTitleUrl(liveMovie.imdb_title_url)} target="_blank" rel="noreferrer">IMDb title page ↗</a> · IMDb ID supplied by TMDB; match not independently verified. IMDb ratings are audience ratings.</p> : <p>IMDb title link unknown; TMDB did not supply a usable ID.</p>}
                         <p>US availability: {liveMovie.availability.status}. {liveMovie.availability.offers.map((offer) => `${offer.provider} (${offer.kind})`).join(", ") || (liveMovie.availability.status === "complete" ? "No offers reported" : "Availability unknown")}. {availabilityTimeLabel(liveMovie.availability.status, liveMovie.availability.checked_at)}.</p>

@@ -17,6 +17,7 @@ import {IdentityReview} from "./identity_review.jsx";
 import {ReviewIdentity} from "./review_identity.jsx";
 import {criticScore, CriticFields} from "./critic_fields.jsx";
 import {clearSavedDraft, currentComments, saveComment} from "./comment_drafts.js";
+import {MetadataUnavailable} from "./metadata_status.jsx";
 export { providerObservation, providerFreshness } from "./youtrack_filters.js";
 
 let locationListener = () => {};
@@ -444,6 +445,7 @@ function App() {
         <button type="button" disabled={locked || liveBusy || liveRateLimited || !suppliedTmdbId(film)} onClick={loadLiveMetadata}>{liveBusy ? "Loading metadata…" : cacheFixture ? "Read fictional cache" : "Load live metadata"}</button>
         {!suppliedTmdbId(film) && <p>A supplied TMDB ID is required.</p>}
         {liveEntry?.error && <p role="alert">{liveEntry.error}</p>}
+        {suppliedTmdbId(film) && !live && !liveEntry?.error && <MetadataUnavailable cached={liveCache || cacheFixture} />}
         {live && <section>
           {!liveMatches ? <IdentityReview expectedId={suppliedTmdbId(film)} savedTitle={film.summary} sourceYear={field(film, "FilmIQ Source Year")} sourceDirector={field(film, "FilmIQ Director")} data={live} provider={cacheFixture ? "Fictional cache" : "TMDB"} /> : <>
             <p>{cacheFixture ? "Fictional cache returned" : "TMDB returned"}: {live.title} ({live.year ?? "year unknown"}).</p>
@@ -452,7 +454,7 @@ function App() {
             {live.poster_url && <div className="poster"><Poster url={live.poster_url} alt={`TMDB poster for ${live.title}`} transient={liveCache} /></div>}
             {live.poster_from_previous && <p>Poster from an earlier lookup.</p>}
             <p>Directors: {live.directors?.join(", ") || "unknown"}; genres: {live.genres?.join(", ") || "unknown"}.</p>
-            <p>{live.synopsis || "Synopsis unavailable."}</p>
+            <p>{live.synopsis || "TMDB synopsis unknown."}</p>
             <p>US provider status: {live.availability.status}. {live.availability.offers.map((offer) => `${offer.provider} (${offer.kind})`).join(", ") || (live.availability.status === "complete" ? "No offers reported." : "Availability unknown.")} {availabilityTimeLabel(live.availability.status, live.availability.checked_at)}. Personal subscription entitlement is not established.</p>
             {live.availability_attempt && <p>Latest provider check was {live.availability_attempt}; the earlier provider observation is shown.</p>}
             {live.availability.provider_url && <ExternalLink url={live.availability.provider_url} label="Provider information on TMDB" />}
