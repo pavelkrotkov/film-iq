@@ -1,4 +1,5 @@
 import {hasStoredGenre} from "./stored_genres.js";
+import {matchesFilmSearch} from "./film_search.js";
 
 // Pure extraction of YouTrack's existing client-side filtering logic.
 export const field = (film, name) => film.customFields?.find((item) => item.name === name)?.value ?? null;
@@ -66,7 +67,7 @@ export function filterYoutrackFilms(films, {preferences, query, stateFilter, min
     const personal = preferences?.[item.idReadable];
     if (!showArchived && stateFilter !== "Archived" && field(item, "FilmIQ Lifecycle")?.name === "Archived") return false;
     if (titleReviewOnly && !item.titleNeedsReview) return false;
-    if (query && !item.summary.toLowerCase().includes(query.toLowerCase())) return false;
+    if (!matchesFilmSearch(query, item.summary, field(item, "FilmIQ Director"), item.live?.directors)) return false;
     if (stateFilter && field(item, "FilmIQ Lifecycle")?.name !== stateFilter) return false;
     if (genre && !hasStoredGenre(field(item, "FilmIQ Genre"), genre) && !item.live?.genres?.includes(genre)) return false;
     if (provider || freshness) {

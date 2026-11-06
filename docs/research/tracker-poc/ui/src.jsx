@@ -23,6 +23,7 @@ import {storedGenreDisplay, storedGenreLabels} from "./stored_genres.js";
 import {Poster} from "./poster.jsx";
 import {IdentityReview} from "./identity_review.jsx";
 import {ReviewIdentity} from "./review_identity.jsx";
+import {criticScore, CriticFields} from "./critic_fields.jsx";
 import {titleNeedsReview} from "./youtrack_tmdb.js";
 
 const api = "http://localhost:15173/api";
@@ -844,15 +845,7 @@ function App() {
                     Preview and save preferences
                   </button>
                 </form>
-                <p>
-                  Critic score: {film.fields["POC Critic Score"] || "Unknown"}
-                </p>
-                {film.fields["POC Critic Summary"] && (
-                  <p>
-                    Synthetic critic summary:{" "}
-                    {film.fields["POC Critic Summary"]}
-                  </p>
-                )}
+                <CriticFields score={film.fields["POC Critic Score"]} summary={film.fields["POC Critic Summary"]} />
                 {syntheticAvailability(film) && (
                   <p>
                     Synthetic rentals:{" "}
@@ -907,9 +900,10 @@ function App() {
               <div className="filters">
                 <input
                   aria-label="Search films"
+                  aria-description="Search by title or director"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search titles"
+                  placeholder="Search title or director"
                 />
                 <select
                   aria-label="Filter by provider"
@@ -1006,6 +1000,7 @@ function App() {
                 </label>
               </div>
             </div>
+            {query && <p>Director search uses source-listed or loaded live metadata; films with unknown directors may be missing.</p>}
             {missingLinkedFilm(selected, film, loaded, busy) && <p role="alert">The linked film is unavailable in this project. It may have been removed or you may not have access. <a href="#">Clear film link</a></p>}
             {busy ? (
               <p>Loading records…</p>
@@ -1037,8 +1032,8 @@ function App() {
                       </div>
                       {refreshNotice(liveResults[item.id], tmdbId(item), item.live) && <p>{refreshNotice(liveResults[item.id], tmdbId(item), item.live)}</p>}
                       <p>
-                        Critic score:{" "}
-                        {item.fields["POC Critic Score"] || "Unknown"}
+                        Critic score (source not recorded):{" "}
+                        {criticScore(item.fields["POC Critic Score"])}
                       </p>
                       <p>{movary?.status === "available" && movary?.films?.[item.fields["POC TMDB ID"]]?.watched === true ? "Watched in Movary" : "Movary watch status not established"}</p>
                       <p>

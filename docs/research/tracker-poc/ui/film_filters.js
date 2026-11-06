@@ -1,4 +1,5 @@
 import {hasStoredGenre} from "./stored_genres.js";
+import {matchesFilmSearch} from "./film_search.js";
 
 export function syntheticAvailability(film) {
   try {
@@ -66,7 +67,7 @@ export function filterFilms(films, options) {
       (item) =>
         (showArchived || lifecycle === "archived" || String(item.status).toLowerCase() !== "archived") &&
         (!titleReviewOnly || item.titleNeedsReview) &&
-        item.title.toLowerCase().includes(query.toLowerCase()) &&
+        matchesFilmSearch(query, item.title, item.fields["POC Source Director"], item.live?.directors) &&
         (!provider || providers(item)?.includes(provider)) &&
         (!watchlistOnly || preferences?.[item.id]?.watchlist) &&
         (!movaryOnly || (movary?.status === "available" && movary?.films?.[item.fields["POC TMDB ID"]]?.watched === true)) &&
