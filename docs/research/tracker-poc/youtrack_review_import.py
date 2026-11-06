@@ -1,9 +1,10 @@
 """Import reviewed direct-link assertions into an isolated YouTrack POC project.
 
 The source manifest and reviewed links are validated before tracker writes.
-Only a previously empty direct-links field is filled; existing issue content and
-preferences are left untouched. Run a single importer at a time. A failed write
-is not retried automatically: inspect the record and rerun after resolving it.
+Only an empty direct-links field with no previous field change is filled;
+existing issue content and preferences are left untouched. Run a single importer
+without concurrent edits. A failed write is not retried automatically: inspect
+the record and rerun after resolving it.
 """
 
 import argparse
@@ -77,6 +78,21 @@ def empty_review_field(issue: dict[str, Any], *, required: bool) -> bool:
     return False
 
 
+def review_field_was_changed(client: YouTrackClient, record_id: str) -> bool:
+    """Treat a cleared field as a user edit, not a fresh empty field."""
+    history = client.pages(
+        f"issues/{quote(record_id, safe='')}/activities",
+        query={"categories": "CustomFieldCategory", "fields": "id,field(name)"},
+    )
+    changed = False
+    for event in history:
+        field = event.get("field") if isinstance(event, dict) else None
+        if not isinstance(field, dict) or not isinstance(field.get("name"), str):
+            raise YouTrackError("Custom-field history cannot be interpreted")
+        changed |= field["name"] == REVIEW_FIELD
+    return changed
+
+
 def combine_batches(
     manifests: list[dict[str, Any]], source: dict[str, Any]
 ) -> tuple[list[dict[str, Any]], int]:
@@ -148,7 +164,9 @@ def run(
         if current.get("summary") != titles[film["tmdb_id"]]:
             conflicts += 1
             continue
-        if not empty_review_field(current, required=True):
+        if not empty_review_field(current, required=True) or review_field_was_changed(
+            client, record_id
+        ):
             preserved += 1
             continue
         payload = {"schema_version": 1, "tmdb_id": film["tmdb_id"], "links": film["links"]}

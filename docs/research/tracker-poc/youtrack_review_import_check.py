@@ -29,10 +29,13 @@ class FakeClient(YouTrackClient):
         self.deny_read = False
         self.deny_write = False
         self.mismatch_read = False
+        self.field_history: list[dict[str, Any]] = []
 
     def pages(self, path: str, *, query: dict[str, str | int]) -> list[Any]:
-        assert path == "issues"
-        return deepcopy(self.records)
+        if path == "issues":
+            return deepcopy(self.records)
+        assert path == "issues/1/activities"
+        return deepcopy(self.field_history)
 
     def request(
         self,
@@ -188,6 +191,13 @@ def main() -> None:
         assert importer.run(client, [manifest], source, "FILMPOC") == (0, 1, 0, 0)
         assert client.records[0]["customFields"][2]["value"]["text"] == "user-maintained links"
         client.records[0]["customFields"][2]["value"] = None
+        client.field_history = [{"id": "change", "field": {"name": importer.REVIEW_FIELD}}]
+        assert importer.run(client, [manifest], source, "FILMPOC") == (0, 1, 0, 0)
+        assert client.writes == 0, "an explicitly cleared field must not be restored"
+        client.field_history = [{"id": "malformed"}]
+        reject(lambda: importer.run(client, [manifest], source, "FILMPOC"))
+        assert client.writes == 0, "unreadable history must not be treated as untouched"
+        client.field_history = [{"id": "other", "field": {"name": "Unrelated field"}}]
         client.lose_response = True
         reject(lambda: importer.run(client, [manifest], source, "FILMPOC"))
         assert client.writes == 1

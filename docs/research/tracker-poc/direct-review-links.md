@@ -14,17 +14,24 @@ The shared field has the same source-neutral shape for every film; detailed
 identity evidence remains in the private research manifests. Do not infer
 watched or unwatched status from a shared field.
 
-Both importers preview by default and update only an empty dedicated field.
-They do not replace an existing field even if a later batch contains additional
-links; reconcile those manually before a future update. They recheck identity
-and title before writing, but neither tracker provides compare-and-swap for
-this operation. Run a single importer with no concurrent field editing, and
-inspect the records before retrying an uncertain failure.
+Both importers preview by default and fill only untouched dedicated fields.
+Kaneo preserves every existing value row, including an empty one; its pinned
+implementation writes an empty row on clear. YouTrack checks custom-field
+activity before filling a null field and preserves it if the review field has
+changed. Unreadable history stops the import. The YouTrack history safeguard is
+covered by fictional offline checks; live history behavior for this text field
+has not been verified. Replacing a field definition or incomplete tracker
+history may lose the distinction. Existing fields are not augmented when a
+later batch contains additional links; reconcile those manually. Both
+importers recheck identity and title, but neither provides compare-and-swap.
+Run one importer with no concurrent field editing, and inspect records before
+retrying an uncertain failure.
 
 With the local POC services and credentials configured, run fictional checks:
 
 ```sh
 uv run python docs/research/tracker-poc/direct_review_links_check.py
+uv run python docs/research/tracker-poc/kaneo_direct_reviews_clear_check.py
 uv run python docs/research/tracker-poc/youtrack_review_import_check.py
 uv run python docs/research/tracker-poc/kaneo_direct_reviews_live_check.py --directory .cache/tracker-poc
 uv run python docs/research/tracker-poc/youtrack_review_live_check.py

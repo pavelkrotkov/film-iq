@@ -1,7 +1,8 @@
 """Preview or attach validated direct-review links to existing Kaneo POC records.
 
-Never overwrites a nonempty review field. Run one importer at a time and do not
-edit the target field concurrently: Kaneo does not expose compare-and-swap.
+Never overwrites an existing review field value, including an explicit clear.
+Run one importer at a time and do not edit the target field concurrently:
+Kaneo does not expose compare-and-swap.
 """
 
 import argparse
@@ -64,7 +65,7 @@ def import_reviews(
     pending, skipped, conflicts = [], 0, holdbacks
     for row in rows:
         task = identities[str(row["tmdb_id"])]
-        if review_values.get(task):
+        if task in review_values:
             skipped += 1
         elif call(opener, base, f"/task/{task}")["title"] != source_titles[row["tmdb_id"]]:
             conflicts += 1
@@ -88,7 +89,7 @@ def import_reviews(
         present = [item["value"] for item in current if item["fieldId"] == field_id]
         if task_identities != [str(row["tmdb_id"])] or len(present) > 1:
             raise ValueError("tracker identity or review field changed")
-        if present and present[0]:
+        if present:
             skipped += 1
             continue
         encoded = json.dumps(
