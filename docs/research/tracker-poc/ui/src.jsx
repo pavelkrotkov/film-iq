@@ -195,6 +195,7 @@ function App() {
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
   const detailDirty = useRef(false), preferenceDirty = useRef(false), skipHashPrompt = useRef(false);
+  const filmFieldsDirty = useRef({title: false, description: false, status: false, tmdb: false});
   const metadataDirty = useRef({year: false, genre: false, genreReset: false});
   preferenceDirty.current = preferenceDraft.dirty && preferenceDraft.filmId === selected;
   const [liveResults, setLiveResults] = useState({}),
@@ -357,7 +358,7 @@ function App() {
   useEffect(() => {
     setPreferenceDraft((current) => syncPreferenceDraft(current, film?.id, preferences));
   }, [film?.id, preferences]);
-  useEffect(() => { detailDirty.current = false; metadataDirty.current = {year: false, genre: false, genreReset: false}; }, [film?.id]);
+  useEffect(() => { detailDirty.current = false; filmFieldsDirty.current = {title: false, description: false, status: false, tmdb: false}; metadataDirty.current = {year: false, genre: false, genreReset: false}; }, [film?.id]);
   useEffect(() => {
     let active = true;
     setDetailReady(false);
@@ -465,19 +466,18 @@ function App() {
     let submitting = false;
     try {
       const metadata = metadataChanges(film.metadata, {year, genre: filmGenre}, metadataDirty.current);
-      const identityChanged = tmdb !== (film.fields["POC TMDB ID"] || "");
+      const identityChanged = filmFieldsDirty.current.tmdb && tmdb !== (film.fields["POC TMDB ID"] || "");
       let fieldId;
       if (identityChanged) {
         if (!tmdb) throw new Error("A saved TMDB ID cannot be cleared here; use tracker administration.");
         fieldId = await identityField(request, project, tmdb, film.id);
       }
       submitting = true;
-      if (title.trim() !== film.title)
+      if (filmFieldsDirty.current.title && title.trim() !== film.title)
         await request(`/task/title/${encodeURIComponent(film.id)}`, "PUT", { title: title.trim() });
-      await request(`/task/description/${encodeURIComponent(film.id)}`, "PUT", {
-        description,
-      });
-      if (status !== film.status)
+      if (filmFieldsDirty.current.description)
+        await request(`/task/description/${encodeURIComponent(film.id)}`, "PUT", {description});
+      if (filmFieldsDirty.current.status && status !== film.status)
         await request(`/task/status/${encodeURIComponent(film.id)}`, "PUT", {
           status,
         });
@@ -485,6 +485,7 @@ function App() {
       for (const {fieldId: metadataField, value} of metadata)
         await request("/custom-field/value", "PUT", {taskId: film.id, fieldId: metadataField, value});
       detailDirty.current = false;
+      filmFieldsDirty.current = {title: false, description: false, status: false, tmdb: false};
       metadataDirty.current = {year: false, genre: false, genreReset: false};
       await refresh();
     } catch (e) {
@@ -739,9 +740,9 @@ function App() {
                 <form onSubmit={save}>
                   <label>
                     Title
-                    <input value={title} onChange={(e) => { detailDirty.current = true; setFilmDraft({...filmDraft, title: e.target.value}); }} maxLength="200" required disabled={!detailReady || busy} />
+                    <input value={title} onChange={(e) => { detailDirty.current = true; filmFieldsDirty.current.title = true; setFilmDraft({...filmDraft, title: e.target.value}); }} maxLength="200" required disabled={!detailReady || busy} />
                   </label>
-                  <label>Supplied TMDB ID (not independently verified)<input inputMode="numeric" value={tmdb} onChange={(e) => {detailDirty.current = true; setFilmDraft({...filmDraft, tmdb: e.target.value});}} disabled={!detailReady || busy} /></label>
+                  <label>Supplied TMDB ID (not independently verified)<input inputMode="numeric" value={tmdb} onChange={(e) => {detailDirty.current = true; filmFieldsDirty.current.tmdb = true; setFilmDraft({...filmDraft, tmdb: e.target.value});}} disabled={!detailReady || busy} /></label>
                   <p>Changing this ID does not verify the match. Live lookup is optional and uses your authenticated Kaneo session.</p>
                   <label>Stored release year<input inputMode="numeric" value={year} onChange={(e) => {detailDirty.current = true; metadataDirty.current.year = true; setFilmDraft({...filmDraft, year: e.target.value});}} disabled={!detailReady || busy} readOnly={!film.metadata.year.editable} /></label>
                   <label>Stored genres (one per line)<textarea value={filmGenre} onChange={(e) => {detailDirty.current = true; metadataDirty.current.genre = true; metadataDirty.current.genreReset = false; setFilmDraft({...filmDraft, genre: e.target.value});}} disabled={!detailReady || busy} readOnly={!film.metadata.genre.editable} /></label>
@@ -752,7 +753,7 @@ function App() {
                     Synopsis
                     <textarea
                       value={description}
-                      onChange={(e) => { detailDirty.current = true; setFilmDraft({...filmDraft, description: e.target.value}); }}
+                      onChange={(e) => { detailDirty.current = true; filmFieldsDirty.current.description = true; setFilmDraft({...filmDraft, description: e.target.value}); }}
                       rows="7"
                       disabled={!detailReady || busy}
                     />
@@ -761,7 +762,7 @@ function App() {
                     Lifecycle
                     <select
                       value={status}
-                      onChange={(e) => { detailDirty.current = true; setFilmDraft({...filmDraft, status: e.target.value}); }}
+                      onChange={(e) => { detailDirty.current = true; filmFieldsDirty.current.status = true; setFilmDraft({...filmDraft, status: e.target.value}); }}
                       disabled={!detailReady || busy}
                     >
                       {Object.entries(states).map(([value, label]) => (
