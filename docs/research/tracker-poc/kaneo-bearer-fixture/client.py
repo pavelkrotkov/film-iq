@@ -14,6 +14,7 @@ from kaneo_direct_reviews import FIELD, IDENTITY_FIELD, api_key_opener, import_r
 from kaneo_enrich import KaneoBackend
 from kaneo_smoke import call, ensure_field
 from kaneo_watched_refresh import prepare
+from kaneo_watchlist_auth_check import check as check_watchlist_auth
 
 BASE = "http://kaneo:5173"
 stage = "readiness"
@@ -145,6 +146,8 @@ def main():
     if not isinstance(key, str) or not key:
         raise RuntimeError("Fictional key issuance returned no key")
     owner_id = call(setup, BASE, "/auth/get-session")["user"]["id"]
+    stage = "watchlist-auth"
+    check_watchlist_auth(BASE, jar, owner_id, project, os.environ["FIXTURE_PASSWORD"])
     # Drop the API-only bootstrap session before any importer operation.
     jar.clear()
     del setup, jar, result

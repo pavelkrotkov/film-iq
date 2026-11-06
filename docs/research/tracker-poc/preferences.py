@@ -16,12 +16,14 @@ from contextlib import closing
 from datetime import datetime
 from pathlib import Path
 
+from movary_watchlist_projection import validate_view
 from waitress import serve
 
 ORIGIN = "http://localhost:15174"
 KANEO = "http://localhost:15173/api"
 DATABASE = Path(".cache/tracker-poc/preferences.sqlite3")
 MOVARY_SIDECAR = Path(".cache/tracker-poc/private/movary-watched.json")
+MOVARY_WATCHLIST_SIDECAR = Path(".cache/tracker-poc/private/movary-watchlist.json")
 # ponytail: previews are process-local and expire on restart; shared state if deployed beyond the POC.
 SECRET = secrets.token_bytes(32)
 
@@ -174,6 +176,40 @@ def watched_snapshot(environ: dict, user: str, project: str) -> dict:
     }
 
 
+def watchlist_snapshot(environ: dict, user: str, project: str) -> dict:
+    """Expose only the requesting user's project-scoped positive observations."""
+    try:
+        upstream("/project/" + project, environ.get("HTTP_COOKIE", ""))
+    except urllib.error.HTTPError as error:
+        raise PermissionError("Project is not accessible") from error
+    unknown = {"status": "unknown", "source": "Movary", "observed_at": None, "entries": []}
+    try:
+        stored = json.loads(MOVARY_WATCHLIST_SIDECAR.read_text())
+    except FileNotFoundError:
+        return unknown
+    except (OSError, ValueError) as error:
+        raise RuntimeError("Watchlist snapshot unavailable") from error
+    if (
+        not isinstance(stored, dict)
+        or set(stored) != {"version", "project_id", "users"}
+        or stored.get("version") != "tracker-poc-movary-watchlist-users-v1"
+        or not isinstance(stored.get("users"), dict)
+    ):
+        raise RuntimeError("Watchlist snapshot unavailable")
+    if stored.get("project_id") != project or user not in stored["users"]:
+        return unknown
+    try:
+        own = validate_view(stored["users"][user])
+    except ValueError as error:
+        raise RuntimeError("Watchlist snapshot unavailable") from error
+    return {
+        "status": "available",
+        "source": "Movary",
+        "observed_at": own["observed_at"],
+        "entries": own["entries"],
+    }
+
+
 def application(environ: dict, start):
     if environ.get("HTTP_ORIGIN") != ORIGIN:
         return respond(start, "403 Forbidden", {"error": "Origin not allowed"})
@@ -212,6 +248,13 @@ def application(environ: dict, start):
                 return respond(start, "200 OK", watched_snapshot(environ, user, path[2]))
             if (
                 len(path) == 3
+                and path[1] == "movary-watchlist"
+                and path[2].isalnum()
+                and environ["REQUEST_METHOD"] == "GET"
+            ):
+                return respond(start, "200 OK", watchlist_snapshot(environ, user, path[2]))
+            if (
+                len(path) == 3
                 and path[1] in ("preview", "preferences")
                 and path[2].isalnum()
                 and environ["REQUEST_METHOD"] in ("POST", "PUT")
@@ -225,7 +268,7 @@ def application(environ: dict, start):
     except (urllib.error.URLError, TimeoutError):
         return respond(start, "503 Service Unavailable", {"error": "Kaneo unavailable"})
     except RuntimeError:
-        return respond(start, "503 Service Unavailable", {"error": "Watched snapshot unavailable"})
+        return respond(start, "503 Service Unavailable", {"error": "Movary snapshot unavailable"})
 
 
 if __name__ == "__main__":

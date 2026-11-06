@@ -32,6 +32,7 @@ NEXT = {**SAVED, "interest_score": 9}
 
 def worker(database: Path) -> None:
     preferences.DATABASE = database
+    preferences.MOVARY_WATCHLIST_SIDECAR = database.parent / "watchlist.json"
     with (
         patch.object(preferences, "current_user", return_value="fictionaluser"),
         patch.object(preferences, "upstream", return_value={}),

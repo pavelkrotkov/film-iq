@@ -27,6 +27,8 @@ import {ReviewDirectorEvidence} from "./review_director_evidence.jsx";
 import {criticScore, CriticFields} from "./critic_fields.jsx";
 import {titleNeedsReview} from "./youtrack_tmdb.js";
 import {MetadataUnavailable} from "./metadata_status.jsx";
+import {boundedRead} from "./youtrack_loading.js";
+import {MovaryWatchlist, watchlistForProject} from "./movary_watchlist.jsx";
 
 const api = "http://localhost:15173/api";
 const cacheFixture = typeof __FILMIQ_CACHE_FIXTURE__ !== "undefined" && __FILMIQ_CACHE_FIXTURE__;
@@ -180,6 +182,8 @@ function App() {
   const [movary, setMovary] = useState(null),
     [movaryOnly, setMovaryOnly] = useState(false),
     [excludeMovaryWatched, setExcludeMovaryWatched] = useState(false);
+  const [movaryWatchlist, setMovaryWatchlist] = useState(null);
+  const addFilmTitleRef = useRef(null);
   const [minimum, setMinimum] = useState(""),
     [genre, setGenre] = useState(""),
     [lifecycle, setLifecycle] = useState(""),
@@ -258,6 +262,16 @@ function App() {
   useEffect(() => {
     if (project) refresh();
   }, [project]);
+  useEffect(() => {
+    let active = true;
+    setMovaryWatchlist(null);
+    if (project && !cacheFixture) {
+      void boundedRead(() => preferenceRequest(`/movary-watchlist/${encodeURIComponent(project)}`))
+        .then((value) => { if (active) setMovaryWatchlist({project, snapshot:value}); })
+        .catch(() => { if (active) setMovaryWatchlist(null); });
+    }
+    return () => { active = false; };
+  }, [project, films]);
   useEffect(() => {
     if (!cacheFixture) return;
     let active = true;
@@ -705,6 +719,14 @@ function App() {
         {projectListError && <p role="alert">{projectListError}</p>}
         {projectList && !projectList.length && !projectListError && <p>No accessible active projects found.</p>}
         <p className="notice">{movary?.status === "available" ? `Movary watched snapshot observed ${movary.observed_at}. Missing films remain unknown.` : "Movary watched snapshot unavailable for this user or project."}</p>
+        {project && loaded && !film && <MovaryWatchlist snapshot={watchlistForProject(movaryWatchlist, project)} films={films} getId={tmdbId} getKey={(item) => item.id} getTitle={(item) => item.title}
+          onSelect={(item) => { location.hash = `film=${encodeURIComponent(item.id)}`; }}
+          prepareDisabled={busy || !loaded || !defaultState || createUncertain || !!newTitle.trim() || !!newTmdb.trim()}
+          onPrepare={(entry) => {
+            if (busy || !loaded || !defaultState || createUncertain || newTitle.trim() || newTmdb.trim()) return;
+            if (entry.title.length > 200) { setError("The source title is too long; enter a shorter title manually."); return; }
+            setNewTitle(entry.title); setNewTmdb(String(entry.tmdb_id)); addFilmTitleRef.current?.focus();
+          }} />}
         {incompleteMetadataFilter && <p>Active metadata filters can exclude films with unknown metadata, so results may be incomplete. Loading the remaining project films also includes hidden and archived films; failed films require retry, and films without a supplied ID cannot be loaded. Title review only identifies loaded title differences; it does not verify matches.</p>}
         {!!eligible && <section>
           <p>{cacheFixture ? "Fictional cache details can reappear after reload until they expire." : liveCache ? "Cached film details can reappear after reload until they expire, up to seven days." : "Live film details stay available until you close or reload this page."} {unattempted} of {eligible} films have not been loaded yet.</p>
@@ -721,6 +743,7 @@ function App() {
             <label>
               Add a film to this shared project
               <input
+                ref={addFilmTitleRef}
                 value={newTitle}
                 disabled={busy}
                 onChange={(e) => setNewTitle(e.target.value)}

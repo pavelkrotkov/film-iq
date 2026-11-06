@@ -16,6 +16,41 @@ from film_iq.personal_io import private_json
 from film_iq.personal_snapshot import VERSION
 
 
+def validate_view(value: object) -> dict:
+    """Validate a positive-only private snapshot before returning it to a user."""
+    if (
+        not isinstance(value, dict)
+        or set(value) != {"version", "source", "observed_at", "entries"}
+        or value.get("version") != "tracker-poc-movary-watchlist-v1"
+        or value.get("source") != "Movary"
+        or not isinstance(value.get("observed_at"), str)
+        or not isinstance(value.get("entries"), list)
+    ):
+        raise ValueError("Invalid Movary watchlist snapshot")
+    try:
+        if datetime.fromisoformat(value["observed_at"]).utcoffset() is None:
+            raise ValueError
+        seen = set()
+        for row in value["entries"]:
+            if not isinstance(row, dict) or set(row) != {"tmdb_id", "title", "added_at"}:
+                raise ValueError
+            ident, title, added = row["tmdb_id"], row["title"], row["added_at"]
+            if (
+                type(ident) is not int
+                or not 0 < ident <= 2147483647
+                or ident in seen
+                or (title is not None and (not isinstance(title, str) or not title.strip()))
+                or (added is not None and (not isinstance(added, str) or not added))
+            ):
+                raise ValueError
+            if added is not None:
+                datetime.fromisoformat(added)
+            seen.add(ident)
+    except (TypeError, ValueError):
+        raise ValueError("Invalid Movary watchlist snapshot") from None
+    return value
+
+
 def project(snapshot: dict, status: dict, existing_ids: list[int]) -> dict:
     """Retain positive source assertions and plan missing canonical films.
 
@@ -58,7 +93,7 @@ def project(snapshot: dict, status: dict, existing_ids: list[int]) -> dict:
         ident = film.get("tmdb_id")
         if (
             type(ident) is not int
-            or ident < 1
+            or not 0 < ident <= 2147483647
             or ident in by_id
             or type(film.get("watchlist")) is not bool
         ):
@@ -67,7 +102,7 @@ def project(snapshot: dict, status: dict, existing_ids: list[int]) -> dict:
 
     if (
         not isinstance(existing_ids, list)
-        or any(type(value) is not int or value < 1 for value in existing_ids)
+        or any(type(value) is not int or not 0 < value <= 2147483647 for value in existing_ids)
         or len(set(existing_ids)) != len(existing_ids)
     ):
         raise ValueError("Existing tracker identities must be positive and unique")
@@ -83,7 +118,7 @@ def project(snapshot: dict, status: dict, existing_ids: list[int]) -> dict:
             raise ValueError("Invalid Movary watchlist entry") from None
         if (
             type(ident) is not int
-            or ident < 1
+            or not 0 < ident <= 2147483647
             or ident in seen
             or type(source_id) is not int
             or source_id < 1
@@ -111,11 +146,15 @@ def project(snapshot: dict, status: dict, existing_ids: list[int]) -> dict:
     if {ident for ident, film in by_id.items() if film["watchlist"]} != seen:
         raise ValueError("Movary watchlist membership disagrees with source provenance")
     entries.sort(key=lambda item: item["tmdb_id"])
-    return {
+    view = {
         "version": "tracker-poc-movary-watchlist-v1",
         "source": "Movary",
         "observed_at": stamp,
         "entries": entries,
+    }
+    validate_view(view)
+    return {
+        **view,
         "missing_film_ids": [
             entry["tmdb_id"] for entry in entries if entry["tmdb_id"] not in existing
         ],

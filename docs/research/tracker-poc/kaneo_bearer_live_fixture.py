@@ -31,7 +31,7 @@ def command(args, *, timeout=120):
     if result.returncode:
         # Child output can contain fictional credentials; do not surface it.
         safe = re.search(
-            rb"Fictional bearer check failed at (?:readiness|signup|workspace|project|fields|task|key|owner|watched|preview|apply|retry|clear|lifecycle|denial): [A-Za-z]+(?: HTTP [0-9]{3})?",
+            rb"Fictional bearer check failed at (?:readiness|signup|workspace|project|fields|task|key|owner|watched|watchlist-auth|preview|apply|retry|clear|lifecycle|denial): [A-Za-z]+(?: HTTP [0-9]{3})?",
             result.stderr,
         )
         if safe:
@@ -95,13 +95,22 @@ def main():
         "kaneo_enrich.py",
         "kaneo_movary_mapping.py",
         "kaneo_smoke.py",
+        "kaneo_watchlist_auth_check.py",
+        "movary_watchlist_projection.py",
+        "preferences.py",
     ):
         shutil.copyfile(POC / name, directory / "source" / name)
     watched_source = directory / "source/docs/research/tracker-poc"
     watched_source.mkdir(mode=0o700, parents=True)
     shutil.copyfile(POC / "kaneo_watched_refresh.py", watched_source / "kaneo_watched_refresh.py")
     (directory / "source/film_iq").mkdir(mode=0o700)
-    for name in ("__init__.py", "personal_identity.py", "personal_io.py"):
+    for name in (
+        "__init__.py",
+        "personal_identity.py",
+        "personal_io.py",
+        "personal_merit.py",
+        "personal_snapshot.py",
+    ):
         shutil.copyfile(ROOT / "src/film_iq" / name, directory / "source/film_iq" / name)
     (directory / "source/film_iq/availability").mkdir(mode=0o700)
     for name in ("__init__.py", "tmdb.py"):

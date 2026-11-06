@@ -20,6 +20,7 @@ import {criticScore, CriticFields} from "./critic_fields.jsx";
 import {clearSavedDraft, currentComments, saveComment} from "./comment_drafts.js";
 import {MetadataUnavailable} from "./metadata_status.jsx";
 import {sourceEvidenceLinks} from "./source_evidence.js";
+import {MovaryWatchlist, watchlistForProject} from "./movary_watchlist.jsx";
 export { providerObservation, providerFreshness } from "./youtrack_filters.js";
 
 let locationListener = () => {};
@@ -101,6 +102,7 @@ function App() {
   const [project, setProject] = useState(null), [films, setFilms] = useState([]);
   const [preferences, setPreferences] = useState(null), [selected, setSelected] = useState(null);
   const [movary, setMovary] = useState(null), [movaryOnly, setMovaryOnly] = useState(false), [excludeMovaryWatched, setExcludeMovaryWatched] = useState(false);
+  const [movaryWatchlist, setMovaryWatchlist] = useState(null), [filmListProject, setFilmListProject] = useState(null);
   const [error, setError] = useState(""), [notice, setNotice] = useState(""), [busy, setBusy] = useState(false), [loadingFilms, setLoadingFilms] = useState(false);
   const [query, setQuery] = useState(""), [stateFilter, setStateFilter] = useState(""), [minimum, setMinimum] = useState("");
   const [showArchived, setShowArchived] = useState(false);
@@ -140,7 +142,12 @@ function App() {
   async function refresh(target = project) {
     if (!target || target !== projectRef.current) return;
     const run = ++sequence.current;
-    setLoadingFilms(true); setPreferences(null); setMovary(null); setError(""); setNotice("");
+    setLoadingFilms(true); setFilmListProject(null); setPreferences(null); setMovary(null); setError(""); setNotice("");
+    if (!cacheFixture) {
+      void boundedRead(() => host.fetchApp("movary-watchlist/list", {query: {project: target}}))
+        .then((snapshot) => { if (run === sequence.current && target === projectRef.current) setMovaryWatchlist({project:target, snapshot}); })
+        .catch(() => { if (run === sequence.current && target === projectRef.current) setMovaryWatchlist(null); });
+    }
     try {
       const [personal, watched] = await loadFilmView({
         loadFilms: async () => {
@@ -149,7 +156,7 @@ function App() {
         },
         loadPreferences: cacheFixture ? () => Promise.reject(new Error("Disabled in fixture build")) : readPreferences,
         loadWatched: cacheFixture ? () => Promise.reject(new Error("Disabled in fixture build")) : () => host.fetchApp("movary/watched", { query: { project: target } }),
-        publishFilms: (loaded) => publishFilmBatch(run, sequence, loaded, setFilms, setLoadingFilms),
+        publishFilms: (loaded) => { if (run === sequence.current) setFilmListProject(target); publishFilmBatch(run, sequence, loaded, setFilms, setLoadingFilms); },
       });
       if (run !== sequence.current) return;
       setPreferences(personal.status === "fulfilled" ? personal.value : null);
@@ -587,6 +594,12 @@ function App() {
         {commentRecovery[film.idReadable] && <p role="status">The comment may have been saved. Your draft is preserved. <button type="button" disabled={locked} onClick={reviewComment}>Reload comments to check</button>{" "}<button type="button" disabled={locked || commentRecovery[film.idReadable] !== "checked"} onClick={allowCommentRetry}>I checked; allow another attempt</button></p>}
         <a href={`/issue/${film.idReadable}`} target="_blank" rel="noreferrer">View tracker record and history ↗</a>
       </section> : <section>
+        {filmListProject === project && !loadingFilms ? <MovaryWatchlist
+          snapshot={watchlistForProject(movaryWatchlist, project)} films={films}
+          getId={suppliedTmdbId} getKey={(item) => item.idReadable} getTitle={(item) => item.summary}
+          onSelect={(item) => { if (!locked && projectRef.current === project) void selectFilm(item.idReadable); }}
+          onPrepare={(entry) => { if (!locked && !guardsRef.current.busy && !createUncertain && projectRef.current === project && !hasNewFilmDraft(guardsRef.current.newTitle, guardsRef.current.newTmdbId)) { setNewFilmTitle(entry.title || ""); setNewFilmTmdbId(String(entry.tmdb_id)); } }}
+          prepareDisabled={locked || createUncertain || hasNewFilmDraft(newTitle, newTmdbId)} /> : <p>Film records are loading or unavailable; Movary watchlist matching is unavailable.</p>}
         <div className="filters">
           <label>Search<input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Title or director" aria-description="Search by title or director" /></label>
           <label>Lifecycle<select value={stateFilter} onChange={(e) => setStateFilter(e.target.value)}><option value="">{showArchived ? "All states" : "Active states"}</option>{states.map((s) => <option key={s}>{s}</option>)}</select></label>

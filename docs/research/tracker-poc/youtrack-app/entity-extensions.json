@@ -5,7 +5,8 @@
       "properties": {
         "filmPreferences": {"type": "string"},
         "filmPreferencePreview": {"type": "string"},
-        "filmMovarySnapshot": {"type": "string"}
+        "filmMovarySnapshot": {"type": "string"},
+        "filmMovaryWatchlist": {"type": "string"}
       }
     }
   ]
