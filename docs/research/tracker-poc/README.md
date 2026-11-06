@@ -396,6 +396,13 @@ synthetic repeat, lifecycle and failure-preservation check. Neither adapter
 persists live TMDB responses, and concurrent imports are not tested. Task-wide
 notes are not per-user preferences.
 
+For an existing Kaneo fixture task, year and genre are backfilled only if their
+custom-field value row is absent. An existing empty row is preserved as a user
+clear. The pinned Kaneo implementation upserts empty values rather than
+deleting their rows; the offline `kaneo_enrich_clear_check.py` exercises both
+cases. This is not a full edit history: replacing a field definition can lose
+that distinction, and the fixture worker assumes no concurrent edits.
+
 The YouTrack fixture adapter also stores a fictional release year and genre.
 For an existing issue it backfills an empty field only when paginated field
 history shows no previous change; explicit clears and existing values survive.

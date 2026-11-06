@@ -12,6 +12,12 @@ from kaneo_smoke import call, ensure_field
 
 
 class KaneoBackend:
+    """Backfill fields with no value row; preserve explicit empty values.
+
+    Run a single worker without concurrent edits: the value API has no
+    compare-and-swap for these updates.
+    """
+
     def __init__(self, base: str, project: str, cookie_file: Path):
         self.base, self.project = base, project
         cookies = http.cookiejar.MozillaCookieJar(str(cookie_file))
@@ -45,7 +51,7 @@ class KaneoBackend:
             task = matches[0]
             existing = {r["fieldId"]: r["value"] for r in rows if r["taskId"] == task}
             for key, value in metadata.items():
-                if value and not existing.get(self.fields[key]):
+                if value and self.fields[key] not in existing:
                     self._set(task, self.fields[key], value)
             return task
         fields = [{"fieldId": self.fields["identity"], "value": str(film.source_id)}]
