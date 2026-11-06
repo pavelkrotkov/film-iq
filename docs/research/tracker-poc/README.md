@@ -34,6 +34,13 @@ mismatched artwork and streaming offers. Exact title agreement is also not
 proof of identity. The current cache data can be refreshed in six bounded
 windows, but no recurring job is installed.
 
+Both interfaces display the source title and year for review links. Incomplete
+refreshes retain earlier usable cache data and identify the latest attempt as
+incomplete; a new unknown provider response records an attempt time without
+claiming that no providers exist. Earlier unknown observations do not acquire
+an invented timestamp. Offline policy renewal and an explicit downgrade helper
+are documented in the cache runbook.
+
 The current policy authorization expires on December 6, 2026 UTC; each
 observation remains fresh for at most seven days. The 130 existing entries
 retain their original deadlines, no later than November 13, 2026 UTC. The

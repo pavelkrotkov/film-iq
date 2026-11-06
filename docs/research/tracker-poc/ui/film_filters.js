@@ -17,8 +17,10 @@ export function syntheticAvailability(film) {
 export function providers(film) {
   try {
     const live = film.live?.availability;
-    if (live && ["complete", "partial"].includes(live.status))
+    if (live) {
+      if (!["complete", "partial"].includes(live.status)) return null;
       return [...new Set(live.offers.filter((offer) => offer.kind === "subscription").map((offer) => offer.provider))];
+    }
     const observation = syntheticAvailability(film);
     if (observation) return observation.subscription;
     const raw =
@@ -33,10 +35,9 @@ export function providers(film) {
 
 export function freshness(film, now = Date.now()) {
   const availability = film.live?.availability;
-  const checked = Date.parse(
-    (availability && availability.status !== "unknown" ? availability.checked_at : "") ||
-      syntheticAvailability(film)?.checked_at || "",
-  );
+  const checked = Date.parse(availability
+    ? (["complete", "partial"].includes(availability.status) ? availability.checked_at : "")
+    : syntheticAvailability(film)?.checked_at || "");
   const age = now - checked;
   if (!Number.isFinite(age) || age < 0) return "unknown";
   return age <= 7 * 24 * 60 * 60 * 1000 ? "recent" : "stale";

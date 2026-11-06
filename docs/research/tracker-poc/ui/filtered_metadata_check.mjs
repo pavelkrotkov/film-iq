@@ -33,6 +33,15 @@ assert.deepEqual(requested, [2, 3]);
 assert.deepEqual(filterFilms(kShown(), kOptions).map((film) => film.id), ["1", "2"]);
 assert.deepEqual(filterFilms(kShown(), {...kOptions, showArchived: true}).map((film) => film.id), ["1", "2", "3"]);
 
+// An unknown live result must not silently promote an older fixture field to
+// current availability or freshness. A retained complete result, however,
+// remains searchable when an incomplete refresh leaves it in the cache.
+const oldFixture = JSON.stringify({source: "synthetic fixture, not TMDB", subscription: ["Netflix"], rent: [], checked_at: "2000-01-01T00:00:00Z"});
+const unknownKaneo = {...kaneo[0], fields: {...kaneo[0].fields, "POC Synthetic Availability": oldFixture}, live: {...live(1), availability: {status: "unknown", checked_at: "2026-11-05T00:00:00Z", offers: []}}};
+assert.deepEqual(filterFilms([unknownKaneo], {...kOptions, genre: ""}), [], "unknown live availability must not match stored providers");
+assert.deepEqual(filterFilms([unknownKaneo], {...kOptions, provider: "", genre: "", freshnessFilter: "unknown"}).map((film) => film.id), ["1"], "unknown live availability stays unknown for freshness");
+assert.deepEqual(filterFilms([{...unknownKaneo, live: live(1)}], {...kOptions, genre: ""}).map((film) => film.id), ["1"], "retained complete availability remains searchable");
+
 const yt = [1, 2, 3].map((id) => ({id: `internal-${id}`, idReadable: `FILMPOC-${id}`, summary: `Fictional ${id}`, customFields: [
   {name: "FilmIQ TMDB ID", value: id}, {name: "FilmIQ Lifecycle", value: {name: id === 3 ? "Archived" : "Discovery"}},
 ]}));
