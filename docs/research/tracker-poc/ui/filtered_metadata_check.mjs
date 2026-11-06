@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { filterFilms } from "./film_filters.js";
-import { chooseRemaining, runRemainingBatch } from "./live_batch.js";
+import { chooseRemaining, expireCachedResults, runRemainingBatch } from "./live_batch.js";
 import { matchedLive } from "./kaneo_identity.js";
 import { filterYoutrackFilms } from "./youtrack_filters.js";
 import { attachMatchedLive, mergeLiveResult, remainingLiveFilms, runRemainingLive, titleNeedsReview } from "./youtrack_tmdb.js";
@@ -48,6 +48,16 @@ const yt = [1, 2, 3].map((id) => ({id: `internal-${id}`, idReadable: `FILMPOC-${
 const ytResults = {"FILMPOC-1": {data: live(1), requestedId: 1}};
 const yOptions = {query: "", provider: "Netflix", genre: "Drama", preferences: {}};
 const yShown = () => attachMatchedLive(yt, ytResults);
+// Cache retention removes expired observations rather than making them stale.
+const expired = {...live(1), cache_expires_at:"2000-01-08T00:00:00Z"};
+const expiredK = expireCachedResults({"1":{data:expired,requestedId:1}}).results;
+const expiredY = expireCachedResults({"FILMPOC-1":{data:expired,requestedId:1}}).results;
+const kAfterExpiry = [{...kaneo[0],live:matchedLive(kaneo[0],expiredK["1"])}];
+const yAfterExpiry = attachMatchedLive([yt[0]],expiredY);
+assert.equal(filterFilms(kAfterExpiry,{freshnessFilter:"stale"}).length,0);
+assert.equal(filterFilms(kAfterExpiry,{freshnessFilter:"unknown"}).length,1);
+assert.equal(filterYoutrackFilms(yAfterExpiry,{freshness:"stale"}).length,0);
+assert.equal(filterYoutrackFilms(yAfterExpiry,{freshness:"unknown"}).length,1);
 assert.deepEqual(filterYoutrackFilms(yShown(), yOptions).map((film) => film.idReadable), ["FILMPOC-1"]);
 assert.deepEqual(filterYoutrackFilms(yShown(), {...yOptions, provider: "", genre: "", freshness: "stale"}).map((film) => film.idReadable), ["FILMPOC-1"]);
 assert.deepEqual(filterYoutrackFilms(yShown(), {...yOptions, provider: "", genre: "", freshness: "unknown"}).map((film) => film.idReadable), ["FILMPOC-2"]);

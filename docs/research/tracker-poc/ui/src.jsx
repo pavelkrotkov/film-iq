@@ -28,7 +28,7 @@ import {criticScore, CriticFields} from "./critic_fields.jsx";
 import {titleNeedsReview} from "./youtrack_tmdb.js";
 import {MetadataUnavailable} from "./metadata_status.jsx";
 import {boundedRead} from "./youtrack_loading.js";
-import {MovaryWatchlist, watchlistForProject} from "./movary_watchlist.jsx";
+import {MovaryWatchlist, MovaryWatchlistBadge, observedWatchlistKeys, watchlistForProject} from "./movary_watchlist.jsx";
 
 const api = "http://localhost:15173/api";
 const cacheFixture = typeof __FILMIQ_CACHE_FIXTURE__ !== "undefined" && __FILMIQ_CACHE_FIXTURE__;
@@ -98,9 +98,10 @@ async function request(path, method = "GET", body) {
   return response.json();
 }
 
-async function preferenceRequest(path, method = "GET", body) {
+async function preferenceRequest(path, method = "GET", body, signal) {
   const response = await fetch("http://localhost:15175" + path, {
     method,
+    signal,
     credentials: "include",
     headers: body ? { "Content-Type": "application/json" } : {},
     body: body ? JSON.stringify(body) : undefined,
@@ -108,6 +109,15 @@ async function preferenceRequest(path, method = "GET", body) {
   if (!response.ok)
     throw new Error(`Preference bridge returned HTTP ${response.status}`);
   return response.json();
+}
+
+async function boundedPreferenceRead(path) {
+  const controller = new AbortController();
+  try {
+    return await boundedRead(() => preferenceRequest(path, "GET", undefined, controller.signal));
+  } finally {
+    controller.abort();
+  }
 }
 
 async function load(project) {
@@ -183,6 +193,7 @@ function App() {
     [movaryOnly, setMovaryOnly] = useState(false),
     [excludeMovaryWatched, setExcludeMovaryWatched] = useState(false);
   const [movaryWatchlist, setMovaryWatchlist] = useState(null);
+  const [movaryWatchlistOnly, setMovaryWatchlistOnly] = useState(false);
   const addFilmTitleRef = useRef(null);
   const [minimum, setMinimum] = useState(""),
     [genre, setGenre] = useState(""),
@@ -226,14 +237,14 @@ function App() {
       setDefaultState(result.defaultState);
       try {
         if (cacheFixture) throw new Error("Preferences disabled in fixture build");
-        setPreferences((await preferenceRequest("/preferences")).preferences);
+        setPreferences((await boundedPreferenceRead("/preferences")).preferences);
       } catch (e) {
         setPreferences(null);
         setError(`Preferences are unavailable: ${e.message}`);
       }
       try {
         if (cacheFixture) throw new Error("Movary disabled in fixture build");
-        setMovary(await preferenceRequest(`/movary/${encodeURIComponent(project)}`));
+        setMovary(await boundedPreferenceRead(`/movary/${encodeURIComponent(project)}`));
       } catch {
         setMovary(null);
       }
@@ -266,7 +277,7 @@ function App() {
     let active = true;
     setMovaryWatchlist(null);
     if (project && !cacheFixture) {
-      void boundedRead(() => preferenceRequest(`/movary-watchlist/${encodeURIComponent(project)}`))
+      void boundedPreferenceRead(`/movary-watchlist/${encodeURIComponent(project)}`)
         .then((value) => { if (active) setMovaryWatchlist({project, snapshot:value}); })
         .catch(() => { if (active) setMovaryWatchlist(null); });
     }
@@ -417,6 +428,9 @@ function App() {
       active = false;
     };
   }, [film]);
+  const movaryWatchlistKeys = useMemo(() => loaded ? observedWatchlistKeys(
+    watchlistForProject(movaryWatchlist, project), films, tmdbId, (item) => item.id,
+  ) : null, [loaded, movaryWatchlist, project, films]);
   const unavailableSources = unavailableFilterSources({preferences, movary, minimum, watched, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched});
   const filtered = useMemo(
     () =>
@@ -424,6 +438,8 @@ function App() {
         query,
         provider,
         watchlistOnly,
+        movaryWatchlistOnly,
+        movaryWatchlistKeys,
         minimum,
         genre,
         lifecycle,
@@ -442,6 +458,8 @@ function App() {
       query,
       provider,
       watchlistOnly,
+      movaryWatchlistOnly,
+      movaryWatchlistKeys,
       sortInterest,
       preferences,
       movaryOnly,
@@ -1085,8 +1103,9 @@ function App() {
                     disabled={!preferences && !watchlistOnly}
                     onChange={(e) => setWatchlistOnly(e.target.checked)}
                   />{" "}
-                  Watchlist
+                  Local POC watchlist
                 </label>
+                <label><input type="checkbox" checked={movaryWatchlistOnly} disabled={movaryWatchlistKeys === null && !movaryWatchlistOnly} onChange={(e) => setMovaryWatchlistOnly(e.target.checked)} /> On observed Movary watchlist</label>
                 <label>
                   <input type="checkbox" checked={movaryOnly} disabled={movary?.status !== "available" && !movaryOnly} onChange={(e) => {setMovaryOnly(e.target.checked); if (e.target.checked) setExcludeMovaryWatched(false);}} />{" "}
                   Watched in Movary
@@ -1107,6 +1126,8 @@ function App() {
               </div>
             </div>
             {query && <p>Director search uses source-listed, review identity evidence or loaded live metadata; films with unknown directors may be missing.</p>}
+            {movaryWatchlistOnly && <p role="status">{movaryWatchlistKeys === null ? "Movary watchlist matching is unavailable; no results are assumed." : "Only uniquely matched tracker records are shown. Supplied film identities are unverified; unmatched or ambiguous entries remain in the Movary watchlist above."}</p>}
+            {freshnessFilter === "stale" && <p>Expired cached observations are unknown and do not appear under Older than 7 days.</p>}
             {missingLinkedFilm(selected, film, loaded, busy) && <p role="alert">The linked film is unavailable in this project. It may have been removed or you may not have access. <a href="#">Clear film link</a></p>}
             {busy ? (
               <p>Loading records…</p>
@@ -1137,6 +1158,7 @@ function App() {
                       {item.live?.poster_from_previous && <p>Poster from an earlier lookup.</p>}
                       <div className="badges">
                         <ProviderBadges film={item} />
+                        <MovaryWatchlistBadge keys={movaryWatchlistKeys} filmKey={item.id} />
                       </div>
                       {refreshNotice(liveResults[item.id], tmdbId(item), item.live) && <p>{refreshNotice(liveResults[item.id], tmdbId(item), item.live)}</p>}
                       <p>
@@ -1152,11 +1174,11 @@ function App() {
                         ·{" "}
                         {preferences
                           ? !preferences[item.id] || preferences[item.id].watchlist === null
-                            ? "Watchlist unknown"
+                            ? "Local POC watchlist unknown"
                             : preferences[item.id].watchlist
-                            ? "Watchlisted"
-                            : "Not watchlisted"
-                          : "Watchlist unavailable"}
+                            ? "On local POC watchlist"
+                            : "Not on local POC watchlist"
+                          : "Local POC watchlist unavailable"}
                       </p>
                     </div>
                   </a>

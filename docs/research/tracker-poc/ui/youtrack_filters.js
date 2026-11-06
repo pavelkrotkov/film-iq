@@ -66,7 +66,7 @@ export function providerFreshness(observation, now = Date.now()) {
   return age <= 7 * 24 * 60 * 60 * 1000 ? "recent" : "stale";
 }
 
-export function filterYoutrackFilms(films, {preferences, query, stateFilter, minimum, watchlistOnly, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness, localWatched, showArchived, titleReviewOnly}) {
+export function filterYoutrackFilms(films, {preferences, query, stateFilter, minimum, watchlistOnly, movaryWatchlistOnly, movaryWatchlistKeys, sortInterest, movaryOnly, excludeMovaryWatched, movary, provider, genre, freshness, localWatched, showArchived, titleReviewOnly}) {
   const matching = films.filter((item) => {
     const personal = preferences?.[item.idReadable];
     if (!showArchived && stateFilter !== "Archived" && field(item, "FilmIQ Lifecycle")?.name === "Archived") return false;
@@ -82,6 +82,7 @@ export function filterYoutrackFilms(films, {preferences, query, stateFilter, min
     }
     if (minimum && (personal?.interest_score == null || personal.interest_score < Number(minimum))) return false;
     if (watchlistOnly && personal?.watchlist !== true) return false;
+    if (movaryWatchlistOnly && !movaryWatchlistKeys?.has(item.idReadable)) return false;
     if (localWatched && (!preferences || localWatchStatus(preferences, item.idReadable) !== localWatched)) return false;
     const watchedInMovary = boundMovaryFilm(movary, item.idReadable, field(item, "FilmIQ TMDB ID"));
     if (movaryOnly && !watchedInMovary) return false;

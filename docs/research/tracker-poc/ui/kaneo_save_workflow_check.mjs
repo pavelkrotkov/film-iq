@@ -11,7 +11,7 @@ const refreshStart = source.indexOf("  async function refresh() {");
 const refreshEnd = source.indexOf("  async function refreshProjects() {", refreshStart);
 if (start < 0 || end < 0 || refreshStart < 0 || refreshEnd < 0) throw new Error("Kaneo save or refresh handler not found");
 const make = new Function("title", "description", "status", "tmdb", "year", "filmGenre", "film", "project", "setError", "setBusy", "metadataChanges", "metadataDirty", "filmFieldsDirty", "identityField", "request", "detailDirty", "refresh", "loaded", "detailReady", "setLoaded", `${source.slice(start, end)}; return save;`);
-const makeRefresh = new Function("project", "setBusy", "setError", "load", "setFilms", "cacheFixture", "fixtureIds", "tmdbId", "setLoaded", "setStates", "setDefaultState", "preferenceRequest", "setPreferences", "setMovary", `${source.slice(refreshStart, refreshEnd)}; return refresh;`);
+const makeRefresh = new Function("project", "setBusy", "setError", "load", "setFilms", "cacheFixture", "fixtureIds", "tmdbId", "setLoaded", "setStates", "setDefaultState", "boundedPreferenceRead", "setPreferences", "setMovary", `${source.slice(refreshStart, refreshEnd)}; return refresh;`);
 
 async function exercise({draft = {}, edited = {}, metadataEdited = {}, unavailable = false, failWrite = false, failAt = 0, reloadFailure = false, preferencesFailure = false, initiallyLoaded = true, baselineTitle = "New fictional title"} = {}) {
   const film = {id:"fictional-task",title:baselineTitle,status:"in-review",fields:{"POC TMDB ID":"200"},metadata:{

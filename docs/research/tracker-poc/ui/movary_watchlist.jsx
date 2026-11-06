@@ -30,6 +30,16 @@ export function reconcileMovaryWatchlist(snapshot, films, getId) {
   return rows;
 }
 
+// Only positive, uniquely matched source observations can select grid records.
+export function observedWatchlistKeys(snapshot, films, getId, getKey) {
+  const rows = reconcileMovaryWatchlist(snapshot, films, getId);
+  return rows === null ? null : new Set(rows.filter(({film}) => film).map(({film}) => getKey(film)));
+}
+
+export function MovaryWatchlistBadge({keys, filmKey}) {
+  return keys?.has(filmKey) ? <span>On observed Movary watchlist · ID unverified</span> : null;
+}
+
 export function MovaryWatchlist({snapshot, films, getId, getKey, getTitle, onSelect, onPrepare, prepareDisabled}) {
   const rows = reconcileMovaryWatchlist(snapshot, films, getId);
   return <section aria-labelledby="movary-watchlist-title">

@@ -60,6 +60,8 @@ export function filterFilms(films, options) {
     sortInterest,
     preferences,
     movaryOnly,
+    movaryWatchlistOnly,
+    movaryWatchlistKeys,
     excludeMovaryWatched,
     showArchived,
     titleReviewOnly,
@@ -74,6 +76,7 @@ export function filterFilms(films, options) {
           query ? reviewDirectorNames(item.fields["POC Direct Review Links"], item.fields["POC TMDB ID"], item.title) : []) &&
         (!provider || providers(item)?.includes(provider)) &&
         (!watchlistOnly || preferences?.[item.id]?.watchlist) &&
+        (!movaryWatchlistOnly || movaryWatchlistKeys?.has(item.id)) &&
         (!movaryOnly || (movary?.status === "available" && movary?.films?.[item.fields["POC TMDB ID"]]?.watched === true)) &&
         (!excludeMovaryWatched || (movary?.status === "available" && movary?.films?.[item.fields["POC TMDB ID"]]?.watched !== true)) &&
         (!minimum ||

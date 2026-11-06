@@ -3,12 +3,14 @@ import {createRequire} from "node:module";
 import {build} from "esbuild";
 import React from "react";
 import {renderToStaticMarkup} from "react-dom/server";
+import {filterFilms} from "./film_filters.js";
+import {filterYoutrackFilms} from "./youtrack_filters.js";
 
 const require = createRequire(import.meta.url);
 const built = await build({entryPoints:[new URL("./movary_watchlist.jsx", import.meta.url).pathname], bundle:true, format:"cjs", platform:"node", external:["react"], write:false});
 const module = {exports:{}};
 new Function("require", "module", "exports", built.outputFiles[0].text)(require, module, module.exports);
-const {MovaryWatchlist, reconcileMovaryWatchlist, watchlistForProject} = module.exports;
+const {MovaryWatchlist, MovaryWatchlistBadge, observedWatchlistKeys, reconcileMovaryWatchlist, watchlistForProject} = module.exports;
 const snapshot = {status:"available", source:"Movary", observed_at:"2026-11-06T12:00:00Z", entries:[
   {tmdb_id:42,title:"Fictional existing",added_at:"2026-11-01 09:02:03"},
   {tmdb_id:43,title:"Fictional missing",added_at:null},
@@ -29,6 +31,37 @@ assert.equal(ambiguous[0].film, null); assert.equal(ambiguous[0].ambiguous, true
 assert.equal(watchlistForProject({project:"fictional-a",snapshot}, "fictional-a"), snapshot);
 assert.equal(watchlistForProject({project:"fictional-a",snapshot}, "fictional-b"), null);
 assert.equal(watchlistForProject({project:"fictional-a",snapshot}, null), null);
+
+// The source watchlist can be combined with grid filters independently of
+// the local POC watchlist; duplicate tracker IDs and missing entries stay out.
+const source = {...snapshot, entries:[42,43,44,45].map((tmdb_id) => ({tmdb_id,title:`Fictional ${tmdb_id}`,added_at:null}))};
+const availability = {status:"complete",checked_at:new Date().toISOString(),offers:[{provider:"Netflix",kind:"subscription"}]};
+const kFilms = [42,43,44,44,46].map((id,index) => ({id:`task-${index}`,title:`Fictional ${id}`,status:"to-do",
+  fields:{"POC TMDB ID":String(id),"POC Genre":"Drama"},live:{availability}}));
+const kKeys = observedWatchlistKeys(source,kFilms,(item) => Number(item.fields["POC TMDB ID"]),(item) => item.id);
+const kPrefs = {"task-0":{interest_score:8,watchlist:false,watched_at:null},"task-1":{interest_score:10,watchlist:false,watched_at:"2026-01-01T12:00:00Z"},"task-4":{interest_score:10,watchlist:true}};
+const kOptions = {movaryWatchlistOnly:true,movaryWatchlistKeys:kKeys,preferences:kPrefs,provider:"Netflix",minimum:"8",genre:"Drama",sortInterest:true};
+assert.deepEqual(filterFilms(kFilms,kOptions).map((item) => item.id),["task-1","task-0"]);
+assert.deepEqual(filterFilms(kFilms,{...kOptions,watched:"marked",lifecycle:"to-do",freshnessFilter:"recent"}).map((item) => item.id),["task-1"]);
+assert.deepEqual(filterFilms(kFilms,{...kOptions,movaryWatchlistKeys:null}),[],"unavailable source is not an empty or matching list");
+assert.deepEqual(filterFilms(kFilms,{...kOptions,watchlistOnly:true}),[],"local and Movary selections are independent");
+assert.equal(observedWatchlistKeys({status:"unknown"},kFilms,() => 42,() => "x"),null);
+
+const yFilms = [42,43,44,44,46].map((id,index) => ({idReadable:`FILMPOC-${index}`,summary:`Fictional ${id}`,
+  customFields:[{name:"FilmIQ TMDB ID",value:id},{name:"FilmIQ Genre",value:"Drama"},{name:"FilmIQ Lifecycle",value:{name:"Discovery"}}],live:{availability}}));
+const yKeys = observedWatchlistKeys(source,yFilms,(item) => item.customFields[0].value,(item) => item.idReadable);
+const yPrefs = {"FILMPOC-0":{interest_score:8,watchlist:false,watched_at:null},"FILMPOC-1":{interest_score:10,watchlist:false,watched_at:"2026-01-01T12:00:00Z"},"FILMPOC-4":{interest_score:10,watchlist:true}};
+const yOptions = {movaryWatchlistOnly:true,movaryWatchlistKeys:yKeys,preferences:yPrefs,provider:"Netflix",minimum:"8",genre:"Drama",sortInterest:true};
+assert.deepEqual(filterYoutrackFilms(yFilms,yOptions).map((item) => item.idReadable),["FILMPOC-1","FILMPOC-0"]);
+assert.deepEqual(filterYoutrackFilms(yFilms,{...yOptions,localWatched:"watched",stateFilter:"Discovery",freshness:"recent"}).map((item) => item.idReadable),["FILMPOC-1"]);
+assert.deepEqual(filterYoutrackFilms(yFilms,{...yOptions,movaryWatchlistKeys:null}),[]);
+assert.deepEqual(filterYoutrackFilms(yFilms,{...yOptions,watchlistOnly:true}),[]);
+const badge = (keys, filmKey) => renderToStaticMarkup(React.createElement(MovaryWatchlistBadge,{keys,filmKey}));
+assert.match(badge(kKeys,"task-0"),/On observed Movary watchlist.*ID unverified/);
+assert.match(badge(yKeys,"FILMPOC-1"),/On observed Movary watchlist.*ID unverified/);
+assert.equal(badge(kKeys,"task-2"),"", "ambiguous IDs cannot get a badge");
+assert.equal(badge(yKeys,"FILMPOC-4"),"", "absence does not claim a negative status");
+assert.equal(badge(null,"FILMPOC-1"),"", "unavailable source does not get a badge");
 
 const calls = [], props = {snapshot,films,getId,getKey,getTitle,onSelect:(film) => calls.push(["select",film.id]),onPrepare:(entry) => calls.push(["prepare",entry.tmdb_id]),prepareDisabled:false};
 const rendered = renderToStaticMarkup(React.createElement(MovaryWatchlist,props));
