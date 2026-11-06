@@ -99,9 +99,11 @@ source field and asks the user to verify identity and edits: the saved evidence
 does not record the original title and cannot prove the current title or field
 value is unchanged. Changed IDs or invalid source evidence withhold the source
 year. The existing private input contains source-listed years with available
-source evidence for 87 of 130 films; this is input coverage, not a fresh live
-tracker readback, verified release-year count or real-film browser check.
-Fictional tests cover missing/malformed evidence, changed IDs and year
+source evidence for 87 of 130 films. A subsequent read-only YouTrack check
+matched all 130 film IDs and source-year values against the input and found
+that 87 stored years passed the exact UI helper's identity and evidence guard.
+This is not a verified release-year count or real-film browser check. Fictional
+tests cover missing/malformed evidence, changed IDs and year
 precedence. Both updated UI bundles matched their reviewed builds after
 deployment; the complete YouTrack watched property and checked app state were
 unchanged. No tracker metadata was rewritten.
