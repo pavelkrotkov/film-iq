@@ -6,14 +6,67 @@ import os
 import time
 import urllib.error
 import urllib.request
+from datetime import UTC, datetime
 
 from direct_review_links_check import fixtures
+from enrichment import FixtureSource, enrich
 from kaneo_direct_reviews import FIELD, IDENTITY_FIELD, api_key_opener, import_reviews
+from kaneo_enrich import KaneoBackend
 from kaneo_smoke import call, ensure_field
 from kaneo_watched_refresh import prepare
 
 BASE = "http://kaneo:5173"
 stage = "readiness"
+
+
+class FixtureOffers(FixtureSource):
+    def availability(self, source_id):
+        value = super().availability(source_id)
+        assert value is not None
+        value["results"]["US"]["buy"] = [{"provider_id": 103, "provider_name": "Fixture Purchase"}]
+        return value
+
+
+def lifecycle_round_trip(opener, project):
+    """Exercise real worker/API transitions on a distinct fictional task."""
+    backend = KaneoBackend.__new__(KaneoBackend)
+    backend.base, backend.project, backend.opener = BASE, project, opener
+    backend.fields = {
+        "identity": ensure_field(opener, BASE, project, "POC Synthetic External ID", "text"),
+        "year": ensure_field(opener, BASE, project, "POC Year", "number"),
+        "genre": ensure_field(opener, BASE, project, "POC Genre", "text"),
+        "availability": ensure_field(opener, BASE, project, "POC Synthetic Availability", "text"),
+    }
+    task_id = enrich(FixtureOffers(), backend, 4242, datetime.now(UTC))
+
+    def fields():
+        rows = call(opener, BASE, f"/custom-field/task/{task_id}")
+        values = {row["fieldId"]: row["value"] for row in rows}
+        assert len(values) == len(rows), "duplicate fictional custom fields"
+        return values
+
+    initial = fields()
+    assert initial[backend.fields["identity"]] == "4242"
+    assert initial[backend.fields["year"]] == "2001"
+    assert initial[backend.fields["genre"]] == "Drama"
+    offers = json.loads(initial[backend.fields["availability"]])
+    assert offers["subscription"] == ["Fixture Stream"]
+    assert offers["rent"] == ["Fixture Rental"]
+    assert offers["buy"] == ["Fixture Purchase"]
+
+    for state in ("to-do", "in-progress", "in-review", "archived", "in-progress"):
+        call(opener, BASE, f"/task/status/{task_id}", {"status": state}, "PUT")
+        record = call(opener, BASE, f"/task/{task_id}")
+        assert record["id"] == task_id and record["status"] == state
+        assert record["title"] == "Synthetic imported film 4242"
+        assert record["description"] == "Synthetic source synopsis."
+        assert fields() == initial, "fictional custom fields changed during transition"
+        board = call(opener, BASE, f"/task/tasks/{project}?limit=100&page=1")
+        buckets = board["data"]
+        archived = [row["id"] for row in buckets["archivedTasks"]]
+        active = [row["id"] for column in buckets["columns"] for row in column["tasks"]]
+        assert (task_id in archived) == (state == "archived")
+        assert (task_id in active) == (state != "archived")
 
 
 def main():
@@ -62,7 +115,17 @@ def main():
     stage = "fields"
     identity = ensure_field(setup, BASE, project, IDENTITY_FIELD, "text")
     review = ensure_field(setup, BASE, project, FIELD, "text")
-    status = call(setup, BASE, f"/column/{project}")[0]["slug"]
+    columns = call(setup, BASE, f"/column/{project}")
+    names = {"to-do": "Discovery", "in-progress": "Evaluation", "in-review": "Watchlist"}
+    assert names.keys() <= {column["slug"] for column in columns}
+    for column in columns:
+        if column["slug"] in names:
+            call(setup, BASE, f"/column/{column['id']}", {"name": names[column["slug"]]}, "PUT")
+    observed = {
+        column["slug"]: column["name"] for column in call(setup, BASE, f"/column/{project}")
+    }
+    assert all(observed.get(slug) == name for slug, name in names.items())
+    status = "to-do"
     stage = "task"
     task = call(
         setup,
@@ -146,6 +209,8 @@ def main():
         )
         == ""
     )
+    stage = "lifecycle"
+    lifecycle_round_trip(opener, project)
     stage = "denial"
     try:
         call(urllib.request.build_opener(urllib.request.ProxyHandler({})), BASE, f"/task/{task}")
@@ -153,7 +218,7 @@ def main():
         assert error.code in (401, 403)
     else:
         raise AssertionError("Fictional server allowed an unauthenticated read")
-    print("Fictional real-server key, preview, import, retry, clear and denial checks passed")
+    print("Fictional real-server key, import, lifecycle, metadata and denial checks passed")
 
 
 if __name__ == "__main__":

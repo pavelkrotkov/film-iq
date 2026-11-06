@@ -31,7 +31,7 @@ def command(args, *, timeout=120):
     if result.returncode:
         # Child output can contain fictional credentials; do not surface it.
         safe = re.search(
-            rb"Fictional bearer check failed at (?:readiness|signup|workspace|project|fields|task|key|owner|watched|preview|apply|retry|clear|denial): [A-Za-z]+(?: HTTP [0-9]{3})?",
+            rb"Fictional bearer check failed at (?:readiness|signup|workspace|project|fields|task|key|owner|watched|preview|apply|retry|clear|lifecycle|denial): [A-Za-z]+(?: HTTP [0-9]{3})?",
             result.stderr,
         )
         if safe:
@@ -90,7 +90,9 @@ def main():
     for name in (
         "direct_review_links.py",
         "direct_review_links_check.py",
+        "enrichment.py",
         "kaneo_direct_reviews.py",
+        "kaneo_enrich.py",
         "kaneo_movary_mapping.py",
         "kaneo_smoke.py",
     ):
@@ -101,6 +103,12 @@ def main():
     (directory / "source/film_iq").mkdir(mode=0o700)
     for name in ("__init__.py", "personal_identity.py", "personal_io.py"):
         shutil.copyfile(ROOT / "src/film_iq" / name, directory / "source/film_iq" / name)
+    (directory / "source/film_iq/availability").mkdir(mode=0o700)
+    for name in ("__init__.py", "tmdb.py"):
+        shutil.copyfile(
+            ROOT / "src/film_iq/availability" / name,
+            directory / "source/film_iq/availability" / name,
+        )
     shutil.copyfile(POC / "kaneo-bearer-fixture/client.py", directory / "source/client.py")
     env = {
         "POSTGRES_DB": "kaneo",
@@ -148,7 +156,7 @@ def main():
         )
         if (
             output.strip()
-            != b"Fictional real-server key, preview, import, retry, clear and denial checks passed"
+            != b"Fictional real-server key, import, lifecycle, metadata and denial checks passed"
         ):
             raise RuntimeError("Unexpected fictional fixture result")
         print(output.decode().strip())
