@@ -20,7 +20,23 @@ provider-denial messages. The separate enrichment bridge update was still
 pending at the time of this UI deployment; the UI update alone does not prove
 that a provider denial reaches the browser.
 
+## Preference confirmation
+
+The installed widget checks the preference confirmation against the selected
+film and the previewed values. Once the server acknowledges those values, it
+retains them in the visible preference map even if the follow-up read fails or
+returns a missing or different value. An invalid or unconfirmed response keeps
+the draft and reports that the save may have completed. Fictional tests exercise
+the actual handler for these outcomes and a selection change during confirmation.
+
+The combined UI update was verified by installed-package and served-bundle
+readback, with the complete watched property, projections, visible preferences,
+settings, usages and attachment metadata unchanged. It did not write film or
+preference records. This preference workflow has not been tested in a real-film
+browser session.
+
 ```sh
 node docs/research/tracker-poc/ui/youtrack_save_workflow_check.mjs
 node docs/research/tracker-poc/ui/youtrack_navigation_check.mjs
+node docs/research/tracker-poc/ui/youtrack_preference_confirm_check.mjs
 ```
