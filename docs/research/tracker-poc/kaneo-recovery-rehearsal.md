@@ -41,6 +41,15 @@ load function. This is an offline one-record check, not a service-restart,
 concurrent-write or live-data recovery test. Its fictional files remain in a
 new ignored project-local directory.
 
+`uv run python docs/research/tracker-poc/preferences_service_recovery_check.py`
+adds a fictional application-process check. One fresh Python interpreter uses
+the actual preference WSGI application to preview and save a preference, then
+another reads it and rejects a preview issued by the earlier process. An SQLite
+backup is opened by a third interpreter, which repeats those assertions. Kaneo
+authentication and film access are mocked, and no network listener is started.
+This does not test a live Waitress restart, a concurrent backup, real sessions,
+or recovery of the live preference database.
+
 ## Repeat with fresh fictional directories
 
 Run from this worktree root. The pinned images must already be local. These
