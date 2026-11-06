@@ -59,6 +59,16 @@ export function expireCachedResults(results, now = Date.now()) {
   return {results: changed ? remaining : results, next};
 }
 
+// A cached result for a newly selected external identity must replace an old
+// result for the same tracker record, but not overwrite a current refresh.
+export function hydrateCachedResult(previous, key, id, data) {
+  if (!Number.isInteger(id) || id <= 0 || data?.tmdb_id !== id) return previous;
+  const current = previous[key];
+  const currentId = current?.requestedId ?? current?.data?.tmdb_id;
+  if (current && currentId === id) return previous;
+  return {...previous, [key]: {data, requestedId:id}};
+}
+
 export function tmdbId(film) {
   const value = film.fields["POC TMDB ID"];
   return typeof value === "string" && /^[1-9][0-9]{0,9}$/.test(value) &&

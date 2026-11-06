@@ -3,7 +3,7 @@ import { filterFilms } from "./film_filters.js";
 import { chooseRemaining, runRemainingBatch } from "./live_batch.js";
 import { matchedLive } from "./kaneo_identity.js";
 import { filterYoutrackFilms } from "./youtrack_filters.js";
-import { attachMatchedLive, mergeLiveResult, remainingLiveFilms, runRemainingLive } from "./youtrack_tmdb.js";
+import { attachMatchedLive, mergeLiveResult, remainingLiveFilms, runRemainingLive, titleNeedsReview } from "./youtrack_tmdb.js";
 import { filterMayExcludeUnknown } from "./metadata_filter_coverage.js";
 
 assert.equal(filterMayExcludeUnknown({freshness: "recent"}), true);
@@ -63,4 +63,18 @@ await runRemainingLive({fetchYouTrack: async (path) => {
 assert.deepEqual(yRequested, [2, 3]);
 assert.deepEqual(filterYoutrackFilms(yShown(), yOptions).map((film) => film.idReadable), ["FILMPOC-1", "FILMPOC-2"]);
 assert.deepEqual(filterYoutrackFilms(yShown(), {...yOptions, showArchived: true}).map((film) => film.idReadable), ["FILMPOC-1", "FILMPOC-2", "FILMPOC-3"]);
+
+// Only an actual response for this film can flag a title difference; missing
+// metadata and the exact original title remain distinct from a mismatch.
+const different = {...live(1), title: "Another fictional title", original_title: "Original fictional title"};
+assert.equal(titleNeedsReview(1, "Fictional 1", different), true);
+assert.equal(titleNeedsReview(2, "Fictional 1", different), false);
+assert.equal(titleNeedsReview(1, "Fictional 1", null), false);
+assert.equal(titleNeedsReview(1, "", different), false);
+assert.equal(titleNeedsReview(1, "Original fictional title", different), false);
+const kReview = [{...kaneo[0], titleNeedsReview: titleNeedsReview(1, kaneo[0].title, different)}, kaneo[1]];
+assert.deepEqual(filterFilms(kReview, {query: "", titleReviewOnly: true}).map((film) => film.id), ["1"]);
+const yReview = attachMatchedLive(yt, {"FILMPOC-1": {data: different}});
+assert.deepEqual(filterYoutrackFilms(yReview, {query: "", titleReviewOnly: true}).map((film) => film.idReadable), ["FILMPOC-1"]);
+assert.equal(yReview[0].live, undefined, "mismatched artwork and providers remain withheld");
 console.log("Filtered unknown metadata and explicit project-wide fictional lookup passed for both UIs");

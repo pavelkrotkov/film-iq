@@ -1,5 +1,5 @@
 import React from "react";
-import { matchesLiveTitle } from "./youtrack_tmdb.js";
+import { titleNeedsReview } from "./youtrack_tmdb.js";
 
 const text = (value) => typeof value === "string" && value.trim() ? value.trim() : "Unknown";
 const year = (value) => {
@@ -9,7 +9,7 @@ const year = (value) => {
 
 // Show only facts from the currently supplied ID; this is not a match decision.
 export function IdentityReview({ expectedId, savedTitle, sourceYear, sourceDirector, data, provider = "TMDB" }) {
-  if (!Number.isInteger(expectedId) || expectedId <= 0 || data?.tmdb_id !== expectedId || matchesLiveTitle(savedTitle, data)) return null;
+  if (!titleNeedsReview(expectedId, savedTitle, data)) return null;
   const directors = Array.isArray(data.directors) && data.directors.length && data.directors.every((item) => typeof item === "string" && item.trim())
     ? data.directors.map((item) => item.trim()).join(", ") : "Unknown";
   return <section role="alert">

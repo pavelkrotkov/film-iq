@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
-import {availabilityTimeLabel, expireCachedResults, fetchCachedMovie, fetchTaskLiveMovie, mergeResult, refreshNotice} from './live_batch.js';
-import {mergeLiveMetadata, mergeLiveResult, readLiveMetadata} from './youtrack_tmdb.js';
+import {availabilityTimeLabel, expireCachedResults, fetchCachedMovie, fetchTaskLiveMovie, hydrateCachedResult, mergeResult, refreshNotice} from './live_batch.js';
+import {matchedLive} from './kaneo_identity.js';
+import {attachMatchedLive, mergeLiveMetadata, mergeLiveResult, readLiveMetadata} from './youtrack_tmdb.js';
 import {providerObservation, providerFreshness} from './youtrack_filters.js';
 
 const expiry = new Date(Date.now() + 60000).toISOString();
@@ -18,6 +19,22 @@ await fetchTaskLiveMovie(task, null, async (url) => {
 await assert.rejects(fetchTaskLiveMovie(task, null, async () => ({ok:true,json:async () => ({...data, cache_expires_at:null})})));
 await assert.rejects(fetchCachedMovie(task,null,async () => ({ok:true,json:async () => ({...data,cache_expires_at:'2000-01-01T00:00:00Z'})})));
 const issue = {idReadable:'FILMPOC-1', customFields:[{name:'FilmIQ TMDB ID',value:123}]};
+// Correcting an ID should replace only the old identity's cached entry, even
+// when it previously failed. A same-ID refresh/error must not be overwritten.
+const older = {requestedId:122,data:{tmdb_id:122,title:'Fictional'}};
+const taskWithTitle = {...task,title:'Fictional'};
+const issueWithTitle = {...issue,summary:'Fictional'};
+for (const entry of [older,{requestedId:122,error:'Fictional failure'}]) {
+  const k = hydrateCachedResult({'fictional-task':entry},'fictional-task',123,data);
+  const y = hydrateCachedResult({'FILMPOC-1':entry},'FILMPOC-1',123,data);
+  assert.equal(matchedLive(taskWithTitle,k['fictional-task']),data);
+  assert.equal(attachMatchedLive([issueWithTitle],y)[0].live,data);
+}
+const current = {'fictional-task':{requestedId:123,error:'Latest refresh failed'}};
+assert.equal(hydrateCachedResult(current,'fictional-task',123,data),current,'same-ID cache must not hide a refresh failure');
+const currentSuccess = {'fictional-task':{requestedId:123,data:{...data,title:'Fresh explicit refresh'}}};
+assert.equal(hydrateCachedResult(currentSuccess,'fictional-task',123,data),currentSuccess,'same-ID cache must not replace current live data');
+assert.equal(hydrateCachedResult({},'fictional-task',123,{...data,tmdb_id:122})['fictional-task'],undefined);
 const cached = await readLiveMetadata({fetchYouTrack:async (url, options) => {
   assert.equal(url,'issues/FILMPOC-1/extensionEndpoints/filmiq-tmdb-live-isolated/metadata/cached');
   assert.deepEqual(options,{method:'GET'});

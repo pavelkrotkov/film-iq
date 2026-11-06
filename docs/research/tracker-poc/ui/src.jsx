@@ -5,7 +5,7 @@ import {
   providers,
   syntheticAvailability,
 } from "./film_filters.js";
-import { BATCH_LIMIT, availabilityTimeLabel, chooseBatch, chooseRemaining, expireCachedResults, fetchCachedMovie, fetchLiveMovie, fetchTaskLiveMovie, mergeResult, refreshNotice, runBatch, runRemainingBatch, safeImdbTitleUrl, tmdbId } from "./live_batch.js";
+import { BATCH_LIMIT, availabilityTimeLabel, chooseBatch, chooseRemaining, expireCachedResults, fetchCachedMovie, fetchLiveMovie, fetchTaskLiveMovie, hydrateCachedResult, mergeResult, refreshNotice, runBatch, runRemainingBatch, safeImdbTitleUrl, tmdbId } from "./live_batch.js";
 import { fetchRatings } from "./mdblist_ui.js";
 import { evidenceExplanation, evidenceLabel, sourceLabel } from "./source_evidence.js";
 import { clearSavedDraft, currentComments, setCommentDraft } from "./comment_drafts.js";
@@ -23,6 +23,7 @@ import {storedGenreDisplay, storedGenreLabels} from "./stored_genres.js";
 import {Poster} from "./poster.jsx";
 import {IdentityReview} from "./identity_review.jsx";
 import {ReviewIdentity} from "./review_identity.jsx";
+import {titleNeedsReview} from "./youtrack_tmdb.js";
 
 const api = "http://localhost:15173/api";
 const cacheFixture = typeof __FILMIQ_CACHE_FIXTURE__ !== "undefined" && __FILMIQ_CACHE_FIXTURE__;
@@ -182,6 +183,7 @@ function App() {
     [watched, setWatched] = useState(""),
     [freshnessFilter, setFreshnessFilter] = useState("");
   const [showArchived, setShowArchived] = useState(false);
+  const [titleReviewOnly, setTitleReviewOnly] = useState(false);
   const [filmDraft, setFilmDraft] = useState({title: "", description: "", status: "", tmdb: "", year: "", genre: ""}),
     [detailReady, setDetailReady] = useState(false);
   const {title, description, status, tmdb, year, genre: filmGenre} = filmDraft;
@@ -265,7 +267,7 @@ function App() {
         if (!id || !active) continue;
         try {
           const data = await fetchCachedMovie(item, controller.signal);
-          if (active) setLiveResults((previous) => previous[item.id] ? previous : {...previous, [item.id]: {data, requestedId:id}});
+          if (active) setLiveResults((previous) => hydrateCachedResult(previous, item.id, id, data));
         } catch { /* An absent cache remains unknown and never triggers a live request. */ }
       }
     })();
@@ -317,6 +319,7 @@ function App() {
   }
   const shownFilms = useMemo(() => films.map((item) => ({
     ...item, live: matchedLive(item, liveResults[item.id]),
+    titleNeedsReview: titleNeedsReview(tmdbId(item), item.title, liveResults[item.id]?.data),
   })), [films, liveResults]);
   const shownFilm = shownFilms.find((item) => item.id === selected);
   const liveResult = film ? liveResults[film.id]?.data : null;
@@ -396,6 +399,7 @@ function App() {
         genre,
         lifecycle,
         showArchived,
+        titleReviewOnly,
         watched,
         freshnessFilter,
         sortInterest,
@@ -418,13 +422,14 @@ function App() {
       genre,
       lifecycle,
       showArchived,
+      titleReviewOnly,
       watched,
       freshnessFilter,
     ],
   );
   const remainingVisible = chooseRemaining(filtered, liveResults);
   const remainingProject = chooseRemaining(films, liveResults);
-  const incompleteMetadataFilter = filterMayExcludeUnknown({provider, genre, freshness: freshnessFilter});
+  const incompleteMetadataFilter = titleReviewOnly || filterMayExcludeUnknown({provider, genre, freshness: freshnessFilter});
   async function savePreference(event) {
     event.preventDefault();
     setBusy(true);
@@ -627,7 +632,7 @@ function App() {
         {projectListError && <p role="alert">{projectListError}</p>}
         {projectList && !projectList.length && !projectListError && <p>No accessible active projects found.</p>}
         <p className="notice">{movary?.status === "available" ? `Movary watched snapshot observed ${movary.observed_at}. Missing films remain unknown.` : "Movary watched snapshot unavailable for this user or project."}</p>
-        {incompleteMetadataFilter && <p>Active provider, genre or freshness filters can exclude films with unknown metadata, so results may be incomplete. Loading the remaining project films also includes hidden and archived films; failed films require retry, and films without a supplied ID cannot be loaded.</p>}
+        {incompleteMetadataFilter && <p>Active metadata filters can exclude films with unknown metadata, so results may be incomplete. Loading the remaining project films also includes hidden and archived films; failed films require retry, and films without a supplied ID cannot be loaded. Title review only identifies loaded title differences; it does not verify matches.</p>}
         {!!eligible && <section>
           <p>{cacheFixture ? "Fictional cache details can reappear after reload until they expire." : liveCache ? "Cached film details can reappear after reload until they expire, up to seven days." : "Live film details stay available until you close or reload this page."} {unattempted} of {eligible} films have not been loaded yet.</p>
           <button type="button" disabled={!!batch || !pending.length} onClick={() => startLiveBatch(pending)}>Load live details for next {pending.length} films</button>{" "}
@@ -952,6 +957,7 @@ function App() {
                   ))}
                 </select>
                 <label><input type="checkbox" checked={showArchived} onChange={(e) => setShowArchived(e.target.checked)} /> Show archived</label>
+                <label><input type="checkbox" checked={titleReviewOnly} onChange={(e) => setTitleReviewOnly(e.target.checked)} /> Title differences to review</label>
                 <select
                   aria-label="Filter by POC watched status"
                   value={watched}
@@ -1023,6 +1029,7 @@ function App() {
                         {item.fields["POC Year"] || item.live?.year || "UNKNOWN YEAR"}
                       </div>
                       <h3>{item.title}</h3>
+                      {item.titleNeedsReview && <p>Title differs from TMDB; open to review.</p>}
                       {item.live && <p>TMDB match not independently verified</p>}
                       {item.live?.poster_from_previous && <p>Poster from an earlier lookup.</p>}
                       <div className="badges">

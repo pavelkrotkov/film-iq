@@ -23,6 +23,13 @@ export function matchesLiveTitle(title, data) {
     (sameNormalizedTitle(title, data.title) || sameNormalizedTitle(title, data.original_title));
 }
 
+// A mismatch needs two present titles and data for the record's current ID.
+export function titleNeedsReview(expectedId, title, data) {
+  return Number.isInteger(expectedId) && expectedId > 0 && data?.tmdb_id === expectedId &&
+    typeof title === "string" && !!title.trim() && typeof data.title === "string" && !!data.title.trim() &&
+    !matchesLiveTitle(title, data);
+}
+
 export function liveMetadataMatches(film, data) {
   const id = suppliedTmdbId(film);
   return !!id && data?.tmdb_id === id && matchesLiveTitle(film?.summary, data);
@@ -31,7 +38,8 @@ export function liveMetadataMatches(film, data) {
 export function attachMatchedLive(films, results) {
   return films.map((film) => {
     const data = results[film.idReadable]?.data;
-    return liveMetadataMatches(film, data) ? {...film, live: data} : film;
+    return {...film, live: liveMetadataMatches(film, data) ? data : undefined,
+      titleNeedsReview: titleNeedsReview(suppliedTmdbId(film), film.summary, data)};
   });
 }
 

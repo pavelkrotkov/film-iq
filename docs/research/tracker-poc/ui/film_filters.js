@@ -58,12 +58,14 @@ export function filterFilms(films, options) {
     movaryOnly,
     excludeMovaryWatched,
     showArchived,
+    titleReviewOnly,
     movary,
   } = options;
   return films
     .filter(
       (item) =>
         (showArchived || lifecycle === "archived" || String(item.status).toLowerCase() !== "archived") &&
+        (!titleReviewOnly || item.titleNeedsReview) &&
         item.title.toLowerCase().includes(query.toLowerCase()) &&
         (!provider || providers(item)?.includes(provider)) &&
         (!watchlistOnly || preferences?.[item.id]?.watchlist) &&
