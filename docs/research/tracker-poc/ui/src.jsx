@@ -7,7 +7,7 @@ import {
 } from "./film_filters.js";
 import { BATCH_LIMIT, availabilityTimeLabel, chooseBatch, chooseRemaining, expireCachedResults, fetchCachedMovie, fetchLiveMovie, fetchTaskLiveMovie, hydrateCachedResult, mergeResult, refreshNotice, runBatch, runRemainingBatch, safeImdbTitleUrl, tmdbId } from "./live_batch.js";
 import { fetchRatings } from "./mdblist_ui.js";
-import { evidenceExplanation, evidenceLabel, sourceLabel } from "./source_evidence.js";
+import { evidenceExplanation, evidenceLabel, sourceEvidenceLinks, sourceLabel } from "./source_evidence.js";
 import { clearSavedDraft, currentComments, saveComment, setCommentDraft } from "./comment_drafts.js";
 import { emptyPreference, markPreferenceSaved, mergeFilmDraft, syncPreferenceDraft } from "./preference_draft.js";
 import { missingLinkedFilm, unavailableFilterSources } from "./availability_state.js";
@@ -51,12 +51,11 @@ function SourceEvidence({ film }) {
   let evidence;
   try {
     evidence = JSON.parse(film.fields["POC Evidence"] || "null");
-  } catch {
-    return <p>Source evidence unavailable.</p>;
-  }
-  const links = Array.isArray(evidence?.links) ? evidence.links : [];
+  } catch { evidence = null; }
+  const {status, links} = sourceEvidenceLinks(evidence, tmdbId(film));
   return <section>
     <h3>Source evidence</h3>
+    {status === "mismatch" && <p role="alert">The supplied TMDB ID differs from the original source evidence. Links are hidden until reviewed; source-listed year and director may refer to the previous ID.</p>}
     {film.fields["POC Identity Provenance"] && <p>Identity provenance: {film.fields["POC Identity Provenance"]}</p>}
     <p>Imported provenance describes the original source assertion. If a title is edited, revalidate it against the saved external identity and tracker history; editing does not update or independently verify provenance.</p>
     {film.fields["POC Source Year"] && <p>Source-listed year: {film.fields["POC Source Year"]} (not independently verified).</p>}

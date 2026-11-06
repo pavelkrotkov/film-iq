@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { evidenceExplanation, evidenceLabel, sourceLabel } from "./source_evidence.js";
+import { evidenceExplanation, evidenceLabel, sourceEvidenceLinks, sourceLabel } from "./source_evidence.js";
 
 assert.equal(evidenceLabel("critic_selection"), "Critic selection or ballot");
 assert.equal(evidenceLabel("award_outcome"), "Award outcome");
@@ -13,4 +13,12 @@ assert.equal(evidenceLabel(unknownSource.kind), "Evidence type unknown (source l
 assert.equal(evidenceLabel("<script>"), "Evidence type unknown (source label: <script>)");
 assert.match(evidenceExplanation([unknownSource]), /not established/);
 assert.match(evidenceExplanation([]), /not established/);
+const fictional = {tmdb_id:42,status:"available",links:[{source_id:"Fictional source",url:"https://example.invalid/film"}]};
+assert.deepEqual(sourceEvidenceLinks(fictional,42), {status:"available",links:fictional.links});
+assert.deepEqual(sourceEvidenceLinks(fictional,43), {status:"mismatch",links:[]});
+assert.deepEqual(sourceEvidenceLinks(fictional,null), {status:"mismatch",links:[]});
+assert.deepEqual(sourceEvidenceLinks({...fictional,tmdb_id:"42"},42), {status:"unknown",links:[]});
+assert.deepEqual(sourceEvidenceLinks({...fictional,links:null},42), {status:"unknown",links:[]});
+assert.deepEqual(sourceEvidenceLinks(null,42), {status:"unknown",links:[]});
+assert.deepEqual(sourceEvidenceLinks({tmdb_id:42,status:"unknown",links:[]},42), {status:"unknown",links:[]});
 console.log("Evidence labels do not invent individual reviews");
