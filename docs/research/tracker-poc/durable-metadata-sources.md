@@ -40,6 +40,10 @@ more than one distinct nondeprecated publication year and three had multiple
 director claims. Director and genre values are item IDs, not resolved names.
 These are Wikidata assertions, not independently verified film identities or
 canonical years. No claims were imported into either tracker or Movary.
+The [private review report](../../../.cache/tracker-poc/private/watched-wikidata-review-20261106.md)
+is local and ignored by Git; its claim-level links, qualifiers and references
+can be inspected without changing a tracker record. A fictional check exercises
+the report renderer and its approved-scope validation.
 
 ## Wikipedia: separately licensed prose
 
