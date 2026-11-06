@@ -432,7 +432,7 @@ function App() {
         </section> : <p>Movary watched status unknown.</p>}
         {!cacheFixture && <ReviewedCatalog source="youtrack" filmId={film.idReadable} tmdbId={suppliedTmdbId(film)} trackerTitle={film.summary} host={host} />}
         <h3>{cacheFixture ? "Fictional cached details" : "Live TMDB details"}</h3>
-        <p>{cacheFixture ? "Offline fictional data, read from the project-local fixture cache." : "Optional lookup for the supplied TMDB ID; verify that the result matches this film. Results stay in this page and are not saved to YouTrack."}</p>
+        <p>{cacheFixture ? "Offline fictional data, read from the project-local fixture cache." : liveCache ? "Optional lookup for the supplied TMDB ID; verify that the result matches this film. Details may reappear from a local cache for up to seven days; they are not saved to YouTrack." : "Optional lookup for the supplied TMDB ID; verify that the result matches this film. Results stay in this page and are not saved to YouTrack."}</p>
         <button type="button" disabled={locked || liveBusy || liveRateLimited || !suppliedTmdbId(film)} onClick={loadLiveMetadata}>{liveBusy ? "Loading metadata…" : cacheFixture ? "Read fictional cache" : "Load live metadata"}</button>
         {!suppliedTmdbId(film) && <p>A supplied TMDB ID is required.</p>}
         {liveEntry?.error && <p role="alert">{liveEntry.error}</p>}
@@ -488,7 +488,7 @@ function App() {
           <label><input type="checkbox" checked={excludeMovaryWatched} disabled={movary?.status !== "available" && !excludeMovaryWatched} onChange={(e) => {setExcludeMovaryWatched(e.target.checked); if (e.target.checked) setMovaryOnly(false);}} /> Exclude known watched in Movary</label>
           <label><input type="checkbox" checked={sortInterest} disabled={preferences === null && !sortInterest} onChange={(e) => setSortInterest(e.target.checked)} /> Sort by interest</label>
         </div>
-        <p>Live film details stay available until you close or reload this page.</p>
+        <p>{cacheFixture ? "Fictional cache details can reappear after reload until they expire." : liveCache ? "Cached film details can reappear after reload until they expire, up to seven days." : "Live film details stay available until you close or reload this page."}</p>
         <button type="button" disabled={locked || liveBusy || liveRateLimited || !eligibleLiveFilms(visible, liveResults).length} onClick={() => loadNextLiveBatch()}>{liveBatch ? `Loading ${liveBatch.done}/${liveBatch.total}…` : "Load live metadata for next 30 displayed films"}</button>{" "}
         <button type="button" disabled={locked || liveBusy || liveRateLimited || !remainingVisible.length} onClick={() => loadNextLiveBatch(true)}>Load all {remainingVisible.length} remaining visible films (up to {remainingVisible.length * 3} requests)</button>{" "}
         {incompleteMetadataFilter && <><p>Active provider, genre or freshness filters can exclude films with unknown metadata, so results may be incomplete. Loading the remaining project films also includes hidden and archived films; failed films require retry, and films without a supplied ID cannot be loaded.</p><button type="button" disabled={locked || liveBusy || liveRateLimited || !remainingProject.length} onClick={() => loadNextLiveBatch(true, false, true)}>Load all {remainingProject.length} remaining project films, including archived (up to {remainingProject.length * 3} TMDB API requests, plus poster images)</button>{" "}</>}

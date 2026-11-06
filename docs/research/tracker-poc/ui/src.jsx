@@ -629,7 +629,7 @@ function App() {
         <p className="notice">{movary?.status === "available" ? `Movary watched snapshot observed ${movary.observed_at}. Missing films remain unknown.` : "Movary watched snapshot unavailable for this user or project."}</p>
         {incompleteMetadataFilter && <p>Active provider, genre or freshness filters can exclude films with unknown metadata, so results may be incomplete. Loading the remaining project films also includes hidden and archived films; failed films require retry, and films without a supplied ID cannot be loaded.</p>}
         {!!eligible && <section>
-          <p>Live film details stay available until you close or reload this page. {unattempted} of {eligible} films have not been loaded yet.</p>
+          <p>{cacheFixture ? "Fictional cache details can reappear after reload until they expire." : liveCache ? "Cached film details can reappear after reload until they expire, up to seven days." : "Live film details stay available until you close or reload this page."} {unattempted} of {eligible} films have not been loaded yet.</p>
           <button type="button" disabled={!!batch || !pending.length} onClick={() => startLiveBatch(pending)}>Load live details for next {pending.length} films</button>{" "}
           <button type="button" disabled={!!batch || !remainingVisible.length} onClick={() => startLiveBatch(remainingVisible, true)}>Load all {remainingVisible.length} remaining visible films (up to {remainingVisible.length * 3} requests)</button>{" "}
           {incompleteMetadataFilter && <><button type="button" disabled={!!batch || !remainingProject.length} onClick={() => startLiveBatch(remainingProject, true)}>Load all {remainingProject.length} remaining project films, including archived (up to {remainingProject.length * 3} TMDB API requests, plus poster images)</button>{" "}</>}
@@ -699,7 +699,7 @@ function App() {
                         <p>US availability: {liveMovie.availability.status}. {liveMovie.availability.offers.map((offer) => `${offer.provider} (${offer.kind})`).join(", ") || (liveMovie.availability.status === "complete" ? "No offers reported" : "Availability unknown")}. Checked: {liveMovie.availability.checked_at}.</p>
                         {liveMovie.availability_attempt && <p>Latest check was {liveMovie.availability_attempt}; showing the earlier complete observation.</p>}
                         {liveMovie.availability.provider_url && <p><a href={liveMovie.availability.provider_url} target="_blank" rel="noreferrer">View provider information on TMDB ↗</a></p>}
-                        <p>Fetched on demand; these results are not saved to Kaneo. Provider entitlement is unverified.</p>
+                        <p>{cacheFixture ? "These fictional details come from a local cache and are not saved to Kaneo." : liveCache ? "Film details may come from a local cache for up to seven days; they are not saved to Kaneo. Provider entitlement is unverified." : "Fetched on demand; these results are not saved to Kaneo. Provider entitlement is unverified."}</p>
                       </div>
                     )}
                   </section>
