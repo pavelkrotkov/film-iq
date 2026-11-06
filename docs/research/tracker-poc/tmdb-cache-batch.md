@@ -84,6 +84,19 @@ matched before and after. This verifies the real cache-read path, not a live
 provider refresh or real-world scheduling. No schedule was installed or is
 authorized by that check.
 
+A later single manual `--refresh-window 5` verification used this mode for
+five approved films. All five refreshes and their cache readbacks completed;
+four availability attempts were complete and one was unknown. The retained
+availability for one film was unknown, not a claim that no provider exists.
+No request outcome was unconfirmed and the guard made no retries. Five target
+YouTrack cache files changed; all non-target cache files and the complete Kaneo
+cache were unchanged. The checked issue records, watched property and
+preferences were unchanged, and the recorded Kaneo bridge settings were
+restored. None of these five responses triggered the guard's check for retaining
+a stronger prior availability observation after an incomplete attempt; that
+case remains covered by fictional tests, not this live run. This one-time
+on-demand verification did not install or authorize a schedule.
+
 ## Optional periodic refresh windows
 
 The default runner only fills cache misses. To refresh an existing observation
