@@ -228,9 +228,11 @@ function App() {
       } catch {
         setMovary(null);
       }
+      return true;
     } catch (e) {
       setLoaded(false);
       setError(e.message);
+      return false;
     } finally {
       setBusy(false);
     }
@@ -461,10 +463,11 @@ function App() {
   }
   async function save(event) {
     event.preventDefault();
+    if (!loaded || !detailReady) { setError("Reload films before saving these edits."); return; }
     if (!title.trim()) { setError("Title cannot be blank."); return; }
     setBusy(true);
     setError("");
-    let submitting = false;
+    let submitting = false, acknowledged = 0;
     try {
       const metadata = metadataChanges(film.metadata, {year, genre: filmGenre}, metadataDirty.current);
       const identityChanged = filmFieldsDirty.current.tmdb && tmdb !== (film.fields["POC TMDB ID"] || "");
@@ -473,23 +476,28 @@ function App() {
         if (!tmdb) throw new Error("A saved TMDB ID cannot be cleared here; use tracker administration.");
         fieldId = await identityField(request, project, tmdb, film.id);
       }
-      submitting = true;
+      const update = async (path, body) => {
+        submitting = true;
+        await request(path, "PUT", body);
+        acknowledged++;
+      };
       if (filmFieldsDirty.current.title && title.trim() !== film.title)
-        await request(`/task/title/${encodeURIComponent(film.id)}`, "PUT", { title: title.trim() });
+        await update(`/task/title/${encodeURIComponent(film.id)}`, { title: title.trim() });
       if (filmFieldsDirty.current.description)
-        await request(`/task/description/${encodeURIComponent(film.id)}`, "PUT", {description});
+        await update(`/task/description/${encodeURIComponent(film.id)}`, {description});
       if (filmFieldsDirty.current.status && status !== film.status)
-        await request(`/task/status/${encodeURIComponent(film.id)}`, "PUT", {
+        await update(`/task/status/${encodeURIComponent(film.id)}`, {
           status,
         });
-      if (fieldId) await request("/custom-field/value", "PUT", {taskId: film.id, fieldId, value: tmdb});
+      if (fieldId) await update("/custom-field/value", {taskId: film.id, fieldId, value: tmdb});
       for (const {fieldId: metadataField, value} of metadata)
-        await request("/custom-field/value", "PUT", {taskId: film.id, fieldId: metadataField, value});
+        await update("/custom-field/value", {taskId: film.id, fieldId: metadataField, value});
       detailDirty.current = false;
       filmFieldsDirty.current = {title: false, description: false, status: false, tmdb: false};
       metadataDirty.current = {year: false, genre: false, genreReset: false};
-      await refresh();
+      if (!await refresh() && acknowledged) setError("Film changes saved, but films could not be reloaded. Reload to confirm the displayed record.");
     } catch (e) {
+      if (submitting) setLoaded(false);
       setError(submitting ? `Update may be partial. Reload to check: ${e.message}` : `Could not save: ${e.message}`);
       setBusy(false);
     }
@@ -668,6 +676,7 @@ function App() {
             {error}
           </p>
         )}
+        {!loaded && project && <button type="button" disabled={busy} onClick={refresh}>Reload films</button>}
         {film ? (
           <section className="detail">
             <a href="#" onClick={guardNavigation}>← Back to discovery</a>
@@ -742,13 +751,13 @@ function App() {
                 <form onSubmit={save}>
                   <label>
                     Title
-                    <input value={title} onChange={(e) => { detailDirty.current = true; filmFieldsDirty.current.title = true; setFilmDraft({...filmDraft, title: e.target.value}); }} maxLength="200" required disabled={!detailReady || busy} />
+                    <input value={title} onChange={(e) => { detailDirty.current = true; filmFieldsDirty.current.title = true; setFilmDraft({...filmDraft, title: e.target.value}); }} maxLength="200" required disabled={!detailReady || busy} readOnly={!loaded} />
                   </label>
-                  <label>Supplied TMDB ID (not independently verified)<input inputMode="numeric" value={tmdb} onChange={(e) => {detailDirty.current = true; filmFieldsDirty.current.tmdb = true; setFilmDraft({...filmDraft, tmdb: e.target.value});}} disabled={!detailReady || busy} /></label>
+                  <label>Supplied TMDB ID (not independently verified)<input inputMode="numeric" value={tmdb} onChange={(e) => {detailDirty.current = true; filmFieldsDirty.current.tmdb = true; setFilmDraft({...filmDraft, tmdb: e.target.value});}} disabled={!detailReady || busy} readOnly={!loaded} /></label>
                   <p>Changing this ID does not verify the match. Live lookup is optional and uses your authenticated Kaneo session.</p>
-                  <label>Stored release year<input inputMode="numeric" value={year} onChange={(e) => {detailDirty.current = true; metadataDirty.current.year = true; setFilmDraft({...filmDraft, year: e.target.value});}} disabled={!detailReady || busy} readOnly={!film.metadata.year.editable} /></label>
-                  <label>Stored genres (one per line)<textarea value={filmGenre} onChange={(e) => {detailDirty.current = true; metadataDirty.current.genre = true; metadataDirty.current.genreReset = false; setFilmDraft({...filmDraft, genre: e.target.value});}} disabled={!detailReady || busy} readOnly={!film.metadata.genre.editable} /></label>
-                  {film.metadata.genre.status === "known" && film.metadata.genre.value === "" && filmGenre === "" && <p>No stored genres. <button type="button" disabled={!detailReady || busy || !film.metadata.genre.editable} onClick={() => {detailDirty.current = true; metadataDirty.current.genre = true; metadataDirty.current.genreReset = true; setFilmDraft({...filmDraft, genre: ""});}}>Set genres to unknown</button>{metadataDirty.current.genreReset && " Will reset when saved."}</p>}
+                  <label>Stored release year<input inputMode="numeric" value={year} onChange={(e) => {detailDirty.current = true; metadataDirty.current.year = true; setFilmDraft({...filmDraft, year: e.target.value});}} disabled={!detailReady || busy} readOnly={!loaded || !film.metadata.year.editable} /></label>
+                  <label>Stored genres (one per line)<textarea value={filmGenre} onChange={(e) => {detailDirty.current = true; metadataDirty.current.genre = true; metadataDirty.current.genreReset = false; setFilmDraft({...filmDraft, genre: e.target.value});}} disabled={!detailReady || busy} readOnly={!loaded || !film.metadata.genre.editable} /></label>
+                  {film.metadata.genre.status === "known" && film.metadata.genre.value === "" && filmGenre === "" && <p>No stored genres. <button type="button" disabled={!loaded || !detailReady || busy || !film.metadata.genre.editable} onClick={() => {detailDirty.current = true; metadataDirty.current.genre = true; metadataDirty.current.genreReset = true; setFilmDraft({...filmDraft, genre: ""});}}>Set genres to unknown</button>{metadataDirty.current.genreReset && " Will reset when saved."}</p>}
                   {(!film.metadata.year.editable || !film.metadata.genre.editable) && <p>Release year or genre cannot be edited because its project field is unavailable or invalid.</p>}
                   <p>Stored year and genre are editable fields; clearing either leaves it unknown and does not change source-listed assertions.</p>
                   <label>
@@ -758,6 +767,7 @@ function App() {
                       onChange={(e) => { detailDirty.current = true; filmFieldsDirty.current.description = true; setFilmDraft({...filmDraft, description: e.target.value}); }}
                       rows="7"
                       disabled={!detailReady || busy}
+                      readOnly={!loaded}
                     />
                   </label>
                   <label>
@@ -765,7 +775,7 @@ function App() {
                     <select
                       value={status}
                       onChange={(e) => { detailDirty.current = true; filmFieldsDirty.current.status = true; setFilmDraft({...filmDraft, status: e.target.value}); }}
-                      disabled={!detailReady || busy}
+                      disabled={!loaded || !detailReady || busy}
                     >
                       {Object.entries(states).map(([value, label]) => (
                         <option key={value} value={value}>
@@ -774,7 +784,7 @@ function App() {
                       ))}
                     </select>
                   </label>
-                  <button disabled={busy || !detailReady}>Save to Kaneo</button>
+                  <button disabled={busy || !loaded || !detailReady}>Save to Kaneo</button>
                 </form>
                 <form onSubmit={savePreference}>
                   <h3>Your local POC preferences</h3>
