@@ -3,7 +3,7 @@ import {readFile} from "node:fs/promises";
 import {transform} from "esbuild";
 import React from "react";
 import {renderToStaticMarkup} from "react-dom/server";
-import {MOVARY_MAPPING_NOTICE, boundMovaryFilm, movaryHistory, unboundMovaryHistory} from "./movary_history.js";
+import {MOVARY_MAPPING_NOTICE, boundMovaryFilm, historicalMovaryHistories, movaryHistory, unboundMovaryHistory} from "./movary_history.js";
 import {suppliedTmdbId} from "./youtrack_tmdb.js";
 
 const source = await readFile(new URL("./youtrack.jsx", import.meta.url), "utf8");
@@ -13,7 +13,7 @@ assert.ok(start >= 0 && end > start);
 const detail = source.slice(start, end);
 const discovery = source.split("\n").find((line) => line.includes("visible.some((item) => boundMovaryFilm"));
 assert.ok(discovery);
-const {code} = await transform(`function Detail({watchedHistory,unboundHistory}) { return <>${detail}</>; }
+const {code} = await transform(`function Detail({watchedHistory,unboundHistory,historicalHistory=[]}) { return <>${detail}</>; }
 function Discovery({visible,movary}) { return <>${discovery}</>; }
 module.exports = {Detail,Discovery};`, {loader:"jsx",format:"cjs"});
 const module = {exports:{}};
@@ -35,6 +35,20 @@ assert.match(unbound,/does not mark the current film watched/);
 assert.match(unbound,/Date unknown.*2 play\(s\)/);
 assert.equal((unbound.match(/2001-02-03/g) || []).length,4,"repeated dates remain visible in both observations");
 assert.doesNotMatch(unbound,/<h3>Watched in Movary<\/h3>/);
+const v3 = {...snapshot,historical:[
+  {issue_id:"FILMPOC-1",observed_at:"2026-01-01T12:00:00Z",reason:"unbound",film:{...entry,tmdb_id:null}},
+  {issue_id:"FILMPOC-1",observed_at:"2026-02-01T12:00:00Z",reason:"superseded",film:entry},
+]};
+const historical = render(module.exports.Detail,{watchedHistory:null,historicalHistory:historicalMovaryHistories(v3,"FILMPOC-1")});
+assert.match(historical,/Movary watched status unknown/);
+assert.match(historical,/Unverified prior mapping/);
+assert.match(historical,/Superseded prior observation/);
+assert.match(historical,/2026-01-01T12:00:00Z/);
+assert.match(historical,/2026-02-01T12:00:00Z/);
+assert.match(historical,/do not determine the current film&#x27;s watched status/);
+assert.equal((historical.match(/2001-02-03/g) || []).length,8,"each historical observation preserves both repeated sources");
+assert.doesNotMatch(historical,/<h3>Watched in Movary<\/h3>/);
+assert.match(render(module.exports.Detail,{watchedHistory:null,historicalHistory:null}),/Earlier Movary observations are unavailable/);
 const shown = render(module.exports.Discovery,{visible:[item("FILMPOC-1",42),item("FILMPOC-2",43)],movary:snapshot});
 assert.match(shown,/matching source events/);
 assert.equal((shown.match(/not been independently verified/g) || []).length,1);

@@ -2,6 +2,7 @@
 const entities = require('@jetbrains/youtrack-scripting-api/entities');
 const VERSION = 'youtrack-poc-movary-watched-v1';
 const BOUND_VERSION = 'youtrack-poc-movary-watched-v2';
+const REFRESH_VERSION = 'youtrack-poc-movary-watched-v3';
 const STORE_VERSION = 'youtrack-poc-movary-projects-v2';
 const PROJECTS = ['FILMPOC', 'FILMREAL'];
 
@@ -57,9 +58,22 @@ function sameObservationEntries(previous, proposed) {
   });
 }
 
+function filmValid(film, bound, allowNull, identities) {
+  if (!keys(film, bound ? 'history_export_dates,played_watch_dates,tmdb_id,watched' : 'history_export_dates,played_watch_dates,watched') ||
+      film.watched !== true ||
+      (bound && ((film.tmdb_id === null && !allowNull) ||
+        (film.tmdb_id !== null && (!Number.isSafeInteger(film.tmdb_id) || film.tmdb_id <= 0 || film.tmdb_id > 2147483647 || identities.has(film.tmdb_id))))) ||
+      !Array.isArray(film.history_export_dates) || !film.history_export_dates.every(date) ||
+      !Array.isArray(film.played_watch_dates) || !film.played_watch_dates.every(event =>
+        keys(event, 'date,plays') && date(event.date) && Number.isSafeInteger(event.plays) && event.plays > 0)) return false;
+  if (bound && film.tmdb_id !== null) identities.add(film.tmdb_id);
+  return true;
+}
+
 function snapshot(value, legacy = false) {
-  const expected = legacy ? 'complete,films,observed_at,source,version' : 'complete,films,observed_at,project,source,version';
-  if (!keys(value, expected) || ![VERSION, BOUND_VERSION].includes(value.version) || (legacy && value.version !== VERSION) ||
+  const expected = legacy ? 'complete,films,observed_at,source,version' :
+    value && value.version === REFRESH_VERSION ? 'complete,films,historical,observed_at,project,source,version' : 'complete,films,observed_at,project,source,version';
+  if (!keys(value, expected) || ![VERSION, BOUND_VERSION, REFRESH_VERSION].includes(value.version) || (legacy && value.version !== VERSION) ||
       value.source !== 'Movary' || value.complete !== true || !observed(value.observed_at) ||
       (!legacy && !PROJECTS.includes(value.project)) ||
       !value.films || typeof value.films !== 'object' || Array.isArray(value.films)) {
@@ -68,17 +82,18 @@ function snapshot(value, legacy = false) {
   const identities = new Set();
   for (const id of Object.keys(value.films)) {
     const film = value.films[id];
-    const bound = value.version === BOUND_VERSION;
+    const bound = value.version !== VERSION;
     if (!/^(FILMPOC|FILMREAL)-[1-9]\d*$/.test(id) || (!legacy && !id.startsWith(value.project + '-')) ||
-        !keys(film, bound ? 'history_export_dates,played_watch_dates,tmdb_id,watched' : 'history_export_dates,played_watch_dates,watched') || film.watched !== true ||
-        (bound && film.tmdb_id !== null && (!Number.isSafeInteger(film.tmdb_id) || film.tmdb_id <= 0 || film.tmdb_id > 2147483647 || identities.has(film.tmdb_id))) ||
-        !Array.isArray(film.history_export_dates) || !film.history_export_dates.every(date) ||
-        !Array.isArray(film.played_watch_dates) || !film.played_watch_dates.every(event =>
-          keys(event, 'date,plays') && date(event.date) && Number.isSafeInteger(event.plays) && event.plays > 0)) {
+        !filmValid(film, bound, value.version === BOUND_VERSION, identities)) {
       throw new Error('Invalid watched film');
     }
-    if (bound && film.tmdb_id !== null) identities.add(film.tmdb_id);
   }
+  if (value.version === REFRESH_VERSION && (!Array.isArray(value.historical) || !value.historical.every(item =>
+    keys(item, 'film,issue_id,observed_at,reason') && typeof item.issue_id === 'string' &&
+    /^(FILMPOC|FILMREAL)-[1-9]\d*$/.test(item.issue_id) && item.issue_id.startsWith(value.project + '-') &&
+    observed(item.observed_at) && !older(value.observed_at, item.observed_at) &&
+    ['unbound','superseded'].includes(item.reason) && filmValid(item.film, true, true, new Set()) &&
+    ((item.reason === 'unbound') === (item.film.tmdb_id === null))))) throw new Error('Invalid historical evidence');
   return value;
 }
 
@@ -127,7 +142,9 @@ exports.httpHandler = {
           if (!saved) return ctx.response.json({status: 'unknown', source: 'Movary', observed_at: null, films: {}});
           const films = {};
           for (const id of Object.keys(saved.films)) if (visible(ctx, project, id)) films[id] = saved.films[id];
-          ctx.response.json({status: 'available', source: saved.source, observed_at: saved.observed_at, films});
+          const result = {status: 'available', source: saved.source, observed_at: saved.observed_at, films};
+          if (saved.version === REFRESH_VERSION) result.historical = saved.historical.filter(item => visible(ctx, project, item.issue_id));
+          ctx.response.json(result);
         } catch (_) { error(ctx, 500, 'Watched snapshot unavailable'); }
       }
     },
@@ -136,7 +153,7 @@ exports.httpHandler = {
       handle: function(ctx) {
         if (!allowedUser(ctx)) return error(ctx, 401, 'Sign-in required');
         let proposed;
-        try { proposed = snapshot(ctx.request.json()); }
+        try { proposed = snapshot(ctx.request.json()); if (proposed.version === REFRESH_VERSION) throw new Error('Use refresh'); }
         catch (_) { return error(ctx, 400, 'Invalid watched snapshot'); }
         try {
           for (const id of Object.keys(proposed.films)) {
@@ -157,12 +174,60 @@ exports.httpHandler = {
           if (previous && older(proposed.observed_at, previous.observed_at)) {
             return error(ctx, 409, 'A newer watched snapshot already exists');
           }
+          if (previous && (previous.version === REFRESH_VERSION || older(previous.observed_at, proposed.observed_at))) {
+            return error(ctx, 409, 'Use the guarded refresh for a newer observation');
+          }
           if (previous && !older(previous.observed_at, proposed.observed_at) && !older(proposed.observed_at, previous.observed_at) &&
               !sameObservationEntries(previous, proposed)) {
             return error(ctx, 409, 'Same-observation watched mapping differs; no snapshot was replaced');
           }
         } catch (_) { return error(ctx, 500, 'Stored watched snapshot unavailable'); }
         // Validate every row and check access before the single property write.
+        current.projects[proposed.project] = proposed;
+        ctx.currentUser.extensionProperties.filmMovarySnapshot = JSON.stringify(current);
+        ctx.response.json({status: 'imported', films: Object.keys(proposed.films).length});
+      }
+    },
+    {
+      scope: 'global', method: 'POST', path: '/refresh',
+      handle: function(ctx) {
+        if (!allowedUser(ctx)) return error(ctx, 401, 'Sign-in required');
+        let proposed, current, previous;
+        try {
+          const input = ctx.request.json();
+          if (!keys(input, 'complete,films,observed_at,project,source,version') || input.version !== REFRESH_VERSION) throw new Error('Invalid refresh');
+          proposed = snapshot({...input, historical: []});
+        } catch (_) { return error(ctx, 400, 'Invalid watched refresh'); }
+        try {
+          current = stored(ctx.currentUser.extensionProperties.filmMovarySnapshot);
+          previous = current.projects[proposed.project];
+          if (previous) {
+            const ids = [...Object.keys(previous.films), ...(previous.historical || []).map(item => item.issue_id)];
+            if (ids.some(id => !visible(ctx, proposed.project, id))) return error(ctx, 409, 'Existing watched entries are unavailable; no snapshot was replaced');
+          }
+          for (const id of Object.keys(proposed.films)) {
+            if (!visible(ctx, proposed.project, id)) return error(ctx, 404, 'One or more films are unavailable');
+            if (entities.Issue.findById(id).fields['FilmIQ TMDB ID'] !== proposed.films[id].tmdb_id) return error(ctx, 409, 'A supplied film identity no longer matches its issue');
+          }
+          if (previous && !older(previous.observed_at, proposed.observed_at)) {
+            if (previous.version === REFRESH_VERSION && !older(proposed.observed_at, previous.observed_at) && sameObservationEntries(previous, proposed)) {
+              return ctx.response.json({status: 'unchanged', films: Object.keys(previous.films).length});
+            }
+            return error(ctx, 409, 'A newer watched observation is required');
+          }
+          const historical = previous && previous.version === REFRESH_VERSION ? previous.historical.slice() : [];
+          if (previous) for (const id of Object.keys(previous.films)) {
+            const old = previous.films[id], next = proposed.films[id];
+            const oldId = Object.prototype.hasOwnProperty.call(old, 'tmdb_id') ? old.tmdb_id : null;
+            const oldFilm = {watched: old.watched, tmdb_id: oldId, played_watch_dates: old.played_watch_dates, history_export_dates: old.history_export_dates};
+            const same = oldId !== null && next && oldId === next.tmdb_id &&
+              JSON.stringify([old.played_watch_dates.map(event => [event.date, event.plays]), old.history_export_dates]) ===
+              JSON.stringify([next.played_watch_dates.map(event => [event.date, event.plays]), next.history_export_dates]);
+            if (!same) historical.push({issue_id: id, observed_at: previous.observed_at, reason: oldId === null ? 'unbound' : 'superseded', film: oldFilm});
+          }
+          proposed.historical = historical;
+          snapshot(proposed);
+        } catch (_) { return error(ctx, 500, 'Stored watched snapshot unavailable'); }
         current.projects[proposed.project] = proposed;
         ctx.currentUser.extensionProperties.filmMovarySnapshot = JSON.stringify(current);
         ctx.response.json({status: 'imported', films: Object.keys(proposed.films).length});
@@ -183,12 +248,14 @@ exports.httpHandler = {
             return error(ctx, 409, 'Existing watched entries are unavailable; no snapshot was replaced');
           }
           if (previous.version === VERSION) return ctx.response.json({status: 'already-legacy', films: Object.keys(previous.films).length});
+          if (previous.version === REFRESH_VERSION && previous.historical.length) return error(ctx, 409, 'Historical evidence cannot be represented by the legacy format');
           const films = {};
           for (const id of Object.keys(previous.films)) {
             const film = previous.films[id];
             films[id] = {watched: film.watched, played_watch_dates: film.played_watch_dates, history_export_dates: film.history_export_dates};
           }
-          current.projects[request.project] = {...previous, version: VERSION, films};
+          const {historical, ...legacy} = previous;
+          current.projects[request.project] = {...legacy, version: VERSION, films};
         } catch (_) { return error(ctx, 500, 'Stored watched snapshot unavailable'); }
         ctx.currentUser.extensionProperties.filmMovarySnapshot = JSON.stringify(current);
         ctx.response.json({status: 'restored', films: Object.keys(current.projects[request.project].films).length});

@@ -19,7 +19,7 @@ const context = {
 };
 vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../movary.js'), 'utf8'), context);
 const endpoints = context.exports.httpHandler.endpoints;
-const users = Object.fromEntries(['alice', 'bob', 'legacy', 'empty', 'bound', 'mixed', 'guest'].map(login => [login, {
+const users = Object.fromEntries(['alice', 'bob', 'legacy', 'empty', 'bound', 'mixed', 'refresh', 'initial', 'order', 'guest'].map(login => [login, {
   login, isBanned: false, extensionProperties: {filmPreferences: 'unchanged'},
 }]));
 
@@ -56,7 +56,7 @@ assert.equal(call('alice', 'POST', '/import', real).status, 200);
 assert.deepEqual(call('alice', 'GET', '/watched', {project: 'FILMPOC'}).value.films, poc.films);
 assert.deepEqual(call('alice', 'GET', '/watched', {project: 'FILMREAL'}).value.films, real.films);
 const newer = {...poc, observed_at: '2026-11-05T12:00:00.000002Z'};
-assert.equal(call('alice', 'POST', '/import', newer).status, 200);
+assert.equal(call('alice', 'POST', '/import', newer).status, 409, 'newer data must use guarded refresh');
 const old = users.alice.extensionProperties.filmMovarySnapshot;
 assert.equal(call('alice', 'POST', '/import', {...poc, observed_at: '2026-11-05T12:00:00.000001Z'}).status, 409);
 assert.equal(call('alice', 'POST', '/import', {...poc, observed_at: '2026-11-05T07:00:00.000001-05:00'}).status, 409);
@@ -89,7 +89,7 @@ v1.films = {'FILMPOC-1': watched, 'FILMREAL-1': watched};
 users.legacy.extensionProperties.filmMovarySnapshot = JSON.stringify(v1);
 assert.deepEqual(call('legacy', 'GET', '/watched', {project: 'FILMPOC'}).value.films, poc.films);
 assert.deepEqual(call('legacy', 'GET', '/watched', {project: 'FILMREAL'}).value.films, real.films);
-assert.equal(call('legacy', 'POST', '/import', {...real, observed_at: '2026-11-06T12:00:00Z'}).status, 200);
+assert.equal(call('legacy', 'POST', '/import', {...real, observed_at: '2026-11-06T12:00:00Z'}).status, 409);
 assert.deepEqual(call('legacy', 'GET', '/watched', {project: 'FILMPOC'}).value.films, poc.films);
 // Empty v1 data has no project identity and is retained without inventing one.
 users.empty.extensionProperties.filmMovarySnapshot = JSON.stringify({...v1, films: {}});
@@ -150,4 +150,53 @@ assert.deepEqual(restored.projects.FILMREAL,JSON.parse(preRestore).projects.FILM
 const restoredRaw = users.legacy.extensionProperties.filmMovarySnapshot;
 assert.deepEqual(call('legacy','POST','/restore-legacy',{project:'FILMPOC'}).value,{status:'already-legacy',films:1});
 assert.equal(users.legacy.extensionProperties.filmMovarySnapshot,restoredRaw);
+
+// New observations are mapped independently of old unbound evidence. The
+// handler derives retained history from its complete stored property.
+assert.equal(call('refresh','POST','/import',mixedV2).status,200);
+registry['FILMPOC-2'].fields['FilmIQ TMDB ID'] = 43;
+const newerV3 = {...mixedV2,version:'youtrack-poc-movary-watched-v3',
+  observed_at:'2026-11-06T12:00:00Z',films:{
+    'FILMPOC-1':{...watched,tmdb_id:42},'FILMPOC-2':{...watched,tmdb_id:43},
+  }};
+assert.equal(call('refresh','POST','/refresh',newerV3).status,200);
+let refreshed = call('refresh','GET','/watched',{project:'FILMPOC'}).value;
+assert.deepEqual(refreshed.films,newerV3.films);
+assert.deepEqual(refreshed.historical,[{issue_id:'FILMPOC-2',observed_at:mixedV2.observed_at,reason:'unbound',film:mixedV2.films['FILMPOC-2']}]);
+const refreshedRaw = users.refresh.extensionProperties.filmMovarySnapshot;
+assert.deepEqual(call('refresh','POST','/refresh',newerV3).value,{status:'unchanged',films:2});
+assert.equal(users.refresh.extensionProperties.filmMovarySnapshot,refreshedRaw);
+assert.equal(call('refresh','POST','/refresh',{...newerV3,films:{...newerV3.films,'FILMPOC-1':{...watched,tmdb_id:42,history_export_dates:[]}}}).status,409);
+assert.equal(call('refresh','POST','/refresh',{...newerV3,historical:[]}).status,400);
+assert.equal(call('refresh','POST','/refresh',{...newerV3,films:{...newerV3.films,'FILMPOC-1':{...watched,tmdb_id:null}}}).status,400);
+assert.equal(call('refresh','POST','/import',{...mixedV2,observed_at:'2026-11-07T12:00:00Z'}).status,409);
+assert.equal(users.refresh.extensionProperties.filmMovarySnapshot,refreshedRaw);
+const laterV3 = {...newerV3,observed_at:'2026-11-07T12:00:00Z',films:{'FILMPOC-1':newerV3.films['FILMPOC-1']}};
+assert.equal(call('refresh','POST','/refresh',laterV3).status,200);
+refreshed = call('refresh','GET','/watched',{project:'FILMPOC'}).value;
+assert.deepEqual(refreshed.historical,[
+  {issue_id:'FILMPOC-2',observed_at:mixedV2.observed_at,reason:'unbound',film:mixedV2.films['FILMPOC-2']},
+  {issue_id:'FILMPOC-2',observed_at:newerV3.observed_at,reason:'superseded',film:newerV3.films['FILMPOC-2']},
+]);
+const laterRaw = users.refresh.extensionProperties.filmMovarySnapshot;
+registry['FILMPOC-2'].isVisibleTo = () => false;
+assert.equal(call('refresh','POST','/refresh',laterV3).status,409, 'hidden historical entries cannot be ignored');
+assert.equal(users.refresh.extensionProperties.filmMovarySnapshot,laterRaw);
+registry['FILMPOC-2'].isVisibleTo = () => true;
+assert.equal(call('refresh','POST','/restore-legacy',{project:'FILMPOC'}).status,409, 'historical evidence cannot fit v1');
+assert.equal(users.refresh.extensionProperties.filmMovarySnapshot,laterRaw);
+registry['FILMPOC-1'].fields['FilmIQ TMDB ID'] = 99;
+const changedId = {...laterV3,observed_at:'2026-11-08T12:00:00Z',films:{'FILMPOC-1':{...watched,tmdb_id:99}}};
+assert.equal(call('refresh','POST','/refresh',changedId).status,200);
+refreshed = call('refresh','GET','/watched',{project:'FILMPOC'}).value;
+assert.deepEqual(refreshed.historical[2],{issue_id:'FILMPOC-1',observed_at:laterV3.observed_at,reason:'superseded',film:laterV3.films['FILMPOC-1']});
+registry['FILMPOC-1'].fields['FilmIQ TMDB ID'] = 42;
+assert.equal(call('initial','POST','/refresh',newerV3).status,200);
+assert.equal(call('initial','POST','/restore-legacy',{project:'FILMPOC'}).status,200);
+assert.equal('tmdb_id' in call('initial','GET','/watched',{project:'FILMPOC'}).value.films['FILMPOC-1'],false, 'legacy conversion drops identity binding');
+assert.equal(call('order','POST','/refresh',newerV3).status,200);
+const reordered = {...newerV3,observed_at:'2026-11-07T12:00:00Z',films:Object.fromEntries(
+  Object.entries(newerV3.films).map(([id,film])=>[id,{...film,played_watch_dates:film.played_watch_dates.map(event=>({plays:event.plays,date:event.date}))}]))};
+assert.equal(call('order','POST','/refresh',reordered).status,200);
+assert.deepEqual(call('order','GET','/watched',{project:'FILMPOC'}).value.historical,[], 'equivalent event key order does not create history');
 console.log('Synthetic Movary snapshot validation, isolation, repeats, and visibility checks passed');

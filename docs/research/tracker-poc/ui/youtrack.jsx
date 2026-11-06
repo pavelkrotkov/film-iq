@@ -8,7 +8,7 @@ import { filmBaseline, filmChanges, hasDuplicateTmdbId, parseOptionalTmdbId } fr
 import { handleExternalRoute, hasUnsavedPageDraft, routeLocation } from "./youtrack_navigation.js";
 import { TmdbCredits } from "./tmdb_credits.jsx";
 import { filterMayExcludeUnknown } from "./metadata_filter_coverage.js";
-import { MOVARY_MAPPING_NOTICE, boundMovaryFilm, movaryHistory, unboundMovaryHistory } from "./movary_history.js";
+import { MOVARY_MAPPING_NOTICE, boundMovaryFilm, historicalMovaryHistories, movaryHistory, unboundMovaryHistory } from "./movary_history.js";
 import { ReviewedCatalog } from "./reviewed_catalog_view.jsx";
 import {storedGenreDisplay, storedGenreLabels} from "./stored_genres.js";
 import {availabilityTimeLabel, expireCachedResults, hydrateCachedResult, refreshNotice} from "./live_batch.js";
@@ -418,6 +418,7 @@ function App() {
   const observation = film ? providerObservation(liveMatches ? {...film, live} : film) : null;
   const watchedHistory = film ? movaryHistory(movary, film.idReadable, suppliedTmdbId(film)) : null;
   const unboundHistory = film ? unboundMovaryHistory(movary, film.idReadable) : null;
+  const historicalHistory = film ? historicalMovaryHistories(movary, film.idReadable) : [];
   const unboundWatched = movary?.status === "available" && shownFilms.some((item) => movary.films?.[item.idReadable]?.watched === true && !boundMovaryFilm(movary, item.idReadable, suppliedTmdbId(item)));
   const locked = busy || loadingFilms || restoringLocation || !!pendingPreview || !!pendingNavigation;
   const filmEditLocked = locked || editBaseline?.issueId !== film?.id;
@@ -449,6 +450,16 @@ function App() {
           <p>Snapshot observed {unboundHistory.observedAt || "time unknown"}. This entry's film identity is unverified and may not match the current film. It does not mark the current film watched.</p>
           {unboundHistory.plays === null ? <p>Play entries unavailable.</p> : unboundHistory.plays.length ? <ul>{unboundHistory.plays.map((entry, index) => <li key={index}>{entry.date || "Date unknown"} · {entry.plays} play(s)</li>)}</ul> : <p>No play entries in this snapshot.</p>}
           {unboundHistory.exportDates === null ? <p>History export dates unavailable.</p> : unboundHistory.exportDates.length ? <p>History export dates: {unboundHistory.exportDates.map((date) => date || "unknown").join(", ")}. This is a separate source and is not added to play counts.</p> : <p>No history export dates in this snapshot.</p>}
+        </section>}
+        {historicalHistory === null ? <p>Earlier Movary observations are unavailable.</p> : !!historicalHistory.length && <section>
+          <h3>Earlier Movary observations for this issue</h3>
+          <p>These historical entries do not determine the current film's watched status.</p>
+          {historicalHistory.map((entry, index) => <section key={index}>
+            <h4>{entry.reason === "unbound" ? "Unverified prior mapping" : "Superseded prior observation"}</h4>
+            <p>Observed {entry.observedAt}. {entry.reason === "unbound" ? "The film identity was not established." : `The prior entry used supplied TMDB ID ${entry.tmdbId}; its film identity was not independently verified.`}</p>
+            {entry.plays === null ? <p>Play entries unavailable.</p> : entry.plays.length ? <ul>{entry.plays.map((play, playIndex) => <li key={playIndex}>{play.date || "Date unknown"} · {play.plays} play(s)</li>)}</ul> : <p>No play entries in this observation.</p>}
+            {entry.exportDates === null ? <p>History export dates unavailable.</p> : entry.exportDates.length ? <p>History export dates: {entry.exportDates.map((date) => date || "unknown").join(", ")}. This is a separate source and is not added to play counts.</p> : <p>No history export dates in this observation.</p>}
+          </section>)}
         </section>}
         {!cacheFixture && <ReviewedCatalog source="youtrack" filmId={film.idReadable} tmdbId={suppliedTmdbId(film)} trackerTitle={film.summary} host={host} />}
         <h3>{cacheFixture ? "Fictional cached details" : "Live TMDB details"}</h3>

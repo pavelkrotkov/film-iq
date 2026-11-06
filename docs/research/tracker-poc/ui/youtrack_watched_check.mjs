@@ -27,6 +27,8 @@ assert.deepEqual(filterYoutrackFilms(editedId,{...options,movaryOnly:true}), [],
 assert.ok(filterYoutrackFilms(editedId,{...options,excludeMovaryWatched:true}).some((film) => film.idReadable === "FILMPOC-2"), "unknown watched status remains visible when excluding known watched films");
 assert.deepEqual(ids({...options,movary:{status:"available",films:{"FILMPOC-2":{watched:true}}},movaryOnly:true}), [], "legacy entries without IDs are unknown");
 assert.deepEqual(ids({...options,movary:{status:"available",films:{"FILMPOC-2":{watched:true,tmdb_id:null}}},movaryOnly:true}), [], "unbound entries are unknown");
+assert.deepEqual(ids({...options,movary:{status:"available",films:{},historical:[{issue_id:"FILMPOC-2",film:{watched:true,tmdb_id:2}}]},movaryOnly:true}), [], "historical entries do not satisfy current watched filters");
+assert.ok(ids({...options,movary:{status:"available",films:{},historical:[{issue_id:"FILMPOC-2",film:{watched:true,tmdb_id:2}}]},excludeMovaryWatched:true}).includes("FILMPOC-2"), "historical entries do not count as currently watched");
 assert.ok(ids({...options,movary:{status:"available",films:{"FILMPOC-2":{watched:true,tmdb_id:null}}},excludeMovaryWatched:true}).includes("FILMPOC-2"), "unbound evidence does not exclude the film as watched");
 assert.deepEqual(ids({...options, movaryOnly: true, localWatched: "watched"}), [], "Movary and local watched markers are independent");
 assert.deepEqual(preferences, original, "filters must not change saved preferences");
