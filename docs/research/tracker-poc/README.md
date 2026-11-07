@@ -14,9 +14,16 @@ already configured Mac, see the [local runbook](local-runbook.md) and
 
 The iMac restarted after a cache-scale benchmark encountered a system-wide
 open-file error on November 6. Its kernel panic report does not establish the
-cause; the benchmark may have contributed. The POC services were stopped after
-the restart, and their data has not yet been verified after recovery. The
-benchmark entry point is disabled; see [cache evidence](tmdb-live-cache-candidate.md).
+cause; the benchmark may have contributed. Afterward, a read-only PostgreSQL
+check found 130 tasks in the Kaneo film project, its preference database passed
+SQLite's quick check, and the watched and watchlist sidecars parsed with 27 and
+two entries. Kaneo, its UI and preference service were restarted; its metadata
+bridge remains stopped. These checks do not prove complete data recovery.
+YouTrack's restart reported a corrupted database log page and returned 503; its
+container was stopped again. The November 5 backup passes a gzip integrity
+check but has not been restored or validated, and it predates later POC work.
+No restore has overwritten the current data or backup. The benchmark entry
+point is disabled; see [cache evidence](tmdb-live-cache-candidate.md).
 
 Before the restart, both POC interfaces received a filter and card badge for
 positive, uniquely matched observations from the read-only Movary watchlist.
