@@ -12,6 +12,22 @@ already configured Mac, see the [local runbook](local-runbook.md) and
 
 ## Current local state
 
+The iMac restarted after a cache-scale benchmark encountered a system-wide
+open-file error on November 6. Its kernel panic report does not establish the
+cause; the benchmark may have contributed. The POC services were stopped after
+the restart, and their data has not yet been verified after recovery. The
+benchmark entry point is disabled; see [cache evidence](tmdb-live-cache-candidate.md).
+
+Before the restart, both POC interfaces received a filter and card badge for
+positive, uniquely matched observations from the read-only Movary watchlist.
+The local POC watchlist remains separate. Fictional checks covered combined
+filters and ambiguous or unavailable matches. A read-only YouTrack check
+found both source entries among 132 visible issues and selected both with the
+new filter; this was not a browser walkthrough or identity verification. The
+installed bundles matched their candidates and checked watched, watchlist and
+preference data were unchanged. Kaneo's optional preference and Movary reads
+were also bounded to avoid leaving the interface busy indefinitely.
+
 On 2026-11-06, both POC interfaces received a cache-loading fix: a stalled
 read no longer blocks all later films. Kaneo aborts timed-out requests;
 YouTrack stops after two unresolved Host API reads and shows a notice because
@@ -50,7 +66,7 @@ and [watchlist rollout and
 recovery notes](youtrack-watchlist-poc.md) for the private backup and manual
 refresh limitations.
 
-Both POCs are running with the original 103 candidate and 27 Movary-watched
+Before the restart, both POCs held the original 103 candidate and 27 Movary-watched
 records; YouTrack also contains the two neutral watchlist-film issues described above.
 A paced collection run populated a separate seven-day metadata and US-provider
 cache for all 130 approved IDs in each backend. Cache-only comparison found

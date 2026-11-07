@@ -262,6 +262,25 @@ whole-directory purge scan, took 2.665 seconds (20.50 ms/read) on this local
 host; this excludes HTTP and browser overhead and is not a production scale
 claim. No benchmark contacted TMDB or used personal records.
 
+On 2026-11-06, one fictional in-process run with **1,000 cached records** took
+16.065 seconds for 130 sequential reads and 123.767 seconds for 1,000 reads.
+Each read still scans the full cache for purgeable sections. The earlier
+2.665-second result used only 130 records, so its lower per-read time is not a
+like-for-like latency comparison. Neither measurement includes HTTP, browser
+rendering, tracker queries or provider requests. These are single local runs,
+not production benchmarks, but the 1,000-record result exposes a meaningful
+scaling limitation. Per-operation full scans currently support the documented
+physical-purge and policy checks; dropping them would change that behavior and
+has not been done.
+
+A subsequent run encountered a system-wide open-file error during the
+1,000-read portion, and cleanup failed. The iMac subsequently restarted; the
+kernel panic report says its initialization process exited, but does not
+establish what caused it. The benchmark may have contributed. Its fictional
+files remain in the project-local cache, and its entry point is disabled pending
+investigation. Do not repeat the scale test on this host until the cause is
+understood and a safe test plan is in place.
+
 Fictional browser checks were run in the actual Kaneo UI and restricted-user
 YouTrack iframe. For both, metadata and PNG bytes were intercepted locally;
 the initial fictional availability expired, a cache-only reread restored the
