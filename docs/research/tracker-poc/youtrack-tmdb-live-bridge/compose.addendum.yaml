@@ -1,0 +1,11 @@
+# Explicit on-demand addendum only. Do not enable for unattended operation.
+services:
+  tmdb-live-bridge:
+    environment:
+      FILMIQ_TMDB_ADDENDUM_DIR: /run/filmiq/addendum
+    volumes:
+      - ./tmdb_addendum_candidate.py:/opt/filmiq/poc/tmdb_addendum_candidate.py:ro
+      - "${FILMIQ_ADDENDUM_MANIFEST:?Set original manifest}:/run/filmiq/addendum/film-input.json:ro"
+      - "${FILMIQ_ADDENDUM_WATCHED_PREVIEW:?Set original watched preview}:/run/filmiq/addendum/tmdb-watched-lookup-preview.md:ro"
+      - "${FILMIQ_ADDENDUM_APPROVAL:?Set separately approved addendum}:/run/filmiq/addendum/tmdb-addendum-approval.json:ro"
+      - "${FILMIQ_ADDENDUM_PREVIEW:?Set approved addendum preview}:/run/filmiq/addendum/tmdb-watchlist-two-id-lookup-preview-20261106.md:ro"

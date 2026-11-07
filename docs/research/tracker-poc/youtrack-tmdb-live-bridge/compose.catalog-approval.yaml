@@ -1,0 +1,7 @@
+# Optional read-only approval source for the local catalog, independent of TMDB/cache IDs.
+services:
+  tmdb-live-bridge:
+    environment:
+      FILMIQ_CATALOG_APPROVAL_DIR: /run/filmiq/catalog-approval
+    volumes:
+      - "${FILMIQ_CATALOG_APPROVAL_HOST_DIR:?Set the dedicated catalog approval directory}:/run/filmiq/catalog-approval:ro"

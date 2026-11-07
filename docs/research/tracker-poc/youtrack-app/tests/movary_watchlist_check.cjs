@@ -1,0 +1,65 @@
+/* Fictional, in-process checks for current-user watchlist snapshots. */
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+
+const projects = {FILMREAL: {key:'FILMREAL'}, FILMPOC:{key:'FILMPOC'}};
+const user = (login, allowed) => ({login, ringId:`ring-${login}`, isBanned:false,
+  hasPermission: (key, project) => key === 'READ_ISSUE' && allowed.includes(project.key), extensionProperties:{}});
+const alice = user('alice',['FILMREAL','FILMPOC']), bob = user('bob',['FILMPOC']);
+const guest = user('guest',['FILMREAL']);
+const context = {exports:{}, require: () => ({Project:{findByKey:key=>projects[key] || null}}), Date, JSON, Set};
+vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../movary-watchlist.js'), 'utf8'), context);
+const endpoints = context.exports.httpHandler.endpoints;
+function call(who, method, route, body, project) {
+  const response = {code:200, headers:{}, addHeader(name,value){this.headers[name]=value;}, json(value){this.value=value;}};
+  const endpoint = endpoints.find(item=>item.method===method && item.path===route);
+  endpoint.handle({currentUser:who, request:{json:()=>body, getParameter:key=>key==='project'?project:null}, response});
+  return {status:response.code, value:JSON.parse(JSON.stringify(response.value)), headers:response.headers};
+}
+const entry = {tmdb_id:101,title:'Fictional film',added_at:'2026-11-01 09:02:03'};
+const snap = {version:'tracker-poc-movary-watchlist-v1',project:'FILMREAL',source:'Movary',observed_at:'2026-11-06T12:34:56+00:00',entries:[entry]};
+const exported = () => call(alice,'GET','/property-export').value;
+const initial = exported();
+assert.equal(initial.raw,null);
+assert.equal(call(guest,'GET','/list',null,'FILMREAL').status,401);
+assert.equal(call(bob,'GET','/list',null,'FILMREAL').status,404);
+assert.deepEqual(call(alice,'GET','/list',null,'FILMREAL').value,{status:'unknown',source:'Movary',observed_at:null,entries:[]});
+const importBody = {owner:initial.owner,expected:initial.raw,snapshot:snap};
+assert.equal(call(alice,'POST','/import',importBody).status,200);
+assert.equal(call(alice,'GET','/list',null,'FILMREAL').headers['Cache-Control'],'no-store');
+assert.deepEqual(call(alice,'GET','/list',null,'FILMREAL').value,{status:'available',source:'Movary',observed_at:snap.observed_at,entries:[entry]});
+assert.equal(call(alice,'GET','/list',null,'FILMPOC').value.status,'unknown');
+assert.equal(call(bob,'GET','/list',null,'FILMPOC').value.status,'unknown');
+const after = exported();
+assert.equal(call(alice,'POST','/import',importBody).status,409);
+assert.equal(call(alice,'POST','/import',{...importBody,expected:after.raw}).value.status,'unchanged');
+const changedSameTime = {...snap,entries:[]};
+assert.equal(call(alice,'POST','/import',{...importBody,expected:after.raw,snapshot:changedSameTime}).status,409);
+const newer = {...snap,observed_at:'2026-11-06T12:34:57+00:00',entries:[]};
+assert.equal(call(alice,'POST','/import',{...importBody,expected:after.raw,snapshot:newer}).status,200);
+const current = exported();
+assert.deepEqual(call(alice,'GET','/list',null,'FILMREAL').value.entries,[]);
+assert.equal(call(alice,'POST','/property-restore',{expected:after,backup:initial}).status,409);
+assert.equal(call(alice,'POST','/property-restore',{expected:current,backup:after}).value.status,'restored');
+assert.equal(exported().raw,after.raw);
+assert.equal(call(alice,'POST','/property-restore',{expected:after,backup:initial}).value.status,'restored');
+assert.equal(exported().raw,null);
+assert.equal(call(bob,'POST','/property-restore',{expected:initial,backup:after}).status,400);
+const wrongOwner = {...initial.owner,ring_id:'someone-else'};
+assert.equal(call(alice,'POST','/import',{...importBody,owner:wrongOwner}).status,400);
+const duplicated = {...snap,entries:[entry,entry]};
+assert.equal(call(alice,'POST','/import',{...importBody,snapshot:duplicated}).status,400);
+const invalidDate = {...snap,entries:[{...entry,added_at:'2026-02-30 09:02:03'}]};
+assert.equal(call(alice,'POST','/import',{...importBody,snapshot:invalidDate}).status,400);
+assert.equal(call(alice,'POST','/import',{...importBody,snapshot:{...snap,observed_at:'2026-11-06T12:34:56'}}).status,400);
+assert.equal(alice.extensionProperties.filmMovaryWatchlist,null);
+assert.equal(call(alice,'POST','/import',importBody).status,200);
+const restricted = {...alice, hasPermission:(key, project)=>key==='READ_ISSUE' && project.key==='FILMPOC'};
+assert.equal(call(restricted,'GET','/list',null,'FILMREAL').status,404);
+assert.equal(call(restricted,'GET','/property-export').status,409);
+assert.equal(call(restricted,'POST','/property-restore',{expected:after,backup:initial}).status,409);
+assert.equal(call(alice,'GET','/list',null,'FILMREAL').value.entries.length,1);
+assert.equal(call(bob,'GET','/list',null,'FILMPOC').value.status,'unknown');
+console.log('Fictional YouTrack watchlist: project isolation, owner, refresh and restore passed');

@@ -1,0 +1,7 @@
+services:
+  tmdb-live-bridge:
+    environment:
+      FILMIQ_REVIEWED_CATALOG: /run/filmiq/reviewed-catalog.json
+    volumes:
+      - ./reviewed_catalog.py:/opt/filmiq/poc/reviewed_catalog.py:ro
+      - "${FILMIQ_REVIEWED_CATALOG_FILE:?Set the existing reviewed catalog file}:/run/filmiq/reviewed-catalog.json:ro"

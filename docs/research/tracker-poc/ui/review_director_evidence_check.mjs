@@ -1,0 +1,44 @@
+import assert from "node:assert/strict";
+import {readFile} from "node:fs/promises";
+import {transform} from "esbuild";
+import React from "react";
+import {renderToStaticMarkup} from "react-dom/server";
+import {reviewDirectorNames} from "./direct_reviews.js";
+import {filterFilms} from "./film_filters.js";
+import {filterYoutrackFilms} from "./youtrack_filters.js";
+
+const evidence = {input_title:"Fictional film",source_page_title:"Fictional film",source_directors:["Director Alpha"],source_year:null,corroboration_urls:[],identity_caveat:"Source-supplied film identity not independently verified.",details_note:"Additional identity details are retained privately."};
+const link = {url:"https://example.com/review",provider:"Fictional",type:"individual_critic_review",checked_at:"2026-11-05T12:00:00Z",identity_evidence:evidence};
+const raw = JSON.stringify({schema_version:1,tmdb_id:42,links:[link,{...link,url:"https://example.com/other",identity_evidence:{...evidence,source_directors:["Director Beta","Director Alpha"]}}]});
+assert.deepEqual(reviewDirectorNames(raw,42,"Fictional film"),["Director Alpha","Director Beta"]);
+assert.deepEqual(reviewDirectorNames(raw,43,"Fictional film"),[]);
+assert.deepEqual(reviewDirectorNames(raw,42,"Changed title"),[]);
+assert.deepEqual(reviewDirectorNames("invalid",42,"Fictional film"),[]);
+assert.deepEqual(reviewDirectorNames(JSON.stringify({schema_version:1,tmdb_id:42,links:[]}),42,"Fictional film"),[]);
+assert.deepEqual(reviewDirectorNames(JSON.stringify({schema_version:1,tmdb_id:42,links:[{...link,identity_evidence:{...evidence,source_directors:null}}]}),42,"Fictional film"),[]);
+assert.deepEqual(reviewDirectorNames(JSON.stringify({schema_version:1,tmdb_id:42,links:[link,{...link,identity_evidence:{...evidence,input_title:"Another film"}}]}),42,"Fictional film"),[]);
+
+const kaneo = {id:"fixture",title:"Fictional film",status:"discovery",fields:{"POC TMDB ID":"42","POC Direct Review Links":raw}};
+const youtrack = {id:"fixture",idReadable:"FILMPOC-1",summary:"Fictional film",customFields:[{name:"FilmIQ TMDB ID",value:42},{name:"FilmIQ Direct Review Links",value:{text:raw}}]};
+const options = {query:"director beta",preferences:{}};
+assert.equal(filterFilms([kaneo],options).length,1);
+assert.equal(filterYoutrackFilms([youtrack],options).length,1);
+assert.equal(filterFilms([{...kaneo,fields:{...kaneo.fields,"POC TMDB ID":"43"}}],options).length,0);
+assert.equal(filterFilms([{...kaneo,title:"Changed title"}],options).length,0);
+assert.equal(filterYoutrackFilms([{...youtrack,summary:"Changed title"}],options).length,0);
+assert.equal(filterYoutrackFilms([{...youtrack,customFields:[{name:"FilmIQ TMDB ID",value:43},youtrack.customFields[1]]}],options).length,0);
+
+const source = await readFile(new URL("./review_director_evidence.jsx",import.meta.url),"utf8");
+const {code} = await transform(source, {loader:"jsx",format:"cjs"});
+const module = {exports:{}};
+const requireFixture = (name) => name === "react" ? React : name === "./direct_reviews.js" ? {reviewDirectorNames} : assert.fail("Unexpected import");
+new Function("module","exports","require",code)(module,module.exports,requireFixture);
+const render = (props) => renderToStaticMarkup(React.createElement(module.exports.ReviewDirectorEvidence, props));
+const shown = render({raw,filmId:42,title:"Fictional film"});
+assert.match(shown,/review identity evidence/i); assert.match(shown,/Director Alpha, Director Beta/);
+assert.match(shown,/not independently verified/); assert.match(shown,/sources may disagree/);
+assert.equal(render({raw,filmId:43,title:"Fictional film"}),"");
+assert.equal(render({raw,filmId:42,title:"Changed title"}),"");
+assert.equal(render({raw,filmId:42,title:"Fictional film",query:"another name"}),"");
+assert.match(render({raw,filmId:42,title:"Fictional film",query:"director beta"}),/Director Beta/);
+console.log("Stored review identity director search and display retain uncertainty and identity guards");

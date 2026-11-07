@@ -1,0 +1,24 @@
+import assert from "node:assert/strict";
+import { clearSavedDraft, currentComments, saveComment, setCommentDraft } from "./comment_drafts.js";
+
+let drafts = setCommentDraft({}, "film-a", "Thoughts on A");
+assert.equal(drafts["film-b"] ?? "", "", "A's draft must not appear on B");
+drafts = setCommentDraft(drafts, "film-b", "Thoughts on B");
+drafts = clearSavedDraft(drafts, "film-a", "Thoughts on A");
+assert.equal(drafts["film-b"], "Thoughts on B", "Saving A must preserve B's draft");
+drafts = setCommentDraft(drafts, "film-a", "New text");
+assert.equal(clearSavedDraft(drafts, "film-a", "Old text")["film-a"], "New text", "A later edit must survive an earlier save");
+const commentsB = ["B comment"], responseA = ["A comment"];
+assert.equal(currentComments("film-b", "film-a", commentsB, responseA), commentsB, "A late response must not replace B's comments");
+assert.equal(currentComments("film-a", "film-a", commentsB, responseA), responseA);
+let posts = 0, clears = 0, reads = 0;
+const post = async () => { posts++; };
+const clear = () => { clears++; };
+const fresh = await saveComment(post, async () => { reads++; return ["Fictional comment"]; }, clear);
+assert.deepEqual(fresh, {refreshed: true, comments: ["Fictional comment"]});
+const unavailable = await saveComment(post, async () => { reads++; throw new Error("Fictional read failed"); }, clear);
+assert.deepEqual(unavailable, {refreshed: false, comments: null}, "an acknowledged save stays saved if its read fails");
+assert.deepEqual({posts, clears, reads}, {posts: 2, clears: 2, reads: 2});
+await assert.rejects(saveComment(async () => { throw new Error("Fictional post failed"); }, async () => { reads++; }, clear));
+assert.deepEqual({posts, clears, reads}, {posts: 2, clears: 2, reads: 2}, "an unacknowledged write must keep its draft and skip the read");
+console.log("Comment save, failed reload, draft retention and late response isolation passed");

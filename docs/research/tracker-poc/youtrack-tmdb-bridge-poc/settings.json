@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "title": "Synthetic metadata bridge",
+  "properties": {
+    "bridgeUrl": {"type": "string", "title": "Loopback fixture URL"},
+    "bridgeToken": {"type": "string", "format": "secret", "title": "Fixture bridge token"}
+  },
+  "required": ["bridgeUrl", "bridgeToken"]
+}

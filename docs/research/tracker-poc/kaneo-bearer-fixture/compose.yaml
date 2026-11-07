@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:16-alpine@sha256:0cefaabd882e42bcb2a2f3dc56d3ce4770560ba62fd7f197f1a2e008fd5731ab
+    env_file: fixture.env
+    volumes: ["./postgres:/var/lib/postgresql/data"]
+    networks:
+      fictional:
+        aliases: [postgres]
+    logging: {driver: none}
+  kaneo:
+    image: ghcr.io/usekaneo/kaneo:2.49.0@sha256:cd1826b1aba3ce736015cadf6f6c975d923aac00f4b6aaa7aedb29bc722dae49
+    env_file: fixture.env
+    networks:
+      fictional:
+        aliases: [kaneo]
+    logging: {driver: none}
+  client:
+    image: python@sha256:f3fa41d74a768c2fce8016b98c191ae8c1bacd8f1152870a3f9f87d350920b7c
+    env_file: fixture.env
+    command: ["sleep", "infinity"]
+    volumes: ["./source:/work:ro"]
+    networks: [fictional]
+    logging: {driver: none}
+networks:
+  fictional: {internal: true}

@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json.schemastore.org/youtrack-app.json",
+  "name": "filmiq-tmdb-live-isolated",
+  "title": "FilmIQ on-demand TMDB bridge",
+  "description": "Issue-scoped read-through with a server-side approved-ID gate.",
+  "version": "0.1.0",
+  "minYouTrackVersion": "2026.2.0"
+}

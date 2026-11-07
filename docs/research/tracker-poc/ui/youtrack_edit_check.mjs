@@ -1,0 +1,47 @@
+import assert from "node:assert/strict";
+import { filmBaseline, filmChanges, hasDuplicateTmdbId, parseOptionalTmdbId } from "./youtrack_edit.js";
+import {encodeStoredGenres} from "./stored_genres.js";
+
+const film = (id, tmdbId) => ({id, summary: "Fictional", description: "Original synopsis", customFields: [{name: "FilmIQ TMDB ID", value: tmdbId}, {name: "FilmIQ Lifecycle", value: {name: "Discovery"}}, {name: "FilmIQ Release Year", value: 2001}, {name: "FilmIQ Genre", value: "Drama"}, {name: "FilmIQ Source Year", value: 1999}, {name: "FilmIQ Director", value: "Source-listed director"}]});
+const records = [film("1", 42), film("2", null)];
+const baseline = filmBaseline(records[0]);
+const draft = {title: "Fictional", synopsis: "Original synopsis", state: "Discovery", tmdbId: "42", releaseYear: "2001", genre: "Drama"};
+assert.equal(parseOptionalTmdbId(" "), null);
+assert.equal(parseOptionalTmdbId(" 42 "), 42);
+for (const value of ["0", "-1", "1.5", "01", "2147483648", "abc"]) assert.throws(() => parseOptionalTmdbId(value));
+assert.equal(hasDuplicateTmdbId(records, 42), true);
+assert.equal(hasDuplicateTmdbId(records, 42, "1"), false);
+assert.equal(hasDuplicateTmdbId(records, 99), false);
+assert.throws(() => hasDuplicateTmdbId([{id: "bad", customFields: []}], 99), /Cannot verify/);
+assert.deepEqual(filmChanges(baseline, draft).changes, {});
+assert.deepEqual(filmChanges(baseline, {...draft, title: "Edited"}).changes, {summary: "Edited"}, "title-only update must not overwrite synopsis or fields");
+assert.deepEqual(filmChanges(baseline, {...draft, tmdbId: "99"}).changes, {customFields: [{name: "FilmIQ TMDB ID", $type: "SimpleIssueCustomField", value: 99}]}, "ID-only update must not overwrite title or synopsis");
+assert.deepEqual(filmChanges(baseline, {...draft, synopsis: "Edited synopsis"}).changes, {description: "Edited synopsis"});
+assert.deepEqual(filmChanges(baseline, {...draft, releaseYear: "2002", genre: "Comedy"}).changes, {customFields: [{name: "FilmIQ Release Year", $type: "SimpleIssueCustomField", value: 2002}, {name: "FilmIQ Genre", $type: "SimpleIssueCustomField", value: encodeStoredGenres(["Comedy"])}]}, "edits must not modify source assertions");
+assert.deepEqual(filmChanges(baseline, {...draft, releaseYear: "", genre: ""}).changes, {customFields: [{name: "FilmIQ Release Year", $type: "SimpleIssueCustomField", value: null}, {name: "FilmIQ Genre", $type: "SimpleIssueCustomField", value: null}]}, "clearing creates explicit null values");
+for (const year of ["0", "-1", "2001.5", "02001", "10000", "abcd"]) assert.throws(() => filmChanges(baseline, {...draft, releaseYear: year}), /Release year/);
+assert.throws(() => filmChanges(baseline, {...draft, genre: "   "}), /one nonblank genre/);
+assert.deepEqual(filmChanges(baseline, {...draft, genre:"Drama\nComedy, dark"}).changes, {customFields:[{name:"FilmIQ Genre", $type:"SimpleIssueCustomField", value:encodeStoredGenres(["Drama", "Comedy, dark"])}]});
+const multi = film("multi", 42); multi.customFields.find((item) => item.name === "FilmIQ Genre").value = encodeStoredGenres(["Drama", "Comedy"]);
+assert.equal(filmBaseline(multi).genre, "Drama\nComedy");
+assert.deepEqual(filmChanges(filmBaseline(multi), {...draft, genre:"Drama\nComedy"}).changes, {}, "unchanged multi-genre data must not be rewritten");
+const knownEmpty = film("empty", 42); knownEmpty.customFields.find((item) => item.name === "FilmIQ Genre").value = encodeStoredGenres([]);
+assert.deepEqual(filmChanges(filmBaseline(knownEmpty), {...draft, genre:""}).changes, {});
+assert.deepEqual(filmChanges(filmBaseline(knownEmpty), {...draft, genre:"", genreReset:true}).changes, {customFields:[{name:"FilmIQ Genre", $type:"SimpleIssueCustomField", value:null}]});
+const badGenres = film("invalid", 42); badGenres.customFields.find((item) => item.name === "FilmIQ Genre").value = "filmiq-genres-v1:broken";
+assert.equal(filmBaseline(badGenres).genreEditable, false);
+const missing = film("3", null); missing.customFields = missing.customFields.filter((item) => !["FilmIQ Genre", "FilmIQ Release Year"].includes(item.name));
+assert.deepEqual(filmChanges(filmBaseline(missing), {...draft, tmdbId: "", releaseYear: "2002", genre: "Comedy"}).changes, {}, "unavailable fields must not be written");
+const cleared = film("4", null); cleared.customFields.find((item) => item.name === "FilmIQ Release Year").value = null; cleared.customFields.find((item) => item.name === "FilmIQ Genre").value = "";
+assert.deepEqual(filmChanges(filmBaseline(cleared), {...draft, tmdbId: "", releaseYear: "", genre: ""}).changes, {}, "empty existing values must survive unrelated edits");
+const duplicate = film("5", null); duplicate.customFields.push({name: "FilmIQ Release Year", value: 2003}, {name: "FilmIQ Genre", value: "Comedy"});
+const absentValues = film("6", null); delete absentValues.customFields.find((item) => item.name === "FilmIQ Release Year").value; delete absentValues.customFields.find((item) => item.name === "FilmIQ Genre").value;
+const malformed = film("7", null); malformed.customFields.find((item) => item.name === "FilmIQ Release Year").value = "2001"; malformed.customFields.find((item) => item.name === "FilmIQ Genre").value = 42;
+for (const issue of [duplicate, absentValues, malformed]) {
+  const bad = filmBaseline(issue);
+  assert.equal(bad.yearEditable, false); assert.equal(bad.genreEditable, false);
+  assert.deepEqual(filmChanges(bad, {...draft, tmdbId: "", title: "Edited"}).changes, {summary: "Edited"}, "invalid project fields must not be overwritten");
+}
+assert.throws(() => filmChanges(baseline, {...draft, tmdbId: ""}), /Clearing/);
+assert.deepEqual(filmChanges(filmBaseline(records[1]), {...draft, tmdbId: ""}).changes, {});
+console.log("YouTrack TMDB input, duplicate preflight and field-specific update checks passed");

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/youtrack-app.json",
+  "name": "filmiq-poc",
+  "title": "FilmIQ POC",
+  "description": "Synthetic film browser experiment.",
+  "version": "0.1.0",
+  "minYouTrackVersion": "2026.2.0",
+  "vendor": {"name": "FilmIQ POC"},
+  "widgets": [{
+    "key": "films",
+    "name": "FilmIQ POC",
+    "extensionPoint": "MAIN_MENU_ITEM",
+    "indexPath": "films/index.html",
+    "showHeader": false
+  }]
+}

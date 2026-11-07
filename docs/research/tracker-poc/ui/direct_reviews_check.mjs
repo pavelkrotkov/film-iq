@@ -1,0 +1,16 @@
+import assert from "node:assert/strict";
+import { readDirectReviews, reviewsMatchTitle, safeReviewUrl } from "./direct_reviews.js";
+const identity_evidence = {input_title:"Film",source_page_title:"Film",source_directors:["Director One","Director Two"],source_year:null,corroboration_urls:[],identity_caveat:"Source-supplied film identity not independently verified.",details_note:"Additional identity details are retained privately."};
+const link = {url:"https://example.com/review",provider:"Example",type:"individual_critic_review",checked_at:"2026-11-05T12:00:00Z",identity_evidence};
+const stored = JSON.stringify({schema_version:1,tmdb_id:42,links:[link]});
+assert.deepEqual(readDirectReviews(stored,"42")[0].identity_evidence.source_directors,["Director One","Director Two"]);
+assert.equal(reviewsMatchTitle(readDirectReviews(stored,"42"),"Film"),true);
+assert.equal(reviewsMatchTitle(readDirectReviews(stored,"42"),"Different title"),false);
+assert.equal(readDirectReviews(stored,"43"),null);
+assert.equal(readDirectReviews("invalid","42"),null);
+assert.equal(safeReviewUrl("https://user:password@example.com/review"),null);
+assert.equal(safeReviewUrl("javascript:alert(1)"),null);
+assert.equal(readDirectReviews(JSON.stringify({schema_version:1,tmdb_id:42,links:[{...link,type:"unsupported"}]}),"42"),null);
+assert.equal(readDirectReviews(JSON.stringify({schema_version:1,tmdb_id:42,links:[{...link,identity_evidence:{...identity_evidence,source_directors:[]}}]}),"42"),null);
+assert.equal(readDirectReviews(JSON.stringify({schema_version:1,tmdb_id:42,links:[{...link,identity_evidence:{...identity_evidence,corroboration_urls:["https://example.com"]}}]}),"42"),null);
+console.log("Direct-review UI identity, type and safe-link checks passed");

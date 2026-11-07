@@ -1,0 +1,32 @@
+name: film-iq-tracker-poc
+
+services:
+  postgres:
+    image: postgres:16-alpine@sha256:0cefaabd882e42bcb2a2f3dc56d3ce4770560ba62fd7f197f1a2e008fd5731ab
+    env_file: ../../../.cache/tracker-poc/secrets.env
+    volumes:
+      - ../../../.cache/tracker-poc/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kaneo -d kaneo"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  kaneo:
+    image: ghcr.io/usekaneo/kaneo:2.49.0@sha256:cd1826b1aba3ce736015cadf6f6c975d923aac00f4b6aaa7aedb29bc722dae49
+    env_file: ../../../.cache/tracker-poc/secrets.env
+    ports:
+      - "127.0.0.1:15173:5173"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  youtrack:
+    image: jetbrains/youtrack:2026.2.19728@sha256:c5e9cedc6fb1d7bcc9b3b56fc3f63e563623e1cd39396161eb70957991583950
+    ports:
+      - "127.0.0.1:18180:8080"
+    volumes:
+      - ../../../.cache/tracker-poc/youtrack/data:/opt/youtrack/data
+      - ../../../.cache/tracker-poc/youtrack/conf:/opt/youtrack/conf
+      - ../../../.cache/tracker-poc/youtrack/logs:/opt/youtrack/logs
+      - ../../../.cache/tracker-poc/youtrack/backups:/opt/youtrack/backups

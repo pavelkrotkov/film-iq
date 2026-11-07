@@ -1,0 +1,23 @@
+import assert from "node:assert/strict";
+import { createRequire } from "node:module";
+import { build } from "esbuild";
+import React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+
+const require = createRequire(import.meta.url);
+const built = await build({entryPoints: [new URL("./critic_fields.jsx", import.meta.url).pathname], bundle: true, format: "cjs", platform: "node", external: ["react"], write: false});
+const module = {exports: {}};
+new Function("require", "module", "exports", built.outputFiles[0].text)(require, module, module.exports);
+const render = (props) => renderToStaticMarkup(React.createElement(module.exports.CriticFields, props));
+assert.equal(module.exports.criticScore(0), 0);
+assert.equal(module.exports.criticScore("0"), "0");
+assert.equal(module.exports.criticScore(""), "Unknown");
+assert.equal(module.exports.criticScore(null), "Unknown");
+const known = render({score: 0, summary: "Fictional summary"});
+assert.match(known, /Critic score \(source not recorded\): 0/);
+assert.match(known, /Critic summary \(source not recorded\): Fictional summary/);
+assert.doesNotMatch(known, /Synthetic critic summary/);
+assert.match(render({score: null}), /source not recorded\): Unknown/);
+assert.doesNotMatch(render({score: null}), /Critic summary/);
+assert.doesNotMatch(render({summary: "<script>fictional</script>"}), /<script>/);
+console.log("Critic field provenance and unknown handling passed");

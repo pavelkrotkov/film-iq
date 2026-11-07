@@ -1,0 +1,47 @@
+name: filmiq-fictional-recovery
+services:
+  source-db:
+    image: postgres:16-alpine@sha256:0cefaabd882e42bcb2a2f3dc56d3ce4770560ba62fd7f197f1a2e008fd5731ab
+    env_file: source.env
+    volumes: ["./source-db:/var/lib/postgresql/data"]
+    networks:
+      source:
+        aliases: [postgres]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kaneo -d kaneo"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  source-app:
+    image: ghcr.io/usekaneo/kaneo:2.49.0@sha256:cd1826b1aba3ce736015cadf6f6c975d923aac00f4b6aaa7aedb29bc722dae49
+    env_file: source.env
+    ports: ["127.0.0.1:25173:5173"]
+    depends_on:
+      source-db:
+        condition: service_healthy
+    networks: [source]
+  restored-db:
+    image: postgres:16-alpine@sha256:0cefaabd882e42bcb2a2f3dc56d3ce4770560ba62fd7f197f1a2e008fd5731ab
+    env_file: restored.env
+    volumes: ["./restored-db:/var/lib/postgresql/data"]
+    networks:
+      restored:
+        aliases: [postgres]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kaneo -d kaneo"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  restored-app:
+    image: ghcr.io/usekaneo/kaneo:2.49.0@sha256:cd1826b1aba3ce736015cadf6f6c975d923aac00f4b6aaa7aedb29bc722dae49
+    env_file: restored.env
+    ports: ["127.0.0.1:25174:5173"]
+    depends_on:
+      restored-db:
+        condition: service_healthy
+    networks: [restored]
+networks:
+  source:
+    internal: true
+  restored:
+    internal: true
