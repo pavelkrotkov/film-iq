@@ -44,4 +44,7 @@ def discovery_command(
 
 def _read_cohorts(cohort):
     paths = [cohort] if isinstance(cohort, Path) else cohort
-    return [json.loads(path.read_text()) for path in paths]
+    documents = [json.loads(path.read_text()) for path in paths]
+    return [
+        selection for document in documents for selection in document.get("cohorts", [document])
+    ]
