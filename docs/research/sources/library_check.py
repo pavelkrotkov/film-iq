@@ -5,14 +5,58 @@ import sqlite3
 from copy import deepcopy
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from types import SimpleNamespace
 from typing import Any
 from unittest.mock import patch
+
+from build_catalog import Catalogue
 
 from film_iq.discovery_command import discovery_command
 from film_iq.source_library import fingerprint, publish
 
 
+def check_catalogue():
+    catalogue: Any = object.__new__(Catalogue)
+    catalogue.resolved = {}
+    catalogue.provider = SimpleNamespace(TMDbError=RuntimeError)
+    calls = []
+
+    def get(path, params):
+        calls.append(params)
+        return {
+            "total_pages": 2,
+            "total_results": 2,
+            "results": [{"id": params.get("page", 1), "title": "Film", "original_title": "Film"}],
+        }
+
+    catalogue.get = get
+    catalogue.movie = lambda ident: SimpleNamespace(
+        tmdb_id=ident,
+        title="Film",
+        original_title="Film",
+        year=1950,
+        directors=["John Smith"],
+        imdb_title_url=f"https://www.imdb.com/title/tt{ident}/",
+    )
+    row = {"raw_title": "Film", "director": "Smith", "year": 1950}
+    _, result = catalogue.resolve(row)
+    assert result["tmdb_id"] is None and len(calls) == 2
+    assert calls[-1]["page"] == 2
+    catalogue.get = lambda path, params: {
+        "total_pages": 1,
+        "total_results": 2,
+        "results": [{"id": 1, "title": "Film", "original_title": "Film"}],
+    }
+    _, result = catalogue.resolve(row)
+    assert result == {"tmdb_id": None, "reason": "ValueError"}
+    calls.clear()
+    catalogue.get = get
+    assert len(catalogue.candidates({**row, "alternate_titles": ["Published alias"]})) == 2
+    assert {call["query"] for call in calls} == {"Film", "Published alias"}
+
+
 def main():
+    check_catalogue()
     source: dict[str, Any] = {
         "policy": {
             "id": "fictional-list",

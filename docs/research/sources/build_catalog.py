@@ -15,6 +15,8 @@ from types import SimpleNamespace
 
 from film_iq.personal_io import private_json
 
+MATCH_REVIEW = "complete-search-v2"
+
 
 def name_key(value):
     normalized = unicodedata.normalize("NFKD", value or "").casefold()
@@ -80,6 +82,11 @@ def same_work(row, movie):
     return director_match and title_match and year_match
 
 
+def candidate_year_matches(row, candidate):
+    year = str(candidate.get("release_date") or "")[:4]
+    return not row.get("year") or not year.isdigit() or abs(row["year"] - int(year)) <= 1
+
+
 def current_catalogue(directory):
     if directory is None:
         return {}
@@ -112,10 +119,6 @@ class Catalogue:
         self.last_request = 0.0
         self.movies = {}
         self.existing = current_catalogue(existing_cache)
-        self.by_title = {}
-        for ident, movie in self.existing.items():
-            for title in (movie.title, movie.original_title):
-                self.by_title.setdefault(name_key(title), set()).add(ident)
         self.status = self.directory / "progress.json"
         self.resolved = (
             json.loads(self.status.read_text())["observations"] if self.status.exists() else {}
@@ -178,33 +181,51 @@ class Catalogue:
             )
             return result
 
+    def search(self, title, year):
+        parameters = {"query": title, "include_adult": "false"}
+        if year:
+            parameters["year"] = year
+        result = self.get("search/movie", parameters)
+        pages, total = result["total_pages"], result["total_results"]
+        if not isinstance(pages, int) or not 0 <= pages <= 500:
+            raise ValueError("Search cannot be checked completely")
+        results = list(result["results"])
+        for page in range(2, pages + 1):
+            following = self.get("search/movie", {**parameters, "page": page})
+            if following["total_pages"] != pages or following["total_results"] != total:
+                raise ValueError("Search changed during identity review")
+            results.extend(following["results"])
+        if len(results) != total or len({item["id"] for item in results}) != total:
+            raise ValueError("Search result count is incomplete or duplicated")
+        return results
+
     def candidates(self, row):
         if row.get("tmdb_id"):
             return [self.movie(row["tmdb_id"])]
-        names = {
-            name_key(row["raw_title"]),
-            *(name_key(name) for name in row.get("alternate_titles", [])),
+        titles = {row["raw_title"], *row.get("alternate_titles", [])}
+        names = {name_key(title) for title in titles}
+        results = {
+            item["id"]: item
+            for title in sorted(titles)
+            for item in self.search(title, row.get("year"))
         }
-        known = {ident for name in names for ident in self.by_title.get(name, ())}
-        matched = [self.movie(ident) for ident in known if same_work(row, self.existing[ident])]
-        if matched:
-            return matched
-        parameters = {"query": row["raw_title"], "include_adult": "false"}
-        if row.get("year"):
-            parameters["year"] = row["year"]
-        result = self.get("search/movie", parameters)
         # Search proposes candidates; source facts must corroborate each movie.
         return [
             self.movie(candidate["id"])
-            for candidate in result.get("results", [])
-            if names.intersection(
+            for candidate in results.values()
+            if candidate_year_matches(row, candidate)
+            and names.intersection(
                 {name_key(candidate.get("title")), name_key(candidate.get("original_title"))}
             )
         ]
 
     def previous(self, row, key):
         previous = self.resolved.get(key)
-        if not previous or not previous.get("tmdb_id"):
+        if (
+            not previous
+            or not previous.get("tmdb_id")
+            or previous.get("match_review") != MATCH_REVIEW
+        ):
             return None
         cached = self.cached(previous["tmdb_id"])
         return previous if cached is not None and same_work(row, cached) else None
@@ -234,6 +255,7 @@ class Catalogue:
             return key, {
                 "tmdb_id": found.tmdb_id,
                 "imdb_id": imdb,
+                "match_review": MATCH_REVIEW,
                 "evidence": f"TMDB movie/{found.tmdb_id}: source title, supplied identifiers or director/year corroborated",
             }
         except (self.provider.TMDbError, OSError, ValueError, KeyError, TypeError) as exc:
