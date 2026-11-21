@@ -7,12 +7,7 @@ from dataclasses import asdict
 from film_iq.scoring import score
 from film_iq.scoring.a1 import load_evidence
 
-
-def accepted_row(db: sqlite3.Connection | None, revision: str | None, position: int):
-    if db is None or revision is None:
-        return None
-    cursor = db.execute(
-        """SELECT o.raw_context, f.tmdb_id,
+ACCEPTED = """SELECT o.raw_context, f.tmdb_id,
         l.completeness AS accepted_completeness, l.lineage_kind AS accepted_lineage_kind,
         l.lineage AS accepted_lineage, l.eligibility AS accepted_eligibility,
         o.raw_title, o.listed_year AS year, o.director, o.position, o.rank, o.tie, o.locator,
@@ -25,15 +20,34 @@ def accepted_row(db: sqlite3.Connection | None, revision: str | None, position: 
         JOIN entry_observation o ON o.revision_id=r.id AND o.extraction_decision='accepted'
         LEFT JOIN entry_recognition t ON t.entry_id=o.entry_id AND t.revision_id=o.revision_id
         LEFT JOIN current_match m ON m.entry_id=o.entry_id AND m.revision_id=o.revision_id
-        LEFT JOIN film_index f ON f.id=m.film_id
-        WHERE r.id=? AND o.position=?""",
-        (revision, position),
-    )
+        LEFT JOIN film_index f ON f.id=m.film_id"""
+
+
+def accepted_row(db: sqlite3.Connection | None, revision: str | None, position: int):
+    if db is None or revision is None:
+        return None
+    cursor = db.execute(ACCEPTED + " WHERE r.id=? AND o.position=?", (revision, position))
     row = cursor.fetchone()
     if row is None:
         return None
-    facts = json.loads(row[0])
+    return _accepted_facts(row, [column[0] for column in cursor.description])
+
+
+def accepted_rows(db, revisions):
+    if db is None:
+        return {}
+    selected = tuple({revision for revision in revisions if revision is not None})
+    if not selected:
+        return {}
+    placeholders = ",".join("?" for _ in selected)
+    cursor = db.execute(ACCEPTED + f" WHERE r.id IN ({placeholders})", selected)
     names = [column[0] for column in cursor.description]
+    records = [_accepted_facts(row, names) for row in cursor]
+    return {(facts["revision_id"], facts["position"]): (facts, ident) for facts, ident in records}
+
+
+def _accepted_facts(row, names):
+    facts = json.loads(row[0])
     normalized = dict(zip(names[2:], row[2:], strict=True))
     facts["published_at"] = normalized.pop("published_at") or facts["published_at"]
     facts.update(normalized)

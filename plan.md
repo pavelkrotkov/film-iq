@@ -1,5 +1,22 @@
 # film-iq — product, research and implementation plan
 
+## Current user decision — source library and Kaneo (2026-11-20)
+
+The user selected Kaneo as the sole active POC and requested broad suggestion
+source expansion with parallel source, critic and score research. The resulting
+[source library](docs/implementation/source-library.md) contains 1,668 films in
+the existing Kaneo project. Its imported source collection preserves 2,249
+observations across 278 declared editions or ballot scopes, with 277 observations
+retained for identity review. Movary continues to own personal history and ratings.
+
+The source coverage spans annual lists from 2010–2025, published 2026 selections,
+the full National Film Registry through its 2025 class, and explicitly scoped
+festival awards. Preserve exact original titles, ranks, ties, authors and source
+lineage. Complete selected editions and partial archive coverage carry their
+respective status. Replays and award corrections use the existing evidence
+ledger. Source-specific research and implementation are tracked in
+[#113](https://github.com/pavelkrotkov/film-iq/issues/113).
+
 ## Current user decision — recommendation UI (2026-11-04)
 
 The user explicitly prioritized a usable recommendation UI and authorized ADR

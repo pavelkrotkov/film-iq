@@ -3,7 +3,9 @@
 import json
 
 from film_iq.discovery import build_discovery
+from film_iq.discovery_evidence import accepted_rows, recognition
 from film_iq.discovery_works import coalesce_works
+from film_iq.recognition.discovery import component_index
 
 
 def build_discoveries(cohorts, snapshot=None, *, db=None, refresh_status=None):
@@ -13,8 +15,18 @@ def build_discoveries(cohorts, snapshot=None, *, db=None, refresh_status=None):
     revisions = [cohort["revision_id"] or json.dumps(cohort, sort_keys=True) for cohort in cohorts]
     if len(revisions) != len(set(revisions)):
         raise ValueError("duplicate cohort revision; supply each selection once")
+    scores, components = recognition(db), component_index(db)
+    entries = accepted_rows(db, [cohort["revision_id"] for cohort in cohorts])
     reports = [
-        build_discovery(cohort, snapshot, db=db, refresh_status=refresh_status)
+        build_discovery(
+            cohort,
+            snapshot,
+            db=db,
+            refresh_status=refresh_status,
+            public_scores=scores,
+            component_lookup=components,
+            accepted_entries=entries,
+        )
         for cohort in cohorts
     ]
     if len(reports) == 1:

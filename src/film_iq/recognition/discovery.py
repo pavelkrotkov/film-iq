@@ -4,12 +4,17 @@ from film_iq.recognition.reader import current_components, group_components
 from film_iq.recognition.render import component_lines
 
 
-def attach_components(items: list[dict], db) -> list[dict]:
+def component_index(db):
     by_work, by_entry = {}, {}
     for row in current_components(db) if db is not None else []:
         by_entry.setdefault((row["entry_id"], row["revision_id"]), []).append(row)
         if row["tmdb_id"] is not None:
             by_work.setdefault(row["tmdb_id"], []).append(row)
+    return by_work, by_entry
+
+
+def attach_components(items: list[dict], db, *, index=None) -> list[dict]:
+    by_work, by_entry = component_index(db) if index is None else index
     return [_attach(item, by_work, by_entry) for item in items]
 
 

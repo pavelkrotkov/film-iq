@@ -25,7 +25,9 @@ def records(rows: Iterable[tuple[str, str]]) -> Iterator[dict[str, str]]:
 def make_pipeline(root: Path):
     dlt = import_module("dlt")
     # dlt 1.31 probes HOME for global settings; keep this experiment in the worktree.
-    import_module("dlt.common.runtime.run_context").global_dir = lambda: str(root / "global")  # ty: ignore[unresolved-attribute]
+    vars(import_module("dlt.common.runtime.run_context"))["global_dir"] = lambda: str(
+        root / "global"
+    )
     path = root / "dlt.sqlite3"
     return dlt.pipeline(
         pipeline_name="film_iq_b3",

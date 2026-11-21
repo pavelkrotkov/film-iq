@@ -23,11 +23,15 @@ class CuratedList:
     permitted_use: str
     expected_count: int
     evidence_kind: str = "unknown"
+    recognition_context: str = ""
 
     def __post_init__(self) -> None:
         strings = asdict(self)
         del strings["policy"], strings["expected_count"]
+        del strings["recognition_context"]
         _required_strings(strings)
+        if not isinstance(self.recognition_context, str):
+            raise ValueError("typed recognition context must be a string")
         _required_strings(asdict(self.policy))
         if self.evidence_kind not in SELECTIONS:
             raise ValueError(
