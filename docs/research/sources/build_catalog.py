@@ -16,6 +16,7 @@ from types import SimpleNamespace
 from film_iq.personal_io import private_json
 
 MATCH_REVIEW = "complete-search-v2"
+MAX_SEARCH_PAGES = 10
 
 
 def name_key(value):
@@ -189,6 +190,10 @@ class Catalogue:
         pages, total = result["total_pages"], result["total_results"]
         if not isinstance(pages, int) or not 0 <= pages <= 500:
             raise ValueError("Search cannot be checked completely")
+        if pages > MAX_SEARCH_PAGES:
+            raise ValueError(
+                "Source needs narrower identity evidence; search exceeds automatic review scope"
+            )
         results = list(result["results"])
         for page in range(2, pages + 1):
             following = self.get("search/movie", {**parameters, "page": page})
@@ -259,7 +264,8 @@ class Catalogue:
                 "evidence": f"TMDB movie/{found.tmdb_id}: source title, supplied identifiers or director/year corroborated",
             }
         except (self.provider.TMDbError, OSError, ValueError, KeyError, TypeError) as exc:
-            return key, {"tmdb_id": None, "reason": type(exc).__name__}
+            reason = str(exc) if isinstance(exc, ValueError) else type(exc).__name__
+            return key, {"tmdb_id": None, "reason": reason}
 
 
 def main():

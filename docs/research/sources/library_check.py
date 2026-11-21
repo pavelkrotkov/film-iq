@@ -48,7 +48,10 @@ def check_catalogue():
         "results": [{"id": 1, "title": "Film", "original_title": "Film"}],
     }
     _, result = catalogue.resolve(row)
-    assert result == {"tmdb_id": None, "reason": "ValueError"}
+    assert result == {"tmdb_id": None, "reason": "Search result count is incomplete or duplicated"}
+    catalogue.get = lambda path, params: {"total_pages": 11, "total_results": 220, "results": []}
+    _, result = catalogue.resolve(row)
+    assert result["tmdb_id"] is None and "narrower identity evidence" in result["reason"]
     calls.clear()
     catalogue.get = get
     assert len(catalogue.candidates({**row, "alternate_titles": ["Published alias"]})) == 2

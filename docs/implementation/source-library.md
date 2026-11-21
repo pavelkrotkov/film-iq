@@ -86,7 +86,9 @@ audit after 39 field corrections: 993 visible selections against an advertised
 These additions are still undergoing canonical identity checks and are not
 included in the live counts above. Matching now checks complete paged search
 results and published aliases; earlier partial-search receipts cannot bypass
-the new review. Audience ratings remain sparse in Wikidata. The
+the new review. Queries exceeding ten pages remain explicitly unresolved and
+require narrower identity evidence; no first-page match is promoted from them.
+Audience ratings remain sparse in Wikidata. The
 configured MDBList credential still returned HTTP 403 on November 20, 2026.
 Missing scores retain their unknown state and prior verified values survive
 partial or failed refreshes.
