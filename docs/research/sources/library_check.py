@@ -1,16 +1,19 @@
 """Exercise atomic complete-edition imports, replay and independent review binding."""
 
 import json
+import sqlite3
 from copy import deepcopy
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import Any
+from unittest.mock import patch
 
 from film_iq.discovery_command import discovery_command
 from film_iq.source_library import fingerprint, publish
 
 
 def main():
-    source = {
+    source: dict[str, Any] = {
         "policy": {
             "id": "fictional-list",
             "name": "Fictional annual list",
@@ -60,7 +63,7 @@ def main():
         ],
     }
     checksum = fingerprint(source)
-    bundle = {
+    bundle: dict[str, Any] = {
         "version": 1,
         "sources": [source],
         "audits": {
@@ -82,6 +85,7 @@ def main():
         result = publish(bundle, database, output)
         assert result["observations"] == 2 and result["unresolved_observations"] == 1
         first = json.loads(output.read_text())
+        assert first["cohorts"][0]["accepted"] == 2
         discovery = json.loads(discovery_command(output, None, database, "json"))
         assert discovery["total_candidates"] == 2 and discovery["unresolved"] == 1
         assert discovery["accepted"] == 2
@@ -91,11 +95,83 @@ def main():
         changed["sources"][0]["entries"][0]["rank"] = 9
         try:
             publish(changed, database, output)
-        except KeyError:
-            pass
+        except KeyError as exc:
+            assert exc.args == (fingerprint(changed["sources"][0]),)
         else:
             raise AssertionError("Changed source facts must require independent review")
         assert json.loads(output.read_text()) == first
+        with patch("film_iq.source_library.private_json", side_effect=OSError("Index unavailable")):
+            try:
+                publish(bundle, database, output)
+            except OSError as exc:
+                assert str(exc) == "Index unavailable"
+            else:
+                raise AssertionError("Index failure must be reported")
+        assert json.loads(output.read_text()) == first
+        assert publish(bundle, database, output) == result
+        conflicting = []
+        conflicting_audits = {}
+        for year in (2026, 2027):
+            edition = deepcopy(source)
+            edition["policy"]["id"] = "fictional-atomic"
+            edition["manifest"]["edition"] = str(year)
+            if year == 2027:
+                edition["policy"]["name"] = "Conflicting source policy"
+            for row in edition["entries"]:
+                row["source_id"], row["edition"] = "fictional-atomic", str(year)
+            checksum = fingerprint(edition)
+            conflicting.append(edition)
+            conflicting_audits[checksum] = {
+                **next(iter(bundle["audits"].values())),
+                "source_sha256": checksum,
+            }
+        try:
+            publish(
+                {"version": 1, "sources": conflicting, "audits": conflicting_audits},
+                database,
+                output,
+            )
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("A conflicting source policy must fail publication")
+        with sqlite3.connect(database) as db:
+            assert (
+                db.execute("SELECT count(*) FROM source WHERE id='fictional-atomic'").fetchone()[0]
+                == 0
+            )
+        assert json.loads(output.read_text()) == first
+        award = deepcopy(source)
+        award["policy"]["id"] = "fictional-award"
+        award["manifest"]["evidence_kind"] = "unknown"
+        for row in award["entries"]:
+            row["source_id"] = "fictional-award"
+        award["awards"] = [
+            {
+                "position": 1,
+                "event": "Fictional festival",
+                "edition": "2025",
+                "category": "Audience award",
+                "outcome": "prize",
+                "recipient": "Fictional film 1",
+                "recipient_kind": "film",
+            }
+        ]
+        award_output = Path(directory) / "awards.json"
+        for category in ("Audience award", "Jury award"):
+            award["awards"][0]["category"] = category
+            checksum = fingerprint(award)
+            review = {**next(iter(bundle["audits"].values())), "source_sha256": checksum}
+            publish(
+                {"version": 1, "sources": [award], "audits": {checksum: review}},
+                database,
+                award_output,
+            )
+            revision = json.loads(award_output.read_text())["cohorts"][0]["revision_id"]
+            if category == "Audience award":
+                earlier = revision
+            else:
+                assert revision != earlier
     print("Complete source counts, unresolved identities, replay and review binding passed")
 
 

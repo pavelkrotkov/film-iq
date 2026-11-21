@@ -1,0 +1,423 @@
+--- a/docs/research/tracker-poc/comparison_ratings.py
++++ b/docs/research/tracker-poc/comparison_ratings.py
+@@ -72,7 +72,10 @@
+ 
+ def imdb_matches(cache_dir, films, now, aliases):
+     matches = {}
+-    policy = policy_file(cache_dir)
++    try:
++        policy = policy_file(cache_dir)
++    except (FileNotFoundError, ValueError):
++        return matches
+     for item in films:
+         ident = item["tmdb_id"]
+         record = read_film(
+@@ -88,6 +91,38 @@
+         if match := re.fullmatch(r"https://www\.imdb\.com/title/(tt\d{7,15})/", url):
+             matches[ident] = (match[1], metadata["expires_at"])
+     return matches
++
++
++def asserted_public_matches(films):
++    """Confirm supplied Wikidata/IMDb/TMDB assertions independently of artwork."""
++    asserted = {}
++    for film in films:
++        qid = str(film.get("wikidata_id") or "").rstrip("/").rsplit("/", 1)[-1]
++        imdb = film.get("imdb_id") or ""
++        if re.fullmatch(r"Q[1-9]\d*", qid) and re.fullmatch(r"tt\d{7,15}", imdb):
++            asserted[film["tmdb_id"]] = (qid, imdb)
++    if not asserted:
++        return {}
++    # Source-specific QIDs bind the identity, so a same-title remake cannot match.
++    values = " ".join("wd:" + qid for qid, _ in sorted(set(asserted.values())))
++    query = "SELECT ?item ?tmdb ?imdb WHERE { VALUES ?item { " + values + " } "
++    query += "?item wdt:P4947 ?tmdb ; wdt:P345 ?imdb . }"
++    request = Request(
++        WIKIDATA,
++        data=urlencode({"query": query, "format": "json"}).encode(),
++        headers={"User-Agent": USER_AGENT, "Accept": "application/sparql-results+json"},
++    )
++    options = defaultdict(set)
++    with urlopen(request, timeout=65) as response:
++        rows = json.load(response)["results"]["bindings"]
++    for row in rows:
++        qid = row["item"]["value"].rsplit("/", 1)[-1]
++        options[qid].add((row["tmdb"]["value"], row["imdb"]["value"]))
++    return {
++        ident: (imdb, None)
++        for ident, (qid, imdb) in asserted.items()
++        if options[qid] == {(str(ident), imdb)}
++    }
+ 
+ 
+ def imdb_scores(ids):
+@@ -210,6 +245,15 @@
+             r"tt\d{7,15}", prior.get("public_imdb_id") or ""
+         ):
+             matches.setdefault(ident, (prior["public_imdb_id"], None))
++    errors = []
++    try:
++        public_assertions = asserted_public_matches(films)
++    except (OSError, ValueError, KeyError) as exc:
++        public_assertions = {}
++        errors.append(("Wikidata asserted identities", type(exc).__name__))
++    for ident, pair in public_assertions.items():
++        if ident not in matches or matches[ident][0] == pair[0]:
++            matches[ident] = pair
+     output = {}
+     for ident, (imdb_id, _) in matches.items():
+         prior = previous.get(str(ident), {})
+@@ -223,7 +267,6 @@
+             == f"https://www.imdb.com/title/{imdb_id}/"
+         )
+         output[str(ident)] = prior["scores"].copy() if public_match or cached_match else {}
+-    errors = []
+     with ThreadPoolExecutor(max_workers=5) as pool:
+         imdb = pool.submit(imdb_scores, {pair[0] for pair in matches.values()})
+         crosswalk = pool.submit(public_crosswalk, matches)
+@@ -251,7 +294,9 @@
+         except (OSError, ValueError, KeyError) as exc:
+             errors.append(("Wikidata crosswalk", type(exc).__name__))
+             crosswalk_rows = {}
+-    public_ids = set()
++    public_ids = {
++        ident for ident in public_assertions if matches[ident] == public_assertions[ident]
++    }
+     for ident, (imdb_id, _) in matches.items():
+         observed = crosswalk_rows.get(ident)
+         prior = previous.get(str(ident), {})
+--- a/docs/research/tracker-poc/comparison_service.py
++++ b/docs/research/tracker-poc/comparison_service.py
+@@ -20,6 +20,7 @@
+ from waitress import serve
+ 
+ from film_iq import web
++from film_iq.discovery_command import _read_cohorts
+ from film_iq.discovery_personal import fresh_snapshot, personal_index
+ from film_iq.personal_io import private_json
+ from film_iq.web_forms import check_origin, read_form
+@@ -42,7 +43,7 @@
+         return {}
+ 
+ 
+-def configured_movary(path):
++def configured_movary(path, library=None):
+     command = plistlib.loads(path.read_bytes())["ProgramArguments"]
+ 
+     def options(key):
+@@ -50,10 +51,12 @@
+ 
+     snapshot = Path(options("--snapshot")[0])
+     cohorts = [Path(value) for value in options("--cohort")]
++    if library is not None and library.is_file():
++        cohorts.append(library)
+     reviewed = {
+         row["tmdb_id"]
+-        for cohort in cohorts
+-        for row in json.loads(cohort.read_text())["candidates"]
++        for cohort in _read_cohorts(cohorts)
++        for row in cohort["candidates"]
+         if row["identity_status"] == "reviewed"
+     }
+     commands = [
+@@ -338,6 +341,7 @@
+             return json_response(
+                 {
+                     **value,
++                    "library": read_object(ratings_path.with_name("source-library-status.json")),
+                     "csrf_token": csrf,
+                     "watch_date": default_watch_date(),
+                     "personal_current": personal is not None,
+@@ -401,7 +405,9 @@
+     films = {film["tmdb_id"]: film for film in input_films}
+     if not owner or len(films) != len(input_films):
+         parser.error("The Tailscale owner and distinct film IDs are required")
+-    controls, reviewed, discovery = configured_movary(args.movary_config)
++    controls, reviewed, discovery = configured_movary(
++        args.movary_config, args.ratings.with_name("source-library.json")
++    )
+     app = application(
+         args.origin,
+         owner,
+--- a/docs/research/tracker-poc/kaneo_discovery.py
++++ b/docs/research/tracker-poc/kaneo_discovery.py
+@@ -1,13 +1,20 @@
+ """Project Film IQ's reviewed discovery order and shortlist into Kaneo."""
+ 
+-import json
++import sqlite3
++from contextlib import closing
+ from dataclasses import dataclass
+ from pathlib import Path
+ 
+-from film_iq.discovery_command import discovery_command
++from film_iq.discovery_batch import build_discoveries
++from film_iq.discovery_command import _read_cohorts
+ from film_iq.discovery_order import ordered_suggestions, public_support
+ from film_iq.dispositions import STATES, change, read
+ from film_iq.web_data import films
++
++
++def source_report(cohorts, database):
++    with closing(sqlite3.connect(database.resolve().as_uri() + "?mode=ro", uri=True)) as db:
++        return build_discoveries(_read_cohorts(cohorts), db=db)
+ 
+ 
+ @dataclass(frozen=True)
+@@ -16,7 +23,7 @@
+     cohorts: list[Path]
+ 
+     def projection(self, approved):
+-        report = json.loads(discovery_command(self.cohorts, None, self.database, "json"))
++        report = source_report(self.cohorts, self.database)
+         source = [item for item in films(report, "source") if item["tmdb_id"] in approved]
+         ranked = ordered_suggestions(source, "public-support")
+         positions = {item["tmdb_id"]: index for index, item in enumerate(ranked)}
+--- a/docs/research/tracker-poc/kaneo_discovery_check.py
++++ b/docs/research/tracker-poc/kaneo_discovery_check.py
+@@ -122,8 +122,8 @@
+     with (
+         TemporaryDirectory(prefix="fictional-shortlist-", dir=ROOT / ".cache/tracker-poc") as place,
+         patch(
+-            "kaneo_discovery.discovery_command",
+-            return_value=json.dumps({"candidates": candidates, "personal_state_stale": True}),
++            "kaneo_discovery.source_report",
++            return_value={"candidates": candidates, "personal_state_stale": True},
+         ),
+     ):
+         directory = Path(place)
+--- a/docs/research/tracker-poc/ui/film_insights.jsx
++++ b/docs/research/tracker-poc/ui/film_insights.jsx
+@@ -98,6 +98,7 @@
+     csrfToken: enabled ? data.csrf_token : null,
+     watchDate: enabled ? data.watch_date : null,
+     personalCurrent: enabled ? data.personal_current ?? null : null,
++    library: enabled ? data.library : null,
+     discoveryCurrent: enabled ? data.discovery_current ?? (data.personal_current === false ? false : null) : null,
+     refresh: () => setRevision((current) => current + 1),
+   };
+@@ -216,6 +217,25 @@
+   </section>;
+ }
+ 
++export function LibrarySources({library}) {
++  if (!library?.coverage?.length) return null;
++  const groups = new Map();
++  for (const source of library.coverage) {
++    const group = groups.get(source.name) || {editions: new Set(), entries: 0, partial: false};
++    group.editions.add(source.edition);
++    group.entries += source.observed_count;
++    group.partial ||= source.completeness !== "complete";
++    groups.set(source.name, group);
++  }
++  return <details className="workflow-tools library-sources"><summary>Suggestion sources</summary>
++    <p>{library.reviewed_films.toLocaleString()} matched films · {library.source_editions} source editions
++      {library.unresolved_observations > 0 && <> · {library.unresolved_observations} source entries awaiting identity review</>}</p>
++    <ul>{[...groups].map(([name, group]) => <li key={name}>
++      <strong>{name}</strong> · {group.editions.size} editions · {group.entries} selections{group.partial && " · Partial coverage"}
++    </li>)}</ul>
++  </details>;
++}
++
+ export function MovaryAction({record, children}) {
+   if (!record?.action_url) return null;
+   return <div className="movary-action">
+--- a/docs/research/tracker-poc/ui/src.jsx
++++ b/docs/research/tracker-poc/ui/src.jsx
+@@ -31,7 +31,7 @@
+ import {boundedRead} from "./youtrack_loading.js";
+ import {MovaryWatchlist, MovaryWatchlistBadge, observedWatchlistKeys, watchlistForProject} from "./movary_watchlist.jsx";
+ import {kaneoUrl, tailnetPreview} from "./kaneo_urls.js";
+-import {filmInsight, MovaryAction, PublicScores, ReviewOverview, ShortlistActions, sortByDiscovery, sortByPersonalRating, useComparisonMetadata, useFilmInsights} from "./film_insights.jsx";
++import {filmInsight, LibrarySources, MovaryAction, PublicScores, ReviewOverview, ShortlistActions, sortByDiscovery, sortByPersonalRating, useComparisonMetadata, useFilmInsights} from "./film_insights.jsx";
+ import {FilmToolbar, useFilmFocus, ViewingOptions, WorkflowTools} from "./film_workflow.jsx";
+ import {MovaryForm} from "./movary_form.jsx";
+ 
+@@ -211,7 +211,7 @@
+   const [projectList, setProjectList] = useState(null),
+     [projectListError, setProjectListError] = useState(""),
+     [chosenProject, setChosenProject] = useState(project);
+-  const {films: insights, csrfToken, watchDate, personalCurrent, discoveryCurrent, refresh: refreshInsights} = useFilmInsights(tailnetPreview && !cacheFixture);
++  const {films: insights, csrfToken, watchDate, personalCurrent, discoveryCurrent, library, refresh: refreshInsights} = useFilmInsights(tailnetPreview && !cacheFixture);
+   const [sortPersonal, setSortPersonal] = useState(false);
+   const [discoveryOrder, setDiscoveryOrder] = useState("public-support");
+   const insight = (item) => item ? filmInsight(insights, tmdbId(item), item.title) : null;
+@@ -768,6 +768,7 @@
+           query={query} setQuery={setQuery} watchView={watchView} setWatchView={setWatchView}
+           watchFilterReady={personalCurrent === true} order={sortPersonal ? "score" : discoveryOrder} discoveryCurrent={discoveryCurrent}
+           setOrder={(value) => { setSortInterest(false); setSortPersonal(value === "score"); if (value !== "score") setDiscoveryOrder(value); }} />}
++        {compact && !film && <LibrarySources library={library} />}
+         {compact && !film && discoveryCurrent === true && watchView === "recommendations" && !sortPersonal && !sortInterest && discoveryOrder === "public-support" &&
+           <p className="filter-note">Ordered by reviewed public evidence. Films without a support count keep their source position.</p>}
+         {compact && !film && discoveryCurrent === false && ["recommendations", "saved", "dismissed"].includes(watchView) &&
+--- a/docs/research/tracker-poc/youtrack-tmdb-live-bridge/live_bridge.py
++++ b/docs/research/tracker-poc/youtrack-tmdb-live-bridge/live_bridge.py
+@@ -81,12 +81,12 @@
+         raise ValueError("Collection approval source does not match")
+     manifest = json.loads(manifest_bytes)
+     films = manifest.get("films") if isinstance(manifest, dict) else None
+-    if not isinstance(films, list) or len(films) != 130:
++    if not isinstance(films, list) or not films:
+         raise ValueError("Collection approval manifest is invalid")
+     values = [film.get("tmdb_id") if isinstance(film, dict) else None for film in films]
+     if (
+         any(type(value) is not int for value in values)
+-        or len(set(values)) != 130
++        or len(set(values)) != len(films)
+         or set(values) != allowed
+     ):
+         raise ValueError("Collection approval identities do not match")
+--- a/src/film_iq/discovery.py
++++ b/src/film_iq/discovery.py
+@@ -49,21 +49,33 @@
+     }
+ 
+ 
+-def build_discovery(cohort: dict, snapshot: dict | None = None, *, db=None, refresh_status=None):
++def build_discovery(
++    cohort: dict,
++    snapshot: dict | None = None,
++    *,
++    db=None,
++    refresh_status=None,
++    public_scores=None,
++    component_lookup=None,
++    accepted_entries=None,
++):
+     """Only current accepted, reviewed, freshly unwatched films enter suggestions."""
+-    personal, scores = personal_index(snapshot), recognition(db)
++    personal = personal_index(snapshot)
++    scores = recognition(db) if public_scores is None else public_scores
+     stale = not fresh_snapshot(snapshot, refresh_status)
+     candidates = [
+         _candidate(
+             row,
+-            accepted_row(db, cohort["revision_id"], row["position"]),
++            accepted_row(db, cohort["revision_id"], row["position"])
++            if accepted_entries is None
++            else accepted_entries.get((cohort["revision_id"], row["position"])),
+             personal,
+             scores,
+             snapshot is not None,
+         )
+         for row in validate_cohort(cohort, db)
+     ]
+-    candidates = attach_components(candidates, db)
++    candidates = attach_components(candidates, db, index=component_lookup)
+     # Keep raw source entries intact; only reviewed viewing cards coalesce.
+     suggestions = coalesce_works(row for row in candidates if _suggested(row, stale))
+     return {
+--- a/src/film_iq/discovery_batch.py
++++ b/src/film_iq/discovery_batch.py
+@@ -3,7 +3,9 @@
+ import json
+ 
+ from film_iq.discovery import build_discovery
++from film_iq.discovery_evidence import accepted_rows, recognition
+ from film_iq.discovery_works import coalesce_works
++from film_iq.recognition.discovery import component_index
+ 
+ 
+ def build_discoveries(cohorts, snapshot=None, *, db=None, refresh_status=None):
+@@ -13,8 +15,17 @@
+     revisions = [cohort["revision_id"] or json.dumps(cohort, sort_keys=True) for cohort in cohorts]
+     if len(revisions) != len(set(revisions)):
+         raise ValueError("duplicate cohort revision; supply each selection once")
++    scores, components, entries = recognition(db), component_index(db), accepted_rows(db)
+     reports = [
+-        build_discovery(cohort, snapshot, db=db, refresh_status=refresh_status)
++        build_discovery(
++            cohort,
++            snapshot,
++            db=db,
++            refresh_status=refresh_status,
++            public_scores=scores,
++            component_lookup=components,
++            accepted_entries=entries,
++        )
+         for cohort in cohorts
+     ]
+     if len(reports) == 1:
+--- a/src/film_iq/discovery_command.py
++++ b/src/film_iq/discovery_command.py
+@@ -44,4 +44,7 @@
+ 
+ def _read_cohorts(cohort):
+     paths = [cohort] if isinstance(cohort, Path) else cohort
+-    return [json.loads(path.read_text()) for path in paths]
++    documents = [json.loads(path.read_text()) for path in paths]
++    return [
++        selection for document in documents for selection in document.get("cohorts", [document])
++    ]
+--- a/src/film_iq/discovery_evidence.py
++++ b/src/film_iq/discovery_evidence.py
+@@ -8,11 +8,7 @@
+ from film_iq.scoring.a1 import load_evidence
+ 
+ 
+-def accepted_row(db: sqlite3.Connection | None, revision: str | None, position: int):
+-    if db is None or revision is None:
+-        return None
+-    cursor = db.execute(
+-        """SELECT o.raw_context, f.tmdb_id,
++ACCEPTED = """SELECT o.raw_context, f.tmdb_id,
+         l.completeness AS accepted_completeness, l.lineage_kind AS accepted_lineage_kind,
+         l.lineage AS accepted_lineage, l.eligibility AS accepted_eligibility,
+         o.raw_title, o.listed_year AS year, o.director, o.position, o.rank, o.tie, o.locator,
+@@ -25,15 +21,30 @@
+         JOIN entry_observation o ON o.revision_id=r.id AND o.extraction_decision='accepted'
+         LEFT JOIN entry_recognition t ON t.entry_id=o.entry_id AND t.revision_id=o.revision_id
+         LEFT JOIN current_match m ON m.entry_id=o.entry_id AND m.revision_id=o.revision_id
+-        LEFT JOIN film_index f ON f.id=m.film_id
+-        WHERE r.id=? AND o.position=?""",
+-        (revision, position),
+-    )
++        LEFT JOIN film_index f ON f.id=m.film_id"""
++
++
++def accepted_row(db: sqlite3.Connection | None, revision: str | None, position: int):
++    if db is None or revision is None:
++        return None
++    cursor = db.execute(ACCEPTED + " WHERE r.id=? AND o.position=?", (revision, position))
+     row = cursor.fetchone()
+     if row is None:
+         return None
++    return _accepted_facts(row, [column[0] for column in cursor.description])
++
++
++def accepted_rows(db):
++    if db is None:
++        return {}
++    cursor = db.execute(ACCEPTED)
++    names = [column[0] for column in cursor.description]
++    records = [_accepted_facts(row, names) for row in cursor]
++    return {(facts["revision_id"], facts["position"]): (facts, ident) for facts, ident in records}
++
++
++def _accepted_facts(row, names):
+     facts = json.loads(row[0])
+-    names = [column[0] for column in cursor.description]
+     normalized = dict(zip(names[2:], row[2:], strict=True))
+     facts["published_at"] = normalized.pop("published_at") or facts["published_at"]
+     facts.update(normalized)
+--- a/src/film_iq/recognition/discovery.py
++++ b/src/film_iq/recognition/discovery.py
+@@ -4,12 +4,17 @@
+ from film_iq.recognition.render import component_lines
+ 
+ 
+-def attach_components(items: list[dict], db) -> list[dict]:
++def component_index(db):
+     by_work, by_entry = {}, {}
+     for row in current_components(db) if db is not None else []:
+         by_entry.setdefault((row["entry_id"], row["revision_id"]), []).append(row)
+         if row["tmdb_id"] is not None:
+             by_work.setdefault(row["tmdb_id"], []).append(row)
++    return by_work, by_entry
++
++
++def attach_components(items: list[dict], db, *, index=None) -> list[dict]:
++    by_work, by_entry = component_index(db) if index is None else index
+     return [_attach(item, by_work, by_entry) for item in items]
+ 
+ 

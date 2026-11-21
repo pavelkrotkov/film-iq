@@ -49,21 +49,33 @@ def _candidate(row, accepted, personal, scores, snapshot_available):
     }
 
 
-def build_discovery(cohort: dict, snapshot: dict | None = None, *, db=None, refresh_status=None):
+def build_discovery(
+    cohort: dict,
+    snapshot: dict | None = None,
+    *,
+    db=None,
+    refresh_status=None,
+    public_scores=None,
+    component_lookup=None,
+    accepted_entries=None,
+):
     """Only current accepted, reviewed, freshly unwatched films enter suggestions."""
-    personal, scores = personal_index(snapshot), recognition(db)
+    personal = personal_index(snapshot)
+    scores = recognition(db) if public_scores is None else public_scores
     stale = not fresh_snapshot(snapshot, refresh_status)
     candidates = [
         _candidate(
             row,
-            accepted_row(db, cohort["revision_id"], row["position"]),
+            accepted_row(db, cohort["revision_id"], row["position"])
+            if accepted_entries is None
+            else accepted_entries.get((cohort["revision_id"], row["position"])),
             personal,
             scores,
             snapshot is not None,
         )
         for row in validate_cohort(cohort, db)
     ]
-    candidates = attach_components(candidates, db)
+    candidates = attach_components(candidates, db, index=component_lookup)
     # Keep raw source entries intact; only reviewed viewing cards coalesce.
     suggestions = coalesce_works(row for row in candidates if _suggested(row, stale))
     return {

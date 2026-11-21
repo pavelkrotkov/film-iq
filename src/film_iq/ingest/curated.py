@@ -41,12 +41,15 @@ def extraction(body: str, manifest: CuratedList) -> tuple[Extraction, tuple[Cura
         )
         for row in rows
     )
+    fingerprint = [body, manifest.evidence_kind]
+    if manifest.recognition_context:
+        fingerprint.append(manifest.recognition_context)
     captured = Extraction(
         rows[0].source_url,
         rows[0].source_url,
         manifest.document_revision,
         "curated-csv-1",
-        sha256(json.dumps([body, manifest.evidence_kind], ensure_ascii=False).encode()).hexdigest(),
+        sha256(json.dumps(fingerprint, ensure_ascii=False).encode()).hexdigest(),
         manifest.eligibility,
         manifest.completeness,
         manifest.scope,
