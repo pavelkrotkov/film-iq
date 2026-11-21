@@ -130,6 +130,28 @@ def main():
         assert result["observations"] == 2 and result["unresolved_observations"] == 1
         first = json.loads(output.read_text())
         assert first["cohorts"][0]["accepted"] == 2
+        unrelated = deepcopy(source)
+        unrelated["policy"]["id"] = "unrelated-adapter"
+        for row in unrelated["entries"]:
+            row["source_id"] = "unrelated-adapter"
+        checksum = fingerprint(unrelated)
+        publish(
+            {
+                "version": 1,
+                "sources": [unrelated],
+                "audits": {
+                    checksum: {**next(iter(bundle["audits"].values())), "source_sha256": checksum}
+                },
+            },
+            database,
+            Path(directory) / "unrelated.json",
+        )
+        with sqlite3.connect(database) as db:
+            db.execute(
+                "UPDATE entry_observation SET raw_context='Plain text from a different adapter' "
+                "WHERE revision_id<>?",
+                (first["cohorts"][0]["revision_id"],),
+            )
         discovery = json.loads(discovery_command(output, None, database, "json"))
         assert discovery["total_candidates"] == 2 and discovery["unresolved"] == 1
         assert discovery["accepted"] == 2

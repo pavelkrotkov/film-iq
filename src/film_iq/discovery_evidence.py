@@ -33,10 +33,14 @@ def accepted_row(db: sqlite3.Connection | None, revision: str | None, position: 
     return _accepted_facts(row, [column[0] for column in cursor.description])
 
 
-def accepted_rows(db):
+def accepted_rows(db, revisions):
     if db is None:
         return {}
-    cursor = db.execute(ACCEPTED)
+    selected = tuple({revision for revision in revisions if revision is not None})
+    if not selected:
+        return {}
+    placeholders = ",".join("?" for _ in selected)
+    cursor = db.execute(ACCEPTED + f" WHERE r.id IN ({placeholders})", selected)
     names = [column[0] for column in cursor.description]
     records = [_accepted_facts(row, names) for row in cursor]
     return {(facts["revision_id"], facts["position"]): (facts, ident) for facts, ident in records}

@@ -58,6 +58,9 @@ The existing Kaneo integration is recorded in
 and Tailscale URL, the existing supported Kaneo task importer, seven-day metadata
 cache, daily ratings refresh and macOS startup job. Public IMDb/TMDB/Wikidata
 crosswalks can supply ratings independently of artwork availability.
+Film details include each source's original title, year and director alongside
+the reviewed display, and typed award categories, outcomes and recipients.
+These facts are joined by their accepted source entry and revision identifiers.
 
 ## Verification and remaining coverage
 
@@ -77,8 +80,13 @@ one second on the expanded collection. Final live insights reads took
 
 Annual coverage is complete for the declared editions. Every publisher's full
 historical archive and every festival category remain broader research scopes.
-The Rosenbaum canon transcription has 990 rows against its advertised 1,000 and
-awaits completeness review. Audience ratings remain sparse in Wikidata. The
+The Rosenbaum canon's three web parts have now passed independent original-page
+audit after 39 field corrections: 993 visible selections against an advertised
+1,000. The unexplained seven-selection gap and grouped works remain explicit.
+These additions are still undergoing canonical identity checks and are not
+included in the live counts above. Matching now checks complete paged search
+results and published aliases; earlier partial-search receipts cannot bypass
+the new review. Audience ratings remain sparse in Wikidata. The
 configured MDBList credential still returned HTTP 403 on November 20, 2026.
 Missing scores retain their unknown state and prior verified values survive
 partial or failed refreshes.

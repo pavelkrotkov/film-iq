@@ -15,7 +15,8 @@ def build_discoveries(cohorts, snapshot=None, *, db=None, refresh_status=None):
     revisions = [cohort["revision_id"] or json.dumps(cohort, sort_keys=True) for cohort in cohorts]
     if len(revisions) != len(set(revisions)):
         raise ValueError("duplicate cohort revision; supply each selection once")
-    scores, components, entries = recognition(db), component_index(db), accepted_rows(db)
+    scores, components = recognition(db), component_index(db)
+    entries = accepted_rows(db, [cohort["revision_id"] for cohort in cohorts])
     reports = [
         build_discovery(
             cohort,
